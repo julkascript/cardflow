@@ -1,4 +1,7 @@
-/.idea
-.env
-/venv
-/db*
+__pycache__
+.idea/
+.env*
+venv/
+db*
+postgresql/
+pgadmin4/
