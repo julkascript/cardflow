@@ -1,4 +1,4 @@
 /.idea
-/.env
+.env
 /venv
 /db*
