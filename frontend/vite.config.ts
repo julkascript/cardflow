@@ -9,4 +9,7 @@ export default defineConfig({
     providing a bandaid fix for the time being
   */
   plugins: [react(), tailwindcss() as unknown as Plugin],
-})
+  test: {
+    environment: 'jsdom',
+  },
+} as unknown as object)
