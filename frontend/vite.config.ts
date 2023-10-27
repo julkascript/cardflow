@@ -10,6 +10,8 @@ export default defineConfig({
   */
   plugins: [react(), tailwindcss()],
   test: {
+    globals: true,
     environment: 'jsdom',
+    setUpFiles: ['./test-config/tests-setup.ts'],
   },
-} as unknown as object)
+} as unknown as object);
