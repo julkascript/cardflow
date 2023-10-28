@@ -20,6 +20,11 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "test-config/tests-setup.ts"],
+  "include": [
+    "src",
+    "test-config/tests-setup.ts",
+    ".eslintrc.cjs",
+    "vite.config.ts"
+  ],
   "references": [{ "path": "./tsconfig.node.json" }]
 }
