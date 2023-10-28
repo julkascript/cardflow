@@ -1,13 +1,22 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
 import HomeIcon from '@mui/icons-material/Home';
+import { CssBaseline, createTheme } from '@mui/material';
+import { ThemeProvider } from '@emotion/react';
 function App() {
   const [count, setCount] = useState(0);
 
+  /*
+    TO-DO: configure primary and secondary colors based on
+    wireframes
+  */
+  const theme = useMemo(() => createTheme(), []);
+
   return (
-    <>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <div>
         <a href="https://vitejs.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
@@ -28,7 +37,7 @@ function App() {
         <span className="font-bold">Tailwind test</span>
       </p>
       <HomeIcon></HomeIcon>
-    </>
+    </ThemeProvider>
   );
 }
 
