@@ -2,12 +2,32 @@ import { useMemo } from 'react';
 import './App.css';
 import { CssBaseline, createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
+
 function App() {
-  /*
-    TO-DO: configure primary and secondary colors based on
-    wireframes
-  */
-  const theme = useMemo(() => createTheme(), []);
+  const theme = useMemo(
+    () =>
+      createTheme({
+        palette: {
+          primary: {
+            main: '#000',
+          },
+          secondary: {
+            main: '#33BFFF',
+          },
+          info: {
+            main: '#000',
+          },
+          text: {
+            primary: '#000',
+            secondary: '#666666',
+          },
+          warning: {
+            main: '#F73378',
+          },
+        },
+      }),
+    [],
+  );
 
   return (
     <>
