@@ -1,0 +1,32 @@
+version: '3.4'
+
+# NOTE: When connecting to the postgres docker container in the web interface,
+# try using 'postgres' as the host name instead of 'localhost' or 'host.docker.internal'
+
+# NOTE 2: Copy this file in the same directory as 'docker-compose.yml' file and use your own credentials
+
+services:
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB:  ${POSTGRES_DB}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./postgresql:/var/lib/postgresql/data
+  pgadmin4:
+    image: dpage/pgadmin4
+    user: "${UID}:${GID}"  # to avoid permission issues
+    environment:
+      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
+    volumes:
+      - ./pgadmin4:/var/lib/pgadmin
+    ports:
+      - "5433:80"
+    depends_on:
+      - postgres

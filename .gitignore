@@ -1,3 +1,16 @@
+# Pycharm editor files and folders
+__pycache__
+.idea/
+venv/
+
+# ENV files and folders
+.env*
+
+# DB files and folders
+db*
+postgresql/
+pgadmin4/
+
 # Logs
 logs
 *.log
