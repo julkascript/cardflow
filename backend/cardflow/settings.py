@@ -33,9 +33,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework.authtoken',
 
-    'apps.accounts',
-    'apps.card',
-    'apps.user_profile',
+    'accounts',
+    'yugi',
 ]
 
 MIDDLEWARE = [
