@@ -68,7 +68,7 @@ function MobileLoggedInNav(): JSX.Element {
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>
-        <ListItemButton>
+        <ListItemButton href="#">
           <ListItemAvatar>
             <Avatar sx={{ width: 24, height: 24 }} src="#" />
           </ListItemAvatar>
