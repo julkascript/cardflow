@@ -2,6 +2,7 @@ import { useMemo } from 'react';
 import './App.css';
 import { CssBaseline, createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
+import Navigation from './components/Navigation/Navigation';
 
 function App() {
   const theme = useMemo(
@@ -33,6 +34,7 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <CssBaseline />
+        <Navigation />
         <main></main>
       </ThemeProvider>
     </>
