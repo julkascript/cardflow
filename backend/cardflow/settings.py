@@ -37,6 +37,9 @@ INSTALLED_APPS = [
     'card',
     'yugioh',
     'game',
+    'yugiohcardset',
+    'yugiohcardrarity',
+    'yugiohcardinset',
 ]
 
 MIDDLEWARE = [
