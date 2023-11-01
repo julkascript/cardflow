@@ -35,6 +35,8 @@ INSTALLED_APPS = [
 
     'accounts',
     'card',
+    'yugioh',
+    'game',
 ]
 
 MIDDLEWARE = [
