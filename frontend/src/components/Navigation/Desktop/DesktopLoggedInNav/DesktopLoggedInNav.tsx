@@ -1,7 +1,6 @@
 import ProfilePictureAvatar from '../../ProfilePictureAvatar/ProfilePictureAvatar';
 import NewActionButton from '../Buttons/NewActionButton/NewActionButton';
 import NotificationButton from '../Buttons/NotificationButton/NotificationButton';
-import ShoppingCartButton from '../Buttons/ShoppingCartButton/ShoppingCartButton';
 
 /**
  * A list of navigation items for logged in users.
@@ -15,9 +14,6 @@ function DesktopLoggedInNav(): JSX.Element {
   */
   return (
     <ul className="list-none flex gap-4 items-center">
-      <li>
-        <ShoppingCartButton />
-      </li>
       <li>
         <NewActionButton />
       </li>
