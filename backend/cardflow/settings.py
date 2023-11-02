@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv("SECRET_KEY")
@@ -18,7 +17,6 @@ try:
         DEBUG = False
 except:
     DEBUG = False
-
 
 ALLOWED_HOSTS = ['*']
 
@@ -40,6 +38,8 @@ INSTALLED_APPS = [
     'yugiohcardset',
     'yugiohcardrarity',
     'yugiohcardinset',
+    'drf_spectacular',
+
 ]
 
 MIDDLEWARE = [
@@ -79,7 +79,7 @@ DATABASES = {
         "USER": os.getenv("POSTGRES_USER"),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD"),
         "HOST": os.getenv("POSTGRES_HOST"),
-        "PORT": os.getenv("POSTGRES_PORT") 
+        "PORT": os.getenv("POSTGRES_PORT")
     }
 }
 
@@ -123,3 +123,9 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'accounts.User'
+
+REST_FRAMEWORK = {
+    'TITLE': 'Cardflow APP  ',
+    'DESCRIPTION': 'This is the API for the Cardflow APP',
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
