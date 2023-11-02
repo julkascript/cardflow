@@ -11,7 +11,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import MobileLoggedInNav from './menus/MobileLoggedInNav';
 
 type MobileNavigationProps = {
-  onClose: (event: React.MouseEvent) => void;
+  onCloseButtonClick: (event: React.MouseEvent) => void;
 };
 
 /**
@@ -37,7 +37,7 @@ function MobileNavigation(props: MobileNavigationProps) {
         </ListItem>
         <MobileLoggedInNav />
         <ListItem disablePadding>
-          <ListItemButton onClick={props.onClose}>
+          <ListItemButton onClick={props.onCloseButtonClick}>
             <ListItemIcon>
               <CloseIcon />
             </ListItemIcon>

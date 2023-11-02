@@ -40,7 +40,7 @@ function Navigation(): JSX.Element {
             <MenuIcon />
           </IconButton>
           <Drawer anchor="left" open={mobileMenuIsOpen} onClose={() => setMobileMenuOpen(false)}>
-            <MobileNavigation onClose={closeMenu}></MobileNavigation>
+            <MobileNavigation onCloseButtonClick={closeMenu}></MobileNavigation>
           </Drawer>
         </div>
       </div>
