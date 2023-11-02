@@ -1,7 +1,10 @@
 import { useTheme } from '@mui/material';
 
 type LogoProps = {
+  /** Size is expressed in pixels */
   size: number;
+
+  /** Defaults to ``'black'`` if not provided */
   color?: string;
 };
 
