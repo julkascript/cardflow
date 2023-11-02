@@ -4,7 +4,7 @@ import SearchField from '../searchField/SearchField';
 import DesktopLoggedInNav from './desktop/DesktopLoggedInNav';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
-import MobileNavigation from './mobile/mobileNavigation';
+import MobileNavigation from './mobile/MobileNavigation';
 import ShoppingCartButton from './desktop/buttons/ShoppingCartButton';
 
 /**
