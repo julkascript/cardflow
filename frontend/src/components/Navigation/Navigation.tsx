@@ -5,7 +5,7 @@ import DesktopLoggedInNav from './Desktop/DesktopLoggedInNav/DesktopLoggedInNav'
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import MobileNavigation from './Mobile/MobileNavigation';
-import ShoppingCartButton from './Desktop/Buttons/ShoppingCartButton/ShoppingCartButton';
+import ShoppingCartButton from './Desktop/Buttons/ShoppingCartButton';
 
 /**
  * A component for the application's navigation menu
