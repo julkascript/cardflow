@@ -1,16 +1,16 @@
 import { useTheme } from '@mui/material';
 
-interface ILogoProps {
+type LogoProps = {
   size: number;
   color?: string;
-}
+};
 
 /**
  * A SVG-based logo whose size and color can be configured with props
  * @param props
  * @returns
  */
-function Logo(props: ILogoProps): JSX.Element {
+function Logo(props: LogoProps): JSX.Element {
   const theme = useTheme();
   const secondary = theme.palette.secondary.main;
 

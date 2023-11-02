@@ -14,10 +14,10 @@ import ExpandMore from '@mui/icons-material/ExpandMore';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useState } from 'react';
 
-interface INewActionLink {
+type NewActionLink = {
   url: string;
   label: string;
-}
+};
 
 /**
  * Mobile navigation items that can be interacted with by logged in users.
@@ -25,7 +25,7 @@ interface INewActionLink {
  */
 function MobileLoggedInNav(): JSX.Element {
   const [expanded, setExpanded] = useState(false);
-  const actions: INewActionLink[] = [
+  const actions: NewActionLink[] = [
     {
       url: '#',
       label: 'New listing',

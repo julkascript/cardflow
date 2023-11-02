@@ -3,10 +3,10 @@ import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Button, ListItemIcon, ListItemText, Menu, MenuItem, useTheme } from '@mui/material';
 import { useState } from 'react';
 
-interface IMenuItem {
+type MenuItem = {
   label: string;
   href: string;
-}
+};
 
 /**
  * A simple button that opens a menu for a new action.
@@ -27,7 +27,7 @@ function NewActionButton(): JSX.Element {
     setAnchorEl(null);
   }
 
-  const menuItems: IMenuItem[] = [
+  const menuItems: MenuItem[] = [
     {
       label: 'New listing',
       href: '#',
