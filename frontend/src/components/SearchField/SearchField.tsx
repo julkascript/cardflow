@@ -1,6 +1,6 @@
 import { TextField } from '@mui/material';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import SearchButton from '../Navigation/Desktop/Buttons/SearchButton';
+import SearchButton from '../navigation/desktop/buttons/SearchButton';
 
 function SearchField(): JSX.Element {
   function search(event: FormEvent) {

@@ -1,6 +1,6 @@
-import ProfilePictureAvatar from '../../ProfilePictureAvatar/ProfilePictureAvatar';
-import NewActionButton from '../Buttons/NewActionButton';
-import NotificationButton from '../Buttons/NotificationButton';
+import ProfilePictureAvatar from '../../profilePictureAvatar/ProfilePictureAvatar';
+import NewActionButton from '../buttons/NewActionButton';
+import NotificationButton from '../buttons/NotificationButton';
 
 /**
  * A list of navigation items for logged in users.

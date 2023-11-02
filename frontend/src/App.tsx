@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import './App.css';
 import { CssBaseline, createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
-import Navigation from './components/Navigation/Navigation';
+import Navigation from './components/navigation/Navigation';
 
 function App() {
   const theme = useMemo(

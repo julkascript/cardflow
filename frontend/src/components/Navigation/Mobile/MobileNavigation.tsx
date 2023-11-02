@@ -8,8 +8,7 @@ import {
 } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import CloseIcon from '@mui/icons-material/Close';
-// import MobileGuestNav from './MobileGuestNav/MobileGuestNav';
-import MobileLoggedInNav from './MobileLoggedInNav/MobileLoggedInNav';
+import MobileLoggedInNav from './mobileLoggedInNav/MobileLoggedInNav';
 
 interface IMobileNavigationProps {
   onClose: (event: React.MouseEvent) => void;

@@ -1,11 +1,11 @@
 import { Divider, Drawer, IconButton } from '@mui/material';
-import Logo from '../Logo/Logo';
-import SearchField from '../SearchField/SearchField';
-import DesktopLoggedInNav from './Desktop/DesktopLoggedInNav/DesktopLoggedInNav';
+import Logo from '../logo/Logo';
+import SearchField from '../searchField/SearchField';
+import DesktopLoggedInNav from './desktop/desktopLoggedInNav/DesktopLoggedInNav';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
-import MobileNavigation from './Mobile/MobileNavigation';
-import ShoppingCartButton from './Desktop/Buttons/ShoppingCartButton';
+import MobileNavigation from './mobile/mobileNavigation';
+import ShoppingCartButton from './desktop/buttons/ShoppingCartButton';
 
 /**
  * A component for the application's navigation menu
