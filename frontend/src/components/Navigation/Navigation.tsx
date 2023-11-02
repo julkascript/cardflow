@@ -1,7 +1,7 @@
 import { Divider, Drawer, IconButton } from '@mui/material';
 import Logo from '../logo/Logo';
 import SearchField from '../searchField/SearchField';
-import DesktopLoggedInNav from './desktop/desktopLoggedInNav/DesktopLoggedInNav';
+import DesktopLoggedInNav from './desktop/DesktopLoggedInNav';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import MobileNavigation from './mobile/mobileNavigation';
