@@ -32,12 +32,9 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 
     'accounts',
+    'game',
     'card',
     'yugioh',
-    'game',
-    'yugiohcardset',
-    'yugiohcardrarity',
-    'yugiohcardinset',
     'drf_spectacular',
 
 ]

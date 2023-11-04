@@ -1,7 +1,5 @@
 from django.db import models
 
-from yugiohcardinset.models import YugiohCardInSet
-
 
 class YugiohCard(models.Model):
 
@@ -67,14 +65,54 @@ class YugiohCard(models.Model):
         return self.card.card_name
 
 
-class YugiohCardYugiohCardInSet(models.Model):
+class YugiohCardInSet(models.Model):
+    rarity = models.ForeignKey(
+        'YugiohCardRarity',
+        on_delete=models.CASCADE,
+    )
+    set = models.ForeignKey(
+        'YugiohCardSet',
+        on_delete=models.CASCADE,
+    )
 
     yugioh_card = models.ForeignKey(
         YugiohCard,
         on_delete=models.CASCADE,
     )
 
-    yugioh_card_in_set = models.ForeignKey(
-        YugiohCardInSet,
-        on_delete=models.CASCADE,
+    def __str__(self):
+        return f'{self.set} - {self.rarity}'
+
+
+class YugiohCardSet(models.Model):
+    card_set_name = models.CharField(
+        max_length=100,
+        unique=True,
     )
+
+    rarity_code = models.CharField(
+        max_length=100,
+        unique=True,
+    )
+
+    def __str__(self):
+        return f'{self.card_set_name} - {self.rarity_code}'
+
+
+class YugiohCardRarity(models.Model):
+    rarity = models.CharField(
+        max_length=100,
+        unique=True,
+    )
+
+    rarity_code = models.CharField(
+        max_length=100,
+        unique=True,
+    )
+
+    class Meta:
+        verbose_name_plural = 'Yugioh Card Rarities'
+        verbose_name = 'Yugioh Card Rarity'
+
+    def __str__(self):
+        return f'{self.rarity} - {self.rarity_code}'
