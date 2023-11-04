@@ -62,10 +62,11 @@ class YugiohCard(models.Model):
     )
 
     def __str__(self):
-        return self.card.card_name
+        return f'{self.card.card_name}'
 
 
 class YugiohCardInSet(models.Model):
+
     rarity = models.ForeignKey(
         'YugiohCardRarity',
         on_delete=models.CASCADE,
@@ -90,7 +91,7 @@ class YugiohCardSet(models.Model):
         unique=True,
     )
 
-    rarity_code = models.CharField(
+    card_set_code = models.CharField(
         max_length=100,
         unique=True,
     )
@@ -100,6 +101,7 @@ class YugiohCardSet(models.Model):
 
 
 class YugiohCardRarity(models.Model):
+
     rarity = models.CharField(
         max_length=100,
         unique=True,
