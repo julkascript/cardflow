@@ -1,5 +1,7 @@
 from django.db import models
 
+from yugiohcardinset.models import YugiohCardInSet
+
 
 class YugiohCard(models.Model):
 
@@ -61,10 +63,18 @@ class YugiohCard(models.Model):
         on_delete=models.CASCADE,
     )
 
-    card_in_set = models.ForeignKey(
-        'yugiohcardinset.YugiohCardInSet',
+    def __str__(self):
+        return self.card
+
+
+class YugiohCardYugiohCardInSet(models.Model):
+
+    yugioh_card = models.ForeignKey(
+        YugiohCard,
         on_delete=models.CASCADE,
     )
 
-    def __str__(self):
-        return self.yugioh_card_name
+    yugioh_card_in_set = models.ForeignKey(
+        YugiohCardInSet,
+        on_delete=models.CASCADE,
+    )
