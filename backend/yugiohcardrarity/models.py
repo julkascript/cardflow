@@ -12,4 +12,4 @@ class YugiohCardRarity(models.Model):
         verbose_name = 'Yugioh Card Rarity'
 
     def __str__(self):
-        return {self.rarity}
+        return self.rarity
