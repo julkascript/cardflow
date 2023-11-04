@@ -64,7 +64,7 @@ class YugiohCard(models.Model):
     )
 
     def __str__(self):
-        return self.card
+        return self.card.card_name
 
 
 class YugiohCardYugiohCardInSet(models.Model):

@@ -9,5 +9,10 @@ class YugiohCardSet(models.Model):
         unique=True,
     )
 
+    rarity_code = models.CharField(
+        max_length=100,
+        unique=True,
+    )
+
     def __str__(self):
-        return self.card_set_name
+        return f'{self.card_set_name} - {self.rarity_code}'
