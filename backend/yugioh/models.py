@@ -61,5 +61,10 @@ class YugiohCard(models.Model):
         on_delete=models.CASCADE,
     )
 
+    card_in_set = models.ForeignKey(
+        'yugiohcardinset.YugiohCardInSet',
+        on_delete=models.CASCADE,
+    )
+
     def __str__(self):
         return self.yugioh_card_name
