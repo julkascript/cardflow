@@ -6,7 +6,10 @@ class YugiohCardInSet(models.Model):
         'yugiohcardrarity.YugiohCardRarity',
         on_delete=models.CASCADE,
     )
-    set = models.CharField(max_length=100)
+    set = models.ForeignKey(
+        'yugiohcardset.YugiohCardSet',
+        on_delete=models.CASCADE,
+    )
 
     def __str__(self):
         return f'{self.set} - {self.rarity}'

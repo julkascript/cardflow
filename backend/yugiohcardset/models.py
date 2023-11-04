@@ -9,10 +9,5 @@ class YugiohCardSet(models.Model):
         unique=True,
     )
 
-    card_in_set = models.ForeignKey(
-        YugiohCardInSet,
-        on_delete=models.CASCADE,
-    )
-
     def __str__(self):
         return self.card_set_name
