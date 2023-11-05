@@ -1,8 +1,9 @@
 from django.db import models
 
+from card.models import Card
+
 
 class YugiohCard(models.Model):
-
     type = models.CharField(
         max_length=100,
     )
@@ -57,7 +58,7 @@ class YugiohCard(models.Model):
     )
 
     card = models.ForeignKey(
-        'card.Card',
+        Card,
         on_delete=models.CASCADE,
     )
 
@@ -81,7 +82,7 @@ class YugiohCardInSet(models.Model):
     )
 
     def __str__(self):
-        return f'{self.set} - {self.rarity}'
+        return f'{self.yugioh_card.card.card_name} - {self.set} - {self.rarity}'
 
 
 class YugiohCardSet(models.Model):
