@@ -1,7 +1,9 @@
 from django.db import models
 
+from card.models import Card
 
-class YugiohCard(models.Model):
+
+class YugiohCard(Card):
 
     type = models.CharField(
         max_length=100,
@@ -56,17 +58,11 @@ class YugiohCard(models.Model):
         null=True,
     )
 
-    card = models.ForeignKey(
-        'card.Card',
-        on_delete=models.CASCADE,
-    )
-
     def __str__(self):
-        return f'{self.card.card_name}'
+        return self.card_name
 
 
 class YugiohCardInSet(models.Model):
-
     rarity = models.ForeignKey(
         'YugiohCardRarity',
         on_delete=models.CASCADE,
@@ -82,7 +78,7 @@ class YugiohCardInSet(models.Model):
     )
 
     def __str__(self):
-        return f'{self.set} - {self.rarity}'
+        return f'{self.yugioh_card.card_name} - {self.set} - {self.rarity}'
 
 
 class YugiohCardSet(models.Model):
@@ -91,17 +87,16 @@ class YugiohCardSet(models.Model):
         unique=True,
     )
 
-    card_set_code = models.CharField(
+    set_code = models.CharField(
         max_length=100,
         unique=True,
     )
 
     def __str__(self):
-        return f'{self.card_set_name} - {self.card_set_code}'
+        return f'{self.card_set_name} - {self.set_code}'
 
 
 class YugiohCardRarity(models.Model):
-
     rarity = models.CharField(
         max_length=100,
         unique=True,
