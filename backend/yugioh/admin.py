@@ -32,6 +32,6 @@ class YugiohCardRarityAdmin(admin.ModelAdmin):
 
 @admin.register(YugiohCardSet)
 class YugiohCardSetAdmin(admin.ModelAdmin):
-    list_display = ('card_set_name', 'rarity_code')
-    list_filter = ('card_set_name', 'rarity_code')
-    search_fields = ('card_set_name', 'rarity_code')
+    list_display = ('card_set_name', 'card_set_code')
+    list_filter = ('card_set_name', 'card_set_code')
+    search_fields = ('card_set_name', 'card_set_code')

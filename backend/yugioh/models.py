@@ -97,7 +97,7 @@ class YugiohCardSet(models.Model):
     )
 
     def __str__(self):
-        return f'{self.card_set_name} - {self.rarity_code}'
+        return f'{self.card_set_name} - {self.card_set_code}'
 
 
 class YugiohCardRarity(models.Model):
