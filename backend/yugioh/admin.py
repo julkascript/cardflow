@@ -6,22 +6,19 @@ from card.models import Card
 
 @admin.register(YugiohCard)
 class YugiohCardAdmin(admin.ModelAdmin):
-    list_display = ['get_card_name', 'type', 'frame_type', 'description', 'attack', 'defense', 'level', 'race',
-                    'attribute', 'archetype']
-    list_filter = ['card__card_name', 'type', 'frame_type', 'description', 'attack', 'defense', 'level', 'race',
+    list_display = ['card_name', 'type', 'frame_type', 'attack', 'defense', 'level', 'race',
+                    'attribute', 'archetype', 'description']
+    list_filter = ['card_name', 'type', 'frame_type', 'attack', 'defense', 'level', 'race',
                    'attribute', 'archetype']
-    search_fields = ['card__card_name', 'type', 'frame_type', 'description', 'attack', 'defense', 'level', 'race',
+    search_fields = ['card_name', 'type', 'frame_type', 'attack', 'defense', 'level', 'race',
                      'attribute', 'archetype']
     list_per_page = 25
-
-    def get_card_name(self, obj):
-        return obj.card.card_name
 
 
 @admin.register(YugiohCardInSet)
 class YugiohCardInSetAdmin(admin.ModelAdmin):
-    list_display = ('set_name', 'rarity_name')
-    list_filter = ('set__card_set_name', 'rarity__rarity')
+    list_display = ('set_name', 'rarity_name', 'yugioh_card')
+    list_filter = ('set__card_set_name', 'rarity__rarity', 'yugioh_card__card_name')
     search_fields = ('set__card_set_name', 'rarity__rarity')
     list_per_page = 25
 

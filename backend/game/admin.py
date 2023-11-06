@@ -1,11 +1,15 @@
 from django.contrib import admin
 
-from game.models import Game
+from .models import Game
 
 
 @admin.register(Game)
 class GameAdmin(admin.ModelAdmin):
-    list_display = ('game_name',)
+    list_display = ('game_name', 'count_cards')
     list_filter = ('game_name',)
     search_fields = ('game_name',)
 
+    def count_cards(self, obj):
+        return obj.card_set.count()
+
+    count_cards.short_description = 'Cards'
