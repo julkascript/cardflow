@@ -1,4 +1,4 @@
-version: '3.4'
+version: '3'
 
 # NOTE: When connecting to the postgres docker container in the web interface,
 # try using 'postgres' as the host name instead of 'localhost' or 'host.docker.internal'
@@ -6,6 +6,19 @@ version: '3.4'
 # NOTE 2: Copy this file in the same directory as 'docker-compose.yml' file and use your own credentials
 
 services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+      - pgadmin4
+    networks:
+      - cardflow
   postgres:
     image: postgres
     restart: always
@@ -18,6 +31,8 @@ services:
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./postgresql:/var/lib/postgresql/data
+    networks:
+      - cardflow
   pgadmin4:
     image: dpage/pgadmin4
     user: "${UID}:${GID}"  # to avoid permission issues
@@ -30,3 +45,9 @@ services:
       - "5433:80"
     depends_on:
       - postgres
+    networks:
+      - cardflow
+
+networks:
+  cardflow:
+    driver: bridge
