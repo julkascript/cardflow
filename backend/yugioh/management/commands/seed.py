@@ -4,6 +4,7 @@ import requests
 from card.models import Card
 from django.core.management.base import BaseCommand
 from game.models import Game
+from psycopg2 import DataError
 from yugioh.models import YugiohCard, YugiohCardRarity, YugiohCardSet, YugiohCardInSet
 
 log_filename = "yugioh_seeding.log"
@@ -84,12 +85,16 @@ class Command(BaseCommand):
 
         for item in data['data']:
             #             self.stdout.write('Reading Card Details')
-            logging.info('Reading Card Details')
-
             card_name = item['name']
             type = item['type']
             frame_type = item['frameType']
             desc = item['desc']
+
+            logging.info(f'Reading ** {card_name} ** Details')
+
+            if len(desc) >= 1000:
+                desc = item['desc'][:990] + '...'
+
             try:
                 atk = item['atk']
             except KeyError:
@@ -147,67 +152,87 @@ class Command(BaseCommand):
                 #                 self.stdout.write('Card does not exist... Creating')
                 logging.info(f'Card {card_name} does not exist... Creating')
 
-                yugioh_card_object = YugiohCard.objects.create(
-                    game=game,
-                    card_name=card_name,
-                    type=type,
-                    frame_type=frame_type,
-                    description=desc,
-                    attack=atk,
-                    defense=defense,
-                    level=level,
-                    race=race,
-                    attribute=attribute,
-                    archetype=archetype,
-                    image=image,
-                )
+                try:
+                    yugioh_card_object = YugiohCard.objects.create(
+                        game=game,
+                        card_name=card_name,
+                        type=type,
+                        frame_type=frame_type,
+                        description=desc,
+                        attack=atk,
+                        defense=defense,
+                        level=level,
+                        race=race,
+                        attribute=attribute,
+                        archetype=archetype,
+                        image=image,
+                    )
+                except DataError:
+                    self.stdout.write(f'DataError for {card_name}')
+                    continue
+
             else:
                 #                 self.stdout.write(f'{card.card_name} card already exists... Checking the sets')
                 logging.info(f'{card.card_name} card already exists... Checking the sets')
                 yugioh_card_object = YugiohCard.objects.filter(card_name=card.card_name).first()
 
-            for entry in item['card_sets']:
-                processed_entries += 1
+            try:
+                for entry in item['card_sets']:
+                    processed_entries += 1
 
-                progress_message = f'Processed {processed_entries}'
-                self.stdout.write(progress_message, ending='\r')
-                self.stdout.flush()
+                    progress_message = f'Processed {processed_entries}'
+                    self.stdout.write(progress_message, ending='\r')
+                    self.stdout.flush()
 
-                card_set_name = entry["set_name"]
-                card_set_code = entry["set_code"]
-                rarity = entry["set_rarity"]
-                rarity_code = entry["set_rarity_code"]
+                    card_set_name = entry["set_name"]
+                    card_set_code = entry["set_code"]
+                    rarity = entry["set_rarity"]
+                    rarity_code = entry["set_rarity_code"]
 
-                rarity_object = YugiohCardRarity.objects.filter(rarity=rarity, rarity_code=rarity_code).first()
+                    # if rarity_code == '':
+                    #     code_generation = rarity.split()
+                    #     for word in code_generation:
+                    #         rarity_code += word[0]
+                    # print(rarity_code)
 
-                card_set_object = YugiohCardSet.objects.filter(card_set_name=card_set_name,
-                                                               set_code=card_set_code).first()
+                    try:
+                        rarity_object = YugiohCardRarity.objects.get(rarity=rarity, rarity_code=rarity_code)
+                    except YugiohCardRarity.DoesNotExist:
+                        rarity_object = None
 
-                if not rarity_object:
-                    #                     self.stdout.write('Rarity does not exist... Creating')
-                    logging.info('Rarity does not exist... Creating')
-                    rarity_object = YugiohCardRarity.objects.create(rarity=rarity, rarity_code=rarity_code)
+                    try:
+                        card_set_object = YugiohCardSet.objects.filter(card_set_name=card_set_name,
+                                                                       set_code=card_set_code).get()
+                    except YugiohCardSet.DoesNotExist:
+                        card_set_object = None
 
-                if not card_set_object:
-                    #                     self.stdout.write('Cardset does not exist... Creating')
-                    logging.info('Cardset does not exist... Creating')
-                    card_set_object = YugiohCardSet.objects.create(card_set_name=card_set_name,
-                                                                   set_code=card_set_code)
+                    if not rarity_object:
+                        #                     self.stdout.write('Rarity does not exist... Creating')
+                        logging.info('Rarity does not exist... Creating')
+                        rarity_object = YugiohCardRarity.objects.create(rarity=rarity, rarity_code=rarity_code)
 
-                existing_card = YugiohCardInSet.objects.filter(
-                    rarity=rarity_object,
-                    set=card_set_object,
-                    yugioh_card=yugioh_card_object
-                ).first()
+                    if not card_set_object:
+                        #                     self.stdout.write('Cardset does not exist... Creating')
+                        logging.info('Cardset does not exist... Creating')
+                        card_set_object = YugiohCardSet.objects.create(card_set_name=card_set_name,
+                                                                       set_code=card_set_code)
 
-                if not existing_card:
-                    YugiohCardInSet.objects.create(rarity=rarity_object, set=card_set_object,
-                                                   yugioh_card=yugioh_card_object)
-                else:
-                    # self.stdout.write(self.style.ERROR(f'Card {yugioh_card_object} '
-                    #                                    f'{card_set_object} {rarity_object}... Skipping'))
-                    logging.info(f'Card {yugioh_card_object} with '
-                                 f'{card_set_object} {rarity_object}... Skipping')
+                    existing_card = YugiohCardInSet.objects.filter(
+                        rarity=rarity_object,
+                        set=card_set_object,
+                        yugioh_card=yugioh_card_object
+                    ).first()
+
+                    if not existing_card:
+                        YugiohCardInSet.objects.create(rarity=rarity_object, set=card_set_object,
+                                                       yugioh_card=yugioh_card_object)
+                    else:
+                        # self.stdout.write(self.style.ERROR(f'Card {yugioh_card_object} '
+                        #                                    f'{card_set_object} {rarity_object}... Skipping'))
+                        logging.info(f'Card {yugioh_card_object} with '
+                                     f'{card_set_object} {rarity_object}... Skipping')
+            except KeyError:
+                logging.info(f'No sets for {card_name}')
 
         # self.stdout.write(self.style.SUCCESS(f'DONE!'))
         logging.info('DONE!')
