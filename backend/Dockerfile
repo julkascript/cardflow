@@ -1,27 +1,20 @@
-# Use the official Python image as a parent image
-FROM python:3
+FROM python:3.11.4-slim-buster
 
-# Set environment variables
+WORKDIR /usr/src/app
+
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Set the working directory inside the container
-WORKDIR /app
+RUN apt-get update && apt-get install -y netcat libpq-dev gcc
 
-# Copy the requirements file into the container at the working directory
-COPY requirements.txt /app/
-
-COPY .env .
-
-# Install Python dependencies
+RUN pip install --upgrade pip
+COPY ./requirements.txt .
 RUN pip install -r requirements.txt
 
-# Copy the rest of the application code into the container
-COPY . /app/
+COPY ./entrypoint.sh .
+RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh
+RUN chmod +x /usr/src/app/entrypoint.sh
 
-# Run Django migrations during container build
-RUN python manage.py makemigrations
-RUN python manage.py migrate
+COPY . .
 
-
-CMD ["python", "manage.py", "runserver"]
+ENTRYPOINT ["/usr/src/app/entrypoint.sh"]

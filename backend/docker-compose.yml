@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 
 # NOTE: When connecting to the postgres docker container in the web interface,
 # try using 'postgres' as the host name instead of 'localhost' or 'host.docker.internal'
@@ -12,6 +12,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8000:8000"
+    expose:
+      - "8000"
     env_file:
       - .env
     depends_on:
@@ -19,6 +21,7 @@ services:
       - pgadmin4
     networks:
       - cardflow
+
   postgres:
     image: postgres
     restart: always
@@ -27,15 +30,16 @@ services:
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
-      POSTGRES_DB:  ${POSTGRES_DB}
+      POSTGRES_DB: ${POSTGRES_DB}
       PGDATA: /var/lib/postgresql/data/pgdata
     volumes:
       - ./postgresql:/var/lib/postgresql/data
     networks:
       - cardflow
+
   pgadmin4:
     image: dpage/pgadmin4
-    user: "${UID}:${GID}"  # to avoid permission issues
+    user: "${UID}:${GID}" # to avoid permission issues
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
