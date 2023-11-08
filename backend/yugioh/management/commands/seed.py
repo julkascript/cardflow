@@ -1,6 +1,5 @@
 import logging
 
-
 import requests
 from card.models import Card
 from django.core.management.base import BaseCommand
@@ -61,22 +60,22 @@ class Command(BaseCommand):
             logging.error(f'Invalid command: {options["command"]}. Please check help options.')
             return
 
-        self.stdout.write('Calling the external API')
+        # self.stdout.write('Calling the external API')
         logging.info('Calling the external API')
 
         response = requests.get(api_url)
 
         if response.status_code == 200:
-            self.stdout.write('API response received successfully')
+            #             self.stdout.write('API response received successfully')
             logging.info('API response received successfully')
             data = response.json()
         else:
-            self.stdout.write(self.style.ERROR(f'API request failed with status code {response.status_code}'))
+            #         self.stdout.write(self.style.ERROR(f'API request failed with status code {response.status_code}'))
             logging.error(f'API request failed with status code {response.status_code}')
             return
 
         if not Game.objects.filter(game_name="Yu-Gi-Oh!").exists():
-            self.stdout.write('Game does not exist... Creating')
+            #             self.stdout.write('Game does not exist... Creating')
             logging.info('Game does not exist... Creating')
 
             Game.objects.create(game_name="Yu-Gi-Oh!")
@@ -84,7 +83,7 @@ class Command(BaseCommand):
         processed_entries = 0
 
         for item in data['data']:
-            self.stdout.write('Reading Card Details')
+            #             self.stdout.write('Reading Card Details')
             logging.info('Reading Card Details')
 
             card_name = item['name']
@@ -95,49 +94,49 @@ class Command(BaseCommand):
                 atk = item['atk']
             except KeyError:
                 atk = "NULL"
-                self.stdout.write('KeyError for atk')
+                #                 self.stdout.write('KeyError for atk')
                 logging.info('KeyError for atk')
 
             try:
                 defense = item['def']
             except KeyError:
                 defense = "NULL"
-                self.stdout.write('KeyError for defense')
+                #                 self.stdout.write('KeyError for defense')
                 logging.info('KeyError for defense')
 
             try:
                 level = item['level']
             except KeyError:
                 level = "NULL"
-                self.stdout.write('KeyError for level')
+                #                 self.stdout.write('KeyError for level')
                 logging.info('KeyError for level')
 
             try:
                 race = item['race']
             except KeyError:
                 race = "NULL"
-                self.stdout.write('KeyError for race')
+                #                 self.stdout.write('KeyError for race')
                 logging.info('KeyError for race')
 
             try:
                 attribute = item['attribute']
             except KeyError:
                 attribute = "NULL"
-                self.stdout.write('KeyError for attribute')
+                #                 self.stdout.write('KeyError for attribute')
                 logging.info('KeyError for attribute')
 
             try:
                 archetype = item['archetype']
             except KeyError:
                 archetype = "NULL"
-                self.stdout.write('KeyError for archetype')
+                #                 self.stdout.write('KeyError for archetype')
                 logging.info('KeyError for archetype')
 
             try:
                 image = item['card_images'][0]['image_url']
             except (KeyError, IndexError):
                 image = "NULL"
-                self.stdout.write('KeyError or IndexError for image')
+                #                 self.stdout.write('KeyError or IndexError for image')
                 logging.info('KeyError or IndexError for image')
 
             game = Game.objects.filter(game_name="Yu-Gi-Oh!").first()
@@ -145,8 +144,8 @@ class Command(BaseCommand):
             card = Card.objects.filter(card_name=card_name).first()
 
             if not card:
-                self.stdout.write('Card does not exist... Creating')
-                logging.info('Card does not exist... Creating')
+                #                 self.stdout.write('Card does not exist... Creating')
+                logging.info(f'Card {card_name} does not exist... Creating')
 
                 yugioh_card_object = YugiohCard.objects.create(
                     game=game,
@@ -163,7 +162,7 @@ class Command(BaseCommand):
                     image=image,
                 )
             else:
-                self.stdout.write(f'{card.card_name} card already exists... Checking the sets')
+                #                 self.stdout.write(f'{card.card_name} card already exists... Checking the sets')
                 logging.info(f'{card.card_name} card already exists... Checking the sets')
                 yugioh_card_object = YugiohCard.objects.filter(card_name=card.card_name).first()
 
@@ -185,12 +184,12 @@ class Command(BaseCommand):
                                                                set_code=card_set_code).first()
 
                 if not rarity_object:
-                    self.stdout.write('Rarity does not exist... Creating')
+                    #                     self.stdout.write('Rarity does not exist... Creating')
                     logging.info('Rarity does not exist... Creating')
                     rarity_object = YugiohCardRarity.objects.create(rarity=rarity, rarity_code=rarity_code)
 
                 if not card_set_object:
-                    self.stdout.write('Cardset does not exist... Creating')
+                    #                     self.stdout.write('Cardset does not exist... Creating')
                     logging.info('Cardset does not exist... Creating')
                     card_set_object = YugiohCardSet.objects.create(card_set_name=card_set_name,
                                                                    set_code=card_set_code)
@@ -205,11 +204,12 @@ class Command(BaseCommand):
                     YugiohCardInSet.objects.create(rarity=rarity_object, set=card_set_object,
                                                    yugioh_card=yugioh_card_object)
                 else:
-                    self.stdout.write(self.style.ERROR(f'Card {yugioh_card_object} '
-                                                       f'{card_set_object} {rarity_object}... Skipping'))
+                    # self.stdout.write(self.style.ERROR(f'Card {yugioh_card_object} '
+                    #                                    f'{card_set_object} {rarity_object}... Skipping'))
                     logging.info(f'Card {yugioh_card_object} with '
                                  f'{card_set_object} {rarity_object}... Skipping')
 
-        self.stdout.write(self.style.SUCCESS(f'DONE!'))
+        # self.stdout.write(self.style.SUCCESS(f'DONE!'))
         logging.info('DONE!')
         self.stdout.write("")
+        self.stdout.write("DONE! Check results in the file yugioh_seeding.log")
