@@ -217,6 +217,15 @@ class Command(BaseCommand):
             except KeyError:
                 logging.info(f'No sets for {card_name}')
 
-        logging.info('')
-        self.stdout.write("")
+        logging.info("--------------")
+        logging.info(f"Processed cards -> {processed_cards}")
+        logging.info(f"    - Imported cards -> {imported_card}")
+        logging.info(f"Processed sets -> {processed_sets}")
+        logging.info(f"    -Imported sets -> {imported_set}")
+
+        self.stdout.write("--------------")
+        self.stdout.write(f"Processed cards -> {processed_cards}")
+        self.stdout.write(f"    - Imported cards -> {imported_card}")
+        self.stdout.write(f"Processed sets -> {processed_sets}")
+        self.stdout.write(f"    -Imported sets -> {imported_set}")
         self.stdout.write("DONE! Check results in the file yugioh_seeding.log")
