@@ -1,7 +1,6 @@
 from django.contrib import admin
 
 from .models import YugiohCard, YugiohCardInSet, YugiohCardRarity, YugiohCardSet
-from card.models import Card
 
 
 @admin.register(YugiohCard)
@@ -17,9 +16,9 @@ class YugiohCardAdmin(admin.ModelAdmin):
 
 @admin.register(YugiohCardInSet)
 class YugiohCardInSetAdmin(admin.ModelAdmin):
-    list_display = ('set_name', 'rarity_name', 'yugioh_card')
-    list_filter = ('set__card_set_name', 'rarity__rarity', 'yugioh_card__card_name')
-    search_fields = ('set__card_set_name', 'rarity__rarity')
+    list_display = ('yugioh_card', 'set_name', 'rarity_name')
+    list_filter = ('yugioh_card__card_name', 'set__card_set_name', 'rarity__rarity')
+    search_fields = ('yugioh_card__card_name', 'set__card_set_name', 'rarity__rarity')
     list_per_page = 25
 
     def set_name(self, obj):

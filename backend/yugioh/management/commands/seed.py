@@ -180,10 +180,6 @@ class Command(BaseCommand):
                 for entry in item['card_sets']:
                     processed_entries += 1
 
-                    # progress_message = f'Processed {processed_entries}'
-                    # self.stdout.write(progress_message, ending='\r')
-                    # self.stdout.flush()
-
                     card_set_name = entry["set_name"]
                     card_set_code = entry["set_code"]
                     rarity = entry["set_rarity"]
@@ -201,11 +197,11 @@ class Command(BaseCommand):
                         card_set_name=card_set_name,
                         set_code=card_set_code)
 
-                    if not is_rarity_created:
+                    if is_rarity_created:
                         self.stdout.write('Rarity does not exist... Creating')
                         logging.info('Rarity does not exist... Creating')
 
-                    if not is_cardset_created:
+                    if is_cardset_created:
                         self.stdout.write('Cardset does not exist... Creating')
                         logging.info('Cardset does not exist... Creating')
 
