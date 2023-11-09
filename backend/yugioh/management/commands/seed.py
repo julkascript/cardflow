@@ -180,42 +180,34 @@ class Command(BaseCommand):
                 for entry in item['card_sets']:
                     processed_entries += 1
 
-                    progress_message = f'Processed {processed_entries}'
-                    self.stdout.write(progress_message, ending='\r')
-                    self.stdout.flush()
+                    # progress_message = f'Processed {processed_entries}'
+                    # self.stdout.write(progress_message, ending='\r')
+                    # self.stdout.flush()
 
                     card_set_name = entry["set_name"]
                     card_set_code = entry["set_code"]
                     rarity = entry["set_rarity"]
                     rarity_code = entry["set_rarity_code"]
 
-                    # if rarity_code == '':
-                    #     code_generation = rarity.split()
-                    #     for word in code_generation:
-                    #         rarity_code += word[0]
-                    # print(rarity_code)
+                    if rarity_code == '':
+                        code_generation = rarity.split()
+                        for word in code_generation:
+                            rarity_code += word[0]
 
-                    try:
-                        rarity_object = YugiohCardRarity.objects.get(rarity=rarity, rarity_code=rarity_code)
-                    except YugiohCardRarity.DoesNotExist:
-                        rarity_object = None
+                    rarity_object, is_rarity_created = YugiohCardRarity.objects.get_or_create(rarity=rarity,
+                                                                                              rarity_code=rarity_code)
 
-                    try:
-                        card_set_object = YugiohCardSet.objects.filter(card_set_name=card_set_name,
-                                                                       set_code=card_set_code).get()
-                    except YugiohCardSet.DoesNotExist:
-                        card_set_object = None
+                    card_set_object, is_cardset_created = YugiohCardSet.objects.get_or_create(
+                        card_set_name=card_set_name,
+                        set_code=card_set_code)
 
-                    if not rarity_object:
-                        #                     self.stdout.write('Rarity does not exist... Creating')
+                    if not is_rarity_created:
+                        self.stdout.write('Rarity does not exist... Creating')
                         logging.info('Rarity does not exist... Creating')
-                        rarity_object = YugiohCardRarity.objects.create(rarity=rarity, rarity_code=rarity_code)
 
-                    if not card_set_object:
-                        #                     self.stdout.write('Cardset does not exist... Creating')
+                    if not is_cardset_created:
+                        self.stdout.write('Cardset does not exist... Creating')
                         logging.info('Cardset does not exist... Creating')
-                        card_set_object = YugiohCardSet.objects.create(card_set_name=card_set_name,
-                                                                       set_code=card_set_code)
 
                     existing_card = YugiohCardInSet.objects.filter(
                         rarity=rarity_object,
@@ -227,8 +219,8 @@ class Command(BaseCommand):
                         YugiohCardInSet.objects.create(rarity=rarity_object, set=card_set_object,
                                                        yugioh_card=yugioh_card_object)
                     else:
-                        # self.stdout.write(self.style.ERROR(f'Card {yugioh_card_object} '
-                        #                                    f'{card_set_object} {rarity_object}... Skipping'))
+                        self.stdout.write(self.style.ERROR(f'Card {yugioh_card_object} '
+                                                           f'{card_set_object} {rarity_object}... Skipping'))
                         logging.info(f'Card {yugioh_card_object} with '
                                      f'{card_set_object} {rarity_object}... Skipping')
             except KeyError:
