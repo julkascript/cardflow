@@ -1,10 +1,12 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from '../App';
+import NotFound from '../components/pages/NotFound';
 
 const routes = createBrowserRouter([
   {
     path: '/',
     element: <App />,
+    errorElement: <NotFound />,
     children: [
       {
         path: '/',
