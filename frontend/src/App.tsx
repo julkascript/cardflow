@@ -3,6 +3,7 @@ import './App.css';
 import { CssBaseline, createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import Navigation from './components/navigation/Navigation';
+import { Outlet } from 'react-router-dom';
 
 function App() {
   const theme = useMemo(
@@ -35,7 +36,9 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Navigation />
-        <main></main>
+        <main>
+          <Outlet />
+        </main>
       </ThemeProvider>
     </>
   );
