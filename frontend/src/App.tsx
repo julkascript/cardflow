@@ -4,6 +4,7 @@ import { CssBaseline, createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import Navigation from './components/navigation/Navigation';
 import { Outlet } from 'react-router-dom';
+import { linkBehaviorConfiguration } from './linkBehaviorConfiguration';
 
 function App() {
   const theme = useMemo(
@@ -27,6 +28,7 @@ function App() {
             main: '#F73378',
           },
         },
+        ...linkBehaviorConfiguration,
       }),
     [],
   );

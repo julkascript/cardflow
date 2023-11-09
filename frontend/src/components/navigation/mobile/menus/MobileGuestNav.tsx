@@ -9,7 +9,7 @@ function MobileGuestNav(): JSX.Element {
   return (
     <>
       <ListItem disablePadding>
-        <ListItemButton href="#">
+        <ListItemButton href="/auth">
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>

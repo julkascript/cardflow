@@ -9,7 +9,7 @@ function DesktopGuestNav(): JSX.Element {
   return (
     <ul className="list-none">
       <li className="md:inline-block">
-        <Button href="#" color="primary" variant="contained">
+        <Button href="/auth" color="primary" variant="contained">
           Sign Up
         </Button>
       </li>
