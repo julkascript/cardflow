@@ -1,6 +1,6 @@
 import { Button, CssBaseline, ThemeProvider, Typography, createTheme } from '@mui/material';
-import Navigation from '../navigation/Navigation';
-import { linkBehaviorConfiguration } from '../../linkBehaviorConfiguration';
+import Navigation from '../components/navigation/Navigation';
+import { linkBehaviorConfiguration } from '../linkBehaviorConfiguration';
 import { useMemo } from 'react';
 
 function NotFound(): JSX.Element {
