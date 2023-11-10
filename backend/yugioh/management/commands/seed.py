@@ -3,6 +3,7 @@ import logging
 import requests
 from card.models import Card
 from django.core.management.base import BaseCommand
+from django.db import IntegrityError
 from game.models import Game
 from psycopg2 import DataError
 from yugioh.models import YugiohCard, YugiohCardRarity, YugiohCardSet, YugiohCardInSet
@@ -167,7 +168,8 @@ class Command(BaseCommand):
                     processed_sets += 1
 
                     card_set_name = entry["set_name"]
-                    card_set_code = entry["set_code"]
+                    card_set_original_code = entry["set_code"].split('-')
+                    card_set_code = card_set_original_code[0]
                     rarity = entry["set_rarity"]
                     rarity_code = entry["set_rarity_code"]
 
@@ -176,8 +178,19 @@ class Command(BaseCommand):
                         for word in code_generation:
                             rarity_code += word[0]
 
-                    rarity_object, is_rarity_created = YugiohCardRarity.objects.get_or_create(rarity=rarity,
-                                                                                              rarity_code=rarity_code)
+                    if rarity == 'c' and rarity_code == 'c':
+                        rarity = 'Common'
+                        rarity_code = '(C)'
+
+                    try:
+                        rarity_object, is_rarity_created = YugiohCardRarity.objects.get_or_create(rarity=rarity,
+                                                                                                  rarity_code=rarity_code)
+                    except IntegrityError:
+                        code_generation = rarity.split()
+                        for word in code_generation:
+                            rarity_code += word[1]
+                        rarity_object, is_rarity_created = YugiohCardRarity.objects.get_or_create(rarity=rarity,
+                                                                                                  rarity_code=rarity_code)
 
                     card_set_object, is_cardset_created = YugiohCardSet.objects.get_or_create(
                         card_set_name=card_set_name,
