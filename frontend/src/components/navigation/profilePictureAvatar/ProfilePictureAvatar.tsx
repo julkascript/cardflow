@@ -1,4 +1,4 @@
-import { Avatar } from '@mui/material';
+import { Avatar, Link } from '@mui/material';
 
 type ProfilePictureAvatar = {
   imageUrl?: string;
@@ -11,9 +11,9 @@ type ProfilePictureAvatar = {
  */
 function ProfilePictureAvatar(props: ProfilePictureAvatar): JSX.Element {
   return (
-    <a href="#">
+    <Link href="/profile">
       <Avatar src={props.imageUrl} />
-    </a>
+    </Link>
   );
 }
 

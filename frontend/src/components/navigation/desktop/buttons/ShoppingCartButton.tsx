@@ -7,7 +7,7 @@ function ShoppingCartButton(): JSX.Element {
 
   return (
     <Button
-      href="#"
+      href="/cart"
       variant="outlined"
       sx={{ color: secondaryTextColor, borderColor: secondaryTextColor }}
     >

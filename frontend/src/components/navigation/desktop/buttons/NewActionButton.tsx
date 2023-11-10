@@ -2,6 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Button, ListItemIcon, ListItemText, Menu, MenuItem, useTheme } from '@mui/material';
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 type MenuItem = {
   label: string;
@@ -50,14 +51,14 @@ function NewActionButton(): JSX.Element {
       </Button>
       <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
         {menuItems.map((mi) => (
-          <a key={mi.label} href={mi.href}>
+          <Link key={mi.label} to={mi.href}>
             <MenuItem>
               <ListItemIcon>
                 <AddIcon />
               </ListItemIcon>
               <ListItemText>{mi.label}</ListItemText>
             </MenuItem>
-          </a>
+          </Link>
         ))}
       </Menu>
     </>

@@ -6,6 +6,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { useState } from 'react';
 import MobileNavigation from './mobile/MobileNavigation';
 import ShoppingCartButton from './desktop/buttons/ShoppingCartButton';
+import { Link } from 'react-router-dom';
 
 /**
  * A component for the application's navigation menu
@@ -25,9 +26,9 @@ function Navigation(): JSX.Element {
 
   return (
     <nav className="flex justify-between p-4 items-center">
-      <a href="#">
+      <Link to="/">
         <Logo size={33} />
-      </a>
+      </Link>
       <div className="flex flex-row gap-4 items-center">
         <SearchField />
         <Divider flexItem orientation="vertical" />
