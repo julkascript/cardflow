@@ -1,6 +1,7 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import NotFound from '../pages/NotFound';
+import ProfilePage from '../pages/profile/ProfilePage';
 
 const routes = createBrowserRouter([
   {
@@ -16,6 +17,20 @@ const routes = createBrowserRouter([
       {
         path: '/protected',
         element: <h1>Protected route</h1>,
+      },
+      {
+        path: '/profile/:username',
+        element: <ProfilePage />,
+        children: [
+          {
+            path: 'settings',
+            element: <ProfilePage />,
+          },
+          {
+            path: 'blog',
+            element: <ProfilePage />,
+          },
+        ],
       },
     ],
   },
