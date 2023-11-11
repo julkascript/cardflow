@@ -86,9 +86,9 @@ class Command(BaseCommand):
             self.stdout.write(f'Game {self.GAME_NAME} exists... Skipping')
 
         processed_cards = 0
-        processed_sets = 0
+        processed_card_in_sets = 0
         imported_card = 0
-        imported_set = 0
+        imported_card_in_set = 0
 
         for item in data['data']:
 
@@ -165,7 +165,7 @@ class Command(BaseCommand):
             try:
                 for entry in item['card_sets']:
 
-                    processed_sets += 1
+                    processed_card_in_sets += 1
 
                     card_set_name = entry["set_name"]
                     card_set_original_code = entry["set_code"].split('-')
@@ -220,7 +220,7 @@ class Command(BaseCommand):
                         YugiohCardInSet.objects.create(rarity=rarity_object, set=card_set_object,
                                                        yugioh_card=yugioh_card_object)
 
-                        imported_set += 1
+                        imported_card_in_set += 1
 
                     else:
                         self.stdout.write(self.style.ERROR(f'Card {yugioh_card_object} '
@@ -233,12 +233,12 @@ class Command(BaseCommand):
         logging.info("--------------")
         logging.info(f"Processed cards -> {processed_cards}")
         logging.info(f"    - Imported cards -> {imported_card}")
-        logging.info(f"Processed sets -> {processed_sets}")
-        logging.info(f"    -Imported sets -> {imported_set}")
+        logging.info(f"Processed Card in sets -> {processed_card_in_sets}")
+        logging.info(f"    - Imported Card in sets -> {imported_card_in_set}")
 
         self.stdout.write("--------------")
         self.stdout.write(f"Processed cards -> {processed_cards}")
         self.stdout.write(f"    - Imported cards -> {imported_card}")
-        self.stdout.write(f"Processed sets -> {processed_sets}")
-        self.stdout.write(f"    -Imported sets -> {imported_set}")
+        self.stdout.write(f"Processed Card in sets -> {processed_card_in_sets}")
+        self.stdout.write(f"    - Imported Card in sets -> {imported_card_in_set}")
         self.stdout.write("DONE! Check results in the file yugioh_seeding.log")
