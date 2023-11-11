@@ -125,4 +125,13 @@ REST_FRAMEWORK = {
     'TITLE': 'Cardflow APP  ',
     'DESCRIPTION': 'This is the API for the Cardflow APP',
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+
+}
+
+SIMPLE_JWT = {
+    'AUTH_HEADER_TYPES': ('Bearer',),
 }
