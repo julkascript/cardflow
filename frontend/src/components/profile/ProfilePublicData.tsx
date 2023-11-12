@@ -17,7 +17,7 @@ function ProfilePublicData(): JSX.Element {
         </div>
       </div>
       <Divider sx={{ width: '90%', margin: '0 auto' }} />
-      <div className="mb-2 p-4 pl-12">
+      <div className="mb-2 pt-4 pb-4 lg:p-4 lg:pl-12">
         <h3 className="font-bold mb-4">Achievements</h3>
         <div className="flex flex-row gap-4 flex-wrap justify-center lg:justify-normal">
           <Avatar>
