@@ -33,7 +33,7 @@ function ProfileNavigation(): JSX.Element {
   return (
     <ul className="mb-4 lg:m-0">
       {links.map((l) => (
-        <li key={l.href}>
+        <li key={l.href} className="mb-2">
           <NavLink end to={l.href} className={isActive}>
             {l.text}
           </NavLink>
