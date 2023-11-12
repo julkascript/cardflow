@@ -6,28 +6,9 @@ from rest_framework import permissions
 
 from yugioh.models import YugiohCard
 from yugioh.serializers import YugiohSerializer
-
-from yugioh.models import YugiohCardInSet
-
 from yugioh.filters import YugiohFilter
 
 
-# @extend_schema_view(
-#     list=extend_schema(
-#         parameters=[
-#             OpenApiParameter(
-#                 name='name',
-#                 type=OpenApiTypes.STR,
-#                 description='Filter Yugioh cards by name',
-#             ),
-#             OpenApiParameter(
-#                 name='card_set',
-#                 type=OpenApiTypes.STR,
-#                 description='Filter Yugioh cards by set',
-#             )
-#         ]
-#     )
-# )
 @extend_schema(tags=['Yu-Gi-Oh Card'])
 class YugiohViewSet(viewsets.ModelViewSet):
     """API endpoint that shows card list, allows Yugioh cards to be viewed by ID.
