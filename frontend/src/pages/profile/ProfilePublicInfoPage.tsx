@@ -6,7 +6,7 @@ function ProfilePublicInfoPage(): JSX.Element {
   return (
     <section>
       <PageHeader heading="Account"></PageHeader>
-      <div className="grid grid-cols-[1fr_3fr] p-4 md:p-24">
+      <div className="block text-center p-8 lg:text-left lg:grid lg:grid-cols-[1fr_3fr] lg:p-24">
         <ProfileNavigation />
         <div className="flex flex-col gap-2">
           <ProfilePublicData />

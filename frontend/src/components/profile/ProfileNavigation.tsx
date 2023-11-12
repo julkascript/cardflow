@@ -27,7 +27,7 @@ function ProfileNavigation(): JSX.Element {
   ];
 
   return (
-    <ul>
+    <ul className="mb-4 lg:m-0">
       {links.map((l) => (
         <li key={l.href}>
           <NavLink end to={l.href} className={({ isActive }) => (isActive ? 'font-bold' : '')}>
