@@ -6,6 +6,10 @@ type ProfileLinks = {
 };
 
 function ProfileNavigation(): JSX.Element {
+  function isActive({ isActive }: { isActive: boolean }) {
+    return isActive ? 'font-bold hover:underline' : 'hover:underline';
+  }
+
   const links: ProfileLinks[] = [
     /*
       TO-DOs:
@@ -30,7 +34,7 @@ function ProfileNavigation(): JSX.Element {
     <ul className="mb-4 lg:m-0">
       {links.map((l) => (
         <li key={l.href}>
-          <NavLink end to={l.href} className={({ isActive }) => (isActive ? 'font-bold' : '')}>
+          <NavLink end to={l.href} className={isActive}>
             {l.text}
           </NavLink>
         </li>
