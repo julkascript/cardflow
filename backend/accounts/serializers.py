@@ -1,25 +1,22 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+User = get_user_model()
+
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = get_user_model()
-        fields = ['id', 'username', 'password', 'email']
+        model = User
+        fields = ('id', 'username', 'email', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
 
-class TokenObtainPairSerializer(serializers.Serializer):
-    username_field = get_user_model().USERNAME_FIELD
+class RegistrationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('username', 'password', 'email')
+        extra_kwargs = {'password': {'write_only': True}}
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.fields[self.username_field] = serializers.CharField()
-        self.fields['password'] = serializers.CharField(write_only=True)
-        self.fields['email'] = serializers.EmailField(required=False)
-
-
-class TokenObtainPairResponseSerializer(serializers.Serializer):
-    access = serializers.CharField()
-    refresh = serializers.CharField()
+    def create(self, validated_data):
+        user = User.objects.create_user(**validated_data)
+        return user

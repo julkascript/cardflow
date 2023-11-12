@@ -6,6 +6,9 @@ venv/
 # ENV files and folders
 backend/.env
 
+#KEYS
+keys/
+
 # DB files and folders
 db*
 postgresql/
