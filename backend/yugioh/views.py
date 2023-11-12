@@ -11,7 +11,8 @@ from yugioh.filters import YugiohFilter
 
 @extend_schema(tags=['Yu-Gi-Oh Card'])
 class YugiohViewSet(viewsets.ModelViewSet):
-    """API endpoint that shows card list, allows Yugioh cards to be viewed by ID.
+    """
+    Viewset for API endpoint that shows card list, allows Yugioh cards to be viewed by ID.
     Also allows filtering by name, set or both.
     """
 
@@ -35,4 +36,3 @@ class YugiohViewSet(viewsets.ModelViewSet):
     #         return self.queryset.filter(set__icontains=card_set)
     #
     #     return self.queryset
-
