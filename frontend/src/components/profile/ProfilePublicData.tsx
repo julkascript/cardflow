@@ -1,9 +1,10 @@
 import { Avatar, Divider, Typography } from '@mui/material';
 import TrophyIcon from '@mui/icons-material/EmojiEvents';
+import PageSection from '../pageSection/pageSection';
 
 function ProfilePublicData(): JSX.Element {
   return (
-    <section className="border-stone-300 border-2 rounded-lg text-center lg:text-left">
+    <PageSection className="text-center lg:text-left">
       <div className="pt-4 pb-4 lg:p-4 lg:pl-12 flex flex-col-reverse lg:justify-between lg:flex-row">
         <div>
           <h2 className="font-bold text-2xl mb-2">@TheAverageTCGEnjoyer</h2>
@@ -37,7 +38,7 @@ function ProfilePublicData(): JSX.Element {
           Member since 02/03/2024
         </Typography>
       </div>
-    </section>
+    </PageSection>
   );
 }
 
