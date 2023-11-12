@@ -8,6 +8,7 @@ function ProfilePage(): JSX.Element {
       </header>
       <div>
         <ProfileNavigation />
+        <h1>test</h1>
       </div>
     </section>
   );
