@@ -30,6 +30,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters',
 
     'accounts',
     'game',
@@ -125,4 +126,7 @@ REST_FRAMEWORK = {
     'TITLE': 'Cardflow APP  ',
     'DESCRIPTION': 'This is the API for the Cardflow APP',
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+    # 'DEFAULT_FILTER_BACKENDS': (
+    #     'django_filters.rest_framework.DjangoFilterBackend',
+    # ),
 }
