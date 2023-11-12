@@ -14,7 +14,7 @@ function PageSection(props: PageSectionProps): JSX.Element {
   const className = props.className || '';
 
   return (
-    <section className={`border-stone-300 border-2 rounded-lg ${className}`}>
+    <section className={`border-stone-300 border-2 rounded-lg bg-white ${className}`}>
       {props.children}
     </section>
   );

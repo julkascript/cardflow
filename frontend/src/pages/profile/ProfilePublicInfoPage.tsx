@@ -4,7 +4,7 @@ import ProfilePage from '../../components/profile/profilePage/ProfilePage';
 
 function ProfilePublicInfoPage(): JSX.Element {
   return (
-    <ProfilePage>
+    <ProfilePage className="bg-[#F5F5F5]">
       <div className="flex flex-col gap-2">
         <ProfilePublicData />
         <ProfileMarketActivity />
