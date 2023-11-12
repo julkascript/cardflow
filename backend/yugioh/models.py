@@ -84,12 +84,12 @@ class YugiohCardInSet(models.Model):
 class YugiohCardSet(models.Model):
     card_set_name = models.CharField(
         max_length=100,
-        unique=True,
+        unique=False,
     )
 
     set_code = models.CharField(
         max_length=100,
-        unique=True,
+        unique=False,
     )
 
     def __str__(self):

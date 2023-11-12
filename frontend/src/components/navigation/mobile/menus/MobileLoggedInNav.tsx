@@ -27,11 +27,11 @@ function MobileLoggedInNav(): JSX.Element {
   const [expanded, setExpanded] = useState(false);
   const actions: NewActionLink[] = [
     {
-      url: '#',
+      url: '/listing/create',
       label: 'New listing',
     },
     {
-      url: '#',
+      url: '/trade/create',
       label: 'New trade',
     },
   ];
@@ -39,7 +39,7 @@ function MobileLoggedInNav(): JSX.Element {
   return (
     <>
       <ListItem disablePadding>
-        <ListItemButton href="#" onClick={() => setExpanded((e) => !e)}>
+        <ListItemButton onClick={() => setExpanded((e) => !e)}>
           <ListItemIcon>
             <AddIcon />
           </ListItemIcon>
@@ -68,7 +68,7 @@ function MobileLoggedInNav(): JSX.Element {
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>
-        <ListItemButton href="#">
+        <ListItemButton href="/profile">
           <ListItemAvatar>
             <Avatar sx={{ width: 24, height: 24 }} src="#" />
           </ListItemAvatar>
