@@ -4,9 +4,9 @@ from drf_spectacular.utils import extend_schema, extend_schema_field, extend_sch
 from rest_framework import viewsets
 from rest_framework import permissions
 
-from yugioh.models import YugiohCard
-from yugioh.serializers import YugiohSerializer
-from yugioh.filters import YugiohFilter
+from .models import YugiohCard
+from .serializers import YugiohSerializer
+from .filters import YugiohFilter
 
 
 @extend_schema(tags=['Yu-Gi-Oh Card'])
