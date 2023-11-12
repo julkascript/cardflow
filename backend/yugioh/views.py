@@ -41,17 +41,17 @@ class YugiohViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = YugiohFilter
 
-    def get_queryset(self):
-        """Filter Yugioh cards by name, set or both"""
-
-        # name = self.request.query_params.get('name')
-        # card_set = self.request.query_params.get('yugiohcardinset')
-        #
-        # if name is not None:
-        #     return self.queryset.filter(card_name__icontains=name)
-        #
-        # if card_set is not None:
-        #     return self.queryset.filter(set__icontains=card_set)
-
-        return self.queryset
+    # def get_queryset(self):
+    #     """Filter Yugioh cards by name, set or both"""
+    #
+    #     name = self.request.query_params.get('name')
+    #     card_set = self.request.query_params.get('yugiohcardinset')
+    #
+    #     if name is not None:
+    #         return self.queryset.filter(card_name__icontains=name)
+    #
+    #     if card_set is not None:
+    #         return self.queryset.filter(set__icontains=card_set)
+    #
+    #     return self.queryset
 
