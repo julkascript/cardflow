@@ -6,7 +6,7 @@ function ProfileMarketActivity(): JSX.Element {
       <table className="border-stone-300 bg-white border-spacing-0 border-separate rounded-lg border-2 w-full">
         <thead>
           <tr>
-            <th colSpan={2} className="text-center lg:text-left p-4">
+            <th colSpan={2} className="text-center lg:text-left p-4 lg:pl-12 lg:pr-12">
               Market activity
             </th>
           </tr>

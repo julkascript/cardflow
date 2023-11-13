@@ -5,7 +5,7 @@ import PageSection from '../pageSection/PageSection';
 function ProfilePublicData(): JSX.Element {
   return (
     <PageSection className="text-center lg:text-left mb-8">
-      <div className="pt-4 pb-4 lg:p-4 lg:pl-12 flex flex-col-reverse lg:justify-between lg:flex-row">
+      <div className="pt-4 pb-4 lg:pl-12 lg:pr-12 flex flex-col-reverse lg:justify-between lg:flex-row">
         <div>
           <h2 className="font-bold text-2xl mb-2">@TheAverageTCGEnjoyer</h2>
           <div>Ivan Ivanov</div>
