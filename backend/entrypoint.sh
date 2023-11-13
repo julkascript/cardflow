@@ -20,7 +20,7 @@ python manage.py migrate
 
 
 # Check if the superuser already exists using the value from .env
-if [ -z "$(python manage.py shell -c 'from django.contrib.auth.models import User; print(User.objects.filter(username=os.environ.get("DJANGO_SUPERUSER_USERNAME")).exists())')" ]; then
+if [ -z "$(python manage.py shell -c 'from django.contrib.auth.models import User; print(User.objects.filter(username=os.getenv("DJANGO_SUPERUSER_USERNAME")).exists())')" ]; then
   echo "Creating superuser..."
   python manage.py createsuperuser --no-input
 else
