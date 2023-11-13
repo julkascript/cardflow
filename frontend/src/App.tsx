@@ -5,7 +5,6 @@ import { ThemeProvider } from '@emotion/react';
 import Navigation from './components/navigation/Navigation';
 import { Outlet } from 'react-router-dom';
 import { linkBehaviorConfiguration } from './linkBehaviorConfiguration';
-import Home from './components/home/Home';
 
 function App() {
   const theme = useMemo(
@@ -42,7 +41,6 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Navigation />
-        <Home />
         <main></main>
         <main>
           <Outlet />
