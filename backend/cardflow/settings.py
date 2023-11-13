@@ -21,6 +21,9 @@ except:
 
 ALLOWED_HOSTS = ['*']
 
+CORS_ORIGIN_ALLOW_ALL = True
+CORS_ALLOW_CREDENTIALS = False
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -134,6 +137,9 @@ REST_FRAMEWORK = {
 
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 
 }
 
