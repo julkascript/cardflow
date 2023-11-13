@@ -3,7 +3,7 @@ import './App.css';
 import { CssBaseline, createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import Navigation from './components/navigation/Navigation';
-import HomePage from './pages/HomePage';
+import Home from './components/home/Home';
 
 function App() {
   const theme = useMemo(
@@ -26,6 +26,9 @@ function App() {
           warning: {
             main: '#F73378',
           },
+          grey: {
+            '900': '#6F6F6F',
+          },
         },
       }),
     [],
@@ -36,7 +39,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Navigation />
-        <HomePage/>
+        <Home />
         <main></main>
       </ThemeProvider>
     </>
