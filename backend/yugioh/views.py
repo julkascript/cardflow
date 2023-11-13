@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
@@ -15,9 +16,7 @@ class YugiohViewSet(viewsets.ModelViewSet):
     Also allows filtering by name, set or both.
     """
 
-    queryset = YugiohCard.objects.all().order_by('id')
+    queryset = YugiohCard.objects.all().order_by('card_name')
     serializer_class = YugiohSerializer
     permission_classes = [permissions.AllowAny]
     http_method_names = ['get']
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = YugiohFilter

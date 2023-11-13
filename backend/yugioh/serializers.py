@@ -1,7 +1,12 @@
-from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from .models import YugiohCard, YugiohCardInSet, YugiohCardSet, YugiohCardRarity
+
+
+class YugiohCardRaritySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = YugiohCardRarity
+        fields = ['rarity', 'rarity_code']
 
 
 class YugiohCardSetSerializer(serializers.ModelSerializer):
@@ -40,22 +45,21 @@ class YugiohSerializer(serializers.ModelSerializer):
             'archetype',
             'image',
         ]
-        search_fields = ['card_name', 'set']
         read_only_fields = ['id', 'set', 'rarity']
         ordering_fields = ['id']
 
     @staticmethod
     @extend_schema_field(YugiohCardSetSerializer)
     def get_rarity(obj):
-        rarities = YugiohCardInSet.objects.filter(yugioh_card=obj)
-        all_rarities = YugiohCardInSetSerializer(rarities, many=True).data
+        cards = YugiohCardInSet.objects.filter(yugioh_card=obj)
+        all_rarities = YugiohCardInSetSerializer(cards, many=True).data
         if len(all_rarities) == 0:
             return None
 
-        all_rarities = [rarity['rarity'] for rarity in all_rarities]
+        rarity_ids = [rarity['rarity'] for rarity in all_rarities]
         rarity_names = [
-            f'{YugiohCardRarity.objects.get(id=rarity_id).rarity}({YugiohCardRarity.objects.get(id=rarity_id).rarity_code})'
-            for rarity_id in all_rarities]
+            f'{YugiohCardRarity.objects.get(id=rarity_id).rarity}{YugiohCardRarity.objects.get(id=rarity_id).rarity_code}'
+            for rarity_id in rarity_ids]
         return rarity_names
 
     @staticmethod
@@ -66,8 +70,8 @@ class YugiohSerializer(serializers.ModelSerializer):
         if len(all_sets) == 0:
             return None
 
-        all_sets_names = [set_name['set'] for set_name in all_sets]
+        all_sets_ids = [set_name['set'] for set_name in all_sets]
         set_names = [
             f'{YugiohCardSet.objects.get(id=set_id).card_set_name}({YugiohCardSet.objects.get(id=set_id).set_code})' for
-            set_id in all_sets_names]
+            set_id in all_sets_ids]
         return set_names
