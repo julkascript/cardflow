@@ -27,6 +27,9 @@ function App() {
           warning: {
             main: '#F73378',
           },
+          grey: {
+            '900': '#6F6F6F',
+          },
         },
         ...linkBehaviorConfiguration,
       }),
@@ -38,6 +41,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Navigation />
+        <main></main>
         <main>
           <Outlet />
         </main>
