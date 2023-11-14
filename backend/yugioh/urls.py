@@ -4,7 +4,8 @@ from . import views
 
 router = DefaultRouter()
 
-router.register('yugioh', views.YugiohViewSet)
+router.register('cards', views.YugiohViewSet)
+router.register('cards_in_set', views.YugiohCardInSetViewSet)
 
 app_name = 'yugioh'
 

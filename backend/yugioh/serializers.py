@@ -16,13 +16,6 @@ class YugiohCardSetSerializer(serializers.ModelSerializer):
         read_only_fields = ['card_set_name', 'set_code']
 
 
-class YugiohCardInSetSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = YugiohCardInSet
-        fields = ['rarity', 'set', 'yugioh_card']
-        read_only_fields = ['rarity', 'set', 'yugioh_card']
-
-
 class YugiohSerializer(serializers.ModelSerializer):
     rarity = serializers.SerializerMethodField()
     set = serializers.SerializerMethodField()
@@ -75,3 +68,34 @@ class YugiohSerializer(serializers.ModelSerializer):
             f'{YugiohCardSet.objects.get(id=set_id).card_set_name}({YugiohCardSet.objects.get(id=set_id).set_code})' for
             set_id in all_sets_ids]
         return set_names
+
+
+class YugiohCardInSetCardSerializer(YugiohSerializer):
+
+    class Meta(YugiohSerializer.Meta):
+        fields = [
+            'id',
+            'card_name',
+            'type',
+            'frame_type',
+            'description',
+            'attack',
+            'defense',
+            'level',
+            'race',
+            'attribute',
+            'archetype',
+            'image',
+        ]
+
+
+class YugiohCardInSetSerializer(serializers.ModelSerializer):
+    rarity = YugiohCardRaritySerializer()
+    set = YugiohCardSetSerializer()
+    yugioh_card = YugiohCardInSetCardSerializer()
+
+    class Meta:
+        model = YugiohCardInSet
+        fields = ['id', 'yugioh_card', 'set', 'rarity']
+        read_only_fields = ['id', 'rarity', 'set', 'yugioh_card']
+        ordering_fields = ['id']
