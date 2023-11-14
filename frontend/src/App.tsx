@@ -25,7 +25,7 @@ function App() {
             secondary: '#666666',
           },
           warning: {
-            main: '#F73378',
+            main: '#D9242C',
           },
         },
         ...linkBehaviorConfiguration,
