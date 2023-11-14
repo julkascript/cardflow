@@ -137,9 +137,9 @@ REST_FRAMEWORK = {
 
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
-    'DEFAULT_PERMISSION_CLASSES': [
-        'rest_framework.permissions.IsAuthenticated',
-    ],
+    # 'DEFAULT_PERMISSION_CLASSES': [
+    #     'rest_framework.permissions.IsAuthenticated',
+    # ],
 
 }
 
@@ -149,7 +149,7 @@ with open('keys/jwtRS256.key.pub', 'r') as f:
     JWT_PUBLIC_KEY = f.read()
 
 SIMPLE_JWT = {
-    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=5),
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=5),
     "ALGORITHM": "RS256",
     "SIGNING_KEY": JWT_PRIVATE_KEY,

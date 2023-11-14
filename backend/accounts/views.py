@@ -1,6 +1,5 @@
 from django.contrib.auth import get_user_model
 from rest_framework import viewsets
-from rest_framework.authentication import BasicAuthentication
 from rest_framework.response import Response
 from rest_framework_simplejwt.tokens import RefreshToken
 
@@ -11,7 +10,6 @@ User = get_user_model()
 
 class RegistrationView(viewsets.ModelViewSet):
     serializer_class = RegistrationSerializer
-    authentication_classes = [BasicAuthentication]
     http_method_names = ['post']
 
     def create(self, request, *args, **kwargs):

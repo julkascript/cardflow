@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
+from django.urls import include
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
@@ -10,13 +11,21 @@ User = get_user_model()
 
 class JWTAuthorizationMiddleware:
 
+    EXCLUDED_PATHS = [
+        '/api/accounts/login/',
+        '/api/accounts/register/',
+        '/api/accounts/refresh/',
+        '/admin/',
+        '/'
+    ]
+
     def __init__(self, get_response):
         self.get_response = get_response
-        self.exclude_paths = ('/accounts/api/login/', '/accounts/api/register','/accounts/api/login')
 
     def __call__(self, request):
 
-        if request.path in self.exclude_paths:
+        if request.path in self.EXCLUDED_PATHS:
+
             return self.get_response(request)
 
         if 'Authorization' not in request.headers:
@@ -30,30 +39,23 @@ class JWTAuthorizationMiddleware:
 
         try:
             token_response = JWT_authenticator.authenticate(request)
-            print('Authentication successful')
-            # user = self.has_access_rights(token_response, request)
-            # if not user:
-            #     return JsonResponse({'error': 'Unauthorized access'}, status=401)
+            user = self.has_access_rights(token_response, request)
+            if not user:
+                return JsonResponse({'error': 'Unauthorized access'}, status=401)
         except InvalidToken:
-            print('Invalid token or expired')
             return JsonResponse({'error': 'Invalid token or expired'}, status=401)
         except TokenError:
-            print('Token error')
             return JsonResponse({'error': 'Invalid token'}, status=401)
 
         return self.get_response(request)
 
-    # def has_access_rights(self, token_response, request):
-    #
-    #     try:
-    #         user, _ = token_response
-    #         if not user.is_anonymous:
-    #             print(f'{user}')
-    #         else:
-    #             return None
-    #
-    #     except User.DoesNotExist:
-    #         print('User does not exist')
-    #         return None
-    #
-    #     return user
+    def has_access_rights(self, token_response, request):
+
+        try:
+            user, _ = token_response
+
+        except User.DoesNotExist:
+            print('User does not exist')
+            return None
+
+        return bool(user.is_active)

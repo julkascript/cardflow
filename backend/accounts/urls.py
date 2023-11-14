@@ -9,7 +9,7 @@ router = DefaultRouter()
 router.register('register', RegistrationView, basename='register')
 
 urlpatterns = [
-    path('api/', include(router.urls)),
-    path('api/login/', TokenObtainPairView.as_view(), name='login'),
-    path('api/refresh/', TokenRefreshView.as_view(), name='refresh'),
+    path('', include(router.urls)),
+    path('login/', TokenObtainPairView.as_view(), name='login'),
+    path('refresh/', TokenRefreshView.as_view(), name='refresh'),
 ]
