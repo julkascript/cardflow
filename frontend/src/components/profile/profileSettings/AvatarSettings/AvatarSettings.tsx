@@ -51,7 +51,7 @@ function AvatarSettings(): JSX.Element {
           <h2 className="font-bold mb-4">Avatar</h2>
           <p>Select your avatar by clicking on the avatar circle.</p>
           <Typography component="p" color={danger} className={imageError ? 'visible' : 'invisible'}>
-            {imageError}
+            {imageError || 'Your file is valid!'}
           </Typography>
         </div>
         <div className="relative flex flex-row mb-2 lg:mb-0 gap-4 flex-wrap justify-center lg:justify-normal">
