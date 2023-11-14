@@ -2,6 +2,7 @@ import { Avatar, Button, Typography, styled, useTheme } from '@mui/material';
 import PageSection from '../../../pageSection/PageSection';
 import { useState } from 'react';
 import { handleAvatarUpload } from './handleAvatarUpload';
+import ProfileSectionFooter from '../../profileSectionFooter/ProfileSectionFooter';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -70,25 +71,17 @@ function AvatarSettings(): JSX.Element {
           </label>
         </div>
       </div>
-      <div className="flex flex-col lg:flex-row justify-center lg:justify-between">
-        <Typography
-          color="text.secondary"
-          component="div"
-          className="bg-[#F5F5F5] rounded-lg rounded-t-none w-full"
+      <ProfileSectionFooter>
+        <p>An avatar is optional but strongly recommended.</p>
+        <Button
+          disabled={!(imageError === '' && hasSelected)}
+          color="primary"
+          variant="contained"
+          className="inline-block"
         >
-          <div className="flex p-4 pl-12 pr-12 flex-col lg:flex-row gap-2 justify-center lg:justify-between items-center">
-            <p>An avatar is optional but strongly recommended.</p>
-            <Button
-              disabled={!(imageError === '' && hasSelected)}
-              color="primary"
-              variant="contained"
-              className="inline-block"
-            >
-              Save
-            </Button>
-          </div>
-        </Typography>
-      </div>
+          Save
+        </Button>
+      </ProfileSectionFooter>
     </PageSection>
   );
 }
