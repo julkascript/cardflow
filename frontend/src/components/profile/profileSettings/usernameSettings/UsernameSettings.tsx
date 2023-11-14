@@ -23,8 +23,8 @@ function UsernameSettings(): JSX.Element {
     <PageSection>
       <div className="pt-4 pb-4 lg:pl-12 lg:pr-12">
         <div>
-          <h2 className="font-bold mb-4">Username</h2>
-          <p>This is how people will recognize you.</p>
+          <h2 className="font-bold mb-4 text-lg">Username</h2>
+          <p className="mb-4">This is how people will recognize you.</p>
           <div>
             <TextField
               className="user-url-field lg:w-[165px]"

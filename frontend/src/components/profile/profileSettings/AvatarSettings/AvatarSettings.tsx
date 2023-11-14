@@ -48,7 +48,7 @@ function AvatarSettings(): JSX.Element {
     <PageSection>
       <div className="pt-4 pb-4 lg:pl-12 lg:pr-12 flex flex-col-reverse lg:justify-between lg:flex-row">
         <div>
-          <h2 className="font-bold mb-4">Avatar</h2>
+          <h2 className="font-bold mb-4 text-lg">Avatar</h2>
           <p>Select your avatar by clicking on the avatar circle.</p>
           <Typography component="p" color={danger} className={imageError ? 'visible' : 'invisible'}>
             {imageError || 'Your file is valid!'}
