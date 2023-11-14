@@ -8,7 +8,7 @@ function DeleteAccount(): JSX.Element {
       <div className="pt-4 pb-4 lg:pl-12 lg:pr-12">
         <h2 className="font-bold mb-4">Delete your account</h2>
         <p>
-          Premanently remove your Cardflow account. Please proceed with caution, this action is
+          Permanently remove your Cardflow account. Please proceed with caution, this action is
           irreversible.
         </p>
       </div>
