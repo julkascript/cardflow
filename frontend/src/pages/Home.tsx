@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import Logo from '../logo/Logo';
+import Logo from '../components/logo/Logo';
 import { useTheme } from '@mui/material';
 
 function Home(): JSX.Element {
