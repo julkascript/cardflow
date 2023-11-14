@@ -1,16 +1,7 @@
 import { Avatar, Button, Typography, styled, useTheme } from '@mui/material';
-import PageSection from '../../pageSection/PageSection';
+import PageSection from '../../../pageSection/PageSection';
 import { useState } from 'react';
-
-function toMegabytes(bytes: number) {
-  return Number((bytes / 1024 / 1024).toFixed(4));
-}
-
-const errorMessages = {
-  fileTooLarge: 'Your image is too large (the limit is 2MB)!',
-  uploadFailed: 'Image upload failed, please try again!',
-  invalidFileExtension: 'Please upload an image file!',
-};
+import { handleAvatarUpload } from './handleAvatarUpload';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -40,36 +31,16 @@ function AvatarSettings(): JSX.Element {
 
     const file = files[0];
 
-    if (!file.type.startsWith('image/')) {
-      setImageError(errorMessages.invalidFileExtension);
-      setImageUpload('');
-      return;
-    }
-
-    if (toMegabytes(file.size) > 2) {
-      setImageError(errorMessages.fileTooLarge);
-      setImageUpload('');
-      return;
-    }
-
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-
-    fileReader.onload = () => {
-      const result = fileReader.result;
-      if (result) {
-        setImageUpload(result.toString());
+    handleAvatarUpload(file)
+      .then((result) => {
         setImageError('');
-        setSelected(true);
-      } else {
-        setImageError(errorMessages.uploadFailed);
-      }
-    };
-
-    fileReader.onerror = () => {
-      setImageError(errorMessages.uploadFailed);
-      setImageUpload('');
-    };
+        setImageUpload(result);
+      })
+      .catch((err) => {
+        setImageError(err);
+        setImageUpload('');
+      })
+      .finally(() => setSelected(true));
   }
 
   return (
