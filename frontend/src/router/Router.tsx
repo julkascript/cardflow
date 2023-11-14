@@ -3,6 +3,7 @@ import App from '../App';
 import NotFound from '../pages/NotFound';
 import ProfilePage from '../pages/profile/ProfilePagePlaceholder';
 import ProfilePublicInfoPage from '../pages/profile/ProfilePublicInfoPage';
+import ProfileSettingsPage from '../pages/profile/ProfileSettingsPage';
 
 const routes = createBrowserRouter([
   {
@@ -28,7 +29,7 @@ const routes = createBrowserRouter([
           },
           {
             path: 'settings',
-            element: <ProfilePage />,
+            element: <ProfileSettingsPage />,
           },
           {
             path: 'blog',
