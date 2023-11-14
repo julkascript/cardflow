@@ -13,7 +13,7 @@ function DeleteAccount(): JSX.Element {
         </p>
       </div>
       <ProfileSectionFooter backgroundColor="#fff0f0">
-        <p>You can always change the address per purchase in the checkout section.</p>
+        <p>We will definitely miss you...</p>
         <Button color="warning" variant="contained" className="inline-block">
           Delete Account
         </Button>
