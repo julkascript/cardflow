@@ -27,7 +27,7 @@ function UsernameSettings(): JSX.Element {
           <p className="mb-4">This is how people will recognize you.</p>
           <div>
             <TextField
-              className="user-url-field lg:w-[165px]"
+              className="user-url-field sm:w-[165px]"
               size="small"
               sx={{ backgroundColor: '#F5F5F5' }}
               disabled
