@@ -16,7 +16,7 @@ function ShipmentAddressSettings(): JSX.Element {
     <PageSection>
       <div className="pt-4 pb-4 lg:pl-12 lg:pr-12">
         <h2 className="font-bold mb-4 text-lg">Default shipment address</h2>
-        <p className="mb-4 text-lg">Enter the default shipment address that will get pre-filled.</p>
+        <p className="mb-4">Enter the default shipment address that will get pre-filled.</p>
         <TextField value={address} onChange={handleAddressChange} size="small" />
       </div>
       <ProfileSectionFooter>
