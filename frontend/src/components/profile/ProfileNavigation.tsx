@@ -17,15 +17,15 @@ function ProfileNavigation(): JSX.Element {
         - hide account details link from other users
     */
     {
-      href: '/profile/TheAverageTCGEnjoyer/settings',
+      href: '/user/TheAverageTCGEnjoyer/settings',
       text: 'Account details',
     },
     {
-      href: '/profile/TheAverageTCGEnjoyer',
+      href: '/user/TheAverageTCGEnjoyer',
       text: 'Public info',
     },
     {
-      href: '/profile/TheAverageTCGEnjoyer/blog',
+      href: '/user/TheAverageTCGEnjoyer/blog',
       text: 'Blog',
     },
   ];

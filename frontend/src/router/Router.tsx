@@ -21,7 +21,7 @@ const routes = createBrowserRouter([
         element: <h1>Protected route</h1>,
       },
       {
-        path: '/profile/:username',
+        path: '/user/:username',
         children: [
           {
             path: '',
