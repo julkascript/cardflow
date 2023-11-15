@@ -1,6 +1,6 @@
 import ProfileNavigation from '../../components/profile/profileNavigation/ProfileNavigation';
 
-function ProfilePage(): JSX.Element {
+function ProfilePagePlaceholder(): JSX.Element {
   return (
     <section>
       <header>
@@ -14,4 +14,4 @@ function ProfilePage(): JSX.Element {
   );
 }
 
-export default ProfilePage;
+export default ProfilePagePlaceholder;
