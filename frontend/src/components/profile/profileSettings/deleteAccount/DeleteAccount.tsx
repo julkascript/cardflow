@@ -12,7 +12,7 @@ function DeleteAccount(): JSX.Element {
           irreversible.
         </p>
       </div>
-      <ProfileSectionFooter backgroundColor="#fff0f0">
+      <ProfileSectionFooter backgroundColor="red">
         <p>We will definitely miss you...</p>
         <Button color="warning" variant="contained" className="inline-block">
           Delete Account
