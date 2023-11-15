@@ -1,5 +1,5 @@
 import ProfilePage from '../../components/profile/profilePage/ProfilePage';
-import AvatarSettings from '../../components/profile/profileSettings/AvatarSettings/AvatarSettings';
+import AvatarSettings from '../../components/profile/profileSettings/avatarSettings/AvatarSettings';
 import DeleteAccount from '../../components/profile/profileSettings/deleteAccount/DeleteAccount';
 import EmailSettings from '../../components/profile/profileSettings/emailSettings/EmailSettings';
 import ShipmentAddressSettings from '../../components/profile/profileSettings/shipmentAddressSettings/ShipmentAddressSettings';
