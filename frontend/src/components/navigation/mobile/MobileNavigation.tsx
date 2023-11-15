@@ -28,7 +28,7 @@ function MobileNavigation(props: MobileNavigationProps) {
       <List>
         <ListSubheader className="w-52">Navigation</ListSubheader>
         <ListItem disablePadding>
-          <ListItemButton href="#">
+          <ListItemButton href="/">
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
