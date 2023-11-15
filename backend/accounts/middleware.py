@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse
-from django.urls import include
+from django.urls import include, path
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.exceptions import TokenError, InvalidToken
 
@@ -15,8 +15,9 @@ class JWTAuthorizationMiddleware:
         '/api/accounts/login/',
         '/api/accounts/register/',
         '/api/accounts/refresh/',
-        '/admin/',
-        '/'
+        '/',
+        "/api/schema/",
+        "/api/docs/",
     ]
 
     def __init__(self, get_response):
@@ -24,8 +25,7 @@ class JWTAuthorizationMiddleware:
 
     def __call__(self, request):
 
-        if request.path in self.EXCLUDED_PATHS:
-
+        if request.path in self.EXCLUDED_PATHS or request.path.startswith('/admin'):
             return self.get_response(request)
 
         if 'Authorization' not in request.headers:
