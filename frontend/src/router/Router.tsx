@@ -2,6 +2,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
+import Register from '../pages/Register';
 
 const routes = createBrowserRouter([
   {
@@ -13,6 +14,11 @@ const routes = createBrowserRouter([
         path: '/',
         index: true,
         element: <Home />,
+      },
+      {
+        path: '/signup',
+        index: true,
+        element: <Register />,
       },
       {
         path: '/protected',
