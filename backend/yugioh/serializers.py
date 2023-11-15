@@ -3,20 +3,21 @@ from rest_framework import serializers
 from .models import YugiohCard, YugiohCardInSet, YugiohCardSet, YugiohCardRarity
 
 
-class YugiohCardRaritySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = YugiohCardRarity
-        fields = ['rarity', 'rarity_code']
-
-
 class YugiohCardSetSerializer(serializers.ModelSerializer):
     class Meta:
         model = YugiohCardSet
-        fields = ['card_set_name', 'set_code']
+        fields = ['id', 'card_set_name', 'set_code']
         read_only_fields = ['card_set_name', 'set_code']
 
 
-class YugiohSerializer(serializers.ModelSerializer):
+class YugiohCardRaritySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = YugiohCardRarity
+        fields = ['id', 'rarity', 'rarity_code']
+        read_only_fields = ['rarity', 'rarity_code']
+
+
+class YugiohCardSerializer(serializers.ModelSerializer):
     rarity = serializers.SerializerMethodField()
     set = serializers.SerializerMethodField()
 
@@ -25,8 +26,6 @@ class YugiohSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'card_name',
-            'rarity',
-            'set',
             'type',
             'frame_type',
             'description',
@@ -36,43 +35,33 @@ class YugiohSerializer(serializers.ModelSerializer):
             'race',
             'attribute',
             'archetype',
+            'rarity',
+            'set',
             'image',
         ]
+        search_fields = ['card_name', 'set']
         read_only_fields = ['id', 'set', 'rarity']
         ordering_fields = ['id']
 
     @staticmethod
-    @extend_schema_field(YugiohCardSetSerializer)
+    @extend_schema_field(YugiohCardRaritySerializer)
     def get_rarity(obj):
-        cards = YugiohCardInSet.objects.filter(yugioh_card=obj)
-        all_rarities = YugiohCardInSetSerializer(cards, many=True).data
-        if len(all_rarities) == 0:
-            return None
+        all_card_rarities = YugiohCardInSetSerializer(YugiohCardInSet.objects.filter(yugioh_card=obj), many=True).data
+        card_rarities = [rarity['rarity'] for rarity in all_card_rarities]
 
-        rarity_ids = [rarity['rarity'] for rarity in all_rarities]
-        rarity_names = [
-            f'{YugiohCardRarity.objects.get(id=rarity_id).rarity}{YugiohCardRarity.objects.get(id=rarity_id).rarity_code}'
-            for rarity_id in rarity_ids]
-        return rarity_names
+        return card_rarities
 
     @staticmethod
     @extend_schema_field(YugiohCardSetSerializer)
     def get_set(obj):
-        sets = YugiohCardInSet.objects.filter(yugioh_card=obj)
-        all_sets = YugiohCardInSetSerializer(sets, many=True).data
-        if len(all_sets) == 0:
-            return None
+        all_card_sets = YugiohCardInSetSerializer(YugiohCardInSet.objects.filter(yugioh_card=obj), many=True).data
+        card_sets = [set_name['set'] for set_name in all_card_sets]
 
-        all_sets_ids = [set_name['set'] for set_name in all_sets]
-        set_names = [
-            f'{YugiohCardSet.objects.get(id=set_id).card_set_name}({YugiohCardSet.objects.get(id=set_id).set_code})' for
-            set_id in all_sets_ids]
-        return set_names
+        return card_sets
 
 
-class YugiohCardInSetCardSerializer(YugiohSerializer):
-
-    class Meta(YugiohSerializer.Meta):
+class YugiohCardInSetCardSerializer(YugiohCardSerializer):
+    class Meta(YugiohCardSerializer.Meta):
         fields = [
             'id',
             'card_name',
@@ -90,9 +79,9 @@ class YugiohCardInSetCardSerializer(YugiohSerializer):
 
 
 class YugiohCardInSetSerializer(serializers.ModelSerializer):
-    rarity = YugiohCardRaritySerializer()
-    set = YugiohCardSetSerializer()
-    yugioh_card = YugiohCardInSetCardSerializer()
+    rarity = YugiohCardRaritySerializer(read_only=True)
+    set = YugiohCardSetSerializer(read_only=True)
+    yugioh_card = YugiohCardInSetCardSerializer(read_only=True)
 
     class Meta:
         model = YugiohCardInSet

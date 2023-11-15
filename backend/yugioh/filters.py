@@ -1,9 +1,8 @@
 from django_filters import rest_framework as filters
-from django.forms.widgets import TextInput
 from .models import YugiohCard
 
 
-class YugiohFilter(filters.FilterSet):
+class YugiohCardFilter(filters.FilterSet):
     card_name = filters.CharFilter(
         field_name='card_name',
         lookup_expr='icontains',
