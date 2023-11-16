@@ -34,6 +34,8 @@ INSTALLED_APPS = [
 
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters',
+
     'rest_framework_simplejwt',
     'corsheaders',
 
@@ -133,6 +135,11 @@ REST_FRAMEWORK = {
     'TITLE': 'Cardflow APP  ',
     'DESCRIPTION': 'This is the API for the Cardflow APP',
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
+    'DEFAULT_FILTER_BACKENDS': (
+        'django_filters.rest_framework.DjangoFilterBackend',
+    ),
+
     'DEFAULT_AUTHENTICATION_CLASSES': (
 
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -154,4 +161,5 @@ SIMPLE_JWT = {
     "ALGORITHM": "RS256",
     "SIGNING_KEY": JWT_PRIVATE_KEY,
     "VERIFYING_KEY": JWT_PUBLIC_KEY,
+
 }
