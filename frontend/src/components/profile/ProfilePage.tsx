@@ -1,5 +1,5 @@
-import PageHeader from '../../pageHeader/PageHeader';
-import ProfileNavigation from '../profileNavigation/ProfileNavigation';
+import PageHeader from '../PageHeader';
+import ProfileNavigation from './ProfileNavigation';
 
 type ProfileSectionProps = {
   className?: string;

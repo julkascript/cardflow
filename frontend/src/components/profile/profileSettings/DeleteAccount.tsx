@@ -1,6 +1,6 @@
 import { Button } from '@mui/material';
-import PageSection from '../../../pageSection/PageSection';
-import ProfileSectionFooter from '../../profileSectionFooter/ProfileSectionFooter';
+import PageSection from '../../PageSection';
+import ProfileSectionFooter from '../ProfileSectionFooter';
 
 function DeleteAccount(): JSX.Element {
   return (

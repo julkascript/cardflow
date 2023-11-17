@@ -1,8 +1,8 @@
 import { Avatar, Button, Typography, styled, useTheme } from '@mui/material';
-import PageSection from '../../../pageSection/PageSection';
+import PageSection from '../../../PageSection';
 import { useState } from 'react';
 import { handleAvatarUpload } from './handleAvatarUpload';
-import ProfileSectionFooter from '../../profileSectionFooter/ProfileSectionFooter';
+import ProfileSectionFooter from '../../ProfileSectionFooter';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',

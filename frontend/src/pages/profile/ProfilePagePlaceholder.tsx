@@ -1,4 +1,4 @@
-import ProfileNavigation from '../../components/profile/profileNavigation/ProfileNavigation';
+import ProfileNavigation from '../../components/profile/ProfileNavigation';
 
 function ProfilePagePlaceholder(): JSX.Element {
   return (

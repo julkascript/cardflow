@@ -1,6 +1,6 @@
 import { Button, TextField } from '@mui/material';
-import PageSection from '../../../pageSection/PageSection';
-import ProfileSectionFooter from '../../profileSectionFooter/ProfileSectionFooter';
+import PageSection from '../../../PageSection';
+import ProfileSectionFooter from '../../ProfileSectionFooter';
 import './UsernameSettings.css';
 import { ChangeEvent, useState } from 'react';
 

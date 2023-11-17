@@ -1,6 +1,6 @@
 import ProfilePublicData from '../../components/profile/ProfilePublicData';
 import ProfileMarketActivity from '../../components/profile/profileMarketActivity/ProfileMarketActivity';
-import ProfilePage from '../../components/profile/profilePage/ProfilePage';
+import ProfilePage from '../../components/profile/ProfilePage';
 
 function ProfilePublicInfoPage(): JSX.Element {
   return (

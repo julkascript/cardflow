@@ -1,8 +1,8 @@
-import ProfilePage from '../../components/profile/profilePage/ProfilePage';
+import ProfilePage from '../../components/profile/ProfilePage';
 import AvatarSettings from '../../components/profile/profileSettings/avatarSettings/AvatarSettings';
-import DeleteAccount from '../../components/profile/profileSettings/deleteAccount/DeleteAccount';
-import EmailSettings from '../../components/profile/profileSettings/emailSettings/EmailSettings';
-import ShipmentAddressSettings from '../../components/profile/profileSettings/shipmentAddressSettings/ShipmentAddressSettings';
+import DeleteAccount from '../../components/profile/profileSettings/DeleteAccount';
+import EmailSettings from '../../components/profile/profileSettings/EmailSettings';
+import ShipmentAddressSettings from '../../components/profile/profileSettings/ShipmentAddressSettings';
 import UsernameSettings from '../../components/profile/profileSettings/usernameSettings/UsernameSettings';
 
 function ProfileSettingsPage(): JSX.Element {
