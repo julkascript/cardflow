@@ -18,14 +18,22 @@ function App() {
             main: '#15B58D',
           },
           info: {
-            main: '#000',
+            main: '#4CC7FF',
           },
           text: {
             primary: '#000',
             secondary: '#666666',
           },
-          warning: {
+          error: {
             main: '#D9242C',
+            dark: '#FFF0F0',
+          },
+          warning: {
+            main: '#F1AC5B',
+          },
+          success: {
+            main: '#15B58D',
+            dark: 'rgba(21, 181, 141, 0.2)',
           },
         },
         ...linkBehaviorConfiguration,
