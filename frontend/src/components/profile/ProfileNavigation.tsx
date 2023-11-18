@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 
 type ProfileLinks = {
   href: string;
@@ -10,22 +10,24 @@ function ProfileNavigation(): JSX.Element {
     return isActive ? 'font-bold hover:underline' : 'hover:underline';
   }
 
+  const params = useParams();
+  const username = params.username || '';
+
   const links: ProfileLinks[] = [
     /*
       TO-DOs:
-        - generate hrefs dynamically
         - hide account details link from other users
     */
     {
-      href: '/user/TheAverageTCGEnjoyer/settings',
+      href: `/user/${username}/settings`,
       text: 'Account details',
     },
     {
-      href: '/user/TheAverageTCGEnjoyer',
+      href: `/user/${username}`,
       text: 'Public info',
     },
     {
-      href: '/user/TheAverageTCGEnjoyer/blog',
+      href: `/user/${username}/blog`,
       text: 'Blog',
     },
   ];
