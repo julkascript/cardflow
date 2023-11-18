@@ -22,7 +22,7 @@ function AvatarSettings(): JSX.Element {
   const [hasSelected, setSelected] = useState(false);
 
   const theme = useTheme();
-  const danger = theme.palette.warning.main;
+  const error = theme.palette.error.main;
 
   function changeAvatarPreview(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -47,7 +47,7 @@ function AvatarSettings(): JSX.Element {
         <div>
           <h2 className="font-bold mb-4 text-lg">Avatar</h2>
           <p>Select your avatar by clicking on the avatar circle.</p>
-          <Typography component="p" color={danger} className={imageError ? 'visible' : 'invisible'}>
+          <Typography component="p" color={error} className={imageError ? 'visible' : 'invisible'}>
             {imageError || 'Your file is valid!'}
           </Typography>
         </div>
