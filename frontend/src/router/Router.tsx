@@ -3,6 +3,7 @@ import App from '../App';
 import NotFound from '../pages/NotFound';
 import Home from '../pages/Home';
 import Register from '../pages/Register';
+import Login from '../pages/Login';
 
 const routes = createBrowserRouter([
   {
@@ -19,6 +20,11 @@ const routes = createBrowserRouter([
         path: '/signup',
         index: true,
         element: <Register />,
+      },
+      {
+        path: '/login',
+        index: true,
+        element: <Login />,
       },
       {
         path: '/protected',

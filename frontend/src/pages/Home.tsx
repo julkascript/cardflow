@@ -1,11 +1,13 @@
 import { Button } from '@mui/material';
 import Logo from '../components/logo/Logo';
 import { useTheme } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 function Home(): JSX.Element {
   const theme = useTheme();
   const secondary = theme.palette.grey['900'];
   const secondaryTextColor = theme.palette.text.secondary;
+  const navigate = useNavigate();
   return (
     <div className="flex justify-center items-center flex-col">
       <div className="flex">
@@ -36,6 +38,7 @@ function Home(): JSX.Element {
         </div>
         <div>
           <Button
+            onClick={() => navigate('/login')}
             color="secondary"
             variant="contained"
             sx={{
