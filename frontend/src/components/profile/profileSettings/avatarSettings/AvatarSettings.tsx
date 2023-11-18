@@ -26,22 +26,19 @@ function AvatarSettings(): JSX.Element {
 
   function changeAvatarPreview(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
-    if (!files) {
-      return;
+    if (files && files[0]) {
+      const file = files[0];
+      handleAvatarUpload(file)
+        .then((result) => {
+          setImageError('');
+          setImageUpload(result);
+        })
+        .catch((err) => {
+          setImageError(err);
+          setImageUpload('');
+        })
+        .finally(() => setSelected(true));
     }
-
-    const file = files[0];
-
-    handleAvatarUpload(file)
-      .then((result) => {
-        setImageError('');
-        setImageUpload(result);
-      })
-      .catch((err) => {
-        setImageError(err);
-        setImageUpload('');
-      })
-      .finally(() => setSelected(true));
   }
 
   return (
