@@ -15,7 +15,7 @@ function App() {
             main: '#000',
           },
           secondary: {
-            main: '#15B58D',
+            main: '#666666',
           },
           info: {
             main: '#4CC7FF',
@@ -26,7 +26,7 @@ function App() {
           },
           error: {
             main: '#D9242C',
-            dark: '#FFF0F0',
+            light: '#FFF0F0',
           },
           warning: {
             main: '#F1AC5B',
