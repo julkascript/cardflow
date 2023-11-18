@@ -14,7 +14,7 @@ function DeleteAccount(): JSX.Element {
       </div>
       <ProfileSectionFooter backgroundColor="red">
         <p>We will definitely miss you...</p>
-        <Button color="warning" variant="contained" className="inline-block">
+        <Button color="error" variant="contained" className="inline-block">
           Delete Account
         </Button>
       </ProfileSectionFooter>
