@@ -35,6 +35,9 @@ function App() {
             main: '#15B58D',
             dark: 'rgba(21, 181, 141, 0.2)',
           },
+          grey: {
+            '900': '#6F6F6F',
+          },
         },
         ...linkBehaviorConfiguration,
       }),
@@ -46,6 +49,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Navigation />
+        <main></main>
         <main>
           <Outlet />
         </main>
