@@ -9,6 +9,9 @@ import {
 import HomeIcon from '@mui/icons-material/Home';
 import CloseIcon from '@mui/icons-material/Close';
 import MobileLoggedInNav from './menus/MobileLoggedInNav';
+import Authorized from '../../../router/Authorized';
+import Unauthorized from '../../../router/Unauthorized';
+import MobileGuestNav from './menus/MobileGuestNav';
 
 type MobileNavigationProps = {
   onCloseButtonClick: (event: React.MouseEvent) => void;
@@ -35,7 +38,12 @@ function MobileNavigation(props: MobileNavigationProps) {
             <ListItemText primary="Home" />
           </ListItemButton>
         </ListItem>
-        <MobileLoggedInNav />
+        <Authorized>
+          <MobileLoggedInNav />
+        </Authorized>
+        <Unauthorized>
+          <MobileGuestNav />
+        </Unauthorized>
         <ListItem disablePadding>
           <ListItemButton onClick={props.onCloseButtonClick}>
             <ListItemIcon>

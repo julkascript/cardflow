@@ -7,6 +7,9 @@ import { useState } from 'react';
 import MobileNavigation from './mobile/MobileNavigation';
 import ShoppingCartButton from './desktop/buttons/ShoppingCartButton';
 import { Link } from 'react-router-dom';
+import Authorized from '../../router/Authorized';
+import Unauthorized from '../../router/Unauthorized';
+import DesktopGuestNav from './desktop/DesktopGuestNav';
 
 /**
  * A component for the application's navigation menu
@@ -32,10 +35,17 @@ function Navigation(): JSX.Element {
       <div className="flex flex-row gap-4 items-center">
         <SearchField />
         <Divider flexItem orientation="vertical" />
-        <ShoppingCartButton />
-        <div className="hidden lg:flex lg:flex-row lg:gap-4 lg:items-center">
-          <DesktopLoggedInNav />
-        </div>
+        <Authorized>
+          <ShoppingCartButton />
+          <div className="hidden lg:flex lg:flex-row lg:gap-4 lg:items-center">
+            <DesktopLoggedInNav />
+          </div>
+        </Authorized>
+        <Unauthorized>
+          <div className="hidden lg:flex lg:flex-row lg:gap-4 lg:items-center">
+            <DesktopGuestNav />
+          </div>
+        </Unauthorized>
         <div className="block lg:hidden">
           <IconButton onClick={openMenu} aria-label="Open navigation menu">
             <MenuIcon />
