@@ -1,6 +1,6 @@
 import { Avatar, Divider, Typography } from '@mui/material';
 import TrophyIcon from '@mui/icons-material/EmojiEvents';
-import PageSection from '../pageSection/PageSection';
+import PageSection from '../PageSection';
 
 function ProfilePublicData(): JSX.Element {
   return (

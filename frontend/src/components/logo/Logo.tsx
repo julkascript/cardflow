@@ -15,7 +15,7 @@ type LogoProps = {
  */
 function Logo(props: LogoProps): JSX.Element {
   const theme = useTheme();
-  const secondary = theme.palette.secondary.main;
+  const tildaColor = theme.palette.success.main;
 
   const color = props.color || 'black';
 
@@ -23,7 +23,7 @@ function Logo(props: LogoProps): JSX.Element {
     <svg width={props.size} height={props.size} aria-label="Cardflow logo">
       <rect width={props.size} height={props.size} fill={color} rx={5} ry={5}></rect>
       <text
-        fill={secondary}
+        fill={tildaColor}
         textAnchor="middle"
         dominantBaseline="middle"
         x="50%"

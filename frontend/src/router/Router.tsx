@@ -1,9 +1,10 @@
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import NotFound from '../pages/NotFound';
-import ProfilePage from '../pages/profile/ProfilePagePlaceholder';
+import ProfilePagePlaceholder from '../pages/profile/ProfilePagePlaceholder';
 import ProfilePublicInfoPage from '../pages/profile/ProfilePublicInfoPage';
 import ProfileSettingsPage from '../pages/profile/ProfileSettingsPage';
+import Home from '../pages/Home';
 
 const routes = createBrowserRouter([
   {
@@ -14,7 +15,7 @@ const routes = createBrowserRouter([
       {
         path: '/',
         index: true,
-        element: <h1>Home</h1>,
+        element: <Home />,
       },
       {
         path: '/protected',
@@ -33,7 +34,7 @@ const routes = createBrowserRouter([
           },
           {
             path: 'blog',
-            element: <ProfilePage />,
+            element: <ProfilePagePlaceholder />,
           },
         ],
       },

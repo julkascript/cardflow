@@ -1,8 +1,8 @@
 import { Avatar, Button, Typography, styled, useTheme } from '@mui/material';
-import PageSection from '../../../pageSection/PageSection';
+import PageSection from '../../../PageSection';
 import { useState } from 'react';
 import { handleAvatarUpload } from './handleAvatarUpload';
-import ProfileSectionFooter from '../../profileSectionFooter/ProfileSectionFooter';
+import ProfileSectionFooter from '../../ProfileSectionFooter';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -22,26 +22,23 @@ function AvatarSettings(): JSX.Element {
   const [hasSelected, setSelected] = useState(false);
 
   const theme = useTheme();
-  const danger = theme.palette.warning.main;
+  const error = theme.palette.error.main;
 
   function changeAvatarPreview(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
-    if (!files) {
-      return;
+    if (files && files[0]) {
+      const file = files[0];
+      handleAvatarUpload(file)
+        .then((result) => {
+          setImageError('');
+          setImageUpload(result);
+        })
+        .catch((err) => {
+          setImageError(err);
+          setImageUpload('');
+        })
+        .finally(() => setSelected(true));
     }
-
-    const file = files[0];
-
-    handleAvatarUpload(file)
-      .then((result) => {
-        setImageError('');
-        setImageUpload(result);
-      })
-      .catch((err) => {
-        setImageError(err);
-        setImageUpload('');
-      })
-      .finally(() => setSelected(true));
   }
 
   return (
@@ -50,7 +47,7 @@ function AvatarSettings(): JSX.Element {
         <div>
           <h2 className="font-bold mb-4 text-lg">Avatar</h2>
           <p>Select your avatar by clicking on the avatar circle.</p>
-          <Typography component="p" color={danger} className={imageError ? 'visible' : 'invisible'}>
+          <Typography component="p" color={error} className={imageError ? 'visible' : 'invisible'}>
             {imageError || 'Your file is valid!'}
           </Typography>
         </div>

@@ -1,10 +1,11 @@
-import { Button } from '@mui/material';
-import PageSection from '../../../pageSection/PageSection';
-import ProfileSectionFooter from '../../profileSectionFooter/ProfileSectionFooter';
+import { Button, useTheme } from '@mui/material';
+import PageSection from '../../PageSection';
+import ProfileSectionFooter from '../ProfileSectionFooter';
 
 function DeleteAccount(): JSX.Element {
+  const theme = useTheme();
   return (
-    <PageSection>
+    <PageSection borderColor={theme.palette.error.light}>
       <div className="pt-4 pb-4 lg:pl-12 lg:pr-12">
         <h2 className="font-bold mb-4 text-lg">Delete your account</h2>
         <p>
@@ -14,7 +15,7 @@ function DeleteAccount(): JSX.Element {
       </div>
       <ProfileSectionFooter backgroundColor="red">
         <p>We will definitely miss you...</p>
-        <Button color="warning" variant="contained" className="inline-block">
+        <Button color="error" variant="contained" className="inline-block">
           Delete Account
         </Button>
       </ProfileSectionFooter>
