@@ -1,10 +1,13 @@
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import './App.css';
 import { CssBaseline, createTheme } from '@mui/material';
 import { ThemeProvider } from '@emotion/react';
 import Navigation from './components/navigation/Navigation';
 import { Outlet } from 'react-router-dom';
 import { linkBehaviorConfiguration } from './linkBehaviorConfiguration';
+import { userService } from './services/user/userService';
+import { useCurrentUser } from './context/user/user';
+import { HttpError } from './util/HttpError';
 
 function App() {
   const theme = useMemo(
@@ -44,6 +47,18 @@ function App() {
     [],
   );
 
+  const { setUser, restartUser } = useCurrentUser();
+
+  useEffect(() => {
+    userService
+      .startSession()
+      .then(setUser)
+      .catch((res) => {
+        if (res instanceof HttpError && res.err.status < 500) {
+          restartUser();
+        }
+      });
+  }, []);
   return (
     <>
       <ThemeProvider theme={theme}>
