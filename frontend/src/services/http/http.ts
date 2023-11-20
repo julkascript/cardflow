@@ -88,8 +88,12 @@ async function generateNewAccessToken(): Promise<string> {
   });
 
   if (!res.ok) {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('refreshToken');
+    // don't delete tokens unless it's an actual bad request.
+    if (res.status >= 400 && res.status < 500) {
+      localStorage.removeItem('accessToken');
+      localStorage.removeItem('refreshToken');
+    }
+
     throw new HttpError(res);
   }
 
