@@ -21,7 +21,7 @@ const UserContext = React.createContext<CurrentUserContext>({
 });
 
 export function UserContextProvider({ children }: { children: React.ReactNode }): JSX.Element {
-  const [user, setUser] = useState<CurrentUser>({ user_id: 5 });
+  const [user, setUser] = useState<CurrentUser>({ user_id: 0 });
 
   function restartUser() {
     setUser({ user_id: 0 });
