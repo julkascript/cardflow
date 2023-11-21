@@ -1,4 +1,4 @@
-import { useAuthenticationStatus } from '../context/user/user';
+import { useAuthenticationStatus } from '../context/user';
 
 /**
  * Renders the passed components only if the current user is  NOT authenticated

@@ -6,7 +6,7 @@ import Navigation from './components/navigation/Navigation';
 import { Outlet } from 'react-router-dom';
 import { linkBehaviorConfiguration } from './linkBehaviorConfiguration';
 import { userService } from './services/user/user';
-import { useCurrentUser } from './context/user/user';
+import { useCurrentUser } from './context/user';
 import { HttpError } from './util/HttpError';
 
 function App() {

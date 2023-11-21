@@ -1,8 +1,5 @@
 import React, { useContext, useState } from 'react';
-
-type CurrentUser = {
-  user_id: number;
-};
+import { CurrentUser } from '../services/user/types';
 
 type CurrentUserContext = {
   user: CurrentUser;
