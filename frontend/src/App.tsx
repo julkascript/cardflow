@@ -51,8 +51,12 @@ function App() {
 
   useEffect(() => {
     userService
-      .verifySession()
-      .then(setUser)
+      .verifySession(localStorage.getItem('refreshToken'))
+      .then((jwt) => {
+        const user = userService.extractUserFromToken(jwt);
+        setUser(user);
+        localStorage.setItem('accessToken', jwt);
+      })
       .catch((res) => {
         if (res instanceof HttpError && res.err.status < 500) {
           restartUser();

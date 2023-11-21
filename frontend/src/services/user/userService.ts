@@ -14,13 +14,9 @@ export const userService = {
    * Checks if the user has a valid session, which consists of
    * checking the validity of the refresh token on the server.
    *
-   * If the user has a valid session, the data is extracted from
-   * the returned access token and the same token will be stored in localStorage.
-   * @returns a Promise that resolves to the user data that is extracted
-   * from the generated access token
+   * @returns a Promise that resolves to the access token if the session is valid.
    */
-  async verifySession(): Promise<CurrentUser> {
-    const refreshToken = localStorage.getItem('refreshToken');
+  async verifySession(refreshToken: string | null): Promise<string> {
     const refreshTokenResponse: AccessTokenResponse | undefined = await httpService.post(
       api.accounts.refresh,
       {
@@ -28,50 +24,37 @@ export const userService = {
       },
     );
 
-    const user = this.extractUserFromToken(refreshTokenResponse!.access);
-
-    localStorage.setItem('accessToken', refreshTokenResponse!.access);
-    return user;
+    return refreshTokenResponse!.access;
   },
 
   /**
    * Sends a request to the server to register the user. Upon success,
    * localStorage will be updated with the returned tokens.
    * @param data
-   * @returns the user extracted from the returned tokens.
+   * @returns a Promise that resolves to the access and refresh tokens.
    */
-  async register(data: UserRegister): Promise<CurrentUser> {
+  async register(data: UserRegister): Promise<SuccessfulAuthenticationResponse> {
     const tokens = await httpService.post<SuccessfulAuthenticationResponse>(
       api.accounts.register,
       data,
     );
 
-    const user = this.extractUserFromToken(tokens!.access);
-
-    localStorage.setItem('accessToken', tokens!.access);
-    localStorage.setItem('refreshToken', tokens!.refresh);
-
-    return user;
+    return tokens!;
   },
 
   /**
    * Sends a request to the server to log in the user. Upon success,
    * localStorage will be updated with the returned tokens.
    * @param data
-   * @returns the user extracted from the returned tokens.
+   * @returns a Promise that resolves to the access and refresh tokens.
    */
-  async login(data: UserLogin): Promise<CurrentUser> {
+  async login(data: UserLogin): Promise<SuccessfulAuthenticationResponse> {
     const tokens = await httpService.post<SuccessfulAuthenticationResponse>(
       api.accounts.login,
       data,
     );
 
-    const user = this.extractUserFromToken(tokens!.access);
-
-    localStorage.setItem('accessToken', tokens!.access);
-    localStorage.setItem('refreshToken', tokens!.refresh);
-
-    return user;
+    return tokens!;
   },
 
   /**
@@ -87,6 +70,7 @@ export const userService = {
   extractUserFromToken(jwt: string): CurrentUser {
     const decodedToken: any = jwtDecode(jwt);
 
+    // transfer only business data, not JWT metadata.
     const user: CurrentUser = {
       user_id: decodedToken.user_id,
     };

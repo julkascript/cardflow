@@ -3,40 +3,29 @@ import { httpService } from '../http/http';
 import { userService } from './userService';
 
 describe('userService', () => {
-  describe('startSession', () => {
-    it('Returns whatever is decoded from the response', async () => {
-      vi.spyOn(httpService, 'post').mockResolvedValueOnce({ access: 'a' });
-      vi.spyOn(localStorage, 'getItem').mockReturnValueOnce('b');
-      vi.spyOn(localStorage, 'setItem').mockImplementationOnce(() => {});
+  describe('verifySession', () => {
+    it('Returns the response tokens', async () => {
+      vi.spyOn(httpService, 'post').mockResolvedValueOnce({ access: 'abc' });
 
-      vi.spyOn(userService, 'extractUserFromToken').mockReturnValueOnce({ user_id: 5 });
-
-      const result = await userService.verifySession();
-      expect(result).toEqual({ user_id: 5 });
+      const result = await userService.verifySession('c');
+      expect(result).toEqual('abc');
     });
   });
 
   describe('register', () => {
-    it('Returns whatever is decoded from the response', async () => {
+    it('Returns the response tokens', async () => {
       vi.spyOn(httpService, 'post').mockResolvedValueOnce({ access: 'a', refresh: 'a' });
-      vi.spyOn(localStorage, 'setItem').mockImplementationOnce(() => {});
-
-      vi.spyOn(userService, 'extractUserFromToken').mockReturnValueOnce({ user_id: 5 });
 
       const result = await userService.register({ username: 'a', email: 'a', password: 'a' });
-      expect(result).toEqual({ user_id: 5 });
+      expect(result).toEqual({ access: 'a', refresh: 'a' });
     });
   });
 
   describe('login', () => {
     it('Returns whatever is decoded from the response', async () => {
       vi.spyOn(httpService, 'post').mockResolvedValueOnce({ access: 'a', refresh: 'a' });
-      vi.spyOn(localStorage, 'setItem').mockImplementationOnce(() => {});
-
-      vi.spyOn(userService, 'extractUserFromToken').mockReturnValueOnce({ user_id: 5 });
-
       const result = await userService.login({ username: 'a', password: 'a' });
-      expect(result).toEqual({ user_id: 5 });
+      expect(result).toEqual({ access: 'a', refresh: 'a' });
     });
   });
 });
