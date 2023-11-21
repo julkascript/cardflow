@@ -11,7 +11,7 @@ describe('userService', () => {
 
       vi.spyOn(userService, 'extractUserFromToken').mockReturnValueOnce({ user_id: 5 });
 
-      const result = await userService.startSession();
+      const result = await userService.verifySession();
       expect(result).toEqual({ user_id: 5 });
     });
   });

@@ -51,7 +51,7 @@ function App() {
 
   useEffect(() => {
     userService
-      .startSession()
+      .verifySession()
       .then(setUser)
       .catch((res) => {
         if (res instanceof HttpError && res.err.status < 500) {

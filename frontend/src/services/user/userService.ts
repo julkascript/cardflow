@@ -19,7 +19,7 @@ export const userService = {
    * @returns a Promise that resolves to the user data that is extracted
    * from the generated access token
    */
-  async startSession(): Promise<CurrentUser> {
+  async verifySession(): Promise<CurrentUser> {
     const refreshToken = localStorage.getItem('refreshToken');
     const refreshTokenResponse: AccessTokenResponse | undefined = await httpService.post(
       api.accounts.refresh,
