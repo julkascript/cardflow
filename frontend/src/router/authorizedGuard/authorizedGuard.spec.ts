@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { userService } from '../../services/user/userService';
+import { userService } from '../../services/user/user';
 import { authorizedGuard } from './authorizedGuard';
 import { HttpError } from '../../util/HttpError';
 

@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from 'vitest';
 import { httpService } from '../http/http';
-import { userService } from './userService';
+import { userService } from './user';
 
 describe('userService', () => {
   describe('verifySession', () => {

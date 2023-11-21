@@ -1,5 +1,5 @@
 import { redirect } from 'react-router-dom';
-import { userService } from '../../services/user/userService';
+import { userService } from '../../services/user/user';
 import { HttpError } from '../../util/HttpError';
 
 /**

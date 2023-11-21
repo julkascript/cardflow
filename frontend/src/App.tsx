@@ -5,7 +5,7 @@ import { ThemeProvider } from '@emotion/react';
 import Navigation from './components/navigation/Navigation';
 import { Outlet } from 'react-router-dom';
 import { linkBehaviorConfiguration } from './linkBehaviorConfiguration';
-import { userService } from './services/user/userService';
+import { userService } from './services/user/user';
 import { useCurrentUser } from './context/user/user';
 import { HttpError } from './util/HttpError';
 
