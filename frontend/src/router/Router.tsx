@@ -5,6 +5,7 @@ import ProfilePagePlaceholder from '../pages/profile/ProfilePagePlaceholder';
 import ProfilePublicInfoPage from '../pages/profile/ProfilePublicInfoPage';
 import ProfileSettingsPage from '../pages/profile/ProfileSettingsPage';
 import Home from '../pages/Home';
+import { authorizedGuard } from './authorizedGuard/authorizedGuard';
 
 const routes = createBrowserRouter([
   {
@@ -20,6 +21,7 @@ const routes = createBrowserRouter([
       {
         path: '/protected',
         element: <h1>Protected route</h1>,
+        loader: authorizedGuard,
       },
       {
         path: '/user/:username',
