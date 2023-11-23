@@ -2,12 +2,16 @@ import { Button, TextField } from '@mui/material';
 import PageSection from '../../../PageSection';
 import ProfileSectionFooter from '../../ProfileSectionFooter';
 import './UsernameSettings.css';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 
 const maxLength = 48;
 
-function UsernameSettings(): JSX.Element {
-  const [username, setUsername] = useState('');
+type UsernameSettingsProps = {
+  username: string;
+};
+
+function UsernameSettings(props: UsernameSettingsProps): JSX.Element {
+  const [username, setUsername] = useState(props.username);
 
   function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
@@ -18,6 +22,10 @@ function UsernameSettings(): JSX.Element {
       setUsername(value);
     }
   }
+
+  useEffect(() => {
+    setUsername(props.username);
+  }, [props.username]);
 
   return (
     <PageSection>
@@ -46,7 +54,7 @@ function UsernameSettings(): JSX.Element {
       <ProfileSectionFooter>
         <p>Please use {maxLength} characters at maximum.</p>
         <Button
-          disabled={username === ''}
+          disabled={username === '' || username === props.username}
           color="primary"
           variant="contained"
           className="inline-block"
