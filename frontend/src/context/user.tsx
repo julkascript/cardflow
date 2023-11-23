@@ -8,20 +8,36 @@ type CurrentUserContext = {
 };
 
 const UserContext = React.createContext<CurrentUserContext>({
-  user: { user_id: 0 },
+  user: {
+    user_id: 0,
+    email: '',
+    username: '',
+  },
   setUser(user) {
     this.user = user;
   },
   restartUser() {
-    this.user = { user_id: 0 };
+    this.user = {
+      user_id: 0,
+      username: '',
+      email: '',
+    };
   },
 });
 
 export function UserContextProvider({ children }: { children: React.ReactNode }): JSX.Element {
-  const [user, setUser] = useState<CurrentUser>({ user_id: 0 });
+  const [user, setUser] = useState<CurrentUser>({
+    user_id: 0,
+    username: '',
+    email: '',
+  });
 
   function restartUser() {
-    setUser({ user_id: 0 });
+    setUser({
+      user_id: 0,
+      username: '',
+      email: '',
+    });
   }
 
   return (

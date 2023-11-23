@@ -73,6 +73,8 @@ export const userService = {
     // transfer only business data, not JWT metadata.
     const user: CurrentUser = {
       user_id: decodedToken.user_id,
+      email: decodedToken.email,
+      username: decodedToken.username,
     };
 
     return user;

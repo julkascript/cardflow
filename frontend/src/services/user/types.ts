@@ -1,5 +1,7 @@
 export type CurrentUser = {
   user_id: number;
+  username: string;
+  email: string;
 };
 
 export type AccessTokenResponse = {
