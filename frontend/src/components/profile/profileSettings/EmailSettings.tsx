@@ -1,7 +1,7 @@
 import { Button, TextField } from '@mui/material';
 import PageSection from '../../PageSection';
 import ProfileSectionFooter from '../ProfileSectionFooter';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 type EmailSettingsProps = {
   email: string;
@@ -18,10 +18,6 @@ function EmailSettings(props: EmailSettingsProps): JSX.Element {
     const value = event.target.value;
     setEmail(value);
   }
-
-  useEffect(() => {
-    setEmail(props.email);
-  }, [props.email]);
 
   return (
     <PageSection>

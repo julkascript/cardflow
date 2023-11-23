@@ -2,7 +2,7 @@ import { Button, TextField } from '@mui/material';
 import PageSection from '../../../PageSection';
 import ProfileSectionFooter from '../../ProfileSectionFooter';
 import './UsernameSettings.css';
-import { ChangeEvent, useEffect, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 
 const maxLength = 48;
 
@@ -22,10 +22,6 @@ function UsernameSettings(props: UsernameSettingsProps): JSX.Element {
       setUsername(value);
     }
   }
-
-  useEffect(() => {
-    setUsername(props.username);
-  }, [props.username]);
 
   return (
     <PageSection>
