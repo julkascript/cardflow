@@ -22,10 +22,6 @@ type MobileNavigationProps = {
  * @returns
  */
 function MobileNavigation(props: MobileNavigationProps) {
-  /*
-    TO-DO: Implement logic to display the correct navigation menu
-    based on whether the user is logged in or not
-  */
   return (
     <div role="presentation" className="w-56">
       <List>
