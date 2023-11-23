@@ -13,6 +13,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { useState } from 'react';
+import { useCurrentUser } from '../../../../context/user';
 
 type NewActionLink = {
   url: string;
@@ -25,6 +26,8 @@ type NewActionLink = {
  */
 function MobileLoggedInNav(): JSX.Element {
   const [expanded, setExpanded] = useState(false);
+  const { user } = useCurrentUser();
+
   const actions: NewActionLink[] = [
     {
       url: '/listing/create',
@@ -68,7 +71,7 @@ function MobileLoggedInNav(): JSX.Element {
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>
-        <ListItemButton href="/profile">
+        <ListItemButton href={`/user/${user.username}/settings`}>
           <ListItemAvatar>
             <Avatar sx={{ width: 24, height: 24 }} src="#" />
           </ListItemAvatar>
