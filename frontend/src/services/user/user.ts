@@ -28,8 +28,7 @@ export const userService = {
   },
 
   /**
-   * Sends a request to the server to register the user. Upon success,
-   * localStorage will be updated with the returned tokens.
+   * Sends a request to the server to register the user.
    * @param data
    * @returns a Promise that resolves to the access and refresh tokens.
    */
@@ -43,8 +42,7 @@ export const userService = {
   },
 
   /**
-   * Sends a request to the server to log in the user. Upon success,
-   * localStorage will be updated with the returned tokens.
+   * Sends a request to the server to log in the user.
    * @param data
    * @returns a Promise that resolves to the access and refresh tokens.
    */
