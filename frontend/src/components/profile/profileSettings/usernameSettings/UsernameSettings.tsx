@@ -6,8 +6,12 @@ import { ChangeEvent, useState } from 'react';
 
 const maxLength = 48;
 
-function UsernameSettings(): JSX.Element {
-  const [username, setUsername] = useState('');
+type UsernameSettingsProps = {
+  username: string;
+};
+
+function UsernameSettings(props: UsernameSettingsProps): JSX.Element {
+  const [username, setUsername] = useState(props.username);
 
   function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
@@ -46,7 +50,7 @@ function UsernameSettings(): JSX.Element {
       <ProfileSectionFooter>
         <p>Please use {maxLength} characters at maximum.</p>
         <Button
-          disabled={username === ''}
+          disabled={username === '' || username === props.username}
           color="primary"
           variant="contained"
           className="inline-block"

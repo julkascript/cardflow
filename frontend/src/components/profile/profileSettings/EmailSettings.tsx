@@ -3,11 +3,15 @@ import PageSection from '../../PageSection';
 import ProfileSectionFooter from '../ProfileSectionFooter';
 import { ChangeEvent, useState } from 'react';
 
-function EmailSettings(): JSX.Element {
-  const [email, setEmail] = useState('');
+type EmailSettingsProps = {
+  email: string;
+};
+
+function EmailSettings(props: EmailSettingsProps): JSX.Element {
+  const [email, setEmail] = useState(props.email);
   const emailPattern = /^.+@.+$/gim;
 
-  const isInvalid = !emailPattern.test(email);
+  const isInvalid = !emailPattern.test(email) || email === props.email;
 
   function handleEmailChange(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
