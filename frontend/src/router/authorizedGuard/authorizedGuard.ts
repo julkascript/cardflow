@@ -11,8 +11,15 @@ import { HttpError } from '../../util/HttpError';
  * will rethrow it.
  */
 export async function authorizedGuard() {
+  const refreshToken = localStorage.getItem('refreshToken');
+  const accessToken = localStorage.getItem('accessToken');
+
+  if (!refreshToken || !accessToken) {
+    return redirect('/login');
+  }
+
   try {
-    await userService.verifySession(localStorage.getItem('refreshToken'));
+    await userService.verifySession(refreshToken);
     return null;
   } catch (res) {
     if (res instanceof HttpError) {
