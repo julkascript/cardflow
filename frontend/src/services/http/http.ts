@@ -1,7 +1,7 @@
 import { api } from '../../constants/api';
 import { HttpError } from '../../util/HttpError';
 
-type method = 'GET' | 'POST' | 'PUT' | 'DELETE';
+type method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
 
 /**
  * The HTTP service provides standardized configurations for making requests.
@@ -25,6 +25,9 @@ export const httpService = {
   },
   put<TResponseBody>(url: string, body?: any) {
     return request<TResponseBody>('PUT', url, body);
+  },
+  patch<TResponseBody>(url: string, body?: any) {
+    return request<TResponseBody>('PATCH', url, body);
   },
   del<TResponseBody>(url: string) {
     return request<TResponseBody>('DELETE', url);
