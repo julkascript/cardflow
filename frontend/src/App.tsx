@@ -50,18 +50,23 @@ function App() {
   const { setUser, restartUser } = useCurrentUser();
 
   useEffect(() => {
-    userService
-      .verifySession(localStorage.getItem('refreshToken'))
-      .then((jwt) => {
-        const user = userService.extractUserFromToken(jwt);
-        setUser(user);
-        localStorage.setItem('accessToken', jwt);
-      })
-      .catch((res) => {
-        if (res instanceof HttpError && res.err.status < 500) {
-          restartUser();
-        }
-      });
+    const refreshToken = localStorage.getItem('refreshToken');
+    const accessToken = localStorage.getItem('accessToken');
+
+    if (refreshToken && accessToken) {
+      userService
+        .verifySession(refreshToken)
+        .then((jwt) => {
+          const user = userService.extractUserFromToken(jwt);
+          setUser(user);
+          localStorage.setItem('accessToken', jwt);
+        })
+        .catch((res) => {
+          if (res instanceof HttpError && res.err.status < 500) {
+            restartUser();
+          }
+        });
+    }
   }, []);
   return (
     <>
