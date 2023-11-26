@@ -39,11 +39,11 @@ class YugiohCardSerializer(serializers.ModelSerializer):
             'card_in_sets',
         ]
         search_fields = ['card_name']
-        read_only_fields = ['id', 'set', 'rarity']
+        read_only_fields = ['id', 'card_in_sets']
         ordering_fields = ['card_name']
 
     @staticmethod
-    # @extend_schema_field(YugiohCardInSetSerializer)
+    @extend_schema_field(YugiohCardSetSerializer)
     def get_card_in_sets(obj):
         all_card_in_sets = YugiohCardInSetSerializer(YugiohCardInSet.objects.filter(yugioh_card=obj), many=True).data
         card_in_sets = []
