@@ -1,13 +1,26 @@
-import { Avatar, Divider, Typography } from '@mui/material';
+import { Avatar, Divider, Tooltip, Typography } from '@mui/material';
 import TrophyIcon from '@mui/icons-material/EmojiEvents';
 import PageSection from '../PageSection';
+import YugiohSellerRankBadge from '../yugioh/seller/YugiohSellerRankBadge';
+import { sellerRankData } from '../../constants/sellerRank';
 
 function ProfilePublicData(): JSX.Element {
   return (
     <PageSection className="text-center lg:text-left mb-8">
       <div className="pt-4 pb-4 lg:pl-12 lg:pr-12 flex flex-col-reverse lg:justify-between lg:flex-row">
         <div>
-          <h2 className="font-bold text-2xl mb-2">@TheAverageTCGEnjoyer</h2>
+          <h2 className="font-bold text-2xl mb-2 flex gap-4 items-center">
+            @TheAverageTCGEnjoyer
+            <Tooltip
+              title={sellerRankData.renowned.tooltipText}
+              arrow
+              className="flex items-center"
+            >
+              <button>
+                <YugiohSellerRankBadge sales={5_000} />
+              </button>
+            </Tooltip>
+          </h2>
           <div>Ivan Ivanov</div>
           <Typography color="text.secondary" component="div">
             Sofia
