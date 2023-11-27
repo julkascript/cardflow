@@ -15,7 +15,7 @@ class YugiohCardViewSet(viewsets.ModelViewSet):
     Also allows filtering by card name.
     """
 
-    queryset = YugiohCard.objects.all().order_by('id')
+    queryset = YugiohCard.objects.all().order_by('card_name')
     serializer_class = YugiohCardSerializer
     permission_classes = [permissions.AllowAny]
     filter_backends = [DjangoFilterBackend]
@@ -30,7 +30,7 @@ class YugiohCardInSetViewSet(viewsets.ModelViewSet):
     Also allows filtering by card in set ID.
     """
 
-    queryset = YugiohCardInSet.objects.all().order_by('id')
+    queryset = YugiohCardInSet.objects.all().order_by('yugioh_card__card_name')
     serializer_class = YugiohCardInSetSerializer
     permission_classes = [permissions.AllowAny]
     filter_backends = [DjangoFilterBackend]
