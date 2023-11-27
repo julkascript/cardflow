@@ -24,7 +24,7 @@ function YugiohSellerRankLabel(props: YugiohSellerRankLabelProps): JSX.Element {
 
 function generateNumberLabel(sales: number) {
   if (sales >= 1000) {
-    const number = sales / 1000;
+    const number = Math.trunc(sales / 1000);
     return number + 'K';
   }
 
