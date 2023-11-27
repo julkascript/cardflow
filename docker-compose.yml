@@ -6,10 +6,23 @@ version: "3"
 # NOTE 2: Copy this file in the same directory as 'docker-compose.yml' file and use your own credentials
 
 services:
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    ports:
+      - "5173:5173"
+    env_file:
+      - .env
+    depends_on:
+      - backend
+    networks:
+      - cardflow
+
   backend:
     build:
       context: .
-      dockerfile: Dockerfile
+      dockerfile: backend/Dockerfile
     ports:
       - "8000:8000"
     expose:
