@@ -12,7 +12,7 @@ from .filters import YugiohCardFilter
 class YugiohCardViewSet(viewsets.ModelViewSet):
     """
     Viewset for API endpoint that shows card list, allows Yugioh cards to be viewed by ID.
-    Also allows filtering by card name, set or both.
+    Also allows filtering by card name.
     """
 
     queryset = YugiohCard.objects.all().order_by('id')
