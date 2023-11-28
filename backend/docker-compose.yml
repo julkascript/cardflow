@@ -21,6 +21,8 @@ services:
       - pgadmin4
     networks:
       - cardflow
+    volumes:
+      - .:/usr/src/app
 
   postgres:
     image: postgres

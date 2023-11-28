@@ -15,7 +15,7 @@ done
 echo "PostgreSQL started"
 
 
-python manage.py flush --no-input
+#python manage.py flush --no-input
 python manage.py migrate
 
 if [ "$(python manage.py shell -c 'from accounts.models import User; print(User.objects.filter(username="admin", email="'"$PGADMIN_DEFAULT_EMAIL"'").exists())')" = "False" ]; then
