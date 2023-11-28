@@ -9,15 +9,15 @@ RUN apt-get update && apt-get install -y netcat libpq-dev gcc openssh-client
 
 RUN pip install --upgrade pip
 
-COPY ./backend/requirements.txt .
+COPY ./sample.env .env
+
+COPY ./requirements.txt .
 
 RUN pip install -r requirements.txt
 
-COPY ./backend/.env .
+COPY ./entrypoint.sh .
 
-COPY ./backend/entrypoint.sh .
-
-COPY ./backend/ .
+COPY ./ .
 
 RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh
 RUN chmod +x /usr/src/app/entrypoint.sh

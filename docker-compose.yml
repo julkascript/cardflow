@@ -8,12 +8,14 @@ version: "3"
 services:
   frontend:
     build:
-      context: .
-      dockerfile: frontend/Dockerfile
+      context: ./frontend
+      dockerfile: Dockerfile
     ports:
       - "5173:5173"
+    expose:
+      - "5173"
     env_file:
-      - .env
+      - frontend/sample.env
     depends_on:
       - backend
     networks:
@@ -21,14 +23,14 @@ services:
 
   backend:
     build:
-      context: .
-      dockerfile: backend/Dockerfile
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
       - "8000:8000"
     expose:
       - "8000"
     env_file:
-      - .env
+      - backend/sample.env
     depends_on:
       - postgres
       - pgadmin4
