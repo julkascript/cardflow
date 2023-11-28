@@ -18,8 +18,8 @@ class YugiohCardRaritySerializer(serializers.ModelSerializer):
 
 
 class YugiohCardSerializer(serializers.ModelSerializer):
-    rarity = serializers.SerializerMethodField()
-    set = serializers.SerializerMethodField()
+
+    card_in_sets = serializers.SerializerMethodField()
 
     class Meta:
         model = YugiohCard
@@ -35,29 +35,30 @@ class YugiohCardSerializer(serializers.ModelSerializer):
             'race',
             'attribute',
             'archetype',
-            'rarity',
-            'set',
             'image',
+            'card_in_sets',
         ]
-        search_fields = ['card_name', 'set']
-        read_only_fields = ['id', 'set', 'rarity']
-        ordering_fields = ['id']
-
-    @staticmethod
-    @extend_schema_field(YugiohCardRaritySerializer)
-    def get_rarity(obj):
-        all_card_rarities = YugiohCardInSetSerializer(YugiohCardInSet.objects.filter(yugioh_card=obj), many=True).data
-        card_rarities = [rarity['rarity'] for rarity in all_card_rarities]
-
-        return card_rarities
+        search_fields = ['card_name']
+        read_only_fields = ['id', 'card_in_sets']
+        ordering_fields = ['card_name']
 
     @staticmethod
     @extend_schema_field(YugiohCardSetSerializer)
-    def get_set(obj):
-        all_card_sets = YugiohCardInSetSerializer(YugiohCardInSet.objects.filter(yugioh_card=obj), many=True).data
-        card_sets = [set_name['set'] for set_name in all_card_sets]
+    def get_card_in_sets(obj):
+        all_card_in_sets = YugiohCardInSetSerializer(YugiohCardInSet.objects.filter(yugioh_card=obj), many=True).data
+        card_in_sets = []
+        set_names = [set_name['set'] for set_name in all_card_in_sets]
+        rarity_names = [rarity['rarity'] for rarity in all_card_in_sets]
 
-        return card_sets
+        for set_name, rarity_name in zip(set_names, rarity_names):
+            card_in_sets.append(
+                {
+                    'set': set_name,
+                    'rarity': rarity_name
+                }
+            )
+
+        return card_in_sets
 
 
 class YugiohCardInSetCardSerializer(YugiohCardSerializer):
