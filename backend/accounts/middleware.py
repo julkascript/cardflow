@@ -25,7 +25,7 @@ class JWTAuthorizationMiddleware:
 
     def __call__(self, request):
 
-        if request.path in self.EXCLUDED_PATHS or request.path.startswith('/admin') or request.path.startswith('/api/yugioh'):
+        if request.path in self.EXCLUDED_PATHS or request.path.startswith('/admin'):
             return self.get_response(request)
 
         if 'Authorization' not in request.headers:
