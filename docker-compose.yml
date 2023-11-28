@@ -36,6 +36,8 @@ services:
       - pgadmin4
     networks:
       - cardflow
+    volumes:
+      - ./backend:/usr/src/app
 
   postgres:
     image: postgres
@@ -51,6 +53,7 @@ services:
       - ./postgresql:/var/lib/postgresql/data
     networks:
       - cardflow
+
 
   pgadmin4:
     image: dpage/pgadmin4
