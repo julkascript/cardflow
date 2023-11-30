@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from . import views
 
 router = DefaultRouter()
-router.register('yugioh-listing', views.ListingViewSet)
+router.register('yugioh_listing', views.ListingViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
