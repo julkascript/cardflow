@@ -1,0 +1,19 @@
+/*
+  This CSS file mainly aims to splice the two fields next to each other
+*/
+
+.user-url-field fieldset {
+  border-right: none;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.user-url-field input:disabled {
+  color: black;
+  -webkit-text-fill-color: black;
+}
+
+.username-field fieldset {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+}
