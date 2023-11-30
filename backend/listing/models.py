@@ -1,6 +1,9 @@
+from django.contrib.auth import get_user_model
 from django.db import models
 
 from yugioh.models import YugiohCardInSet
+
+User = get_user_model()
 
 
 class Listing(models.Model):
@@ -19,6 +22,11 @@ class Listing(models.Model):
         on_delete=models.CASCADE,
     )
 
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+
     price = models.FloatField()
 
     condition = models.CharField(
@@ -29,7 +37,7 @@ class Listing(models.Model):
     quantity = models.IntegerField()
 
     is_listed = models.BooleanField(
-        default=False
+        default=True
     )
 
     is_sold = models.BooleanField(
@@ -37,4 +45,4 @@ class Listing(models.Model):
     )
 
     def __str__(self):
-        return f'{self.card.yugioh_card.card_name} - {self.condition}'
+        return f'{self.card.yugioh_card.card_name}'
