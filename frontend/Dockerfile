@@ -3,7 +3,6 @@ FROM node:14-alpine
 WORKDIR /usr/src/app
 
 COPY package.json .
-COPY package-lock.json .
 COPY sample.env .env
 COPY . .
 
