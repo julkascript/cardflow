@@ -11,7 +11,7 @@ from .serializers import ListingSerializer
 @extend_schema(tags=['Listing'])
 class ListingViewSet(viewsets.ModelViewSet):
     """
-    Viewset for API endpoint that shows listing(cards for sale).
+    Viewset for API endpoint that implements CRUD operations for listing(cards for sale).
     """
 
     queryset = Listing.objects.all().order_by('id')
