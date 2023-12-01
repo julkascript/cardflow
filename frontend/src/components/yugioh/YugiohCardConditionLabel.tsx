@@ -9,6 +9,7 @@ const conditionColors: Record<condition, string> = {
 
 type YugiohCardConditionLabelProps = {
   condition: condition;
+  className?: string;
 };
 
 function YugiohCardConditionLabel(props: YugiohCardConditionLabelProps) {
@@ -17,7 +18,9 @@ function YugiohCardConditionLabel(props: YugiohCardConditionLabelProps) {
   return (
     <div
       style={{ color, borderColor: color }}
-      className="pl-2 pr-2 border flex items-center justify-center text-center rounded-xl uppercase"
+      className={`pl-2 pr-2 border flex items-center justify-center text-center rounded-xl uppercase ${
+        props.className || ''
+      }`}
     >
       {props.condition}
     </div>
