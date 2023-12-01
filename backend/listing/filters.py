@@ -3,12 +3,12 @@ from .models import Listing
 
 
 class ListingFilter(filters.FilterSet):
-    card_listed = filters.BooleanFilter(
+    is_listed = filters.BooleanFilter(
         field_name='is_listed',
         lookup_expr='exact',
-        label='Search by is_listed',
+        label='Search by is_listed (true or false)',
     )
 
     class Meta:
         model = Listing
-        fields = ['card_listed']
+        fields = ['is_listed']
