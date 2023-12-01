@@ -8,7 +8,7 @@ function YugiohCardImage(): JSX.Element {
     <div
       className={`bg-white p-8 w-[314px] h-[422px] border-[${secondary}] border rounded flex justify-center items-center`}
     >
-      <img src="https://static-7.studiobebop.net/ygo_data/card_variants/LOB-E101.jpg" />
+      <img src="https://images.ygoprodeck.com/images/cards/46986421.jpg" />
     </div>
   );
 }
