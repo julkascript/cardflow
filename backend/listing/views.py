@@ -1,7 +1,10 @@
+import json
+
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets
 from rest_framework import permissions
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 
 from .filters import ListingFilter
 from .models import Listing
@@ -25,6 +28,36 @@ class ListingViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+
+        if instance.is_sold:
+            return Response({"detail": "Listing is already sold."}, status=status.HTTP_400_BAD_REQUEST)
+        if not instance.is_listed:
+            return Response({"detail": "Unlisted items cannot be sold."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Mark the listing as sold
+        instance.is_sold = True
+        instance.is_listed = False
+        instance.save()
+
+        serializer = self.get_serializer(instance)
+        return Response(serializer.data)
+
+    def list(self, request, *args, **kwargs):
+        is_sold = self.request.query_params.get('is_sold', None)
+
+        if is_sold is not None:
+            is_sold = json.loads(is_sold.lower())
+            # Filter listings based on is_sold parameter
+            queryset = Listing.objects.filter(is_sold=is_sold, user=self.request.user)
+        else:
+            # Return all listings if is_sold parameter is not provided
+            queryset = Listing.objects.filter(user=self.request.user)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 @extend_schema(tags=['Listing search'])
