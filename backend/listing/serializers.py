@@ -13,3 +13,13 @@ class ListingSerializer(serializers.ModelSerializer):
                   'is_listed', 'is_sold']
         read_only_fields = ['id', 'user']
         ordering_fields = ['id']
+
+
+class ListingSearchSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Listing
+        fields = ['id', 'card', 'card_name', 'card_set_id', 'user', 'user_name', 'price', 'condition', 'quantity',
+                  'is_listed', 'is_sold']
+        read_only_fields = ['id', 'user']
+        ordering_fields = ['id']

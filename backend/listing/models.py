@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core import validators
 from django.db import models
 
 from yugioh.models import YugiohCardInSet
@@ -34,7 +35,13 @@ class Listing(models.Model):
         choices=CONDITION_CHOICES,
     )
 
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(
+        default=1,
+        validators=[
+            validators.MinValueValidator(1),
+            validators.MaxValueValidator(9999),
+        ]
+    )
 
     is_listed = models.BooleanField(
         default=True
