@@ -49,12 +49,14 @@ class YugiohCardSerializer(serializers.ModelSerializer):
         card_in_sets = []
         set_names = [set_name['set'] for set_name in all_card_in_sets]
         rarity_names = [rarity['rarity'] for rarity in all_card_in_sets]
+        card_in_set_id = [rarity['id'] for rarity in all_card_in_sets]
 
-        for set_name, rarity_name in zip(set_names, rarity_names):
+        for set_name, rarity_name, card_in_set_id in zip(set_names, rarity_names, card_in_set_id):
             card_in_sets.append(
                 {
                     'set': set_name,
-                    'rarity': rarity_name
+                    'rarity': rarity_name,
+                    'card_in_set_id': card_in_set_id
                 }
             )
 
