@@ -47,10 +47,10 @@ class ListingViewSet(viewsets.ModelViewSet):
             # Mark the listing as sold
             instance.is_sold = True
             instance.is_listed = False
+            if self.request.data.get('is_listed'):
+                self.request.data['is_listed'] = False
             instance.save()
 
-        if self.request.data.get('is_listed'):
-            self.request.data['is_listed'] = False
 
         serializer = self.get_serializer(instance, data=request.data, partial=partial)
         serializer.is_valid(raise_exception=True)
