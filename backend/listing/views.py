@@ -33,7 +33,7 @@ class ListingSearchViewSet(viewsets.ModelViewSet):
     Viewset for API endpoint that implements search operations (by 'is_listed') for listing(cards for sale).
     """
 
-    queryset = Listing.objects.all().order_by('id')
+    queryset = Listing.objects.all()
     serializer_class = ListingSerializer
     permission_classes = [permissions.AllowAny]
     filter_backends = [DjangoFilterBackend]
