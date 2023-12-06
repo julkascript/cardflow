@@ -1,13 +1,13 @@
-import json
-
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import permissions
 from rest_framework import viewsets, status
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 from .filters import ListingFilter
 from .models import Listing
+from .permissions import IsOwner
 from .serializers import ListingSerializer
 
 
@@ -28,54 +28,6 @@ class ListingViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-
-    def update(self, request, *args, **kwargs):
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-
-        request_is_sold = self.request.data.get('is_sold', False)
-
-        if instance.is_sold:
-            instance.is_listed = False
-            instance.save()
-            return Response({"detail": "Listing is already sold."}, status=status.HTTP_400_BAD_REQUEST)
-
-        if bool(request_is_sold):
-            if not instance.is_listed:
-                return Response({"detail": "Unlisted items cannot be sold."}, status=status.HTTP_400_BAD_REQUEST)
-
-            # Mark the listing as sold
-            instance.is_sold = True
-            instance.is_listed = False
-            if self.request.data.get('is_listed'):
-                self.request.data['is_listed'] = False
-            instance.save()
-
-
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        self.perform_update(serializer)
-
-        if getattr(instance, '_prefetched_objects_cache', None):
-            # If 'prefetch_related' has been applied to a queryset, we need to
-            # forcibly invalidate the prefetch cache on the instance.
-            instance._prefetched_objects_cache = {}
-
-        return Response(serializer.data)
-
-    def list(self, request, *args, **kwargs):
-        is_sold = self.request.query_params.get('is_sold', None)
-
-        if is_sold is not None:
-            is_sold = json.loads(is_sold.lower())
-            # Filter listings based on is_sold parameter
-            queryset = Listing.objects.filter(is_sold=is_sold, user=self.request.user)
-        else:
-            # Return all listings if is_sold parameter is not provided
-            queryset = Listing.objects.filter(user=self.request.user)
-
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
 
 
 @extend_schema(tags=['Listing search'])
@@ -99,3 +51,55 @@ class ListingSearchViewSet(viewsets.ModelViewSet):
             return self.queryset.filter(is_listed=False)
         else:
             return self.queryset
+
+
+@extend_schema(tags=['Buy Listing'])
+class BuyListingViewSet(viewsets.ModelViewSet):
+    """
+    ViewSet for \n
+        - API endpoint that implements buy operation for a listing \n
+        - API endpoint that query for sold listings \n
+        - API endpoint that query for unsold listings \n
+    """
+
+    queryset = Listing.objects.filter()
+    serializer_class = ListingSerializer
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get_permissions(self):
+        if self.action == 'mark_as_sold':
+            return [IsOwner()]
+        return super().get_permissions()
+
+    @action(detail=True, methods=['put'])
+    def mark_as_sold(self, request, *args, **kwargs):
+        listing = self.get_object()
+
+        if listing.is_sold:
+            return Response({'detail': 'Listing is already sold.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not listing.is_listed:
+            return Response({"detail": "Unlisted items cannot be sold."}, status=status.HTTP_400_BAD_REQUEST)
+
+        listing.is_sold = True
+        listing.is_listed = False
+        listing.save()
+
+        serializer = self.get_serializer(listing)
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def unsold_listings(self, request):
+
+        unsold_listings = Listing.objects.filter(is_sold=False, is_listed=True)
+        serializer = self.get_serializer(unsold_listings, many=True)
+
+        return Response(serializer.data)
+
+    @action(detail=False, methods=['get'])
+    def sold_listings(self, request):
+
+        sold_listings = Listing.objects.filter(is_sold=True)
+        serializer = self.get_serializer(sold_listings, many=True)
+
+        return Response(serializer.data)
