@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "game",
     "card",
     "yugioh",
+    "listing",
     "drf_spectacular",
 ]
 

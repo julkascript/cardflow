@@ -18,7 +18,7 @@ class YugiohCardAdmin(admin.ModelAdmin):
 class YugiohCardInSetAdmin(admin.ModelAdmin):
     list_display = ('yugioh_card', 'set_name', 'rarity_name', 'id')
     list_filter = ('yugioh_card__card_name', 'set__card_set_name', 'rarity__rarity')
-    search_fields = ('yugioh_card__card_name', 'set__card_set_name', 'rarity__rarity')
+    search_fields = ('yugioh_card__card_name', 'set__card_set_name', 'rarity__rarity', 'id')
     list_per_page = 25
 
     def set_name(self, obj):
