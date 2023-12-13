@@ -1,5 +1,6 @@
-from django.urls import path, include
+from django.urls import path
 from rest_framework.routers import DefaultRouter
+
 from . import views
 from .views import BuyListingViewSet
 
@@ -12,10 +13,12 @@ urlpatterns = [
     path('<int:pk>/', views.ListingViewSet.as_view(
         {'get': 'retrieve', 'put': 'update', 'delete': 'destroy',
          'patch': 'partial_update'}), name='listing_detail'),
+
     path('search/', views.ListingSearchViewSet.as_view({'get': 'list'}), name='listing_search'),
     path('search/<int:pk>/', views.ListingSearchViewSet.as_view({'get': 'retrieve'}), name='listing_search_detail'),
 
     path('<int:pk>/buy/', BuyListingViewSet.as_view({'put': 'mark_as_sold'}), name='listing_buy'),
     path('unsold/', BuyListingViewSet.as_view({'get': 'unsold_listings'}), name='unsold_listings'),
     path('sold/', BuyListingViewSet.as_view({'get': 'sold_listings'}), name='sold_listings'),
+
 ]

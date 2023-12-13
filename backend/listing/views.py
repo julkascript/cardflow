@@ -15,6 +15,9 @@ from .serializers import ListingSerializer
 class ListingViewSet(viewsets.ModelViewSet):
     """
     Viewset for API endpoint that implements CRUD operations for listing(cards for sale).
+    - To perform listing search for all users use base endpoint.
+    - To perform listing search for specific user use endpoint with ?user_id=<user_id> parameter.
+    - To perform PUT or PATCH use endpoint with /<listing_id> parameter.
     """
 
     queryset = Listing.objects.all().order_by('id')
@@ -23,8 +26,21 @@ class ListingViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = ListingFilter
 
+    def get_permissions(self):
+        if self.request.method in permissions.SAFE_METHODS:
+            return [permissions.AllowAny()]
+        else:
+            return [IsOwner()]
+
     def get_queryset(self):
-        return self.queryset.filter(user=self.request.user)
+
+        user = self.request.query_params.get('user_id', None)
+
+        if user:
+            if [IsOwner()]:
+                return self.queryset.filter(user=user)
+
+        return self.queryset
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
