@@ -13,7 +13,7 @@ from .serializers import ListingSerializer
 class ListingViewSet(viewsets.ModelViewSet):
     """
     Viewset for API endpoint that implements CRUD operations for listing(cards for sale).
-    - To perform listing search for all users use base endpoint.
+    - To perform listing search for all users use base endpoint (api/listing/).
     - To perform listing search by 'is_listed' use base endpoint with ?is_listed=true/false parameter.
     - To perform listing search for specific user use base endpoint with ?user_id=<user_id> parameter.
     - To perform PUT or PATCH use base endpoint with /<listing_id> parameter.
