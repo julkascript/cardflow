@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import path
 from rest_framework.routers import DefaultRouter
 from . import views
 
@@ -11,6 +11,4 @@ urlpatterns = [
     path('<int:pk>/', views.ListingViewSet.as_view(
         {'get': 'retrieve', 'put': 'update', 'delete': 'destroy',
          'patch': 'partial_update'}), name='listing_detail'),
-    path('search/', views.ListingSearchViewSet.as_view({'get': 'list'}), name='listing_search'),
-    path('search/<int:pk>/', views.ListingSearchViewSet.as_view({'get': 'retrieve'}), name='listing_search_detail'),
 ]
