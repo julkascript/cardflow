@@ -1,26 +1,42 @@
 version: "3"
 
-# NOTE: When connecting to the postgres docker container in the web interface,
-# try using 'postgres' as the host name instead of 'localhost' or 'host.docker.internal'
-
-# NOTE 2: Copy this file in the same directory as 'docker-compose.yml' file and use your own credentials
-
 services:
+  frontend:
+    build:
+      context: ./frontend
+
+    env_file:
+      - frontend/.env
+    depends_on:
+      - postgres
+      - pgadmin4
+      - backend
+    networks:
+      - cardflow
+    volumes:
+      - ./frontend:/usr/src/app
+      - /usr/src/app/node_modules
+    tty: true
+    ports:
+      - "5173:5173"
+    command: npm run dev
+
   backend:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ./backend
     ports:
       - "8000:8000"
     expose:
       - "8000"
     env_file:
-      - .env
+      - backend/.env
     depends_on:
       - postgres
       - pgadmin4
     networks:
       - cardflow
+    volumes:
+      - ./backend:/usr/src/app
 
   postgres:
     image: postgres
@@ -36,6 +52,7 @@ services:
       - ./postgresql:/var/lib/postgresql/data
     networks:
       - cardflow
+
 
   pgadmin4:
     image: dpage/pgadmin4

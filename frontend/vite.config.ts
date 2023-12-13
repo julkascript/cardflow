@@ -4,10 +4,9 @@ import tailwindcss from 'tailwindcss';
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  /*
-    TS compiler complains about some of the plugins, so
-    providing a bandaid fix for the time being
-  */
+  server: {
+    host: '0.0.0.0',
+  },
   plugins: [react(), tailwindcss()],
   test: {
     globals: true,

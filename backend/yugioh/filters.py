@@ -9,12 +9,6 @@ class YugiohCardFilter(filters.FilterSet):
         label='Search by card name',
     )
 
-    set_name = filters.CharFilter(
-        field_name='yugiohcardinset__set__card_set_name',
-        lookup_expr='icontains',
-        label='Search by set name',
-    )
-
     class Meta:
         model = YugiohCard
-        fields = ['card_name', 'set_name']
+        fields = ['card_name']
