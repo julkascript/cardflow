@@ -2,6 +2,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 from rest_framework import permissions
+from rest_framework.decorators import action
 
 from .filters import ListingFilter
 from .models import Listing
@@ -12,7 +13,7 @@ from .serializers import ListingSerializer
 @extend_schema(tags=['Listing'])
 class ListingViewSet(viewsets.ModelViewSet):
     """
-    Viewset for API endpoint that implements CRUD operations for listing(cards for sale).
+     Viewset for API endpoint that implements CRUD operations for listing(cards for sale).
     - To perform listing search for all users use base endpoint (api/listing/).
     - To perform listing search by 'is_listed' use base endpoint with ?is_listed=true/false parameter.
     - To perform listing search for specific user use base endpoint with ?user_id=<user_id> parameter.
@@ -24,12 +25,6 @@ class ListingViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_class = ListingFilter
-
-    def get_permissions(self):
-        if self.request.method in permissions.SAFE_METHODS:
-            return [permissions.AllowAny()]
-        else:
-            return [IsOwner()]
 
     def get_queryset(self):
 
