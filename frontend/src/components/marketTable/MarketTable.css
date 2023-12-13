@@ -16,7 +16,7 @@
 }
 
 .market-table-wrapper th:not(:last-child) {
-  border: 1px solid gray;
+  border-right: 1px solid gray;
 }
 
 .market-table-wrapper tr:not(:last-child) td {
