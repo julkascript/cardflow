@@ -15,6 +15,10 @@
   padding-left: 16px;
 }
 
+.market-table-wrapper th:not(:last-child) {
+  border: 1px solid gray;
+}
+
 .market-table-wrapper tr:not(:last-child) td {
   border-bottom: 1px solid gray;
 }
