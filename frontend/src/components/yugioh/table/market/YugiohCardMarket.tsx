@@ -3,8 +3,8 @@ import YugiohCardMarketTableCell from './YugiohCardMarketTableCell';
 
 function YugiohCardMarket(): JSX.Element {
   return (
-    <div className="flex flex-col items-center justify-center overflow-auto">
-      <MarketTable className="w-11/12 lg:w-5/6 mb-12">
+    <div className="flex flex-col md:items-center justify-center overflow-auto">
+      <MarketTable className="w-11/12 md:w-full lg:w-5/6 mb-12">
         <thead>
           <tr>
             <th colSpan={3}>Seller</th>

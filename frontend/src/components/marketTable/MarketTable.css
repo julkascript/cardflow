@@ -1,6 +1,7 @@
 .market-table-wrapper {
   background-color: white;
   border-radius: 7px;
+  overflow: auto;
 }
 
 .market-table-wrapper th, .market-table-wrapper td {
