@@ -7,6 +7,7 @@ import ProfileSettingsPage from '../pages/profile/ProfileSettingsPage';
 import Home from '../pages/Home';
 import { authorizedGuard } from './authorizedGuard/authorizedGuard';
 import YugiohCardDetails from '../pages/yugioh/YugiohCardDetails';
+import { loadCardDetails } from './loadCardDetails/loadCardDetails';
 
 const routes = createBrowserRouter([
   {
@@ -49,6 +50,7 @@ const routes = createBrowserRouter([
             children: [
               {
                 path: ':id',
+                loader: loadCardDetails,
                 element: <YugiohCardDetails />,
               },
             ],

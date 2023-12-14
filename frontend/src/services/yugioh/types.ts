@@ -64,3 +64,10 @@ export type YugiohCardInSet = {
   set: YugiohCardSet;
   rarity: YugiohCardRarity;
 };
+
+/**
+ * This is the type of the object returned by the ``/buy.yugioh/{id}`` loader
+ */
+export type CardDetailsLoaderData = {
+  cardInSet: YugiohCardInSet;
+};
