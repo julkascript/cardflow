@@ -43,7 +43,7 @@ const routes = createBrowserRouter([
         ],
       },
       {
-        path: 'buy',
+        path: 'details',
         children: [
           {
             path: 'yugioh',
