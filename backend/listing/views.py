@@ -64,6 +64,9 @@ class BuyListingViewSet(viewsets.ModelViewSet):
         if not listing.is_listed:
             return Response({"detail": "Unlisted items cannot be sold."}, status=status.HTTP_400_BAD_REQUEST)
 
+        if request.user == listing.user:
+            return Response({'detail': 'You cannot buy your own listings.'}, status=status.HTTP_403_FORBIDDEN)
+
         listing.is_sold = True
         listing.is_listed = False
         listing.save()
