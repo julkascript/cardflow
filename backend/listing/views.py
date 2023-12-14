@@ -41,29 +41,6 @@ class ListingViewSet(viewsets.ModelViewSet):
         serializer.save(user=self.request.user)
 
 
-@extend_schema(tags=['Listing search'])
-class ListingSearchViewSet(viewsets.ModelViewSet):
-    """
-    Viewset for API endpoint that implements search operations (by 'is_listed') for listing(cards for sale).
-    """
-
-    queryset = Listing.objects.all()
-    serializer_class = ListingSerializer
-    permission_classes = [permissions.AllowAny]
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = ListingFilter
-    http_method_names = ['get']
-
-    def get_queryset(self):
-
-        if self.request.query_params.get('is_listed') == 'true':
-            return self.queryset.filter(is_listed=True)
-        elif self.request.query_params.get('is_listed') == 'false':
-            return self.queryset.filter(is_listed=False)
-        else:
-            return self.queryset
-
-
 @extend_schema(tags=['Buy Listing'])
 class BuyListingViewSet(viewsets.ModelViewSet):
     """
@@ -76,11 +53,6 @@ class BuyListingViewSet(viewsets.ModelViewSet):
     queryset = Listing.objects.filter()
     serializer_class = ListingSerializer
     permission_classes = [permissions.IsAuthenticated]
-
-    def get_permissions(self):
-        if self.action == 'mark_as_sold':
-            return [IsOwner()]
-        return super().get_permissions()
 
     @action(detail=True, methods=['put'])
     def mark_as_sold(self, request, *args, **kwargs):
