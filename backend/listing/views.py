@@ -14,10 +14,11 @@ from .serializers import ListingSerializer
 @extend_schema(tags=['Listing'])
 class ListingViewSet(viewsets.ModelViewSet):
     """
-    Viewset for API endpoint that implements CRUD operations for listing(cards for sale).
-    - To perform listing search for all users use base endpoint.
-    - To perform listing search for specific user use endpoint with ?user_id=<user_id> parameter.
-    - To perform PUT or PATCH use endpoint with /<listing_id> parameter.
+     Viewset for API endpoint that implements CRUD operations for listing(cards for sale).
+    - To perform listing search for all users use base endpoint (api/listing/).
+    - To perform listing search by 'is_listed' use base endpoint with ?is_listed=true/false parameter.
+    - To perform listing search for specific user use base endpoint with ?user_id=<user_id> parameter.
+    - To perform PUT or PATCH use base endpoint with /<listing_id> parameter.
     """
 
     queryset = Listing.objects.all().order_by('id')
@@ -25,12 +26,6 @@ class ListingViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     filter_backends = [DjangoFilterBackend]
     filterset_class = ListingFilter
-
-    def get_permissions(self):
-        if self.request.method in permissions.SAFE_METHODS:
-            return [permissions.AllowAny()]
-        else:
-            return [IsOwner()]
 
     def get_queryset(self):
 

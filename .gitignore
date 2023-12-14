@@ -6,6 +6,7 @@ venv/
 # ENV files and folders
 backend/.env
 frontend/.env
+.env
 
 #KEYS
 keys/
