@@ -1,6 +1,10 @@
 import { useTheme } from '@mui/material';
 
-function YugiohCardImage(): JSX.Element {
+type YugiohCardImageProps = {
+  src: string;
+};
+
+function YugiohCardImage(props: YugiohCardImageProps): JSX.Element {
   const theme = useTheme();
   const secondary = theme.palette.secondary.main;
 
@@ -8,7 +12,7 @@ function YugiohCardImage(): JSX.Element {
     <div
       className={`bg-white p-8 w-[314px] h-[422px] border-[${secondary}] border rounded flex justify-center items-center`}
     >
-      <img src="https://images.ygoprodeck.com/images/cards/46986421.jpg" />
+      <img src={props.src} />
     </div>
   );
 }

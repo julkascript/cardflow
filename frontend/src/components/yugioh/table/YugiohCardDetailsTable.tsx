@@ -1,6 +1,11 @@
+import { YugiohCardInSet } from '../../../services/yugioh/types';
 import YugiohCardDetailsCell from './YugiohCardDetailsCell';
 
-function YugiohCardDetailsTable(): JSX.Element {
+type YugiohCardDetailsTableProps = {
+  cardInSet: YugiohCardInSet;
+};
+
+function YugiohCardDetailsTable(props: YugiohCardDetailsTableProps): JSX.Element {
   return (
     <table className="bg-white border-spacing-0 border-separate rounded-lg border-2 w-5/6 lg:w-1/2 h-[300px]">
       <thead>
@@ -12,7 +17,7 @@ function YugiohCardDetailsTable(): JSX.Element {
       </thead>
       <tbody>
         <tr>
-          <YugiohCardDetailsCell heading="Set" data="CT12" />
+          <YugiohCardDetailsCell heading="Set" data={props.cardInSet.set.set_code} />
           <YugiohCardDetailsCell heading="Available items" data="448" />
         </tr>
         <tr>
@@ -20,7 +25,7 @@ function YugiohCardDetailsTable(): JSX.Element {
           <YugiohCardDetailsCell heading="From" data="$ 3.03" />
         </tr>
         <tr>
-          <YugiohCardDetailsCell heading="Rarity" data="Secret Rare" />
+          <YugiohCardDetailsCell heading="Rarity" data={props.cardInSet.rarity.rarity} />
           <YugiohCardDetailsCell heading="30-days average price" data="$ 5.14" />
         </tr>
       </tbody>
