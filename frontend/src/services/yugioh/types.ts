@@ -25,7 +25,7 @@ export type YugiohCard = {
   attribute: string;
   archetype: string;
   image: string;
-  card_in_sets: YugiohCardSet;
+  card_in_sets: YugiohCardSet[];
 };
 
 export type YugiohCardListing = {
@@ -66,7 +66,7 @@ export type YugiohCardInSet = {
 };
 
 /**
- * This is the type of the object returned by the ``/buy.yugioh/{id}`` loader
+ * This is the type of the object returned by the ``/details/yugioh/{id}`` loader
  */
 export type CardDetailsLoaderData = {
   cardInSet: YugiohCardInSet;
