@@ -1,6 +1,6 @@
 export type condition = 'poor' | 'played' | 'good' | 'excellent';
 
-export type YugiohCardSet = {
+export type YugiohSet = {
   id: number;
   card_set_name: string;
   set_code: string;
@@ -10,6 +10,12 @@ export type YugiohCardRarity = {
   id: number;
   rarity: string;
   rarity_code: string;
+};
+
+export type YugiohCardSet = {
+  card_in_set_id: number;
+  set: YugiohSet;
+  rarity: YugiohCardRarity;
 };
 
 export type YugiohCard = {
@@ -61,7 +67,7 @@ export type YugiohCardInSet = {
     archetype: string;
     image: string;
   };
-  set: YugiohCardSet;
+  set: YugiohSet;
   rarity: YugiohCardRarity;
 };
 
