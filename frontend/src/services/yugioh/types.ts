@@ -77,3 +77,13 @@ export type YugiohCardInSet = {
 export type CardDetailsLoaderData = {
   cardInSet: YugiohCardInSet;
 };
+
+export type YugiohCardSearchResults = {
+  cardName: string;
+  card: YugiohCardSet;
+};
+
+export type YugiohCardSearchResultsDisplay = {
+  total: number;
+  results: YugiohCardSearchResults[];
+};
