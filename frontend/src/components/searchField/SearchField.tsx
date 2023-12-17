@@ -51,7 +51,7 @@ function SearchField(): JSX.Element {
           }}
         />
         <div>
-          <SearchResultsDisplay results={searchResults} />
+          <SearchResultsDisplay results={searchResults} query={searchQuery} />
         </div>
       </form>
     </ClickAwayListener>
