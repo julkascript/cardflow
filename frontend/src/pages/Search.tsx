@@ -32,7 +32,7 @@ function Search(): JSX.Element {
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <PageHeader heading="Buy / Search" />
-      <div className="min-h-full flex items-center w-full flex-col gap-4">
+      <div className="min-h-full mt-2 flex items-center w-full flex-col gap-4">
         <form className="w-2/3 bg-white relative z-0" onSubmit={handleSubmit}>
           <TextField
             size="small"
