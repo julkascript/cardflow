@@ -28,6 +28,11 @@ const routes = createBrowserRouter([
         loader: authorizedGuard,
       },
       {
+        path: '/search',
+        element: <Search />,
+        loader: loadSearchResults,
+      },
+      {
         path: '/search/:query',
         element: <Search />,
         loader: loadSearchResults,

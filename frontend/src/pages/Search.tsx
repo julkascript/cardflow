@@ -29,7 +29,7 @@ function Search(): JSX.Element {
       navigate('/search/' + searchQuery);
     } else {
       setCards([]);
-      navigate('/search');
+      navigate('/search/');
     }
   }
   return (
