@@ -34,7 +34,7 @@ function YugiohCardMarketTableCell(): JSX.Element {
         />
         <br />
       </td>
-      <td className="text-center text-xl">5</td>
+      <td className="text-center text-xl p-1">5</td>
       <td className="font-bold text-xl w-[200px]">$&nbsp;0.02</td>
       <td className="w-1">
         <YugiohCardQuantityField />

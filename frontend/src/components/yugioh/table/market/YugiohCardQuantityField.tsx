@@ -15,7 +15,7 @@ function YugiohCardQuantityField(): JSX.Element {
   }
   return (
     <input
-      className="p-2 w-16 h-12 text-center border rounded-sm"
+      className="p-1 w-16 h-10 text-center border rounded-sm"
       style={{ borderColor: secondary }}
       type="number"
       onChange={handleChange}
