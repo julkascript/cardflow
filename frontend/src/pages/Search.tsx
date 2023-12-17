@@ -1,4 +1,4 @@
-import { useLoaderData, useParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { CardSearchLoader } from '../services/yugioh/types';
 import PageHeader from '../components/PageHeader';
 import MarketTable from '../components/marketTable/MarketTable';
@@ -11,6 +11,7 @@ import { yugiohService } from '../services/yugioh/yugiohService';
 
 function Search(): JSX.Element {
   const data: CardSearchLoader = useLoaderData() as CardSearchLoader;
+  const navigate = useNavigate();
   const params = useParams();
   const [cards, setCards] = useState(data.cards);
   const [searchQuery, setSearchQuery] = useState(params.query || '');
@@ -25,8 +26,10 @@ function Search(): JSX.Element {
     event.preventDefault();
     if (searchQuery) {
       yugiohService.searchCardsByName(searchQuery).then((res) => setCards(res));
+      navigate('/search/' + searchQuery);
     } else {
       setCards([]);
+      navigate('/search');
     }
   }
   return (
