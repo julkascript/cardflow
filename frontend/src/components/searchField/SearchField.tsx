@@ -6,11 +6,17 @@ import { YugiohCardSearchResultsDisplay } from '../../services/yugioh/types';
 import { retrieveCardsForDisplay } from './retrieveCardsForDisplay/retrieveCardsForDisplay';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import SearchResultsDisplay from './SearchResultsDisplay';
+import { useNavigate } from 'react-router-dom';
 
 function SearchField(): JSX.Element {
+  const navigate = useNavigate();
   function search(event: FormEvent) {
     event.preventDefault();
-    // TO-DO: implement search functionality at a later point
+    if (searchQuery) {
+      navigate('/search/' + searchQuery);
+      setSearchQuery('');
+      setSearchResults({ results: [], total: 0 });
+    }
   }
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<YugiohCardSearchResultsDisplay>({
