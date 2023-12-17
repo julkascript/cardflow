@@ -87,3 +87,7 @@ export type YugiohCardSearchResultsDisplay = {
   total: number;
   results: YugiohCardSearchResults[];
 };
+
+export type CardSearchLoader = {
+  cards: YugiohCard[];
+};
