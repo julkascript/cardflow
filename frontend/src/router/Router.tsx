@@ -6,6 +6,8 @@ import ProfilePublicInfoPage from '../pages/profile/ProfilePublicInfoPage';
 import ProfileSettingsPage from '../pages/profile/ProfileSettingsPage';
 import Home from '../pages/Home';
 import { authorizedGuard } from './authorizedGuard/authorizedGuard';
+import Login from '../pages/Login';
+import Register from '../pages/Register';
 
 const routes = createBrowserRouter([
   {
@@ -17,6 +19,16 @@ const routes = createBrowserRouter([
         path: '/',
         index: true,
         element: <Home />,
+      },
+      {
+        path: '/login',
+        index: true,
+        element: <Login />,
+      },
+      {
+        path: '/register',
+        index: true,
+        element: <Register />,
       },
       {
         path: '/protected',
