@@ -76,4 +76,10 @@ describe('retrieveCardsForDisplay', () => {
     expect(result.total).toBe(3);
     expect(result.results.length).toBe(3);
   });
+
+  it('Works with the limit off', () => {
+    const card1 = generateCard(searchRules.maxSearchFieldDisplayResults + 1, 1);
+    const result = retrieveCardsForDisplay([card1], false);
+    expect(result.results.length).toBe(searchRules.maxSearchFieldDisplayResults + 1);
+  });
 });

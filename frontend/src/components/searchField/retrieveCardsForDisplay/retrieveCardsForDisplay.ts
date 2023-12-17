@@ -7,17 +7,28 @@ import {
 } from '../../../services/yugioh/types';
 
 /**
- * retrieves a limited amount of card sets to display to the user after
- * they finish typing in the search field.
+ * retrieves a limited or a full amount of card sets to display to the user after
+ * they finish typing in the search field or when they execute a search in the search page.
  * @param cards
+ * @param limit whether to retrieve a limited amount or retrieve everything.
+ * The total amount will be counted no matter what. Defaults to ``true``.
  * @returns
  */
-export function retrieveCardsForDisplay(cards: YugiohCard[]): YugiohCardSearchResultsDisplay {
+export function retrieveCardsForDisplay(
+  cards: YugiohCard[],
+  limit = true,
+): YugiohCardSearchResultsDisplay {
   let count = 0;
   const results: YugiohCardSearchResults[] = [];
   for (const card of cards) {
     for (const c of card.card_in_sets) {
-      if (count < searchRules.maxSearchFieldDisplayResults) {
+      if (limit) {
+        if (count < searchRules.maxSearchFieldDisplayResults) {
+          const result = constructResult(c, card.card_name);
+
+          results.push(result);
+        }
+      } else {
         const result = constructResult(c, card.card_name);
 
         results.push(result);
