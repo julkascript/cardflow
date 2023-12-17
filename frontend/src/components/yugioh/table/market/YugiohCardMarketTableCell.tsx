@@ -2,7 +2,7 @@ import { Link } from '@mui/material';
 import YugiohCardConditionLabel from '../../YugiohCardConditionLabel';
 import YugiohSellerRankBadge from '../../seller/YugiohSellerRankBadge';
 import YugiohSellerRankLabel from '../../seller/YugiohSellerRankLabel';
-import AddToCardButton from './AddToCardButton';
+import AddToCartButton from './AddToCartButton';
 import YugiohCardQuantityField from './YugiohCardQuantityField';
 
 function YugiohCardMarketTableCell(): JSX.Element {
@@ -40,7 +40,7 @@ function YugiohCardMarketTableCell(): JSX.Element {
         <YugiohCardQuantityField />
       </td>
       <td>
-        <AddToCardButton />
+        <AddToCartButton />
       </td>
     </tr>
   );
