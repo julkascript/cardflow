@@ -15,8 +15,12 @@ function SearchField(): JSX.Element {
     if (searchQuery) {
       navigate('/search/' + searchQuery);
       setSearchQuery('');
-      setSearchResults({ results: [], total: 0 });
+      clear();
     }
+  }
+
+  function clear() {
+    setSearchResults({ results: [], total: 0 });
   }
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<YugiohCardSearchResultsDisplay>({
@@ -39,12 +43,12 @@ function SearchField(): JSX.Element {
     if (value) {
       debouncedRetrieve();
     } else {
-      setSearchResults({ results: [], total: 0 });
+      clear();
     }
   }
 
   return (
-    <ClickAwayListener onClickAway={() => setSearchResults({ total: 0, results: [] })}>
+    <ClickAwayListener onClickAway={clear}>
       <form onSubmit={search} className="relative z-50000">
         <TextField
           placeholder={'Type "/" to search'}
@@ -57,11 +61,7 @@ function SearchField(): JSX.Element {
           }}
         />
         <div>
-          <SearchResultsDisplay
-            onClose={() => setSearchResults({ results: [], total: 0 })}
-            results={searchResults}
-            query={searchQuery}
-          />
+          <SearchResultsDisplay onClose={clear} results={searchResults} query={searchQuery} />
         </div>
       </form>
     </ClickAwayListener>
