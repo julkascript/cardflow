@@ -9,6 +9,7 @@ import { searchRules } from '../../constants/searchRules';
 type SearchResultsDisplayProps = {
   results: YugiohCardSearchResultsDisplay;
   query: string;
+  onClose: () => void;
 };
 
 function SearchResultsDisplay(props: SearchResultsDisplayProps): JSX.Element {
@@ -28,19 +29,24 @@ function SearchResultsDisplay(props: SearchResultsDisplayProps): JSX.Element {
       }}
     >
       {results.map((r) => (
-        <SearchResultItem key={r.card.card_in_set_id} data={r} />
+        <SearchResultItem onClose={props.onClose} key={r.card.card_in_set_id} data={r} />
       ))}
-      <BottomDisplayText results={props.results} query={props.query}></BottomDisplayText>
+      <BottomDisplayText
+        onClose={props.onClose}
+        results={props.results}
+        query={props.query}
+      ></BottomDisplayText>
     </List>
   );
 }
 
 type SearchResultItemProps = {
   data: YugiohCardSearchResults;
+  onClose: () => void;
 };
 
 function SearchResultItem(props: SearchResultItemProps): JSX.Element {
-  const { data } = props;
+  const { data, onClose } = props;
   return (
     <ListItemButton
       sx={{
@@ -49,6 +55,7 @@ function SearchResultItem(props: SearchResultItemProps): JSX.Element {
         },
       }}
       href={`/details/yugioh/${data.card.card_in_set_id}`}
+      onClick={onClose}
     >
       <ListItemIcon sx={{ color: 'black' }}>
         <CameraAltIcon />
@@ -76,6 +83,7 @@ function BottomDisplayText(props: SearchResultsDisplayProps) {
       dense
       className="w-full"
       href={`/search/${props.query}`}
+      onClick={props.onClose}
     >
       <Typography fontSize={10} className="text-center w-full" color="text.secondary">
         Show all ({total} results)

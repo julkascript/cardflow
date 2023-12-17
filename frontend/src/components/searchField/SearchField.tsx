@@ -57,7 +57,11 @@ function SearchField(): JSX.Element {
           }}
         />
         <div>
-          <SearchResultsDisplay results={searchResults} query={searchQuery} />
+          <SearchResultsDisplay
+            onClose={() => setSearchResults({ results: [], total: 0 })}
+            results={searchResults}
+            query={searchQuery}
+          />
         </div>
       </form>
     </ClickAwayListener>
