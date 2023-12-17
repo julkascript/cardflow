@@ -75,7 +75,7 @@ function BottomDisplayText(props: SearchResultsDisplayProps) {
       sx={{ marginBottom: 0, borderTop: '1px solid rgb(229, 231, 235)' }}
       dense
       className="w-full"
-      href={`/search?name=${props.query}`}
+      href={`/search/${props.query}`}
     >
       <Typography fontSize={10} className="text-center w-full" color="text.secondary">
         Show all ({total} results)

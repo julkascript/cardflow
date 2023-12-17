@@ -8,6 +8,8 @@ import Home from '../pages/Home';
 import { authorizedGuard } from './authorizedGuard/authorizedGuard';
 import YugiohCardDetails from '../pages/yugioh/YugiohCardDetails';
 import { loadCardDetails } from './loadCardDetails/loadCardDetails';
+import Search from '../pages/Search';
+import { loadSearchResults } from './loadSearchResults/loadSearchResults';
 
 const routes = createBrowserRouter([
   {
@@ -24,6 +26,11 @@ const routes = createBrowserRouter([
         path: '/protected',
         element: <h1>Protected route</h1>,
         loader: authorizedGuard,
+      },
+      {
+        path: '/search/:query',
+        element: <Search />,
+        loader: loadSearchResults,
       },
       {
         path: '/user/:username',
