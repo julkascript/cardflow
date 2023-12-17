@@ -73,8 +73,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <Navigation />
-        <main></main>
-        <main>
+        <main className="min-h-full">
           <Outlet />
         </main>
       </ThemeProvider>

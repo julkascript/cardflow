@@ -39,7 +39,7 @@ function SearchField(): JSX.Element {
 
   return (
     <ClickAwayListener onClickAway={() => setSearchResults({ total: 0, results: [] })}>
-      <form onSubmit={search} className="relative z-0">
+      <form onSubmit={search} className="relative z-50000">
         <TextField
           placeholder={'Type "/" to search'}
           onChange={updateField}

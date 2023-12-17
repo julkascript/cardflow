@@ -1,21 +1,52 @@
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router-dom';
 import { CardSearchLoader } from '../services/yugioh/types';
 import PageHeader from '../components/PageHeader';
 import MarketTable from '../components/marketTable/MarketTable';
 import { retrieveCardsForDisplay } from '../components/searchField/retrieveCardsForDisplay/retrieveCardsForDisplay';
-import { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 import SearchTableRow from '../components/search/SearchTableRow';
+import { TextField } from '@mui/material';
+import SearchButton from '../components/navigation/desktop/buttons/SearchButton';
+import { yugiohService } from '../services/yugioh/yugiohService';
 
 function Search(): JSX.Element {
   const data: CardSearchLoader = useLoaderData() as CardSearchLoader;
-  const cards = data.cards;
+  const params = useParams();
+  const [cards, setCards] = useState(data.cards);
+  const [searchQuery, setSearchQuery] = useState(params.query || '');
   const searchResults = useMemo(() => retrieveCardsForDisplay(cards, false), [cards]);
 
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+    setSearchQuery(event.target.value);
+  }
+
+  function handleSubmit(event: React.FormEvent) {
+    event.preventDefault();
+    if (searchQuery) {
+      yugiohService.searchCardsByName(searchQuery).then((res) => setCards(res));
+    } else {
+      setCards([]);
+    }
+  }
   return (
-    <section className="bg-[#F5F5F5] h-full">
+    <section className="bg-[#F5F5F5] min-h-[100vh]">
       <PageHeader heading="Buy / Search" />
-      <div className="flex justify-center">
-        <MarketTable className="text-center w-6/12">
+      <div className="min-h-full flex items-center w-full flex-col gap-4">
+        <form className="w-2/3 bg-white relative z-0" onSubmit={handleSubmit}>
+          <TextField
+            size="small"
+            className="w-full"
+            sx={{ position: 'static' }}
+            value={searchQuery}
+            onChange={handleChange}
+            variant="outlined"
+            InputProps={{
+              startAdornment: <SearchButton />,
+            }}
+          />
+        </form>
+        <MarketTable className="text-center w-2/3 bg-white border">
           <thead>
             <tr>
               <th style={{ textAlign: 'center' }} colSpan={3}>

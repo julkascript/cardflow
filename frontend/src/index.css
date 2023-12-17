@@ -2,12 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+body, html {
+  min-height: 100%;
   position: relative;
-  z-index: -1;
-  height: 100%;
-}
-
-html {
-  height: 100%;
+  z-index: 1;
 }
