@@ -2,12 +2,30 @@ import { Button } from '@mui/material';
 import Logo from '../components/logo/Logo';
 import { useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { useAuthenticationStatus, useCurrentUser } from '../context/user';
+import { userService } from '../services/user/user';
+import { useEffect } from 'react';
 
 function Home(): JSX.Element {
   const theme = useTheme();
   const secondary = theme.palette.grey['900'];
   const secondaryTextColor = theme.palette.text.secondary;
   const navigate = useNavigate();
+  const { setUser } = useCurrentUser();
+  const { isAuthenticated } = useAuthenticationStatus();
+  useEffect(() => {
+    const initializeAuth = async () => {
+      const refreshToken = localStorage.getItem('refreshToken');
+      if (refreshToken) {
+        const accessToken = await userService.verifySession(refreshToken);
+        const user = userService.extractUserFromToken(accessToken);
+        setUser(user);
+      }
+    };
+
+    initializeAuth();
+  }, [setUser]);
+
   return (
     <div className="flex justify-center items-center flex-col">
       <div className="flex">
@@ -37,20 +55,23 @@ function Home(): JSX.Element {
           </Button>
         </div>
         <div>
-          <Button
-            onClick={() => navigate('/login')}
-            color="secondary"
-            variant="contained"
-            sx={{
-              fontWeight: 'bold',
-              backgroundColor: 'white',
-              width: 210,
-              padding: '10px',
-              textTransform: 'none',
-            }}
-          >
-            Sign In
-          </Button>
+          {!isAuthenticated && (
+            <Button
+              onClick={() => navigate('/login')}
+              color="secondary"
+              variant="contained"
+              sx={{
+                fontWeight: 'bold',
+                backgroundColor: 'white',
+                color: '#666666',
+                width: 210,
+                padding: '10px',
+                textTransform: 'none',
+              }}
+            >
+              Sign In
+            </Button>
+          )}
         </div>
       </div>
     </div>

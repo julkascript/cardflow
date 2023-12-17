@@ -14,6 +14,13 @@ type ErrorProps = {
 };
 
 const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
+  async function authenticaticateUser(loginData: UserLogin) {
+    const data = await userService.login(loginData);
+    localStorage.setItem('accessToken', data.access);
+    localStorage.setItem('refreshToken', data.refresh);
+    navigate('/');
+  }
+
   function validate(isLogin: boolean) {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
     if (passwordRef.current === null || passwordRef.current!.value.trim() === '') {
@@ -43,13 +50,12 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     event.preventDefault();
     validate(isLogin);
     try {
+      const loginData: UserLogin = {
+        username: usernameRef.current!.value,
+        password: passwordRef.current!.value,
+      };
       if (isLogin) {
-        const formData: UserLogin = {
-          username: usernameRef.current!.value,
-          password: passwordRef.current!.value,
-        };
-        await userService.login(formData);
-        navigate('/');
+        authenticaticateUser(loginData);
       } else {
         const formData: UserRegister = {
           email: emailRef.current!.value,
@@ -57,7 +63,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
           username: usernameRef.current!.value,
         };
         await userService.register(formData);
-        navigate('/login');
+        authenticaticateUser(loginData);
       }
     } catch (error: any) {
       const data = await error.err.json();
