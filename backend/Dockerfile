@@ -22,4 +22,5 @@ COPY ./ .
 RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh
 RUN chmod +x /usr/src/app/entrypoint.sh
 
-ENTRYPOINT ["/usr/src/app/entrypoint.sh"]
+CMD ["sh", "entrypoint.sh"]
+# CMD ["tail", "-f", "/dev/null"]
