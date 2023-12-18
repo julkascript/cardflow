@@ -20,6 +20,8 @@ class ListingViewSet(viewsets.ModelViewSet):
     - To perform listing search by 'is_listed' use base endpoint with ?is_listed=true/false parameter.
     - To perform listing search for specific user use base endpoint with ?user_id=<user_id> parameter.
     - To perform PUT or PATCH use base endpoint with /<listing_id> parameter.
+    - To perform DELETE use base endpoint with /<listing_id> parameter.
+    - For pagination use the following format: http://127.0.0.1:8000/api/listing/?page=2
     """
 
     queryset = Listing.objects.all().order_by('id')
