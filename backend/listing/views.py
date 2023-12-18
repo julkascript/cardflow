@@ -26,6 +26,13 @@ class ListingViewSet(viewsets.ModelViewSet):
     filter_backends = [DjangoFilterBackend]
     filterset_class = ListingFilter
 
+    def get_permissions(self):
+
+        if self.request.method in ['GET']:
+            return [permissions.AllowAny()]
+
+        return [IsOwner()]
+
     def get_queryset(self):
 
         user = self.request.query_params.get('user_id', None)
