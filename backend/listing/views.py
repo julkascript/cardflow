@@ -2,7 +2,6 @@ from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
 from rest_framework import permissions
-from rest_framework.decorators import action
 
 from .filters import ListingFilter
 from .models import Listing
@@ -31,7 +30,7 @@ class ListingViewSet(viewsets.ModelViewSet):
         if self.request.method in ['GET']:
             return [permissions.AllowAny()]
 
-        return [IsOwner()]
+        return [IsOwner(), permissions.IsAuthenticated()]
 
     def get_queryset(self):
 
