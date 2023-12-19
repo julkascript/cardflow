@@ -134,7 +134,7 @@ class PrivateListingApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_200_OK)
         self.assertEqual(res.data, serializer.data)
 
-    def test_create_listing(self):
+    def test_create_listing_from_authorized_user(self):
         payload = {
             'user': self.user.id,
             'card': self.yugioh_card_in_set.id,
@@ -150,6 +150,23 @@ class PrivateListingApiTests(TestCase):
         self.assertEqual(res.status_code, status.HTTP_201_CREATED)
         self.assertEqual(res.data['user'], self.user.id)
         self.assertEqual(res.data['card'], self.yugioh_card_in_set.id)
+
+    def create_listing_from_unauthorized_user_error(self):
+        self.client.force_authenticate(user=None)
+
+        payload = {
+            'user': self.user.id,
+            'card': self.yugioh_card_in_set.id,
+            'price': 10.00,
+            'condition': "poor",
+            'quantity': 1,
+            'is_listed': True,
+            'is_sold': False,
+        }
+
+        res = self.client.post(LISTING_URL, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_update_listing(self):
         listing = create_listing(user=self.user, card=self.yugioh_card_in_set)
@@ -223,7 +240,7 @@ class PrivateListingApiTests(TestCase):
     def test_unauthorized_listing_update_error(self):
         listing = create_listing(user=self.user, card=self.yugioh_card_in_set)
 
-        self.client.logout()
+        self.client.force_authenticate(user=None)
 
         payload = {
             'user': self.user.id,
@@ -243,7 +260,7 @@ class PrivateListingApiTests(TestCase):
     def test_unauthorized_listing_delete_error(self):
         listing = create_listing(user=self.user, card=self.yugioh_card_in_set)
 
-        self.client.logout()
+        self.client.force_authenticate(user=None)
 
         url = detail_url(listing.id)
         res = self.client.delete(url)
