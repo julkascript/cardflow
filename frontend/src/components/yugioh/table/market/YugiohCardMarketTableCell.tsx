@@ -4,8 +4,13 @@ import YugiohSellerRankBadge from '../../seller/YugiohSellerRankBadge';
 import YugiohSellerRankLabel from '../../seller/YugiohSellerRankLabel';
 import AddToCartButton from './AddToCartButton';
 import YugiohCardQuantityField from './YugiohCardQuantityField';
+import { YugiohCardListing } from '../../../../services/yugioh/types';
 
-function YugiohCardMarketTableCell(): JSX.Element {
+type YugiohCardMarketTableCellProps = {
+  listing: YugiohCardListing;
+};
+
+function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.Element {
   return (
     <tr>
       <td className="text-center w-16">
@@ -21,11 +26,11 @@ function YugiohCardMarketTableCell(): JSX.Element {
           href="/user/Filip01"
           underline="hover"
         >
-          Filip01
+          {props.listing.user_name}
         </Link>
       </td>
       <td className="w-[50px]">
-        <YugiohCardConditionLabel className="w-[110px]" condition="excellent" />
+        <YugiohCardConditionLabel className="w-[110px]" condition={props.listing.condition} />
       </td>
       <td className="text-center">
         <img
@@ -34,10 +39,10 @@ function YugiohCardMarketTableCell(): JSX.Element {
         />
         <br />
       </td>
-      <td className="text-center text-xl p-1">5</td>
-      <td className="font-bold text-xl w-[200px]">$&nbsp;0.02</td>
+      <td className="text-center text-xl p-1">{props.listing.quantity}</td>
+      <td className="font-bold text-xl w-[200px]">$&nbsp;{props.listing.price}</td>
       <td className="w-1">
-        <YugiohCardQuantityField />
+        <YugiohCardQuantityField quantity={props.listing.quantity} />
       </td>
       <td>
         <AddToCartButton />

@@ -1,7 +1,12 @@
+import { YugiohCardListing } from '../../../../services/yugioh/types';
 import MarketTable from '../../../marketTable/MarketTable';
 import YugiohCardMarketTableCell from './YugiohCardMarketTableCell';
 
-function YugiohCardMarket(): JSX.Element {
+type YugiohCardMarketProps = {
+  listings: YugiohCardListing[];
+};
+
+function YugiohCardMarket(props: YugiohCardMarketProps): JSX.Element {
   return (
     <div className="flex flex-col md:items-center justify-center overflow-auto">
       <MarketTable className="w-11/12 md:w-full lg:w-5/6 mb-12">
@@ -14,10 +19,9 @@ function YugiohCardMarket(): JSX.Element {
           </tr>
         </thead>
         <tbody>
-          <YugiohCardMarketTableCell />
-          <YugiohCardMarketTableCell />
-          <YugiohCardMarketTableCell />
-          <YugiohCardMarketTableCell />
+          {props.listings.map((l) => (
+            <YugiohCardMarketTableCell key={l.id} listing={l} />
+          ))}
         </tbody>
       </MarketTable>
     </div>
