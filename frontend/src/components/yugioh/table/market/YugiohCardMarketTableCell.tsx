@@ -23,7 +23,7 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
         <Link
           sx={{ color: '#0B70E5' }}
           className="font-bold"
-          href="/user/Filip01"
+          href={`/user/${props.listing.user_name}`}
           underline="hover"
         >
           {props.listing.user_name}
