@@ -12,14 +12,20 @@ export const yugiohService = {
     id: number,
     page?: number,
   ): Promise<PaginatedItem<YugiohCardListing>> {
+    const query: any = {
+      is_sold: false,
+      is_listed: true,
+      card_set_id: id, // TO-DO: change query if backend uses something else
+    };
+
+    if (page) {
+      query.page = page;
+    }
+
+    // TO-DO: change endpoint if backend implements a different one
     const listings = await httpService.get<PaginatedItem<YugiohCardListing>>(
       api.yugioh.listing.root,
-      {
-        is_sold: false,
-        is_listed: true,
-        page,
-        card_set_id: id, // TO-DO: change query if backend uses something else
-      },
+      query,
     );
 
     return listings!;
