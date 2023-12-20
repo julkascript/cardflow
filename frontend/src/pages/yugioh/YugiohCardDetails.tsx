@@ -7,7 +7,7 @@ import { CardDetailsLoaderData } from '../../services/yugioh/types';
 
 function YugiohCardDetails(): JSX.Element {
   const data = useLoaderData() as CardDetailsLoaderData;
-  const { cardInSet } = data;
+  const { cardInSet, cardListings } = data;
 
   return (
     <section className="bg-[#F5F5F5]">
@@ -16,7 +16,7 @@ function YugiohCardDetails(): JSX.Element {
         <YugiohCardImage src={cardInSet.yugioh_card.image} />
         <YugiohCardDetailsTable cardInSet={cardInSet} />
       </div>
-      <YugiohCardMarket />
+      <YugiohCardMarket listings={cardListings.results} />
     </section>
   );
 }

@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { httpService } from '../http/http';
-import { YugiohCardInSet } from './types';
+import { PaginatedItem, YugiohCardInSet, YugiohCardListing } from './types';
 import { yugiohService } from './yugiohService';
 
 describe('yugiohService', () => {
@@ -38,6 +38,22 @@ describe('yugiohService', () => {
 
       const result = await yugiohService.getCardInSetById(1);
       expect(result).toEqual(sampleCardInSet);
+    });
+  });
+
+  describe('getCardListingsByCardSetId', () => {
+    it('returns data successfully', async () => {
+      const sampleListing: PaginatedItem<YugiohCardListing> = {
+        count: 15,
+        next: null,
+        previous: null,
+        results: [],
+      };
+
+      vi.spyOn(httpService, 'get').mockResolvedValueOnce(sampleListing);
+
+      const result = await yugiohService.getCardListingsByCardSetId(1, 1);
+      expect(result).toEqual(sampleListing);
     });
   });
 });

@@ -13,8 +13,6 @@ export const api = Object.freeze({
   yugioh: {
     listing: {
       root: listing,
-
-      /** listing/{insert_your_id} */
       id: (id: number | string) => `${listing}/${id}`,
     },
     cardInSet: {

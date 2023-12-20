@@ -18,5 +18,7 @@ export async function loadCardDetails({
   }
 
   const cardInSet = await yugiohService.getCardInSetById(id);
-  return { cardInSet };
+  const listings = await yugiohService.getCardListingsByCardSetId(id);
+
+  return { cardInSet, cardListings: listings };
 }

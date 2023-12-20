@@ -83,4 +83,5 @@ export type YugiohCardInSet = {
  */
 export type CardDetailsLoaderData = {
   cardInSet: YugiohCardInSet;
+  cardListings: PaginatedItem<YugiohCardListing>;
 };
