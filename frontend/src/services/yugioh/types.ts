@@ -1,5 +1,12 @@
 export type condition = 'poor' | 'played' | 'good' | 'excellent';
 
+export type PaginatedItem<T> = {
+  count: number;
+  next: string | null;
+  previous: string | null;
+  results: T[];
+};
+
 export type YugiohSet = {
   id: number;
   card_set_name: string;
