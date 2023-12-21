@@ -189,55 +189,7 @@ class PrivateListingApiTests(TestCase):
         self.assertEqual(res.data['price'], 5.00)
         self.assertEqual(res.data['condition'], "good")
 
-    def test_delete_listing(self):
-        listing = create_listing(user=self.user, card=self.yugioh_card_in_set)
-
-        url = detail_url(listing.id)
-        res = self.client.delete(url)
-
-        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
-
-    def test_listing_another_user_update_error(self):
-
-        other_user = create_user(
-            username='otheruser',
-            email='other@x.com',
-            password='12345',
-        )
-
-        listing = create_listing(user=other_user, card=self.yugioh_card_in_set)
-
-        payload = {
-            'user': self.user.id,
-            'card': self.yugioh_card_in_set.id,
-            'price': 5.00,
-            'condition': "good",
-            'quantity': 1,
-            'is_listed': True,
-            'is_sold': False,
-        }
-
-        url = detail_url(listing.id)
-        res = self.client.put(url, payload)
-
-        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
-
-    def test_listing_another_user_delete_error(self):
-
-        other_user = create_user(
-            username='otheruser',
-            email='other@x.com',
-            password='12345',
-        )
-
-        listing = create_listing(user=other_user, card=self.yugioh_card_in_set)
-
-        url = detail_url(listing.id)
-        res = self.client.delete(url)
-
-        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
-
-    def test_unauthorized_listing_update_error(self):
+    def test_update_listing_unauthorized_user_error(self):
         listing = create_listing(user=self.user, card=self.yugioh_card_in_set)
 
         self.client.force_authenticate(user=None)
@@ -256,6 +208,54 @@ class PrivateListingApiTests(TestCase):
         res = self.client.put(url, payload)
 
         self.assertEqual(res.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_listing_none_owner_user_update_error(self):
+
+        other_user = create_user(
+            username='otheruser',
+            email='other@x.com',
+            password='12345',
+        )
+
+        listing = create_listing(user=other_user, card=self.yugioh_card_in_set)
+
+        payload = {
+            'user': self.user.id,
+            'card': self.yugioh_card_in_set.id,
+            'price': 5.00,
+            'condition': "good",
+            'quantity': 1,
+            'is_listed': True,
+            'is_sold': False,
+        }
+
+        url = detail_url(listing.id)
+        res = self.client.put(url, payload)
+
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
+
+    def test_delete_listing(self):
+        listing = create_listing(user=self.user, card=self.yugioh_card_in_set)
+
+        url = detail_url(listing.id)
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_204_NO_CONTENT)
+
+    def test_listing_none_owner_user_delete_error(self):
+
+        other_user = create_user(
+            username='otheruser',
+            email='other@x.com',
+            password='12345',
+        )
+
+        listing = create_listing(user=other_user, card=self.yugioh_card_in_set)
+
+        url = detail_url(listing.id)
+        res = self.client.delete(url)
+
+        self.assertEqual(res.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_unauthorized_listing_delete_error(self):
         listing = create_listing(user=self.user, card=self.yugioh_card_in_set)
