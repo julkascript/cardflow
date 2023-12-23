@@ -16,6 +16,23 @@ class ListingFilter(filters.FilterSet):
         label='Search by is_sold (true or false)'
     )
 
+    card_in_set_id = filters.NumberFilter(
+
+        field_name='card',
+        lookup_expr='exact',
+        label='Search by card_set_id'
+    )
+
     class Meta:
         model = Listing
-        fields = ['is_listed', 'is_sold']
+        fields = ['card', 'is_listed', 'is_sold']
+
+    @property
+    def qs(self):
+        request = self.request
+        card_in_set_param = request.query_params.get('card_in_set_id', None)
+
+        if card_in_set_param:
+            return super().qs.filter(is_listed=True)
+
+        return super().qs
