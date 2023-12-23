@@ -1,13 +1,26 @@
-import { useLoaderData } from 'react-router-dom';
+import { useLoaderData, useParams } from 'react-router-dom';
 import PageHeader from '../../components/PageHeader';
 import YugiohCardImage from '../../components/yugioh/YugiohCardImage';
 import YugiohCardDetailsTable from '../../components/yugioh/table/YugiohCardDetailsTable';
 import YugiohCardMarket from '../../components/yugioh/table/market/YugiohCardMarket';
 import { CardDetailsLoaderData } from '../../services/yugioh/types';
+import { useState } from 'react';
+import { Pagination } from '@mui/material';
+import { yugiohService } from '../../services/yugioh/yugiohService';
 
 function YugiohCardDetails(): JSX.Element {
   const data = useLoaderData() as CardDetailsLoaderData;
-  const { cardInSet, cardListings } = data;
+  const params = useParams();
+  const { cardInSet, cardListings: cardListingsData } = data;
+  const [cardListings, setCardListings] = useState(cardListingsData);
+  const pages = Math.ceil(cardListings.count / 10);
+
+  function changePage(event: React.ChangeEvent<unknown>, page: number) {
+    yugiohService
+      .getCardListingsByCardSetId(Number(params.id), page)
+      .then((data) => setCardListings(data))
+      .catch(() => {}); // TO-DO: implement feedback for failed requests.
+  }
 
   return (
     <section className="bg-[#F5F5F5]">
@@ -17,6 +30,7 @@ function YugiohCardDetails(): JSX.Element {
         <YugiohCardDetailsTable cardInSet={cardInSet} />
       </div>
       <YugiohCardMarket listings={cardListings.results} />
+      <Pagination className="flex justify-center pb-8" count={pages} onChange={changePage} />
     </section>
   );
 }
