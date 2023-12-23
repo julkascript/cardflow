@@ -15,7 +15,7 @@ function YugiohCardDetails(): JSX.Element {
   const [cardListings, setCardListings] = useState(cardListingsData);
   const pages = Math.ceil(cardListings.count / 10);
 
-  function changePage(event: React.ChangeEvent<unknown>, page: number) {
+  function changePage(_event: React.ChangeEvent<unknown>, page: number) {
     yugiohService
       .getCardListingsByCardSetId(Number(params.id), page)
       .then((data) => setCardListings(data))
