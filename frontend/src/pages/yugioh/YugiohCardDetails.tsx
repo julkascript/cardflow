@@ -18,7 +18,7 @@ function YugiohCardDetails(): JSX.Element {
   function changePage(_event: React.ChangeEvent<unknown>, page: number) {
     yugiohService
       .getCardListingsByCardSetId(Number(params.id), page)
-      .then((data) => setCardListings(data))
+      .then(setCardListings)
       .catch(() => {}); // TO-DO: implement feedback for failed requests.
   }
 
