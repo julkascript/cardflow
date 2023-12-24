@@ -4,9 +4,10 @@ import YugiohCardImage from '../../components/yugioh/YugiohCardImage';
 import YugiohCardDetailsTable from '../../components/yugioh/table/YugiohCardDetailsTable';
 import YugiohCardMarket from '../../components/yugioh/table/market/YugiohCardMarket';
 import { CardDetailsLoaderData } from '../../services/yugioh/types';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Pagination } from '@mui/material';
 import { yugiohService } from '../../services/yugioh/yugiohService';
+import { useEffectAfterInitialLoad } from '../../util/useEffectAfterInitialLoad';
 
 function YugiohCardDetails(): JSX.Element {
   const data = useLoaderData() as CardDetailsLoaderData;
@@ -15,7 +16,6 @@ function YugiohCardDetails(): JSX.Element {
   const [cardListings, setCardListings] = useState(cardListingsData);
   const pages = Math.ceil(cardListings.count / 10);
 
-  const [pastInitialLoad, setPastInitialLoad] = useState(false);
   const [page, setPage] = useState(1);
 
   function changePage(_event: React.ChangeEvent<unknown>, page: number) {
@@ -28,13 +28,9 @@ function YugiohCardDetails(): JSX.Element {
       .catch(() => {}); // TO-DO: implement feedback for failed requests.
   }
 
-  useEffect(() => {
-    if (pastInitialLoad) {
-      yugiohService.getCardListingsByCardSetId(Number(params.id)).then(setCardListings).catch();
-      setPage(1);
-    }
-
-    setPastInitialLoad(true);
+  useEffectAfterInitialLoad(() => {
+    yugiohService.getCardListingsByCardSetId(Number(params.id)).then(setCardListings).catch();
+    setPage(1);
   }, [params.id]);
 
   return (
