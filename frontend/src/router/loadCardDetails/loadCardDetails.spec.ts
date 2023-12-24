@@ -1,7 +1,7 @@
 import { describe, it, expect, vi } from 'vitest';
 import { loadCardDetails } from './loadCardDetails';
 import { yugiohService } from '../../services/yugioh/yugiohService';
-import { YugiohCardInSet } from '../../services/yugioh/types';
+import { PaginatedItem, YugiohCardInSet, YugiohCardListing } from '../../services/yugioh/types';
 
 describe('loadCardDetails', () => {
   it('Throws an error if the ID is invalid', async () => {
@@ -45,9 +45,16 @@ describe('loadCardDetails', () => {
       },
     };
 
-    vi.spyOn(yugiohService, 'getCardInSetById').mockResolvedValueOnce(sampleCardInSet);
+    const sampleListing: PaginatedItem<YugiohCardListing> = {
+      count: 1,
+      next: null,
+      previous: null,
+      results: [],
+    };
 
+    vi.spyOn(yugiohService, 'getCardInSetById').mockResolvedValueOnce(sampleCardInSet);
+    vi.spyOn(yugiohService, 'getCardListingsByCardSetId').mockResolvedValueOnce(sampleListing);
     const result = await loadCardDetails({ params: { id: '1' } });
-    expect(result).toEqual({ cardInSet: sampleCardInSet });
+    expect(result).toEqual({ cardInSet: sampleCardInSet, cardListings: sampleListing });
   });
 });

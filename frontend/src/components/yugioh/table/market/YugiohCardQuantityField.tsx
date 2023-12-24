@@ -1,7 +1,11 @@
 import { useTheme } from '@mui/material';
 import { ChangeEvent, useState } from 'react';
 
-function YugiohCardQuantityField(): JSX.Element {
+type YugiohCardQuantityFieldProps = {
+  quantity: number;
+};
+
+function YugiohCardQuantityField(props: YugiohCardQuantityFieldProps): JSX.Element {
   const [quantity, setQuantity] = useState(1);
   const theme = useTheme();
   const secondary = theme.palette.secondary.main;
@@ -9,13 +13,13 @@ function YugiohCardQuantityField(): JSX.Element {
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     const value = Number(event.target.value);
-    if (value > 0) {
+    if (value > 0 && value <= props.quantity) {
       setQuantity(value);
     }
   }
   return (
     <input
-      className="p-2 w-16 h-12 text-center border rounded-sm"
+      className="p-1 w-16 h-10 text-center border rounded-sm"
       style={{ borderColor: secondary }}
       type="number"
       onChange={handleChange}

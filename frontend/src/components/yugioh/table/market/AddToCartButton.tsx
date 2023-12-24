@@ -15,7 +15,7 @@ function AddToCardButton(): JSX.Element {
       }}
       aria-label="Add to cart"
       size="small"
-      className="border h-12 w-14"
+      className="border h-10 w-14"
     >
       <ShoppingCartIcon />
     </Button>

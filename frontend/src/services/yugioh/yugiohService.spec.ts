@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { httpService } from '../http/http';
-import { YugiohCard, YugiohCardInSet } from './types';
+import { PaginatedItem, YugiohCardInSet, YugiohCardListing } from './types';
 import { yugiohService } from './yugiohService';
 
 describe('yugiohService', () => {
@@ -41,28 +41,19 @@ describe('yugiohService', () => {
     });
   });
 
-  describe('searchCardsByName', () => {
+  describe('getCardListingsByCardSetId', () => {
     it('returns data successfully', async () => {
-      const sampleCard: YugiohCard = {
-        id: 3,
-        card_name: 'test',
-        type: '',
-        frame_type: '',
-        description: '',
-        attack: '',
-        defense: '',
-        level: '',
-        race: '',
-        attribute: '',
-        archetype: '',
-        image: '',
-        card_in_sets: [],
+      const sampleListing: PaginatedItem<YugiohCardListing> = {
+        count: 15,
+        next: null,
+        previous: null,
+        results: [],
       };
 
-      vi.spyOn(httpService, 'get').mockResolvedValueOnce([sampleCard]);
+      vi.spyOn(httpService, 'get').mockResolvedValueOnce(sampleListing);
 
-      const result = await yugiohService.searchCardsByName('test');
-      expect(result).toEqual([sampleCard]);
+      const result = await yugiohService.getCardListingsByCardSetId(1, 1);
+      expect(result).toEqual(sampleListing);
     });
   });
 });
