@@ -6,6 +6,8 @@ from accounts.views import RegistrationView, MyTokenObtainPairView
 
 router = DefaultRouter()
 
+app_name = 'accounts'
+
 router.register('register', RegistrationView, basename='register')
 
 urlpatterns = [
