@@ -13,8 +13,8 @@ function ProfileSettingsPage(): JSX.Element {
     <ProfilePage className="bg-[#F5F5F5]">
       <div className="flex flex-col gap-8">
         <AvatarSettings />
-        <UsernameSettings key={user.username} username={user.username} />
-        <EmailSettings key={user.email} email={user.email} />
+        <UsernameSettings key={user.username + '1'} username={user.username} />
+        <EmailSettings key={user.email + '2'} email={user.email} />
         <ShipmentAddressSettings />
         <DeleteAccount />
       </div>

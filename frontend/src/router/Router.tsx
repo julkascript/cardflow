@@ -8,6 +8,8 @@ import Home from '../pages/Home';
 import { authorizedGuard } from './authorizedGuard/authorizedGuard';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
+import YugiohCardDetails from '../pages/yugioh/YugiohCardDetails';
+import { loadCardDetails } from './loadCardDetails/loadCardDetails';
 
 const routes = createBrowserRouter([
   {
@@ -49,6 +51,21 @@ const routes = createBrowserRouter([
           {
             path: 'blog',
             element: <ProfilePagePlaceholder />,
+          },
+        ],
+      },
+      {
+        path: 'details',
+        children: [
+          {
+            path: 'yugioh',
+            children: [
+              {
+                path: ':id',
+                loader: loadCardDetails,
+                element: <YugiohCardDetails />,
+              },
+            ],
           },
         ],
       },

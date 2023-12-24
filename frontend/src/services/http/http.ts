@@ -17,27 +17,37 @@ type method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
  * other response status code, an ``HttpError`` with the response is thrown.
  */
 export const httpService = {
-  get<TResponseBody>(url: string) {
-    return request<TResponseBody>('GET', url);
+  get<TResponseBody>(url: string, params?: object) {
+    return request<TResponseBody>('GET', url, undefined, params);
   },
-  post<TResponseBody>(url: string, body?: any) {
-    return request<TResponseBody>('POST', url, body);
+  post<TResponseBody>(url: string, body?: any, params?: object) {
+    return request<TResponseBody>('POST', url, body, params);
   },
-  put<TResponseBody>(url: string, body?: any) {
-    return request<TResponseBody>('PUT', url, body);
+  put<TResponseBody>(url: string, body?: any, params?: object) {
+    return request<TResponseBody>('PUT', url, body, params);
   },
-  patch<TResponseBody>(url: string, body?: any) {
-    return request<TResponseBody>('PATCH', url, body);
+  patch<TResponseBody>(url: string, body?: any, params?: object) {
+    return request<TResponseBody>('PATCH', url, body, params);
   },
-  del<TResponseBody>(url: string) {
-    return request<TResponseBody>('DELETE', url);
+  del<TResponseBody>(url: string, params?: object) {
+    return request<TResponseBody>('DELETE', url, undefined, params);
   },
 };
+
+function generateQueryStrings(query: object): string {
+  const entries = Object.entries(query);
+  if (entries.length === 0) {
+    return '';
+  }
+
+  return '?' + entries.map((entry) => `${entry[0]}=${entry[1]}`).join('&');
+}
 
 async function request<TResponseBody>(
   method: method,
   url: string,
   body?: any,
+  params?: object,
 ): Promise<TResponseBody | undefined> {
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
@@ -53,6 +63,10 @@ async function request<TResponseBody>(
     method,
     body: body ? JSON.stringify(body) : undefined,
   };
+
+  if (params) {
+    url = url + generateQueryStrings(params);
+  }
 
   let res = await fetch(url, request);
   if (res.status === 204) {
