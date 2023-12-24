@@ -8,6 +8,7 @@ import SearchTableRow from '../components/search/SearchTableRow';
 import { TextField } from '@mui/material';
 import SearchButton from '../components/navigation/desktop/buttons/SearchButton';
 import { yugiohService } from '../services/yugioh/yugiohService';
+import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 
 function Search(): JSX.Element {
   const data: CardSearchLoader = useLoaderData() as CardSearchLoader;
@@ -32,6 +33,17 @@ function Search(): JSX.Element {
       navigate('/search/');
     }
   }
+
+  useEffectAfterInitialLoad(() => {
+    const query = params.query || '';
+    if (query) {
+      yugiohService.searchCardsByName(query).then(setCards);
+    } else {
+      setCards([]);
+    }
+
+    setSearchQuery(query);
+  }, [params.query]);
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <PageHeader heading="Buy / Search" />
