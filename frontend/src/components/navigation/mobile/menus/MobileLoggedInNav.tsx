@@ -12,8 +12,10 @@ import AddIcon from '@mui/icons-material/Add';
 import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import NotificationsIcon from '@mui/icons-material/Notifications';
+import LogoutIcon from '@mui/icons-material/Logout';
 import { useState } from 'react';
 import { useCurrentUser } from '../../../../context/user';
+import { useLogout } from '../../../../util/useLogout';
 
 type NewActionLink = {
   url: string;
@@ -27,6 +29,7 @@ type NewActionLink = {
 function MobileLoggedInNav(): JSX.Element {
   const [expanded, setExpanded] = useState(false);
   const { user } = useCurrentUser();
+  const logout = useLogout();
 
   const actions: NewActionLink[] = [
     {
@@ -78,6 +81,12 @@ function MobileLoggedInNav(): JSX.Element {
           <ListItemText primary="My profile" />
         </ListItemButton>
       </ListItem>
+      <ListItemButton onClick={logout}>
+        <ListItemIcon>
+          <LogoutIcon />
+        </ListItemIcon>
+        <ListItemText primary="Sign Out" />
+      </ListItemButton>
     </>
   );
 }
