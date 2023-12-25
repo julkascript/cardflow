@@ -28,7 +28,7 @@ function Navigation(): JSX.Element {
   }
 
   return (
-    <nav className="flex justify-between p-4 items-center">
+    <nav className="flex justify-between p-4 items-center relative z-5000">
       <Link to="/">
         <Logo size={33} />
       </Link>

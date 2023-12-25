@@ -93,3 +93,17 @@ export type CardDetailsLoaderData = {
   cardInSet: YugiohCardInSet;
   cardListings: PaginatedItem<YugiohCardListing>;
 };
+
+export type YugiohCardSearchResults = {
+  cardName: string;
+  card: YugiohCardSet;
+};
+
+export type YugiohCardSearchResultsDisplay = {
+  total: number;
+  results: YugiohCardSearchResults[];
+};
+
+export type CardSearchLoader = {
+  cards: PaginatedItem<YugiohCardInSet>;
+};

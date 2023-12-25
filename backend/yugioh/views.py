@@ -5,7 +5,7 @@ from rest_framework import permissions
 
 from .models import YugiohCard, YugiohCardInSet
 from .serializers import YugiohCardInSetSerializer, YugiohCardSerializer
-from .filters import YugiohCardFilter
+from .filters import YugiohCardFilter, YugiohCardInSetFilter
 
 
 @extend_schema(tags=['Yu-Gi-Oh Card'])
@@ -34,4 +34,6 @@ class YugiohCardInSetViewSet(viewsets.ModelViewSet):
     serializer_class = YugiohCardInSetSerializer
     permission_classes = [permissions.AllowAny]
     filter_backends = [DjangoFilterBackend]
+    filterset_class = YugiohCardInSetFilter
     http_method_names = ['get']
+
