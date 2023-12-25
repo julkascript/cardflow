@@ -1,7 +1,15 @@
 import { Button } from '@mui/material';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
-function AddToCardButton(): JSX.Element {
+type AddToCartButtonProps = {
+  hidden: boolean;
+  onClick: (event: React.MouseEvent<HTMLButtonElement>) => void;
+};
+
+function AddToCardButton(props: AddToCartButtonProps): JSX.Element {
+  if (props.hidden) {
+    return <div aria-hidden={true} className="h-10 w-14 invisible"></div>;
+  }
   return (
     <Button
       color="success"
@@ -16,6 +24,7 @@ function AddToCardButton(): JSX.Element {
       aria-label="Add to cart"
       size="small"
       className="border h-10 w-14"
+      onClick={props.onClick}
     >
       <ShoppingCartIcon />
     </Button>
