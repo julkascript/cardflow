@@ -84,7 +84,7 @@ function Search(): JSX.Element {
             }}
           />
         </form>
-        <MarketTable className="text-center w-2/3 bg-white border">
+        <MarketTable className="text-center w-full md:w-11/12 lg:w-2/3 bg-white border">
           <thead>
             <tr>
               <th style={{ textAlign: 'center' }} colSpan={3}>
