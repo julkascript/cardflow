@@ -1,20 +1,21 @@
 import { useTheme } from '@mui/material';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 
 type YugiohCardQuantityFieldProps = {
   quantity: number;
+  onChange: (value: number) => void;
+  max: number;
 };
 
 function YugiohCardQuantityField(props: YugiohCardQuantityFieldProps): JSX.Element {
-  const [quantity, setQuantity] = useState(1);
   const theme = useTheme();
   const secondary = theme.palette.secondary.main;
 
   function handleChange(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     const value = Number(event.target.value);
-    if (value > 0 && value <= props.quantity) {
-      setQuantity(value);
+    if (value > 0 && value <= props.max) {
+      props.onChange(value);
     }
   }
   return (
@@ -23,7 +24,7 @@ function YugiohCardQuantityField(props: YugiohCardQuantityFieldProps): JSX.Eleme
       style={{ borderColor: secondary }}
       type="number"
       onChange={handleChange}
-      value={quantity}
+      value={props.quantity}
     />
   );
 }

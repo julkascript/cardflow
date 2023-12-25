@@ -5,12 +5,14 @@ import YugiohSellerRankLabel from '../../seller/YugiohSellerRankLabel';
 import AddToCartButton from './AddToCartButton';
 import YugiohCardQuantityField from './YugiohCardQuantityField';
 import { YugiohCardListing } from '../../../../services/yugioh/types';
+import { useState } from 'react';
 
 type YugiohCardMarketTableCellProps = {
   listing: YugiohCardListing;
 };
 
 function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.Element {
+  const [quantity, setQuantity] = useState(1);
   return (
     <tr>
       <td className="text-center w-16">
@@ -42,7 +44,11 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
       <td className="text-center text-xl p-1">{props.listing.quantity}</td>
       <td className="font-bold text-xl w-[200px]">$&nbsp;{props.listing.price}</td>
       <td className="w-1">
-        <YugiohCardQuantityField quantity={props.listing.quantity} />
+        <YugiohCardQuantityField
+          max={props.listing.quantity}
+          quantity={quantity}
+          onChange={(v) => setQuantity(v)}
+        />
       </td>
       <td>
         <AddToCartButton />
