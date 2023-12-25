@@ -14,7 +14,7 @@ export const api = Object.freeze({
     listing: {
       root: listing,
       id: (id: number | string) => `${listing}/${id}`,
-      buyById: (id: number | string) => `${listing}/${id}/buy`,
+      buyById: (id: number | string) => `${listing}/${id}/buy/`,
     },
     cardInSet: {
       root: cardInSet,

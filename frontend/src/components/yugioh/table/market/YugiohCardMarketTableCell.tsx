@@ -4,9 +4,11 @@ import YugiohSellerRankBadge from '../../seller/YugiohSellerRankBadge';
 import YugiohSellerRankLabel from '../../seller/YugiohSellerRankLabel';
 import AddToCartButton from './AddToCartButton';
 import YugiohCardQuantityField from './YugiohCardQuantityField';
-import { YugiohCardListing } from '../../../../services/yugioh/types';
-import { useState } from 'react';
+import { BuyYugiohCardListing, YugiohCardListing } from '../../../../services/yugioh/types';
+import React, { useState } from 'react';
 import { useAuthenticationStatus, useCurrentUser } from '../../../../context/user';
+import { useNavigate } from 'react-router-dom';
+import { yugiohService } from '../../../../services/yugioh/yugiohService';
 
 type YugiohCardMarketTableCellProps = {
   listing: YugiohCardListing;
@@ -16,6 +18,23 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
   const [quantity, setQuantity] = useState(1);
   const { user } = useCurrentUser();
   const { isAuthenticated } = useAuthenticationStatus();
+  const navigate = useNavigate();
+
+  function handleBuy(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    const listing: BuyYugiohCardListing = {
+      card: props.listing.card,
+      price: props.listing.price,
+      condition: props.listing.condition,
+      is_listed: props.listing.is_listed,
+      is_sold: props.listing.is_sold,
+    };
+
+    yugiohService
+      .buyCardListing(props.listing.id, listing)
+      .then(() => navigate('/'))
+      .catch(() => {}); // TO-DO: implement feedback for failed requests
+  }
 
   const cannotBuy = user.user_id === props.listing.user || !isAuthenticated;
   return (
@@ -57,7 +76,7 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
         />
       </td>
       <td>
-        <AddToCartButton />
+        <AddToCartButton hidden={cannotBuy} onClick={handleBuy} />
       </td>
     </tr>
   );
