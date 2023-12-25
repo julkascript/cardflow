@@ -9,7 +9,7 @@ import SearchIcon from '@mui/icons-material/Search';
 function SearchButton(): JSX.Element {
   return (
     <InputAdornment position="start">
-      <IconButton aria-label="Search" size="small">
+      <IconButton type="submit" aria-label="Search" size="small">
         <SearchIcon />
       </IconButton>
     </InputAdornment>

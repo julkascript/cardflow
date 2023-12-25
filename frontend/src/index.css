@@ -1,3 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body, html {
+  min-height: 100%;
+  position: relative;
+  z-index: 1;
+}

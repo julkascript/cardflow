@@ -10,6 +10,8 @@ import Login from '../pages/Login';
 import Register from '../pages/Register';
 import YugiohCardDetails from '../pages/yugioh/YugiohCardDetails';
 import { loadCardDetails } from './loadCardDetails/loadCardDetails';
+import Search from '../pages/Search';
+import { loadSearchResults } from './loadSearchResults/loadSearchResults';
 
 const routes = createBrowserRouter([
   {
@@ -36,6 +38,16 @@ const routes = createBrowserRouter([
         path: '/protected',
         element: <h1>Protected route</h1>,
         loader: authorizedGuard,
+      },
+      {
+        path: '/search',
+        element: <Search />,
+        loader: loadSearchResults,
+      },
+      {
+        path: '/search/:query',
+        element: <Search />,
+        loader: loadSearchResults,
       },
       {
         path: '/user/:username',
