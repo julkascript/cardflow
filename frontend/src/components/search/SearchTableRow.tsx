@@ -1,9 +1,9 @@
 import { Link } from '@mui/material';
-import { YugiohCardSearchResults } from '../../services/yugioh/types';
+import { YugiohCardInSet } from '../../services/yugioh/types';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 type SearchTableCellProps = {
-  card: YugiohCardSearchResults;
+  card: YugiohCardInSet;
 };
 
 function SearchTableRow(props: SearchTableCellProps): JSX.Element {
@@ -12,13 +12,11 @@ function SearchTableRow(props: SearchTableCellProps): JSX.Element {
       <td>
         <CameraAltIcon />
       </td>
-      <td>{props.card.card.set.set_code}</td>
+      <td>{props.card.set.set_code}</td>
       <td className="w-[250px] font-bold">
-        <Link href={`/details/yugioh/${props.card.card.card_in_set_id}`}>
-          {props.card.cardName}
-        </Link>
+        <Link href={`/details/yugioh/${props.card.id}`}>{props.card.yugioh_card.card_name}</Link>
       </td>
-      <td>{props.card.card.rarity.rarity}</td>
+      <td>{props.card.rarity.rarity}</td>
     </tr>
   );
 }

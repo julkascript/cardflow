@@ -2,8 +2,7 @@ import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { CardSearchLoader } from '../services/yugioh/types';
 import PageHeader from '../components/PageHeader';
 import MarketTable from '../components/marketTable/MarketTable';
-import { retrieveCardsForDisplay } from '../components/searchField/retrieveCardsForDisplay/retrieveCardsForDisplay';
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import SearchTableRow from '../components/search/SearchTableRow';
 import { TextField } from '@mui/material';
 import SearchButton from '../components/navigation/desktop/buttons/SearchButton';
@@ -15,8 +14,8 @@ function Search(): JSX.Element {
   const navigate = useNavigate();
   const params = useParams();
   const [cards, setCards] = useState(data.cards);
+  const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState(params.query || '');
-  const searchResults = useMemo(() => retrieveCardsForDisplay(cards, false), [cards]);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
@@ -29,9 +28,16 @@ function Search(): JSX.Element {
       yugiohService.searchCardsByName(searchQuery).then((res) => setCards(res));
       navigate('/search/' + searchQuery);
     } else {
-      setCards([]);
+      setCards({
+        results: [],
+        next: null,
+        previous: null,
+        count: 0,
+      });
       navigate('/search/');
     }
+
+    setPage(1);
   }
 
   useEffectAfterInitialLoad(() => {
@@ -39,9 +45,15 @@ function Search(): JSX.Element {
     if (query) {
       yugiohService.searchCardsByName(query).then(setCards);
     } else {
-      setCards([]);
+      setCards({
+        results: [],
+        next: null,
+        previous: null,
+        count: 0,
+      });
     }
 
+    setPage(1);
     setSearchQuery(query);
   }, [params.query]);
   return (
@@ -71,8 +83,8 @@ function Search(): JSX.Element {
             </tr>
           </thead>
           <tbody>
-            {searchResults.results.map((sr) => (
-              <SearchTableRow key={sr.card.card_in_set_id} card={sr} />
+            {cards.results.map((c) => (
+              <SearchTableRow key={c.id} card={c} />
             ))}
           </tbody>
         </MarketTable>
