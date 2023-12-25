@@ -5,6 +5,7 @@ type YugiohCardQuantityFieldProps = {
   quantity: number;
   onChange: (value: number) => void;
   max: number;
+  hidden: boolean;
 };
 
 function YugiohCardQuantityField(props: YugiohCardQuantityFieldProps): JSX.Element {
@@ -18,6 +19,16 @@ function YugiohCardQuantityField(props: YugiohCardQuantityFieldProps): JSX.Eleme
       props.onChange(value);
     }
   }
+
+  if (props.hidden) {
+    return (
+      <div
+        aria-hidden={true}
+        className="p-1 w-16 h-10 text-center border rounded-sm invisible"
+      ></div>
+    );
+  }
+
   return (
     <input
       className="p-1 w-16 h-10 text-center border rounded-sm"

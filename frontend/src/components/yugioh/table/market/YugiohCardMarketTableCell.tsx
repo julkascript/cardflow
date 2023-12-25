@@ -6,6 +6,7 @@ import AddToCartButton from './AddToCartButton';
 import YugiohCardQuantityField from './YugiohCardQuantityField';
 import { YugiohCardListing } from '../../../../services/yugioh/types';
 import { useState } from 'react';
+import { useAuthenticationStatus, useCurrentUser } from '../../../../context/user';
 
 type YugiohCardMarketTableCellProps = {
   listing: YugiohCardListing;
@@ -13,6 +14,10 @@ type YugiohCardMarketTableCellProps = {
 
 function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.Element {
   const [quantity, setQuantity] = useState(1);
+  const { user } = useCurrentUser();
+  const { isAuthenticated } = useAuthenticationStatus();
+
+  const cannotBuy = user.user_id === props.listing.user || !isAuthenticated;
   return (
     <tr>
       <td className="text-center w-16">
@@ -48,6 +53,7 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
           max={props.listing.quantity}
           quantity={quantity}
           onChange={(v) => setQuantity(v)}
+          hidden={cannotBuy || props.listing.quantity === 1}
         />
       </td>
       <td>
