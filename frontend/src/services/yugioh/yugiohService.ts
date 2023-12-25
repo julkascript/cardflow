@@ -30,9 +30,10 @@ export const yugiohService = {
     return listings!;
   },
 
-  async searchCardsByName(name: string): Promise<PaginatedItem<YugiohCardInSet>> {
+  async searchCardsByName(name: string, page?: number): Promise<PaginatedItem<YugiohCardInSet>> {
     const cards = await httpService.get<PaginatedItem<YugiohCardInSet>>(api.yugioh.cardInSet.root, {
       card_name: name,
+      page: page || 1,
     });
 
     return cards!;
