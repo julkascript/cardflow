@@ -97,5 +97,5 @@ export type YugiohCardSearchResultsDisplay = {
 };
 
 export type CardSearchLoader = {
-  cards: YugiohCard[];
+  cards: PaginatedItem<YugiohCardInSet>;
 };
