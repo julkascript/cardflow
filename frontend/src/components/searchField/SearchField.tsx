@@ -2,8 +2,7 @@ import { ClickAwayListener, TextField } from '@mui/material';
 import { ChangeEvent, FormEvent, useState } from 'react';
 import SearchButton from '../navigation/desktop/buttons/SearchButton';
 import { useDebounce } from '../../util/useDebounce';
-import { YugiohCardSearchResultsDisplay } from '../../services/yugioh/types';
-import { retrieveCardsForDisplay } from './retrieveCardsForDisplay/retrieveCardsForDisplay';
+import { PaginatedItem, YugiohCardInSet } from '../../services/yugioh/types';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import SearchResultsDisplay from './SearchResultsDisplay';
 import { useNavigate } from 'react-router-dom';
@@ -20,19 +19,18 @@ function SearchField(): JSX.Element {
   }
 
   function clear() {
-    setSearchResults({ results: [], total: 0 });
+    setSearchResults({ results: [], count: 0, next: null, previous: null });
   }
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<YugiohCardSearchResultsDisplay>({
+  const [searchResults, setSearchResults] = useState<PaginatedItem<YugiohCardInSet>>({
     results: [],
-    total: 0,
+    count: 0,
+    next: null,
+    previous: null,
   });
 
   const debouncedRetrieve = useDebounce(() => {
-    yugiohService.searchCardsByName(searchQuery).then((res) => {
-      const cards = retrieveCardsForDisplay(res);
-      setSearchResults(cards);
-    });
+    yugiohService.searchCardsByName(searchQuery).then(setSearchResults);
   });
 
   function updateField(event: ChangeEvent) {

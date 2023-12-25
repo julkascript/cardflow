@@ -1,13 +1,10 @@
 import { List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
-import {
-  YugiohCardSearchResults,
-  YugiohCardSearchResultsDisplay,
-} from '../../services/yugioh/types';
+import { PaginatedItem, YugiohCardInSet } from '../../services/yugioh/types';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { searchRules } from '../../constants/searchRules';
 
 type SearchResultsDisplayProps = {
-  results: YugiohCardSearchResultsDisplay;
+  results: PaginatedItem<YugiohCardInSet>;
   query: string;
   onClose: () => void;
 };
@@ -17,6 +14,8 @@ function SearchResultsDisplay(props: SearchResultsDisplayProps): JSX.Element {
   if (results.length === 0) {
     return <></>;
   }
+
+  const firstFourResults = results.filter((_, i) => i < 4);
 
   return (
     <List
@@ -28,8 +27,8 @@ function SearchResultsDisplay(props: SearchResultsDisplayProps): JSX.Element {
         paddingBottom: 0,
       }}
     >
-      {results.map((r) => (
-        <SearchResultItem onClose={props.onClose} key={r.card.card_in_set_id} data={r} />
+      {firstFourResults.map((r) => (
+        <SearchResultItem onClose={props.onClose} key={r.id} data={r} />
       ))}
       <BottomDisplayText
         onClose={props.onClose}
@@ -41,7 +40,7 @@ function SearchResultsDisplay(props: SearchResultsDisplayProps): JSX.Element {
 }
 
 type SearchResultItemProps = {
-  data: YugiohCardSearchResults;
+  data: YugiohCardInSet;
   onClose: () => void;
 };
 
@@ -54,7 +53,7 @@ function SearchResultItem(props: SearchResultItemProps): JSX.Element {
           backgroundColor: '#15B58D33',
         },
       }}
-      href={`/details/yugioh/${data.card.card_in_set_id}`}
+      href={`/details/yugioh/${data.id}`}
       onClick={onClose}
     >
       <ListItemIcon sx={{ color: 'black' }}>
@@ -62,8 +61,8 @@ function SearchResultItem(props: SearchResultItemProps): JSX.Element {
       </ListItemIcon>
       <ListItemText>
         <div className="flex items-center">
-          <div className="flex mr-8">{data.card.set.set_code}</div>
-          <div className="w-full">{data.cardName}</div>
+          <div className="flex mr-8">{data.set.set_code}</div>
+          <div className="w-full">{data.yugioh_card.card_name}</div>
         </div>
       </ListItemText>
     </ListItemButton>
@@ -72,8 +71,8 @@ function SearchResultItem(props: SearchResultItemProps): JSX.Element {
 
 function BottomDisplayText(props: SearchResultsDisplayProps) {
   const { results } = props;
-  const { total } = results;
-  if (total <= searchRules.maxSearchFieldDisplayResults) {
+  const { count } = results;
+  if (count <= searchRules.maxSearchFieldDisplayResults) {
     return <></>;
   }
 
@@ -86,7 +85,7 @@ function BottomDisplayText(props: SearchResultsDisplayProps) {
       onClick={props.onClose}
     >
       <Typography fontSize={10} className="text-center w-full" color="text.secondary">
-        Show all ({total} results)
+        Show all ({count} results)
       </Typography>
     </ListItemButton>
   );
