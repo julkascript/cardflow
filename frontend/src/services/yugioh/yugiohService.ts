@@ -1,6 +1,6 @@
 import { api } from '../../constants/api';
 import { httpService } from '../http/http';
-import { PaginatedItem, YugiohCard, YugiohCardInSet, YugiohCardListing } from './types';
+import { PaginatedItem, YugiohCardInSet, YugiohCardListing } from './types';
 
 export const yugiohService = {
   async getCardInSetById(id: number): Promise<YugiohCardInSet> {
@@ -30,10 +30,11 @@ export const yugiohService = {
     return listings!;
   },
 
-  async searchCardsByName(name: string): Promise<YugiohCard[]> {
-    const cards = await httpService.get<PaginatedItem<YugiohCard>>(api.yugioh.cards.root, {
+  async searchCardsByName(name: string): Promise<PaginatedItem<YugiohCardInSet>> {
+    const cards = await httpService.get<PaginatedItem<YugiohCardInSet>>(api.yugioh.cardInSet.root, {
       card_name: name,
     });
-    return cards!.results;
+
+    return cards!;
   },
 };
