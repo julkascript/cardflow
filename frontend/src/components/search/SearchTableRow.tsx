@@ -9,14 +9,14 @@ type SearchTableCellProps = {
 function SearchTableRow(props: SearchTableCellProps): JSX.Element {
   return (
     <tr>
-      <td>
+      <td className="w-[100px]">
         <CameraAltIcon />
       </td>
-      <td>{props.card.set.set_code}</td>
-      <td className="w-[250px] font-bold">
+      <td className="w-[100px]">{props.card.set.set_code}</td>
+      <td className="w-[150px] font-bold">
         <Link href={`/details/yugioh/${props.card.id}`}>{props.card.yugioh_card.card_name}</Link>
       </td>
-      <td>{props.card.rarity.rarity}</td>
+      <td className="w-[250px]">{props.card.rarity.rarity}</td>
     </tr>
   );
 }
