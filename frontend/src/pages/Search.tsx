@@ -4,7 +4,7 @@ import PageHeader from '../components/PageHeader';
 import MarketTable from '../components/marketTable/MarketTable';
 import React, { useState } from 'react';
 import SearchTableRow from '../components/search/SearchTableRow';
-import { TextField } from '@mui/material';
+import { Pagination, TextField } from '@mui/material';
 import SearchButton from '../components/navigation/desktop/buttons/SearchButton';
 import { yugiohService } from '../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
@@ -15,6 +15,7 @@ function Search(): JSX.Element {
   const params = useParams();
   const [cards, setCards] = useState(data.cards);
   const [page, setPage] = useState(1);
+  const pages = Math.ceil(cards.count / 10);
   const [searchQuery, setSearchQuery] = useState(params.query || '');
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -38,6 +39,16 @@ function Search(): JSX.Element {
     }
 
     setPage(1);
+  }
+
+  function changePage(_event: React.ChangeEvent<unknown>, page: number) {
+    yugiohService
+      .searchCardsByName(searchQuery, page)
+      .then((data) => {
+        setCards(data);
+        setPage(page);
+      })
+      .catch(() => {}); // TO-DO: implement feedback for failed requests.
   }
 
   useEffectAfterInitialLoad(() => {
@@ -88,6 +99,12 @@ function Search(): JSX.Element {
             ))}
           </tbody>
         </MarketTable>
+        <Pagination
+          page={page}
+          className="flex justify-center pb-8"
+          count={pages}
+          onChange={changePage}
+        />
       </div>
     </section>
   );
