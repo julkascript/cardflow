@@ -24,7 +24,7 @@ function DesktopLoggedInNav(): JSX.Element {
         <ProfilePictureAvatar />
       </li>
       <li>
-        <Button onClick={logout} color="primary" variant="contained">
+        <Button onClick={logout} color="primary" variant="outlined">
           Sign Out
         </Button>
       </li>
