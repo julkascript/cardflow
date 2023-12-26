@@ -45,7 +45,7 @@ function MobileNavigation(props: MobileNavigationProps) {
           <MobileLoggedInNav onClose={props.onCloseButtonClick} />
         </Authorized>
         <Unauthorized>
-          <MobileGuestNav />
+          <MobileGuestNav onClose={props.onCloseButtonClick} />
         </Unauthorized>
         <ListItem disablePadding>
           <ListItemButton onClick={props.onCloseButtonClick}>
