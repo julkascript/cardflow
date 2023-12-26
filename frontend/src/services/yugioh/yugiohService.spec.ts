@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
 import { httpService } from '../http/http';
-import { PaginatedItem, YugiohCardInSet, YugiohCardListing } from './types';
+import { BuyYugiohCardListing, PaginatedItem, YugiohCardInSet, YugiohCardListing } from './types';
 import { yugiohService } from './yugiohService';
 
 describe('yugiohService', () => {
@@ -97,6 +97,37 @@ describe('yugiohService', () => {
 
       const result = await yugiohService.searchCardsByName('test');
       expect(result).toEqual(sampleCards);
+    });
+  });
+
+  describe('buyCardListing', () => {
+    it('returns data successfully', async () => {
+      const sampleBuyListing: BuyYugiohCardListing = {
+        card: 3,
+        price: 2,
+        condition: 'excellent',
+        is_listed: true,
+        is_sold: false,
+      };
+
+      const sampleListing: YugiohCardListing = {
+        id: 1,
+        card: 3,
+        card_name: 'test',
+        card_set_id: 1,
+        user: 1,
+        user_name: 'test',
+        price: 2,
+        condition: 'excellent',
+        quantity: 0,
+        is_listed: true,
+        is_sold: false,
+      };
+
+      vi.spyOn(httpService, 'put').mockResolvedValueOnce(sampleListing);
+
+      const result = await yugiohService.buyCardListing(1, sampleBuyListing);
+      expect(result).toEqual(sampleListing);
     });
   });
 });

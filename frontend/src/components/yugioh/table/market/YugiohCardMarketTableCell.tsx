@@ -4,13 +4,39 @@ import YugiohSellerRankBadge from '../../seller/YugiohSellerRankBadge';
 import YugiohSellerRankLabel from '../../seller/YugiohSellerRankLabel';
 import AddToCartButton from './AddToCartButton';
 import YugiohCardQuantityField from './YugiohCardQuantityField';
-import { YugiohCardListing } from '../../../../services/yugioh/types';
+import { BuyYugiohCardListing, YugiohCardListing } from '../../../../services/yugioh/types';
+import React, { useState } from 'react';
+import { useAuthenticationStatus, useCurrentUser } from '../../../../context/user';
+import { useNavigate } from 'react-router-dom';
+import { yugiohService } from '../../../../services/yugioh/yugiohService';
 
 type YugiohCardMarketTableCellProps = {
   listing: YugiohCardListing;
 };
 
 function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.Element {
+  const [quantity, setQuantity] = useState(1);
+  const { user } = useCurrentUser();
+  const { isAuthenticated } = useAuthenticationStatus();
+  const navigate = useNavigate();
+
+  function handleBuy(event: React.MouseEvent<HTMLButtonElement>) {
+    event.preventDefault();
+    const listing: BuyYugiohCardListing = {
+      card: props.listing.card,
+      price: props.listing.price,
+      condition: props.listing.condition,
+      is_listed: props.listing.is_listed,
+      is_sold: props.listing.is_sold,
+    };
+
+    yugiohService
+      .buyCardListing(props.listing.id, listing)
+      .then(() => navigate('/'))
+      .catch(() => {}); // TO-DO: implement feedback for failed requests
+  }
+
+  const cannotBuy = user.user_id === props.listing.user || !isAuthenticated;
   return (
     <tr>
       <td className="text-center w-16">
@@ -42,10 +68,15 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
       <td className="text-center text-xl p-1">{props.listing.quantity}</td>
       <td className="font-bold text-xl w-[200px]">$&nbsp;{props.listing.price}</td>
       <td className="w-1">
-        <YugiohCardQuantityField quantity={props.listing.quantity} />
+        <YugiohCardQuantityField
+          max={props.listing.quantity}
+          quantity={quantity}
+          onChange={(v) => setQuantity(v)}
+          hidden={cannotBuy || props.listing.quantity === 1}
+        />
       </td>
       <td>
-        <AddToCartButton />
+        <AddToCartButton hidden={cannotBuy} onClick={handleBuy} />
       </td>
     </tr>
   );
