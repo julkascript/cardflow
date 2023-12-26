@@ -12,9 +12,11 @@ import MobileLoggedInNav from './menus/MobileLoggedInNav';
 import Authorized from '../../../router/Authorized';
 import Unauthorized from '../../../router/Unauthorized';
 import MobileGuestNav from './menus/MobileGuestNav';
+import { useLocation } from 'react-router-dom';
+import { useEffectAfterInitialLoad } from '../../../util/useEffectAfterInitialLoad';
 
 type MobileNavigationProps = {
-  onCloseButtonClick: (event: React.MouseEvent) => void;
+  onCloseButtonClick: (event?: React.MouseEvent) => void;
 };
 
 /**
@@ -22,6 +24,11 @@ type MobileNavigationProps = {
  * @returns
  */
 function MobileNavigation(props: MobileNavigationProps) {
+  const { pathname } = useLocation();
+
+  useEffectAfterInitialLoad(() => {
+    props.onCloseButtonClick();
+  }, [pathname]);
   return (
     <div role="presentation" className="w-56">
       <List>
@@ -35,7 +42,7 @@ function MobileNavigation(props: MobileNavigationProps) {
           </ListItemButton>
         </ListItem>
         <Authorized>
-          <MobileLoggedInNav />
+          <MobileLoggedInNav onClose={props.onCloseButtonClick} />
         </Authorized>
         <Unauthorized>
           <MobileGuestNav />

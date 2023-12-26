@@ -22,14 +22,22 @@ type NewActionLink = {
   label: string;
 };
 
+type MobileLoggedInNavProps = {
+  onClose: () => void;
+};
+
 /**
  * Mobile navigation items that can be interacted with by logged in users.
  * @returns
  */
-function MobileLoggedInNav(): JSX.Element {
+function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
   const [expanded, setExpanded] = useState(false);
   const { user } = useCurrentUser();
   const logout = useLogout();
+  function handleLogout() {
+    logout();
+    props.onClose();
+  }
 
   const actions: NewActionLink[] = [
     {
@@ -81,7 +89,7 @@ function MobileLoggedInNav(): JSX.Element {
           <ListItemText primary="My profile" />
         </ListItemButton>
       </ListItem>
-      <ListItemButton onClick={logout}>
+      <ListItemButton onClick={handleLogout}>
         <ListItemIcon>
           <LogoutIcon />
         </ListItemIcon>

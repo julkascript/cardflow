@@ -18,8 +18,8 @@ import DesktopGuestNav from './desktop/DesktopGuestNav';
 function Navigation(): JSX.Element {
   const [mobileMenuIsOpen, setMobileMenuOpen] = useState(false);
 
-  function closeMenu(event: React.MouseEvent) {
-    event.preventDefault();
+  function closeMenu(event?: React.MouseEvent) {
+    event?.preventDefault();
     setMobileMenuOpen(false);
   }
 
