@@ -40,15 +40,3 @@ jobs:
       - name: 🧪 Test
         run: npm test
         working-directory: ./frontend
-
-      # Upload dist artifacts
-      - uses: actions/upload-artifact@v3
-        with:
-          name: dist
-          path: dist/
-
-      # Upload coverage artifacts
-      - uses: actions/upload-artifact@v3
-        with:
-          name: coverage
-          path: coverage/lcov.info
