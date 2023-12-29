@@ -28,16 +28,18 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: npm
 
       - name: 🗂️ Install dependencies
-        run: npm install
+        run: npm ci
+        working-directory: ./frontend
 
       - name: 🔨 Build
         run: npm run build
+        working-directory: ./frontend
 
       - name: 🧪 Test
         run: npm test
+        working-directory: ./frontend
 
       # Upload dist artifacts
       - uses: actions/upload-artifact@v3
