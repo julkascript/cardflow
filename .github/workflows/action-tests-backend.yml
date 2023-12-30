@@ -14,14 +14,15 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
+          POSTGRES_HOST: localhost
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v2
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v2
         with:
           python-version: 3.11
       - name: Install dependencies
@@ -33,13 +34,17 @@ jobs:
           ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
           cd ..
           pip install -r requirements.txt
-#      - name: Run migrations
-#        working-directory: ./backend
-#        env:
-#          SECRET_KEY: supersecretkey
-#          DATABASE_URL: postgres://postgres:postgres@postgresql:5432/postgres
-#        run: |
-#          python manage.py migrate
+      - name: Run migrations
+        working-directory: ./backend
+        env:
+          SECRET_KEY: supersecretkey
+          DB_NAME: postgres
+          DB_USER: postgres
+          DB_PASSWORD: postgres
+          DB_HOST: localhost
+          DB_PORT: 5432
+        run: |
+          python manage.py migrate
       - name: Run tests
         working-directory: ./backend
         env:
