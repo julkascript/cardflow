@@ -1,7 +1,13 @@
 ---
 name: Backend Tests
 
-on: [ push ]
+on:
+  push:
+    branches:
+      - "*"
+  pull_request:
+    branches:
+      - "*"
 
 jobs:
   tests:
@@ -9,11 +15,11 @@ jobs:
     runs-on: ubuntu-latest
     services:
       postgresql:
-        image: postgres:13-alpine
+        image: postgres:latest
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: github_actions
+          POSTGRES_DB: postgres
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
