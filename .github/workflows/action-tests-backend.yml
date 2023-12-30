@@ -26,14 +26,14 @@ jobs:
           python-version: 3.11
       - name: Install dependencies
         run: |
+          working-directory: ./backend
           python -m pip install --upgrade pip
           ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
           pip install -r backend/requirements.txt
-          working-directory: ./backend
       - name: Run migrations
         run: |
-          python manage.py migrate
           working-directory: ./backend
+          python manage.py migrate
       - name: Run tests
         run:
           pytest
