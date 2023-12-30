@@ -38,7 +38,6 @@ jobs:
         working-directory: ./backend
         env:
           SECRET_KEY: supersecretkey
-          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
         run: |
           python manage.py migrate
       - name: Run tests
