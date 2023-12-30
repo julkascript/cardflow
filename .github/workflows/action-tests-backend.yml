@@ -11,6 +11,7 @@ jobs:
       postgresql:
         image: postgres:latest
         env:
+          POSTGRES_HOST: localhost
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: github_actions
