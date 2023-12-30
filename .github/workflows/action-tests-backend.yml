@@ -27,12 +27,13 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          mkdir backend/keys
-          ssh-keygen -t rsa -b 4096 -m PEM -f backend/keys/jwtRS256.key
+          ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
           pip install -r backend/requirements.txt
+          working-directory: ./backend
       - name: Run migrations
         run: |
-          python backend/manage.py migrate
+          python manage.py migrate
+          working-directory: ./backend
       - name: Run tests
         run:
           pytest
