@@ -35,6 +35,8 @@ jobs:
           pip install -r requirements.txt
       - name: Run migrations
         working-directory: ./backend
+        env:
+          DJANGO_SETTINGS_MODULE: cardflow.settings
         run: |
           python manage.py migrate
       - name: Run tests
