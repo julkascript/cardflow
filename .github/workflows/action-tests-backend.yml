@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
+          ssh-keygen -t rsa -b 4096 -m PEM -f backend/keys/jwtRS256.key
           pip install -r backend/requirements.txt
       - name: Run migrations
         run: |
