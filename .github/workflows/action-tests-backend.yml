@@ -11,11 +11,9 @@ jobs:
       postgresql:
         image: postgres:latest
         env:
-          POSTGRES_HOST: localhost
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
-          POSTGRES_PORT: 5432
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -36,11 +34,10 @@ jobs:
           cd ..
           pip install -r requirements.txt
       - name: Run migrations
-#        working-directory: ./backend
+        working-directory: ./backend
         env:
           SECRET_KEY: supersecretkey
         run: |
-          cd backend
           python manage.py migrate
       - name: Run tests
         working-directory: ./backend
