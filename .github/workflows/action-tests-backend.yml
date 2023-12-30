@@ -37,12 +37,7 @@ jobs:
         working-directory: ./backend
         env:
           SECRET_KEY: supersecretkey
-          DATABASE_HOST: postgres
-          DATABASE_PORT: 5432
-          DATABASE_USER: postgres
-          DATABASE_PASSWORD: postgres
-          DATABASE_NAME: postgres
-          DJANGO_SETTINGS_MODULE: cardflow.settings
+          DATABASE_URL: postgres://postgres:postgres@postgresql:5432/postgres
         run: |
           python manage.py migrate
       - name: Run tests
