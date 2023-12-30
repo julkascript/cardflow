@@ -36,7 +36,7 @@ jobs:
           cd ..
           pip install -r requirements.txt
       - name: Run migrations
-        working-directory: ./backend
+#        working-directory: ./backend
         env:
           SECRET_KEY: supersecretkey
         run: |
