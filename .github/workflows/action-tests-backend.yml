@@ -1,7 +1,21 @@
 ---
 name: Backend Tests
 
-on: [ push ]
+on:
+  push:
+    # Run on all branches
+    branches:
+      - "*"
+    # Run only if files modified are not docs
+    paths-ignore:
+      - "*.md"
+  pull_request:
+    # Run on all branches
+    branches:
+      - "*"
+    # Run only if files modified are not docs
+    paths-ignore:
+      - "*.md"
 
 jobs:
   tests:
@@ -11,7 +25,6 @@ jobs:
       postgresql:
         image: postgres:latest
         env:
-          POSTGRES_HOST: postgres
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
