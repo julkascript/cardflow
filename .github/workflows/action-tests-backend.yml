@@ -8,7 +8,7 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     services:
-      postgresql:
+      postgres:
         image: postgres:latest
         env:
           POSTGRES_USER: postgres
