@@ -43,9 +43,9 @@ jobs:
           test $timeout -gt 0
       - name: Set up environment variables
         run: |
-          echo "POSTGRES_USER=your_postgres_user" >> $GITHUB_ENV
-          echo "POSTGRES_PASSWORD=your_postgres_password" >> $GITHUB_ENV
-          echo "POSTGRES_DB=your_postgres_db" >> $GITHUB_ENV
+          echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_DB=postgres" >> $GITHUB_ENV
       - name: Run migrations
         working-directory: ./backend
         env:
