@@ -43,13 +43,6 @@ jobs:
           test $timeout -gt 0
       - name: Run migrations
         working-directory: ./backend
-        env:
-          SECRET_KEY: supersecretkey
-          DB_NAME: postgres
-          DB_USER: postgres
-          DB_PASSWORD: postgres
-          DB_HOST: localhost
-          DB_PORT: 5432
         run: |
           python manage.py migrate
       - name: Run tests
