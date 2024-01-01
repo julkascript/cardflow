@@ -43,6 +43,8 @@ jobs:
           test $timeout -gt 0
       - name: Run migrations
         working-directory: ./backend
+        env:
+          SECRET_KEY: supersecretkey
         run: |
           python manage.py migrate
       - name: Run tests
