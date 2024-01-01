@@ -14,6 +14,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
+          POSTGRES_HOST: localhost
         ports:
           - 5432:5432
         options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
@@ -47,6 +48,7 @@ jobs:
           DB_NAME: postgres
           DB_USER: postgres
           DB_PASSWORD: postgres
+          DB_HOST: localhost
           DB_PORT: 5432
         run: |
           python manage.py migrate
