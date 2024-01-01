@@ -33,6 +33,13 @@ jobs:
           ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
           cd ..
           pip install -r requirements.txt
+      - name: Wait for PostgreSQL to be ready
+        run: |
+          timeout=300
+          until pg_isready -h localhost -p 5432 -U postgres || ((timeout-- <= 0)); do
+            sleep 1
+          done
+          test $timeout -gt 0
       - name: Run migrations
         working-directory: ./backend
         env:
