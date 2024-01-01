@@ -46,6 +46,7 @@ jobs:
           echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
           echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
           echo "POSTGRES_DB=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_HOST=localhost" >> $GITHUB_ENV
       - name: Run migrations
         working-directory: ./backend
         env:
