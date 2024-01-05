@@ -19,6 +19,9 @@ jobs:
       - uses: iamsauravsharma/create-dotenv@v2.0.1
         with:
           file-path: '/home/runner/work/cardflow/cardflow/frontend/.env'
+      - uses: iamsauravsharma/create-dotenv@v2.0.1
+        with:
+          file-path: '/home/runner/work/cardflow/cardflow/backend/.env'
       - uses: isbang/compose-action@v1.5.1
         with:
           compose-file: "./docker-compose.yml"
