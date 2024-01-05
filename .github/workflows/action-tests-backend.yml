@@ -16,14 +16,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Create env file
-        run: |
-          cat ./sample.env > .env
       - name: Start docker
-        working-directory: ./backend
+        with:
+          file_name: ./sample.env
         run: |
           docker-compose up -d backend postgres
           sleep 10
       - name: Run tests
+        working-directory: ./backend
         run:
           pytest
