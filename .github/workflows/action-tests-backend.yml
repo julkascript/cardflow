@@ -16,9 +16,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: c-py/action-dotenv-to-setenv@v5
+      - name: Load .env file
+        uses: xom9ikk/dotenv@v2
         with:
-          env-file: sample.env
+          path: ./backend/.env
+          mode: development
+          load-mode: strict
       - uses: isbang/compose-action@v1.5.1
         with:
           compose-file: "./docker-compose.yml"
@@ -26,4 +29,5 @@ jobs:
             backend
             postgres
       - name: Run tests
+        working-directory: ./backend
         run: pytest
