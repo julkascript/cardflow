@@ -37,6 +37,7 @@ jobs:
 #        working-directory: ./backend
       - name: Start containers
         run: |
+          compose-file: ./docker-compose.yml
 #          python -m pip install --upgrade pip
 #          mkdir keys
 #          cd keys
