@@ -23,15 +23,14 @@ jobs:
           docker-compose up -d --build backend postgres
 
       - uses: actions/checkout@v3
-      - name: Create env file
-        run: |
-          cat ./sample.env > .env
+        with:
+          file_name: sample.env
       - name: Start docker
-        working-directory: ./backend
         run: |
           docker-compose up -d backend postgres
           sleep 10
 
       - name: Run tests
+        working-directory: ./backend
         run:
           pytest
