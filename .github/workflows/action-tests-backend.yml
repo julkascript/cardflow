@@ -32,4 +32,4 @@ jobs:
         working-directory: ./backend
         env:
           SECRET_KEY: "supersecret"
-        run: docker exec cardflow-backend-1 sh -c "python manage.py test"
+        run: docker exec cardflow-backend-1 sh -c "pytest"
