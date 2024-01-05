@@ -35,12 +35,6 @@ jobs:
           services: |
             backend
             postgres
-      - name: Check containers
-        run: |
-          docker ps -a
-          docker container inspect cardflow-backend-1
-          docker exec cardflow-backend-1 env
-
       - name: Run tests
         run: |
           docker exec cardflow-backend-1 sh -c "pytest"
