@@ -15,12 +15,24 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
+
       - uses: actions/checkout@v2
       - name: Start docker
         run: |
           sudo service docker start
           docker-compose up -d --build backend postgres
-          sleep 10          
+
+      - uses: actions/checkout@v3
+      - name: Create env file
+        run: |
+          echo "${{ ./sample.env }}" > .env
+      - name: Start docker
+        working-directory: ./backend
+        run: |
+          sudo service docker start
+          docker-compose up -d backend postgres
+          sleep 10
+
       - name: Run tests
         run:
           pytest
