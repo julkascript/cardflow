@@ -16,9 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: 'Create env file'
+      - name: Create env file
         run: |
-          echo "${{ sample.env }}" > .env
+          echo "${{ ./sample.env }}" > .env
       - name: Start docker
         working-directory: ./backend
         run: |
