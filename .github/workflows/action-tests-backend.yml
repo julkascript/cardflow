@@ -19,8 +19,15 @@ jobs:
       - uses: c-py/action-dotenv-to-setenv@v5
         with:
           env-file: sample.env
-      - name: Start docker
-        run: |
-          docker-compose up -d --build postgres backend pgadmin4
+      - uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: "./docker-compose.yml"
+          down-flags: "--volumes"
+          services: |
+            backend
+            postgres
+#      - name: Start docker
+#        run: |
+#          docker-compose up -d --build postgres backend pgadmin4
       - name: Run tests
         run: pytest
