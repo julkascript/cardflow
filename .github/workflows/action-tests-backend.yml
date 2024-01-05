@@ -30,4 +30,4 @@ jobs:
             postgres
       - name: Run tests
         run: |
-          docker exec -e SECRET_KEY=supersecret cardflow-backend-1 sh -c "pytest"
+          docker exec cardflow-backend-1 sh -c "pytest"
