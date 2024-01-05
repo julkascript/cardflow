@@ -28,6 +28,10 @@ jobs:
           services: |
             backend
             postgres
+      - name: Check containers
+        run: |
+          docker ps -a
+          docker log cardflow-backend-1
       - name: Run tests
         run: |
           docker exec cardflow-backend-1 sh -c "pytest"
