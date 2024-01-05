@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Create fucking frontend env file
-        working-directory: ./frontend
+        working-directory: frontend
         run: |
           cat sample.env >> $GITHUB_ENV
       - uses: actions/checkout@v3
