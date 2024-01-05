@@ -15,21 +15,8 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
-
       - uses: actions/checkout@v2
       - name: Start docker
-<<<<<<< Updated upstream
-        run: |
-          sudo service docker start
-          docker-compose up -d --build backend postgres
-
-      - uses: actions/checkout@v3
-        with:
-          file_name: sample.env
-      - name: Start docker
-=======
-        working-directory: ./backend
->>>>>>> Stashed changes
         run: |
           echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
           echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
@@ -41,6 +28,4 @@ jobs:
           sleep 10
 
       - name: Run tests
-        working-directory: ./backend
-        run:
-          pytest
+        run: pytest
