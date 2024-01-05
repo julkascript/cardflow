@@ -16,9 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Start docker
         with:
           file_name: ./sample.env
+      - name: Start docker
         run: |
           docker-compose up -d backend postgres
           sleep 10
