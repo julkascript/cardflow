@@ -16,9 +16,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: c-py/action-dotenv-to-setenv@v5
+      - uses: iamsauravsharma/create-dotenv@v2.0.1
         with:
-          env-file: sample.env
+          file-path: '/home/runner/work/cardflow/cardflow/frontend/.env'
       - uses: isbang/compose-action@v1.5.1
         with:
           compose-file: "./docker-compose.yml"
