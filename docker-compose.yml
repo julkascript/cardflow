@@ -1,26 +1,6 @@
 version: "3"
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-
-    env_file:
-      - frontend/.env
-    depends_on:
-      - postgres
-      - pgadmin4
-      - backend
-    networks:
-      - cardflow
-    volumes:
-      - ./frontend:/usr/src/app
-      - /usr/src/app/node_modules
-    tty: true
-    ports:
-      - "5173:5173"
-    command: npm run dev
-
   backend:
     build:
       context: ./backend
