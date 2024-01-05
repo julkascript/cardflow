@@ -17,6 +17,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Start docker
+        working-directory: ./backend
         run: |
           sudo service docker start
           docker-compose --env-file "sample.env" up -d backend postgres
