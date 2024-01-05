@@ -18,6 +18,7 @@ jobs:
 
       - uses: actions/checkout@v2
       - name: Start docker
+<<<<<<< Updated upstream
         run: |
           sudo service docker start
           docker-compose up -d --build backend postgres
@@ -26,8 +27,17 @@ jobs:
         with:
           file_name: sample.env
       - name: Start docker
+=======
+        working-directory: ./backend
+>>>>>>> Stashed changes
         run: |
-          docker-compose up -d backend postgres
+          echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_DB=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_HOST=localhost" >> $GITHUB_ENV
+
+          docker-compose up backend postgres
+
           sleep 10
 
       - name: Run tests
