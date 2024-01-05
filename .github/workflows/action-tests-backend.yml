@@ -21,6 +21,6 @@ jobs:
           env-file: sample.env
       - name: Start docker
         run: |
-          docker-compose up -d --build
+          docker-compose up -d --no-deps --build postgres backend
       - name: Run tests
         run: pytest
