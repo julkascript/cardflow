@@ -19,8 +19,8 @@ jobs:
       - name: Load .env file
         uses: xom9ikk/dotenv@v2
         with:
-          path: ./sample.env
-          mode: test
+          path: ./sample
+          mode: env
       - uses: isbang/compose-action@v1.5.1
         with:
           compose-file: "./docker-compose.yml"
