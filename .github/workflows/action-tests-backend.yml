@@ -37,7 +37,6 @@ jobs:
 #        working-directory: ./backend
       - name: Start containers
         run: |
-          compose-file: ./docker-compose.yml
 #          python -m pip install --upgrade pip
 #          mkdir keys
 #          cd keys
@@ -45,7 +44,10 @@ jobs:
 #          cd ..
 #          pip install -r requirements.txt
 #          cd ..
-          docker-compose up -d --build
+          sudo service docker start
+          docker-compose up -d --build backend postgres
+          sleep 10
+      #          docker-compose up -d --build
 #          cd ./backend
 #      - name: Set up environment variables
 #        run: |
