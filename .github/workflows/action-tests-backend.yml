@@ -14,56 +14,13 @@ jobs:
   docker:
     name: Build and Test
     runs-on: ubuntu-latest
-#    services:
-#      postgres:
-#        image: postgres:latest
-#        env:
-#          POSTGRES_USER: postgres
-#          POSTGRES_PASSWORD: postgres
-#          POSTGRES_DB: postgres
-#          POSTGRES_HOST: localhost
-#        ports:
-#          - 5432:5432
-#        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v2
-#      - name: Checkout
-#        uses: actions/checkout@v2
-#      - name: Set up Python
-#        uses: actions/setup-python@v2
-#        with:
-#          python-version: 3.11
-#      - name: Install dependencies
-#        working-directory: ./backend
-      - name: Start containers
+      - name: Start docker
         run: |
-#          python -m pip install --upgrade pip
-#          mkdir keys
-#          cd keys
-#          ssh-keygen -t rsa -b 4096 -m PEM -f jwtRS256.key
-#          cd ..
-#          pip install -r requirements.txt
-#          cd ..
           sudo service docker start
           docker-compose up -d --build backend postgres
-          sleep 10
-      #          docker-compose up -d --build
-#          cd ./backend
-#      - name: Set up environment variables
-#        run: |
-#          echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
-#          echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
-#          echo "POSTGRES_DB=postgres" >> $GITHUB_ENV
-#          echo "POSTGRES_HOST=localhost" >> $GITHUB_ENV
-#      - name: Run migrations
-#        working-directory: ./backend
-#        env:
-#          SECRET_KEY: supersecretkey
-#        run: |
-#          python manage.py migrate
+          sleep 10          
       - name: Run tests
-#        working-directory: ./backend
-#        env:
-#          SECRET_KEY: supersecretkey
         run:
           pytest
