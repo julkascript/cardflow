@@ -33,7 +33,7 @@ jobs:
 #        with:
 #          python-version: 3.11
 #      - name: Install dependencies
-##        working-directory: ./backend
+#        working-directory: ./backend
       - name: Start containers
         run: |
 #          python -m pip install --upgrade pip
