@@ -30,4 +30,4 @@ jobs:
             postgres
       - name: Run tests
         working-directory: ./backend
-        run: docker-compose exec backend -it python manage.py test
+        run: docker-compose exec backend -it "python manage.py test"
