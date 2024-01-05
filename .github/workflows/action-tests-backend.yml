@@ -19,7 +19,7 @@ jobs:
       - name: Start docker
         run: |
           sudo service docker start
-          docker-compose up -d --build backend postgres
+          docker-compose --env-file "sample.env" up -d --build backend postgres
           sleep 10
       - name: Run tests
         run:
