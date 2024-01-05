@@ -15,6 +15,13 @@ jobs:
     name: Build and Test
     runs-on: ubuntu-latest
     steps:
+      - name: Set up environment variables
+        run: |
+          echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_DB=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_HOST=localhost" >> $GITHUB_ENV
+          echo "SECRET_KEY=super secret" >> $GITHUB_ENV
       - uses: actions/checkout@v3
       - uses: iamsauravsharma/create-dotenv@v2.0.1
         with:
@@ -32,6 +39,8 @@ jobs:
         run: |
           docker ps -a
           docker container inspect cardflow-backend-1
+          docker exec cardflow-backend-1 env
+
       - name: Run tests
         run: |
           docker exec cardflow-backend-1 sh -c "pytest"
