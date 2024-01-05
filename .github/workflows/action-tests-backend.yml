@@ -30,4 +30,4 @@ jobs:
             postgres
       - name: Run tests
         working-directory: ./backend
-        run: docker compose exec cardflow-backend-1 -it "python manage.py test"
+        run: docker exec -it cardflow-backend-1 "python manage.py test"
