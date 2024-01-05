@@ -22,8 +22,5 @@ jobs:
       - name: Start docker
         run: |
           docker-compose up -d backend postgres --build
-          sleep 10
       - name: Run tests
-        working-directory: ./backend
-        run:
-          pytest
+        run: pytest
