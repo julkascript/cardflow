@@ -30,6 +30,18 @@ export const yugiohService = {
     return listings!;
   },
 
+  async getCardListingsByUserId(id: number, page = 1): Promise<PaginatedItem<YugiohCardListing>> {
+    const listings = await httpService.get<PaginatedItem<YugiohCardListing>>(
+      api.yugioh.listing.root,
+      {
+        page,
+        user_id: id,
+      },
+    );
+
+    return listings!;
+  },
+
   async buyCardListing(id: number, listing: BuyYugiohCardListing): Promise<YugiohCardListing> {
     const data = await httpService.put<YugiohCardListing>(api.yugioh.listing.buyById(id), listing);
     return data!;
