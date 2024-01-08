@@ -55,4 +55,12 @@ export const yugiohService = {
 
     return cards!;
   },
+
+  async editListing(listing: YugiohCardListing): Promise<YugiohCardListing> {
+    const result = await httpService.put<YugiohCardListing>(
+      api.yugioh.listing.id(listing.id),
+      listing,
+    );
+    return result!;
+  },
 };

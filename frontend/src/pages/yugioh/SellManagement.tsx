@@ -60,6 +60,27 @@ function SellManagement(): JSX.Element {
     });
   }
 
+  function delistAll(event: React.MouseEvent) {
+    event.preventDefault();
+    const fetchFunctions = data.map((d) => {
+      return yugiohService.editListing({ ...d.listing, is_listed: false });
+    });
+
+    Promise.all(fetchFunctions).then(() => {
+      yugiohService.getCardListingsByUserId(user.user_id).then((listings) => {
+        const data: ListingData[] = listings.results.map((l) => ({
+          listing: l,
+          selected: false,
+        }));
+
+        dispatch({
+          type: 'set',
+          newListings: data,
+        });
+      });
+    });
+  }
+
   useEffect(() => {
     if (isAuthenticated) {
       yugiohService.getCardListingsByUserId(user.user_id).then((listings) => {
@@ -106,7 +127,7 @@ function SellManagement(): JSX.Element {
               </td>
               <td>{ld.listing.quantity}</td>
               <td>$&nbsp;{ld.listing.price}</td>
-              <td>{ld.listing.is_listed}</td>
+              <td>{ld.listing.is_listed.toString()}</td>
             </tr>
           ))}
         </thead>
@@ -114,7 +135,9 @@ function SellManagement(): JSX.Element {
       <div>
         <p>{data.filter((d) => d.selected).length} item(s) selected</p>
         <div>
-          <Button variant="outlined">Delist all</Button>
+          <Button variant="outlined" onClick={delistAll}>
+            Delist all
+          </Button>
           <Button variant="outlined" color="error">
             Delete all
           </Button>
