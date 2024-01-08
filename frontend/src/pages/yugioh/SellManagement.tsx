@@ -193,7 +193,7 @@ function SellManagement(): JSX.Element {
     }
   }, [user.user_id, page]);
   return (
-    <section>
+    <section className="bg-[#F5F5F5] min-h-[100vh]">
       <PageHeader heading="Sell">
         {/* TO-DO: update URL */}
         <Button href="/listing/new" variant="outlined" color="success">
@@ -287,7 +287,7 @@ function SellManagement(): JSX.Element {
           </div>
         </div>
         <Pagination
-          className="self-center"
+          className="self-center justify-self-end"
           page={page}
           onChange={(e, p) => {
             e.preventDefault();
