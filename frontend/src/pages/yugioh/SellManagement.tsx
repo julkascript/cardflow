@@ -78,6 +78,10 @@ function SellManagement(): JSX.Element {
   }
 
   function handleCheck(index: number) {
+    if (data[index].selected) {
+      setCheckedAll(false);
+    }
+
     dispatch({
       type: data[index].selected ? 'deselect' : 'select',
       index,
