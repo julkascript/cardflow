@@ -1,10 +1,11 @@
-import { Button, Checkbox, Link, Menu, MenuItem } from '@mui/material';
+import { Button, Checkbox, IconButton, Link, Menu, MenuItem } from '@mui/material';
 import MarketTable from '../../components/marketTable/MarketTable';
 import { YugiohCardListing } from '../../services/yugioh/types';
 import React, { Reducer, useEffect, useReducer } from 'react';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useAuthenticationStatus, useCurrentUser } from '../../context/user';
 import YugiohCardConditionLabel from '../../components/yugioh/YugiohCardConditionLabel';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 type ListingData = {
   listing: YugiohCardListing;
@@ -163,6 +164,9 @@ function SellManagement(): JSX.Element {
     });
   }
 
+  function toggleListingVisibility(listing: YugiohCardListing, newStatus: boolean) {
+    yugiohService.editListing({ ...listing, is_listed: newStatus }).then(() => retrieveListings());
+  }
   useEffect(() => {
     if (isAuthenticated) {
       retrieveListings();
@@ -199,7 +203,14 @@ function SellManagement(): JSX.Element {
               </td>
               <td>{ld.listing.quantity}</td>
               <td>$&nbsp;{ld.listing.price}</td>
-              <td>{ld.listing.is_listed.toString()}</td>
+              <td>
+                <IconButton
+                  onClick={() => toggleListingVisibility(ld.listing, !ld.listing.is_listed)}
+                  sx={{ color: ld.listing.is_listed ? 'blue' : 'inherit' }}
+                >
+                  <VisibilityIcon />
+                </IconButton>
+              </td>
             </tr>
           ))}
         </thead>
