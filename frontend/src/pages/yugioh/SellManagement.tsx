@@ -1,4 +1,4 @@
-import { Button, Checkbox, Link } from '@mui/material';
+import { Button, Checkbox, Link, Menu, MenuItem } from '@mui/material';
 import MarketTable from '../../components/marketTable/MarketTable';
 import { YugiohCardListing } from '../../services/yugioh/types';
 import React, { Reducer, useEffect, useReducer } from 'react';
@@ -46,6 +46,19 @@ function SellManagement(): JSX.Element {
   const [data, dispatch] = useReducer(selectReducer, [] as ListingData[]);
   const { user } = useCurrentUser();
   const { isAuthenticated } = useAuthenticationStatus();
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+
+  function openMenu(event: React.MouseEvent<HTMLElement>) {
+    event.preventDefault();
+    setAnchorEl(event.currentTarget);
+  }
+
+  function closeMenu(event: React.MouseEvent) {
+    event.preventDefault();
+    setAnchorEl(null);
+  }
 
   function retrieveListings() {
     yugiohService.getCardListingsByUserId(user.user_id).then((listings) => {
@@ -146,7 +159,15 @@ function SellManagement(): JSX.Element {
           <Button variant="outlined" color="error" onClick={deleteAll}>
             Delete all
           </Button>
-          <Button variant="outlined">. . .</Button>
+          <Button variant="outlined" onClick={openMenu}>
+            . . .
+          </Button>
+          <Menu open={open} anchorEl={anchorEl} onClose={closeMenu}>
+            <MenuItem>Delete selected items</MenuItem>
+            <MenuItem>Unlist selected items</MenuItem>
+            <MenuItem>List selected items</MenuItem>
+            <MenuItem>List all</MenuItem>
+          </Menu>
         </div>
       </div>
     </section>
