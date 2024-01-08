@@ -98,6 +98,18 @@ function SellManagement(): JSX.Element {
     });
   }
 
+  function listAll(event: React.MouseEvent) {
+    event.preventDefault();
+    const fetchFunctions = data.map((d) => {
+      return yugiohService.editListing({ ...d.listing, is_listed: true });
+    });
+
+    Promise.all(fetchFunctions).then(() => {
+      retrieveListings();
+      setAnchorEl(null);
+    });
+  }
+
   function deleteAll(event: React.MouseEvent) {
     event.preventDefault();
     const fetchFunctions = data.map((d) => {
@@ -214,7 +226,7 @@ function SellManagement(): JSX.Element {
             <MenuItem disabled={data.every((d) => !d.selected)} onClick={listSelectedItems}>
               List selected items
             </MenuItem>
-            <MenuItem>List all</MenuItem>
+            <MenuItem onClick={listAll}>List all</MenuItem>
           </Menu>
         </div>
       </div>
