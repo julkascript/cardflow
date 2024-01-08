@@ -1,4 +1,4 @@
-import { Button, Checkbox, IconButton, Link, Menu, MenuItem } from '@mui/material';
+import { Button, Checkbox, IconButton, Link, Menu, MenuItem, Pagination } from '@mui/material';
 import MarketTable from '../../components/marketTable/MarketTable';
 import { YugiohCardListing } from '../../services/yugioh/types';
 import React, { Reducer, useEffect, useReducer, useState } from 'react';
@@ -49,6 +49,8 @@ function SellManagement(): JSX.Element {
   const { user } = useCurrentUser();
   const { isAuthenticated } = useAuthenticationStatus();
   const [checkedAll, setCheckedAll] = useState(false);
+  const [page, setPage] = useState(1);
+  const [pages, setPages] = useState(0);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -63,12 +65,14 @@ function SellManagement(): JSX.Element {
     setAnchorEl(null);
   }
 
-  function retrieveListings() {
-    yugiohService.getCardListingsByUserId(user.user_id).then((listings) => {
+  function retrieveListings(page: number) {
+    yugiohService.getCardListingsByUserId(user.user_id, page).then((listings) => {
       const data: ListingData[] = listings.results.map((l) => ({
         listing: l,
         selected: false,
       }));
+
+      setPages(Math.ceil(listings.count / 10));
 
       dispatch({
         type: 'set',
@@ -109,7 +113,7 @@ function SellManagement(): JSX.Element {
     });
 
     Promise.all(fetchFunctions).then(() => {
-      retrieveListings();
+      retrieveListings(page);
     });
   }
 
@@ -120,7 +124,7 @@ function SellManagement(): JSX.Element {
     });
 
     Promise.all(fetchFunctions).then(() => {
-      retrieveListings();
+      retrieveListings(page);
       setAnchorEl(null);
     });
   }
@@ -132,7 +136,7 @@ function SellManagement(): JSX.Element {
     });
 
     Promise.all(fetchFunctions).then(() => {
-      retrieveListings();
+      retrieveListings(page);
     });
   }
 
@@ -145,7 +149,7 @@ function SellManagement(): JSX.Element {
       });
 
     Promise.all(fetchFunctions).then(() => {
-      retrieveListings();
+      retrieveListings(page);
       setAnchorEl(null);
     });
   }
@@ -159,7 +163,7 @@ function SellManagement(): JSX.Element {
       });
 
     Promise.all(fetchFunctions).then(() => {
-      retrieveListings();
+      retrieveListings(page);
       setAnchorEl(null);
     });
   }
@@ -173,19 +177,21 @@ function SellManagement(): JSX.Element {
       });
 
     Promise.all(fetchFunctions).then(() => {
-      retrieveListings();
+      retrieveListings(page);
       setAnchorEl(null);
     });
   }
 
   function toggleListingVisibility(listing: YugiohCardListing, newStatus: boolean) {
-    yugiohService.editListing({ ...listing, is_listed: newStatus }).then(() => retrieveListings());
+    yugiohService
+      .editListing({ ...listing, is_listed: newStatus })
+      .then(() => retrieveListings(page));
   }
   useEffect(() => {
     if (isAuthenticated) {
-      retrieveListings();
+      retrieveListings(page);
     }
-  }, [user.user_id]);
+  }, [user.user_id, page]);
   return (
     <section>
       <PageHeader heading="Sell">
@@ -194,7 +200,7 @@ function SellManagement(): JSX.Element {
           New Listing
         </Button>
       </PageHeader>
-      <div className="block lg:flex flex-col items-center overflow-auto">
+      <div className="flex flex-col lg:items-center overflow-auto">
         <MarketTable className="w-full lg:w-10/12 text-left">
           <thead>
             <tr className="text-center">
@@ -252,7 +258,7 @@ function SellManagement(): JSX.Element {
             ))}
           </thead>
         </MarketTable>
-        <div className="text-center mb-4 mt-4 w-96 border-[#666666] border rounded">
+        <div className="text-center self-center mb-4 mt-4 w-96 border-[#666666] border rounded">
           <p className="pt-4">
             <strong>{data.filter((d) => d.selected).length}</strong> item(s) selected
           </p>
@@ -280,6 +286,15 @@ function SellManagement(): JSX.Element {
             </Menu>
           </div>
         </div>
+        <Pagination
+          className="self-center"
+          page={page}
+          onChange={(e, p) => {
+            e.preventDefault();
+            setPage(p);
+          }}
+          count={pages}
+        />
       </div>
     </section>
   );
