@@ -25,10 +25,10 @@ function PageHeader(props: PageHeaderProps): JSX.Element {
 
   return (
     <header
-      className={`lg:pl-24 flex justify-between flex-row pb-8 pt-8 border-b-2 border-stone-300 text-center lg:text-left bg-white ${className}`}
+      className={`lg:pl-24 gap-4 lg:gap-0 flex flex-col items-center justify-center lg:justify-between lg:flex-row pb-8 pt-8 border-b-2 border-stone-300 text-center lg:text-left bg-white ${className}`}
     >
       <h1 className="text-3xl font-bold">{props.heading}</h1>
-      <div className="pr-8">{props.children}</div>
+      <div className="lg:pr-8">{props.children}</div>
     </header>
   );
 }
