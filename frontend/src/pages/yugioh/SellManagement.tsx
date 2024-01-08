@@ -1,7 +1,7 @@
 import { Button, Checkbox, IconButton, Link, Menu, MenuItem } from '@mui/material';
 import MarketTable from '../../components/marketTable/MarketTable';
 import { YugiohCardListing } from '../../services/yugioh/types';
-import React, { Reducer, useEffect, useReducer } from 'react';
+import React, { Reducer, useEffect, useReducer, useState } from 'react';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useAuthenticationStatus, useCurrentUser } from '../../context/user';
 import YugiohCardConditionLabel from '../../components/yugioh/YugiohCardConditionLabel';
@@ -48,6 +48,7 @@ function SellManagement(): JSX.Element {
   const [data, dispatch] = useReducer(selectReducer, [] as ListingData[]);
   const { user } = useCurrentUser();
   const { isAuthenticated } = useAuthenticationStatus();
+  const [checkedAll, setCheckedAll] = useState(false);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -85,8 +86,10 @@ function SellManagement(): JSX.Element {
 
   function handleCheckAll() {
     dispatch({
-      type: data.every((d) => d.selected) ? 'deselectAll' : 'selectAll',
+      type: checkedAll && data.some((d) => d.selected) ? 'deselectAll' : 'selectAll',
     });
+
+    setCheckedAll(!checkedAll);
   }
 
   function delistAll(event: React.MouseEvent) {
@@ -186,7 +189,7 @@ function SellManagement(): JSX.Element {
           <thead>
             <tr className="text-center">
               <th>
-                <Checkbox color="info" onChange={handleCheckAll} />
+                <Checkbox checked={checkedAll} color="info" onChange={handleCheckAll} />
               </th>
               <th colSpan={2}>Card details</th>
               <th>Available</th>
