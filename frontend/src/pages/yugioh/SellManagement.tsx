@@ -245,7 +245,7 @@ function SellManagement(): JSX.Element {
                   />
                 </td>
                 <td className="w-48 text-center">{ld.listing.quantity}</td>
-                <td className="w-48 text-center">$&nbsp;{ld.listing.price}</td>
+                <td className="w-48 font-bold text-center">$&nbsp;{ld.listing.price}</td>
                 <td className="text-center w-4">
                   <IconButton
                     onClick={() => toggleListingVisibility(ld.listing, !ld.listing.is_listed)}
