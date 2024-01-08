@@ -63,4 +63,8 @@ export const yugiohService = {
     );
     return result!;
   },
+
+  async deleteListingById(id: number): Promise<void> {
+    await httpService.del(api.yugioh.listing.id(id));
+  },
 };

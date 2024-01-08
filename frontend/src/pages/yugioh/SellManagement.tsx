@@ -85,6 +85,17 @@ function SellManagement(): JSX.Element {
     });
   }
 
+  function deleteAll(event: React.MouseEvent) {
+    event.preventDefault();
+    const fetchFunctions = data.map((d) => {
+      return yugiohService.deleteListingById(d.listing.id);
+    });
+
+    Promise.all(fetchFunctions).then(() => {
+      retrieveListings();
+    });
+  }
+
   useEffect(() => {
     if (isAuthenticated) {
       retrieveListings();
@@ -132,7 +143,7 @@ function SellManagement(): JSX.Element {
           <Button variant="outlined" onClick={delistAll}>
             Delist all
           </Button>
-          <Button variant="outlined" color="error">
+          <Button variant="outlined" color="error" onClick={deleteAll}>
             Delete all
           </Button>
           <Button variant="outlined">. . .</Button>
