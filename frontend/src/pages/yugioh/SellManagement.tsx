@@ -1,4 +1,4 @@
-import { Checkbox, Link } from '@mui/material';
+import { Button, Checkbox, Link } from '@mui/material';
 import MarketTable from '../../components/marketTable/MarketTable';
 import { YugiohCardListing } from '../../services/yugioh/types';
 import React, { Reducer, useEffect, useReducer } from 'react';
@@ -76,40 +76,52 @@ function SellManagement(): JSX.Element {
     }
   }, [user.user_id]);
   return (
-    <MarketTable>
-      <thead>
-        <tr>
-          <th>
-            <Checkbox onChange={handleCheckAll} color="default" />
-          </th>
-          <th colSpan={2}>Card details</th>
-          <th>Available</th>
-          <th>Price</th>
-          <th>Listed</th>
-        </tr>
-        {data.map((ld, i) => (
-          <tr key={ld.listing.id}>
-            <td>
-              <Checkbox
-                onChange={() => {
-                  handleCheck(i);
-                }}
-                checked={data[i].selected}
-              />
-            </td>
-            <td>
-              <Link>{ld.listing.card_name}</Link>
-            </td>
-            <td>
-              <YugiohCardConditionLabel condition={ld.listing.condition} />
-            </td>
-            <td>{ld.listing.quantity}</td>
-            <td>$&nbsp;{ld.listing.price}</td>
-            <td>{ld.listing.is_listed}</td>
+    <section>
+      <MarketTable>
+        <thead>
+          <tr>
+            <th>
+              <Checkbox onChange={handleCheckAll} color="default" />
+            </th>
+            <th colSpan={2}>Card details</th>
+            <th>Available</th>
+            <th>Price</th>
+            <th>Listed</th>
           </tr>
-        ))}
-      </thead>
-    </MarketTable>
+          {data.map((ld, i) => (
+            <tr key={ld.listing.id}>
+              <td>
+                <Checkbox
+                  onChange={() => {
+                    handleCheck(i);
+                  }}
+                  checked={data[i].selected}
+                />
+              </td>
+              <td>
+                <Link>{ld.listing.card_name}</Link>
+              </td>
+              <td>
+                <YugiohCardConditionLabel condition={ld.listing.condition} />
+              </td>
+              <td>{ld.listing.quantity}</td>
+              <td>$&nbsp;{ld.listing.price}</td>
+              <td>{ld.listing.is_listed}</td>
+            </tr>
+          ))}
+        </thead>
+      </MarketTable>
+      <div>
+        <p>{data.filter((d) => d.selected).length} item(s) selected</p>
+        <div>
+          <Button variant="outlined">Delist all</Button>
+          <Button variant="outlined" color="error">
+            Delete all
+          </Button>
+          <Button variant="outlined">. . .</Button>
+        </div>
+      </div>
+    </section>
   );
 }
 
