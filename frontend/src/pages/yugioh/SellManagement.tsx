@@ -109,6 +109,20 @@ function SellManagement(): JSX.Element {
     });
   }
 
+  function deleteSelectedItems(event: React.MouseEvent) {
+    event.preventDefault();
+    const fetchFunctions = data
+      .filter((d) => d.selected)
+      .map((d) => {
+        return yugiohService.deleteListingById(d.listing.id);
+      });
+
+    Promise.all(fetchFunctions).then(() => {
+      retrieveListings();
+      setAnchorEl(null);
+    });
+  }
+
   useEffect(() => {
     if (isAuthenticated) {
       retrieveListings();
@@ -163,7 +177,9 @@ function SellManagement(): JSX.Element {
             . . .
           </Button>
           <Menu open={open} anchorEl={anchorEl} onClose={closeMenu}>
-            <MenuItem>Delete selected items</MenuItem>
+            <MenuItem disabled={data.every((d) => !d.selected)} onClick={deleteSelectedItems}>
+              Delete selected items
+            </MenuItem>
             <MenuItem>Unlist selected items</MenuItem>
             <MenuItem>List selected items</MenuItem>
             <MenuItem>List all</MenuItem>
