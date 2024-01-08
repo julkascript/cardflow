@@ -85,11 +85,17 @@ function SellManagement(): JSX.Element {
   }
 
   function handleCheckAll() {
-    dispatch({
-      type: checkedAll && data.some((d) => d.selected) ? 'deselectAll' : 'selectAll',
-    });
-
-    setCheckedAll(!checkedAll);
+    if (checkedAll) {
+      if (data.some((d) => !d.selected)) {
+        dispatch({ type: 'selectAll' });
+      } else {
+        dispatch({ type: 'deselectAll' });
+        setCheckedAll(false);
+      }
+    } else {
+      dispatch({ type: 'selectAll' });
+      setCheckedAll(true);
+    }
   }
 
   function delistAll(event: React.MouseEvent) {
