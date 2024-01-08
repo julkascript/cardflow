@@ -186,7 +186,7 @@ function SellManagement(): JSX.Element {
           <thead>
             <tr className="text-center">
               <th>
-                <Checkbox onChange={handleCheckAll} color="default" />
+                <Checkbox color="info" onChange={handleCheckAll} />
               </th>
               <th colSpan={2}>Card details</th>
               <th>Available</th>
@@ -201,6 +201,7 @@ function SellManagement(): JSX.Element {
                       handleCheck(i);
                     }}
                     checked={data[i].selected}
+                    color="info"
                   />
                 </td>
                 <td className="text-center w-[110px]">
