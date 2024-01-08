@@ -88,6 +88,7 @@ const routes = createBrowserRouter([
           {
             path: 'manage',
             element: <SellManagement />,
+            loader: authorizedGuard,
           },
         ],
       },
