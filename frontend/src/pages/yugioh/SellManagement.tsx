@@ -6,6 +6,7 @@ import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useAuthenticationStatus, useCurrentUser } from '../../context/user';
 import YugiohCardConditionLabel from '../../components/yugioh/YugiohCardConditionLabel';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import PageHeader from '../../components/PageHeader';
 
 type ListingData = {
   listing: YugiohCardListing;
@@ -174,71 +175,96 @@ function SellManagement(): JSX.Element {
   }, [user.user_id]);
   return (
     <section>
-      <MarketTable>
-        <thead>
-          <tr>
-            <th>
-              <Checkbox onChange={handleCheckAll} color="default" />
-            </th>
-            <th colSpan={2}>Card details</th>
-            <th>Available</th>
-            <th>Price</th>
-            <th>Listed</th>
-          </tr>
-          {data.map((ld, i) => (
-            <tr key={ld.listing.id}>
-              <td>
-                <Checkbox
-                  onChange={() => {
-                    handleCheck(i);
-                  }}
-                  checked={data[i].selected}
-                />
-              </td>
-              <td>
-                <Link>{ld.listing.card_name}</Link>
-              </td>
-              <td>
-                <YugiohCardConditionLabel condition={ld.listing.condition} />
-              </td>
-              <td>{ld.listing.quantity}</td>
-              <td>$&nbsp;{ld.listing.price}</td>
-              <td>
-                <IconButton
-                  onClick={() => toggleListingVisibility(ld.listing, !ld.listing.is_listed)}
-                  sx={{ color: ld.listing.is_listed ? 'blue' : 'inherit' }}
-                >
-                  <VisibilityIcon />
-                </IconButton>
-              </td>
+      <PageHeader heading="Sell">
+        {/* TO-DO: update URL */}
+        <Button href="/listing/new" variant="outlined" color="success">
+          New Listing
+        </Button>
+      </PageHeader>
+      <div className="block lg:flex flex-col items-center overflow-auto">
+        <MarketTable className="w-full lg:w-10/12 text-left">
+          <thead>
+            <tr className="text-center">
+              <th>
+                <Checkbox onChange={handleCheckAll} color="default" />
+              </th>
+              <th colSpan={2}>Card details</th>
+              <th>Available</th>
+              <th>Price</th>
+              <th>Listed</th>
             </tr>
-          ))}
-        </thead>
-      </MarketTable>
-      <div>
-        <p>{data.filter((d) => d.selected).length} item(s) selected</p>
-        <div>
-          <Button variant="outlined" onClick={delistAll}>
-            Delist all
-          </Button>
-          <Button variant="outlined" color="error" onClick={deleteAll}>
-            Delete all
-          </Button>
-          <Button variant="outlined" onClick={openMenu}>
-            . . .
-          </Button>
-          <Menu open={open} anchorEl={anchorEl} onClose={closeMenu}>
-            <MenuItem disabled={data.every((d) => !d.selected)} onClick={deleteSelectedItems}>
-              Delete selected items
-            </MenuItem>
-            <MenuItem disabled={data.every((d) => !d.selected)} onClick={delistSelectedItems}>
-              Delist selected items
-            </MenuItem>
-            <MenuItem disabled={data.every((d) => !d.selected)} onClick={listSelectedItems}>
-              List selected items
-            </MenuItem>
-            <MenuItem onClick={listAll}>List all</MenuItem>
-          </Menu>
+            {data.map((ld, i) => (
+              <tr key={ld.listing.id}>
+                <td className="w-2" style={{ paddingLeft: 16, paddingRight: 16 }}>
+                  <Checkbox
+                    onChange={() => {
+                      handleCheck(i);
+                    }}
+                    checked={data[i].selected}
+                  />
+                </td>
+                <td className="text-center w-[110px]">
+                  {/* TO-DO: update URL */}
+                  <Link
+                    sx={{
+                      color: '#0B70E5',
+                      textDecorationColor: '#0B70E5',
+                      textDecoration: 'none',
+                      ':hover': {
+                        textDecoration: 'underline',
+                      },
+                    }}
+                  >
+                    {ld.listing.card_name}
+                  </Link>
+                </td>
+                <td className="w-[110px]">
+                  <YugiohCardConditionLabel
+                    className="w-[110px]"
+                    condition={ld.listing.condition}
+                  />
+                </td>
+                <td className="w-48 text-center">{ld.listing.quantity}</td>
+                <td className="w-48 text-center">$&nbsp;{ld.listing.price}</td>
+                <td className="text-center w-4">
+                  <IconButton
+                    onClick={() => toggleListingVisibility(ld.listing, !ld.listing.is_listed)}
+                    sx={{ color: ld.listing.is_listed ? 'blue' : 'inherit' }}
+                  >
+                    <VisibilityIcon />
+                  </IconButton>
+                </td>
+              </tr>
+            ))}
+          </thead>
+        </MarketTable>
+        <div className="text-center mb-4 mt-4 w-96 border-[#666666] border rounded">
+          <p className="pt-4">
+            <strong>{data.filter((d) => d.selected).length}</strong> item(s) selected
+          </p>
+          <div className="flex justify-between p-4">
+            <Button variant="outlined" onClick={delistAll}>
+              Delist all
+            </Button>
+            <Button variant="outlined" color="error" onClick={deleteAll}>
+              Delete all
+            </Button>
+            <Button variant="outlined" onClick={openMenu}>
+              . . .
+            </Button>
+            <Menu open={open} anchorEl={anchorEl} onClose={closeMenu}>
+              <MenuItem disabled={data.every((d) => !d.selected)} onClick={deleteSelectedItems}>
+                Delete selected items
+              </MenuItem>
+              <MenuItem disabled={data.every((d) => !d.selected)} onClick={delistSelectedItems}>
+                Delist selected items
+              </MenuItem>
+              <MenuItem disabled={data.every((d) => !d.selected)} onClick={listSelectedItems}>
+                List selected items
+              </MenuItem>
+              <MenuItem onClick={listAll}>List all</MenuItem>
+            </Menu>
+          </div>
         </div>
       </div>
     </section>
