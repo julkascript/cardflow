@@ -78,6 +78,8 @@ function SellManagement(): JSX.Element {
         type: 'set',
         newListings: data,
       });
+
+      setCheckedAll(false);
     });
   }
 
