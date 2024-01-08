@@ -47,6 +47,20 @@ function SellManagement(): JSX.Element {
   const { user } = useCurrentUser();
   const { isAuthenticated } = useAuthenticationStatus();
 
+  function retrieveListings() {
+    yugiohService.getCardListingsByUserId(user.user_id).then((listings) => {
+      const data: ListingData[] = listings.results.map((l) => ({
+        listing: l,
+        selected: false,
+      }));
+
+      dispatch({
+        type: 'set',
+        newListings: data,
+      });
+    });
+  }
+
   function handleCheck(index: number) {
     dispatch({
       type: data[index].selected ? 'deselect' : 'select',
@@ -67,33 +81,13 @@ function SellManagement(): JSX.Element {
     });
 
     Promise.all(fetchFunctions).then(() => {
-      yugiohService.getCardListingsByUserId(user.user_id).then((listings) => {
-        const data: ListingData[] = listings.results.map((l) => ({
-          listing: l,
-          selected: false,
-        }));
-
-        dispatch({
-          type: 'set',
-          newListings: data,
-        });
-      });
+      retrieveListings();
     });
   }
 
   useEffect(() => {
     if (isAuthenticated) {
-      yugiohService.getCardListingsByUserId(user.user_id).then((listings) => {
-        const data: ListingData[] = listings.results.map((l) => ({
-          listing: l,
-          selected: false,
-        }));
-
-        dispatch({
-          type: 'set',
-          newListings: data,
-        });
-      });
+      retrieveListings();
     }
   }, [user.user_id]);
   return (
