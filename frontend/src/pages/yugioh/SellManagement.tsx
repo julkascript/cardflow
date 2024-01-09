@@ -200,12 +200,18 @@ function SellManagement(): JSX.Element {
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <PageHeader heading="Sell">
         {/* TO-DO: update URL */}
-        <Button startIcon={<AddIcon />} href="/listing/new" variant="outlined" color="success">
+        <Button
+          className="rounded-md"
+          startIcon={<AddIcon />}
+          href="/listing/new"
+          variant="outlined"
+          color="success"
+        >
           New Listing
         </Button>
       </PageHeader>
       <div className="flex flex-col lg:items-center overflow-auto">
-        <MarketTable className="w-full mt-4 lg:w-10/12 text-left">
+        <MarketTable className="w-full rounded-md mt-4 lg:w-10/12 text-left">
           <thead>
             <tr className="text-center">
               <th>
@@ -262,19 +268,19 @@ function SellManagement(): JSX.Element {
             ))}
           </thead>
         </MarketTable>
-        <div className="text-center self-center mb-4 mt-4 w-96 border-[#666666] border rounded">
+        <div className="text-center self-center mb-4 mt-4 w-96 border-[#666666] border rounded-md">
           <p className="pt-4">
             <strong>{data.filter((d) => d.selected).length}</strong> item(s) selected
           </p>
           <div className="flex justify-between p-4">
-            <Button variant="outlined" onClick={delistAll}>
+            <Button className="rounded-md" variant="outlined" onClick={delistAll}>
               Delist all
             </Button>
-            <Button variant="outlined" color="error" onClick={deleteAll}>
+            <Button className="rounded-md" variant="outlined" color="error" onClick={deleteAll}>
               Delete all
             </Button>
             <Button
-              className="font-bold flex gap-1 items-center justify-center"
+              className="font-bold rounded-md flex gap-1 items-center justify-center"
               variant="outlined"
               onClick={openMenu}
             >
