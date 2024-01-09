@@ -204,7 +204,7 @@ function SellManagement(): JSX.Element {
         </Button>
       </PageHeader>
       <div className="flex flex-col lg:items-center overflow-auto">
-        <MarketTable className="w-full lg:w-10/12 text-left">
+        <MarketTable className="w-full mt-4 lg:w-10/12 text-left">
           <thead>
             <tr className="text-center">
               <th>
