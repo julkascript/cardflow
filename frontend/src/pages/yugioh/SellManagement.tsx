@@ -7,6 +7,7 @@ import { useAuthenticationStatus, useCurrentUser } from '../../context/user';
 import YugiohCardConditionLabel from '../../components/yugioh/YugiohCardConditionLabel';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import PageHeader from '../../components/PageHeader';
+import LensIcon from '@mui/icons-material/Lens';
 
 type ListingData = {
   listing: YugiohCardListing;
@@ -271,8 +272,14 @@ function SellManagement(): JSX.Element {
             <Button variant="outlined" color="error" onClick={deleteAll}>
               Delete all
             </Button>
-            <Button variant="outlined" onClick={openMenu}>
-              . . .
+            <Button
+              className="font-bold flex gap-1 items-center justify-center"
+              variant="outlined"
+              onClick={openMenu}
+            >
+              <LensIcon sx={{ fontSize: 6 }} color="secondary" />
+              <LensIcon sx={{ fontSize: 6 }} color="secondary" />
+              <LensIcon sx={{ fontSize: 6 }} color="secondary" />
             </Button>
             <Menu open={open} anchorEl={anchorEl} onClose={closeMenu}>
               <MenuItem disabled={data.every((d) => !d.selected)} onClick={deleteSelectedItems}>
