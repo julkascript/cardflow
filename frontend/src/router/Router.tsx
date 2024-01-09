@@ -12,6 +12,7 @@ import YugiohCardDetails from '../pages/yugioh/YugiohCardDetails';
 import { loadCardDetails } from './loadCardDetails/loadCardDetails';
 import Search from '../pages/Search';
 import { loadSearchResults } from './loadSearchResults/loadSearchResults';
+import SellManagement from '../pages/yugioh/SellManagement';
 
 const routes = createBrowserRouter([
   {
@@ -78,6 +79,16 @@ const routes = createBrowserRouter([
                 element: <YugiohCardDetails />,
               },
             ],
+          },
+        ],
+      },
+      {
+        path: 'sell',
+        children: [
+          {
+            path: 'manage',
+            element: <SellManagement />,
+            loader: authorizedGuard,
           },
         ],
       },
