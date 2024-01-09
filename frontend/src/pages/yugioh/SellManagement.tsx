@@ -8,6 +8,7 @@ import YugiohCardConditionLabel from '../../components/yugioh/YugiohCardConditio
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import PageHeader from '../../components/PageHeader';
 import LensIcon from '@mui/icons-material/Lens';
+import AddIcon from '@mui/icons-material/Add';
 
 type ListingData = {
   listing: YugiohCardListing;
@@ -199,7 +200,7 @@ function SellManagement(): JSX.Element {
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <PageHeader heading="Sell">
         {/* TO-DO: update URL */}
-        <Button href="/listing/new" variant="outlined" color="success">
+        <Button startIcon={<AddIcon />} href="/listing/new" variant="outlined" color="success">
           New Listing
         </Button>
       </PageHeader>
