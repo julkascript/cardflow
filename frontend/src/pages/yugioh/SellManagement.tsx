@@ -268,7 +268,7 @@ function SellManagement(): JSX.Element {
             ))}
           </thead>
         </MarketTable>
-        <div className="text-center self-center mb-4 mt-4 w-96 border-[#666666] border rounded-md">
+        <div className="text-center bg-white self-center mb-4 mt-4 w-96 border-[#666666] border rounded-md">
           <p className="pt-4">
             <strong>{data.filter((d) => d.selected).length}</strong> item(s) selected
           </p>
