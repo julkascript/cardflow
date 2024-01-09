@@ -82,6 +82,7 @@ function SellManagement(): JSX.Element {
       });
 
       setCheckedAll(false);
+      setPage(page);
     });
   }
 
@@ -117,7 +118,7 @@ function SellManagement(): JSX.Element {
     });
 
     Promise.all(fetchFunctions).then(() => {
-      retrieveListings(page);
+      retrieveListings(1);
     });
   }
 
@@ -139,8 +140,15 @@ function SellManagement(): JSX.Element {
       return yugiohService.deleteListingById(d.listing.id);
     });
 
+    let newPage: number;
+    if (data.length > fetchFunctions.length) {
+      newPage = page;
+    } else {
+      newPage = page === pages && page !== 1 ? page - 1 : page;
+    }
+
     Promise.all(fetchFunctions).then(() => {
-      retrieveListings(page);
+      retrieveListings(newPage);
     });
   }
 
@@ -152,8 +160,15 @@ function SellManagement(): JSX.Element {
         return yugiohService.deleteListingById(d.listing.id);
       });
 
+    let newPage: number;
+    if (data.length > fetchFunctions.length) {
+      newPage = page;
+    } else {
+      newPage = page === pages && page !== 1 ? page - 1 : page;
+    }
+
     Promise.all(fetchFunctions).then(() => {
-      retrieveListings(page);
+      retrieveListings(newPage);
       setAnchorEl(null);
     });
   }
