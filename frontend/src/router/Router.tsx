@@ -13,6 +13,9 @@ import { loadCardDetails } from './loadCardDetails/loadCardDetails';
 import Search from '../pages/Search';
 import { loadSearchResults } from './loadSearchResults/loadSearchResults';
 import SellManagement from '../pages/yugioh/SellManagement';
+import Listing from '../pages/listing/Listing';
+import Newlisting from '../pages/listing/NewListing';
+import SellListing from '../pages/listing/SellListing';
 
 const routes = createBrowserRouter([
   {
@@ -44,6 +47,24 @@ const routes = createBrowserRouter([
         path: '/search',
         element: <Search />,
         loader: loadSearchResults,
+      },
+      {
+        path: '/listing/',
+        children: [
+          {
+            path: '',
+            element: <Listing />,
+          },
+          {
+            path: 'newlisting',
+            element: <Newlisting />,
+          },
+          {
+            path: ':id',
+            loader: loadCardDetails,
+            element: <SellListing />,
+          },
+        ],
       },
       {
         path: '/search/:query',

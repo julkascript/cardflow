@@ -66,6 +66,10 @@ export type BuyYugiohCardListing = {
   is_sold: boolean;
 };
 
+export type YugiohCardSellListing = BuyYugiohCardListing & {
+  quantity: number;
+};
+
 export type YugiohCardInSet = {
   id: number;
   yugioh_card: {

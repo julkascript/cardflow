@@ -1,6 +1,12 @@
 import { api } from '../../constants/api';
 import { httpService } from '../http/http';
-import { BuyYugiohCardListing, PaginatedItem, YugiohCardInSet, YugiohCardListing } from './types';
+import {
+  BuyYugiohCardListing,
+  PaginatedItem,
+  YugiohCardSellListing,
+  YugiohCardInSet,
+  YugiohCardListing,
+} from './types';
 
 export const yugiohService = {
   async getCardInSetById(id: number): Promise<YugiohCardInSet> {
@@ -44,6 +50,14 @@ export const yugiohService = {
 
   async buyCardListing(id: number, listing: BuyYugiohCardListing): Promise<YugiohCardListing> {
     const data = await httpService.put<YugiohCardListing>(api.yugioh.listing.buyById(id), listing);
+    return data!;
+  },
+
+  async sellCardListing(listing: YugiohCardSellListing): Promise<YugiohCardSellListing> {
+    const data = await httpService.post<YugiohCardListing>(
+      api.yugioh.listing.sellListing(),
+      listing,
+    );
     return data!;
   },
 
