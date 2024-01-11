@@ -126,7 +126,6 @@ function SellListing(): JSX.Element {
                   <select
                     id="condition"
                     name="condition"
-                    placeholder="Condition"
                     value={formData.condition}
                     onChange={handleChange}
                     className="w-28 px-2 py-0.5 text-sm text-left text-gray-700 border-none focus:ring-0 focus:outline-none"
