@@ -111,3 +111,17 @@ export type YugiohCardSearchResultsDisplay = {
 export type CardSearchLoader = {
   cards: PaginatedItem<YugiohCardInSet>;
 };
+
+export type SellCardListing = {
+  id: number;
+  card: number;
+  card_name: string;
+  card_set_id: number;
+  user: number;
+  user_name: string;
+  price: number;
+  condition: string;
+  quantity: number;
+  is_listed: boolean;
+  is_sold: boolean;
+};

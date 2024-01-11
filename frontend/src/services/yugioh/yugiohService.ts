@@ -53,9 +53,9 @@ export const yugiohService = {
     return data!;
   },
 
-  async sellCardListing(listing: YugiohCardSellListing): Promise<YugiohCardSellListing> {
+  async sellCardListing(listing: YugiohCardSellListing): Promise<YugiohCardListing> {
     const data = await httpService.post<YugiohCardListing>(
-      api.yugioh.listing.sellListing(),
+      'http://localhost:8000/api/listing/',
       listing,
     );
     return data!;

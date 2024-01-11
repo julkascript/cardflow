@@ -42,7 +42,15 @@ function SellListing(): JSX.Element {
   async function handleSubmit(e: React.FormEvent): Promise<void> {
     e.preventDefault();
     try {
-      const data = await yugiohService.sellCardListing(formData);
+      const newData: YugiohCardSellListing = {
+        quantity: Number(formData.quantity),
+        condition: 'poor',
+        price: Number(formData.price),
+        is_sold: true,
+        is_listed: true,
+        card: Number(params.id),
+      };
+      const data = await yugiohService.sellCardListing(newData);
       console.log(data); // Handle the response data as needed
     } catch (error) {
       console.error('Error posting data', error);
