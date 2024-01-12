@@ -27,6 +27,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
     """
     Used for updating the user.
     """
+
     class Meta:
         model = User
         fields = (
@@ -61,20 +62,14 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         for attr, value in validated_data.items():
             if attr == 'password':
                 instance.set_password(value)
+            elif attr == 'avatar':
+                instance.avatar = value
             else:
                 setattr(instance, attr, value)
 
-        instance.save()
+        instance = super().update(instance, validated_data)
 
         return instance
-
-
-class UploadAvatarSerializer(serializers.Serializer):
-
-    class Meta:
-        model = User
-        fields = ('id', 'avatar',)
-        read_only_fields = ('id',)
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
