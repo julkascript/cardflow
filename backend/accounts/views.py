@@ -1,8 +1,6 @@
 from django.contrib.auth import get_user_model
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets, generics, serializers, status
-from rest_framework.decorators import action
-from rest_framework.parsers import FormParser, MultiPartParser, JSONParser
+from rest_framework import viewsets, generics, serializers
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -46,7 +44,6 @@ class UserUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
     serializer_class = UpdateUserSerializer
-    parser_classes = (MultiPartParser, FormParser)
 
     def retrieve(self, request, *args, **kwargs):
         """
