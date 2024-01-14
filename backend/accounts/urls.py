@@ -9,6 +9,7 @@ router = DefaultRouter()
 app_name = 'accounts'
 
 router.register('register', RegistrationView, basename='register')
+# router.register('update', UserUpdateView, basename='account_update')
 
 urlpatterns = [
     path('', include(router.urls)),

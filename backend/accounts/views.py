@@ -1,6 +1,9 @@
 from django.contrib.auth import get_user_model
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets, generics, serializers
+from rest_framework import viewsets, generics, serializers, status
+from rest_framework.decorators import action
+from rest_framework.exceptions import PermissionDenied
+from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
@@ -44,6 +47,7 @@ class UserUpdateView(generics.RetrieveUpdateDestroyAPIView):
     queryset = User.objects.all()
     permission_classes = [IsAuthenticated]
     serializer_class = UpdateUserSerializer
+    parser_classes = [JSONParser, MultiPartParser, FormParser]
 
     def retrieve(self, request, *args, **kwargs):
         """
@@ -53,7 +57,7 @@ class UserUpdateView(generics.RetrieveUpdateDestroyAPIView):
         user = self.get_object()
 
         if user.pk != request.user.pk:
-            raise serializers.ValidationError({'authorize': 'You dont have permission for this user.'})
+            raise PermissionDenied({'authorize': 'You dont have permission for this user.'})
 
         serializer = self.get_serializer(user)
         return Response(serializer.data)
@@ -66,6 +70,6 @@ class UserUpdateView(generics.RetrieveUpdateDestroyAPIView):
         user = self.get_object()
 
         if user.pk != request.user.pk:
-            raise serializers.ValidationError({'authorize': 'You dont have permission for this user.'})
+            raise PermissionDenied({'authorize': 'You dont have permission for this user.'})
 
         return self.destroy(request, *args, **kwargs)

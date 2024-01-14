@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
-from rest_framework import serializers
+from rest_framework import serializers, status
+from rest_framework.exceptions import PermissionDenied
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
 User = get_user_model()
@@ -27,13 +28,15 @@ class UpdateUserSerializer(serializers.ModelSerializer):
     """
     Used for updating the user.
     """
+    avatar = serializers.ImageField(allow_null=True, required=False)
 
     class Meta:
         model = User
         fields = (
-            'username', 'password', 'email', 'first_name', 'last_name',
+            'id', 'username', 'password', 'email', 'first_name', 'last_name',
             'phone_number', 'city', 'shipping_address', 'avatar'
         )
+        read_only_fields = ('id',)
         extra_kwargs = {
             'password': {'write_only': True, 'required': False},
             'username': {'required': False},
@@ -50,24 +53,25 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
 
         if User.objects.exclude(pk=user.pk).filter(username=value).exists():
-            raise serializers.ValidationError({'username': 'This username is already in use.'})
+            raise PermissionDenied({'username': 'This username is already in use.'})
         return value
 
     def update(self, instance, validated_data):
         user = self.context['request'].user
 
         if user.pk != instance.pk:
-            raise serializers.ValidationError({'authorize': 'You dont have permission for this user.'})
+            raise PermissionDenied({'authorize': 'You dont have permission for this user.'})
 
         for attr, value in validated_data.items():
             if attr == 'password':
                 instance.set_password(value)
             elif attr == 'avatar':
-                instance.avatar = value
+                if value:
+                    instance.avatar = value
             else:
                 setattr(instance, attr, value)
 
-        instance = super().update(instance, validated_data)
+        instance.save()
 
         return instance
 
