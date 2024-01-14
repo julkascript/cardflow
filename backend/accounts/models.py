@@ -3,7 +3,7 @@ from django.db import models
 
 
 def user_directory_avatars_path(instance, filename):
-    # file will be uploaded to MEDIA_ROOT/avatars/user_username/<filename>
+    # file will be uploaded to MEDIA_ROOT/avatars/user_<username>/<filename>
     return 'avatars/user_{0}/{1}'.format(instance.username, filename)
 
 
