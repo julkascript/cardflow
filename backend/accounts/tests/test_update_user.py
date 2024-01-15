@@ -67,6 +67,14 @@ class UserUpdateViewTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertTrue(User.objects.filter(pk=other_user.pk).exists())
 
+    def test_delete_user_unauthorized_returns_unauthorized(self):
+        self.client.force_authenticate(user=None)
+        url = reverse('accounts:account_update', args=[self.user.pk])
+        response = self.client.delete(url)
+
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+        self.assertTrue(User.objects.filter(pk=self.user.pk).exists())
+
     def test_update_user(self):
         url = reverse('accounts:account_update', args=[self.user.pk])
         data = {
