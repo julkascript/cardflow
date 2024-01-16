@@ -41,7 +41,7 @@ class RegistrationView(viewsets.ModelViewSet):
 class UserUpdateView(generics.RetrieveUpdateDestroyAPIView):
     """
     View for get or update the user personal information and user delete \n
-        - API endpoint: /api/accounts/update/<int:pk>/
+        - API endpoint: /api/accounts/user/<int:pk>/
     """
 
     queryset = User.objects.all()
@@ -52,7 +52,7 @@ class UserUpdateView(generics.RetrieveUpdateDestroyAPIView):
     def retrieve(self, request, *args, **kwargs):
         """
         View for update the user personal information and user delete \n
-            - API endpoint for get user information. : /api/accounts/update/<int:pk>/
+            - API endpoint for get user information. : /api/accounts/user/<int:pk>/
         """
         user = self.get_object()
 
@@ -65,7 +65,7 @@ class UserUpdateView(generics.RetrieveUpdateDestroyAPIView):
     def delete(self, request, *args, **kwargs):
         """
         View for update the user personal information and user delete \n
-            - API endpoint for user delete. : /api/accounts/update/<int:pk>/
+            - API endpoint for user delete. : /api/accounts/user/<int:pk>/
         """
         user = self.get_object()
 
