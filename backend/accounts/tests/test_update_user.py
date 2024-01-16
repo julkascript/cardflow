@@ -24,13 +24,13 @@ class UserUpdateViewTests(APITestCase):
 
     def test_auth_required(self):
         self.client.force_authenticate(user=None)
-        url = reverse('accounts:account_update', args=[self.user.pk])
+        url = reverse('accounts:user_update', args=[self.user.pk])
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_get_user_information(self):
-        url = reverse('accounts:account_update', args=[self.user.pk])
+        url = reverse('accounts:user_update', args=[self.user.pk])
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
@@ -42,14 +42,14 @@ class UserUpdateViewTests(APITestCase):
             email='otheruser@example.com'
         )
 
-        url = reverse('accounts:account_update', args=[other_user.pk])
+        url = reverse('accounts:user_update', args=[other_user.pk])
         response = self.client.get(url)
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
         self.assertEqual(other_user.username, 'otheruser')
 
     def test_delete_user(self):
-        url = reverse('accounts:account_update', args=[self.user.pk])
+        url = reverse('accounts:user_update', args=[self.user.pk])
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
@@ -61,7 +61,7 @@ class UserUpdateViewTests(APITestCase):
             password='otherpassword',
             email='otheruser@example.com'
         )
-        url = reverse('accounts:account_update', args=[other_user.pk])
+        url = reverse('accounts:user_update', args=[other_user.pk])
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
@@ -69,14 +69,14 @@ class UserUpdateViewTests(APITestCase):
 
     def test_delete_user_unauthorized_returns_unauthorized(self):
         self.client.force_authenticate(user=None)
-        url = reverse('accounts:account_update', args=[self.user.pk])
+        url = reverse('accounts:user_update', args=[self.user.pk])
         response = self.client.delete(url)
 
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
         self.assertTrue(User.objects.filter(pk=self.user.pk).exists())
 
     def test_update_user(self):
-        url = reverse('accounts:account_update', args=[self.user.pk])
+        url = reverse('accounts:user_update', args=[self.user.pk])
         data = {
             'username': 'newusername',
             'email': 'newtestuser@example.com',
@@ -94,7 +94,7 @@ class UserUpdateViewTests(APITestCase):
             password='otherpassword',
             email='otheruser@example.com'
         )
-        url = reverse('accounts:account_update', args=[other_user.pk])
+        url = reverse('accounts:user_update', args=[other_user.pk])
         data = {
             'username': 'newusername',
             'email': 'newtestuser@example.com',
@@ -108,7 +108,7 @@ class UserUpdateViewTests(APITestCase):
 
     def test_update_user_unauthorized_returns_unauthorized(self):
         self.client.force_authenticate(user=None)
-        url = reverse('accounts:account_update', args=[self.user.pk])
+        url = reverse('accounts:user_update', args=[self.user.pk])
         data = {
             'username': 'newusername',
             'email': 'newtestuser@example.com',
@@ -121,7 +121,7 @@ class UserUpdateViewTests(APITestCase):
         self.assertNotEqual(self.user.email, 'newtestuser@example.com')
 
     def test_update_user_password(self):
-        url = reverse('accounts:account_update', args=[self.user.pk])
+        url = reverse('accounts:user_update', args=[self.user.pk])
         data = {
             'password': 'newpassword',
         }
@@ -137,7 +137,7 @@ class UserUpdateViewTests(APITestCase):
             password='otherpassword',
             email='otheruser@example.com'
         )
-        url = reverse('accounts:account_update', args=[other_user.pk])
+        url = reverse('accounts:user_update', args=[other_user.pk])
         data = {
             'password': 'newpassword',
         }
@@ -149,7 +149,7 @@ class UserUpdateViewTests(APITestCase):
 
     def test_update_user_password_unauthorized_returns_unauthorized(self):
         self.client.force_authenticate(user=None)
-        url = reverse('accounts:account_update', args=[self.user.pk])
+        url = reverse('accounts:user_update', args=[self.user.pk])
         data = {
             'password': 'newpassword',
         }
@@ -160,7 +160,7 @@ class UserUpdateViewTests(APITestCase):
         self.assertNotEqual(self.user.check_password('newpassword'), True)
 
     def test_update_user_email(self):
-        url = reverse('accounts:account_update', args=[self.user.pk])
+        url = reverse('accounts:user_update', args=[self.user.pk])
         data = {
             'email': 'newtestuser@example.com',
         }
