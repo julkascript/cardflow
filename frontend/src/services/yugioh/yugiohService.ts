@@ -3,9 +3,9 @@ import { httpService } from '../http/http';
 import {
   BuyYugiohCardListing,
   PaginatedItem,
-  YugiohCardSellListing,
   YugiohCardInSet,
   YugiohCardListing,
+  YugiohCardSellListing,
 } from './types';
 
 export const yugiohService = {
@@ -55,9 +55,14 @@ export const yugiohService = {
 
   async sellCardListing(listing: YugiohCardSellListing): Promise<YugiohCardListing> {
     const data = await httpService.post<YugiohCardListing>(
-      'http://localhost:8000/api/listing/',
+      api.yugioh.listing.sellListing(),
       listing,
     );
+    return data!;
+  },
+
+  async updateCardListing(listing: YugiohCardSellListing, id: number): Promise<YugiohCardListing> {
+    const data = await httpService.patch<YugiohCardListing>(api.yugioh.listing.id(id), listing);
     return data!;
   },
 
@@ -76,6 +81,11 @@ export const yugiohService = {
       listing,
     );
     return result!;
+  },
+
+  async getListingById(id: number): Promise<YugiohCardListing> {
+    const listing = await httpService.get<YugiohCardListing>(api.yugioh.listing.id(id));
+    return listing!;
   },
 
   async deleteListingById(id: number): Promise<void> {

@@ -49,24 +49,6 @@ const routes = createBrowserRouter([
         loader: loadSearchResults,
       },
       {
-        path: '/listing/',
-        children: [
-          {
-            path: '',
-            element: <Listing />,
-          },
-          {
-            path: 'newlisting',
-            element: <Newlisting />,
-          },
-          {
-            path: ':id',
-            loader: loadCardDetails,
-            element: <SellListing />,
-          },
-        ],
-      },
-      {
         path: '/search/:query',
         element: <Search />,
         loader: loadSearchResults,
@@ -110,6 +92,24 @@ const routes = createBrowserRouter([
             path: 'manage',
             element: <SellManagement />,
             loader: authorizedGuard,
+          },
+          {
+            path: 'listing',
+            element: <Listing />,
+          },
+          {
+            path: 'new',
+            element: <Newlisting />,
+          },
+          {
+            path: 'new/:id',
+            loader: loadCardDetails,
+            element: <SellListing />,
+          },
+          {
+            path: 'listing/:id/:cardid',
+            loader: loadCardDetails,
+            element: <SellListing />,
           },
         ],
       },

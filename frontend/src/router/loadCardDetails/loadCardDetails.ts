@@ -12,7 +12,7 @@ export async function loadCardDetails({
 }: {
   params: Params;
 }): Promise<CardDetailsLoaderData> {
-  const id = Number(params.id) || 0;
+  const id = Number(params.cardid) || Number(params.id) || 0;
   if (id <= 0 || !Number.isInteger(id)) {
     throw new Error('invalid ID');
   }

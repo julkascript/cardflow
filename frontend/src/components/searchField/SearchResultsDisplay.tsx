@@ -55,7 +55,7 @@ function SearchResultItem(props: SearchResultItemProps): JSX.Element {
           backgroundColor: '#15B58D33',
         },
       }}
-      href={props.isListing ? `/listing/${data.id}` : `/details/yugioh/${data.id}`}
+      href={props.isListing ? `/sell/new/${data.id}` : `/details/yugioh/${data.id}`}
       onClick={onClose}
     >
       <ListItemIcon sx={{ color: 'black' }}>

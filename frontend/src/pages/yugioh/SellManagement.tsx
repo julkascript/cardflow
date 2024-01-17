@@ -9,6 +9,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import PageHeader from '../../components/PageHeader';
 import LensIcon from '@mui/icons-material/Lens';
 import AddIcon from '@mui/icons-material/Add';
+import ListingTopBar from '../../components/sellListing/ListingTopBar';
 
 type ListingData = {
   listing: YugiohCardListing;
@@ -213,12 +214,13 @@ function SellManagement(): JSX.Element {
   }, [user.user_id, page]);
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
+      <ListingTopBar />
       <PageHeader heading="Sell">
         {/* TO-DO: update URL */}
         <Button
           className="rounded-md"
           startIcon={<AddIcon />}
-          href="/listing/new"
+          href="/sell/new"
           variant="outlined"
           color="success"
         >
@@ -251,6 +253,7 @@ function SellManagement(): JSX.Element {
                 <td className="text-center w-[110px]">
                   {/* TO-DO: update URL */}
                   <Link
+                    href={`/sell/listing/${ld.listing.id}/${ld.listing.card}`}
                     sx={{
                       color: '#0B70E5',
                       textDecorationColor: '#0B70E5',
