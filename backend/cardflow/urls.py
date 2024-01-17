@@ -12,6 +12,6 @@ urlpatterns = [
     path('api/yugioh/', include('yugioh.urls')),
     path('api/accounts/', include('accounts.urls'),),
     path('api/listing/', include('listing.urls')),
-    path('api/orders/', include('orders.urls')),
+    path('api/order/', include('order.urls')),
 
 ]

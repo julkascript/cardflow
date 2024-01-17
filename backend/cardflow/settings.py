@@ -42,9 +42,8 @@ INSTALLED_APPS = [
     "yugioh",
     "listing",
     "drf_spectacular",
-    "orders",
+    "order",
     "cart",
-
 ]
 
 MIDDLEWARE = [

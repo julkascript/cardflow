@@ -1,10 +1,10 @@
 from rest_framework.routers import DefaultRouter
 
-from orders import views
+from order import views
 
 router = DefaultRouter()
 
-app_name = 'orders'
+app_name = 'order'
 
 router.register('', views.OrderViewSet)
 
