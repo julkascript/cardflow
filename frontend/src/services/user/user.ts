@@ -7,6 +7,7 @@ import {
   UserRegister,
   SuccessfulAuthenticationResponse,
   UserLogin,
+  UserAccount,
 } from './types';
 
 export const userService = {
@@ -76,5 +77,10 @@ export const userService = {
     };
 
     return user;
+  },
+
+  async getUser(id: number): Promise<UserAccount> {
+    const data = await httpService.get<UserAccount>(api.accounts.user(id));
+    return data!;
   },
 };
