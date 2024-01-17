@@ -16,8 +16,12 @@ const VisuallyHiddenInput = styled('input')({
   width: 1,
 });
 
-function AvatarSettings(): JSX.Element {
-  const [imageUpload, setImageUpload] = useState('');
+type AvatarSettingsProps = {
+  avatar: string | null;
+};
+
+function AvatarSettings(props: AvatarSettingsProps): JSX.Element {
+  const [imageUpload, setImageUpload] = useState(props.avatar || '');
   const [imageError, setImageError] = useState('');
   const [hasSelected, setSelected] = useState(false);
 
