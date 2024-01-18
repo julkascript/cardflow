@@ -2,6 +2,12 @@ export type CurrentUser = {
   user_id: number;
   username: string;
   email: string;
+  shipping_address: string | null;
+  first_name: string | null;
+  last_name: string | null;
+  phone_number: string | null;
+  city: string | null;
+  avatar: string | null;
 };
 
 export type AccessTokenResponse = {

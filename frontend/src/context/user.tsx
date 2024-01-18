@@ -12,6 +12,12 @@ const UserContext = React.createContext<CurrentUserContext>({
     user_id: 0,
     email: '',
     username: '',
+    shipping_address: '',
+    first_name: null,
+    last_name: null,
+    phone_number: null,
+    city: null,
+    avatar: null,
   },
   setUser(user) {
     this.user = user;
@@ -21,6 +27,12 @@ const UserContext = React.createContext<CurrentUserContext>({
       user_id: 0,
       username: '',
       email: '',
+      shipping_address: null,
+      first_name: null,
+      last_name: null,
+      phone_number: null,
+      city: null,
+      avatar: null,
     };
   },
 });
@@ -30,6 +42,12 @@ export function UserContextProvider({ children }: { children: React.ReactNode })
     user_id: 0,
     username: '',
     email: '',
+    shipping_address: null,
+    first_name: null,
+    last_name: null,
+    phone_number: null,
+    city: null,
+    avatar: null,
   });
 
   function restartUser() {
@@ -37,6 +55,12 @@ export function UserContextProvider({ children }: { children: React.ReactNode })
       user_id: 0,
       username: '',
       email: '',
+      shipping_address: null,
+      first_name: null,
+      last_name: null,
+      phone_number: null,
+      city: null,
+      avatar: null,
     });
   }
 
