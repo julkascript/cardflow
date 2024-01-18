@@ -2,7 +2,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, permissions
 
-from listing.models import Listing
+
 from order.models import Order
 from order.serializer import OrderSerializer
 

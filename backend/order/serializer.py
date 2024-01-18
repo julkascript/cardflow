@@ -26,7 +26,6 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         listing = validated_data.pop('listing')
-
         order = Order.objects.create(**validated_data, listing_id=listing.pk, sender_user=listing.user)
 
         return order
