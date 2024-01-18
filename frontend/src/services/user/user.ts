@@ -83,4 +83,9 @@ export const userService = {
     const data = await httpService.get<UserAccount>(api.accounts.user(id));
     return data!;
   },
+
+  async updateUser(id: number, data: Partial<UserAccount>): Promise<UserAccount> {
+    const updatedData = await httpService.patch<UserAccount>(api.accounts.user(id), data);
+    return updatedData!;
+  },
 };
