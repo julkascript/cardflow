@@ -31,8 +31,8 @@ function ProfileSettingsPage(): JSX.Element {
     return userService.updateUser(user.user_id, payload).then(setUserData);
   }
 
-  function updateUsername(username: string) {
-    updateAccount('username', username).then(logout);
+  function updateAndLogout(field: 'username' | 'email', value: string) {
+    updateAccount(field, value).then(logout);
   }
 
   useEffectAfterInitialLoad(() => {
@@ -44,11 +44,15 @@ function ProfileSettingsPage(): JSX.Element {
       <div className="flex flex-col gap-8">
         <AvatarSettings avatar={userData?.avatar?.toString() || ''} />
         <UsernameSettings
-          onSubmit={updateUsername}
+          onSubmit={(u) => updateAndLogout('username', u)}
           key={user.username + '1'}
           username={user.username}
         />
-        <EmailSettings key={user.email + '2'} email={user.email} />
+        <EmailSettings
+          onSubmit={(e) => updateAndLogout('email', e)}
+          key={user.email + '2'}
+          email={user.email}
+        />
         <ShipmentAddressSettings />
         <DeleteAccount />
       </div>
