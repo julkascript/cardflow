@@ -28,10 +28,14 @@ function ProfileSettingsPage(): JSX.Element {
     userService.deleteUser(user.user_id).then(logout);
   }
 
+  function updateAvatar(avatar: File) {
+    userService.updateUserAvatar(user.user_id, avatar);
+  }
+
   return (
     <ProfilePage className="bg-[#F5F5F5]">
       <div className="flex flex-col gap-8">
-        <AvatarSettings avatar={user.avatar?.toString() || ''} />
+        <AvatarSettings key={user?.avatar + '0'} avatar={user.avatar} onSubmit={updateAvatar} />
         <UsernameSettings
           onSubmit={(u) => updateAndLogout('username', u)}
           key={user.username + '1'}

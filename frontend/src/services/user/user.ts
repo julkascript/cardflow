@@ -89,6 +89,13 @@ export const userService = {
     return updatedData!;
   },
 
+  async updateUserAvatar(id: number, avatar: File): Promise<UserAccount> {
+    const formData = new FormData();
+    formData.append('avatar', avatar, id.toString() + '.' + avatar.type.split('/')[1]);
+    const result = await httpService.patch<UserAccount>(api.accounts.user(id), formData);
+    return result!;
+  },
+
   deleteUser(id: number): Promise<void> {
     return httpService.del(api.accounts.user(id));
   },
