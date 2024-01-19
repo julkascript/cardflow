@@ -19,13 +19,14 @@ const VisuallyHiddenInput = styled('input')({
 type AvatarSettingsProps = {
   avatar: string | null;
   onSubmit: (avatar: File) => void;
+  hasSelected: boolean;
+  onSelect: (selected: boolean) => void;
 };
 
 function AvatarSettings(props: AvatarSettingsProps): JSX.Element {
   const [imageUpload, setImageUpload] = useState(props.avatar || '');
   const [imageError, setImageError] = useState('');
   const [file, setFile] = useState<File>();
-  const [hasSelected, setSelected] = useState(false);
 
   const theme = useTheme();
   const error = theme.palette.error.main;
@@ -44,7 +45,7 @@ function AvatarSettings(props: AvatarSettingsProps): JSX.Element {
           setImageError(err);
           setImageUpload('');
         })
-        .finally(() => setSelected(true));
+        .finally(() => props.onSelect(true));
     }
   }
 
@@ -90,7 +91,7 @@ function AvatarSettings(props: AvatarSettingsProps): JSX.Element {
         <ProfileSectionFooter>
           <p>An avatar is optional but strongly recommended.</p>
           <Button
-            disabled={!(imageError === '' && hasSelected)}
+            disabled={!(imageError === '' && props.hasSelected)}
             color="primary"
             variant="contained"
             className="inline-block"

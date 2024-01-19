@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import ProfilePage from '../../components/profile/ProfilePage';
 import AvatarSettings from '../../components/profile/profileSettings/avatarSettings/AvatarSettings';
 import DeleteAccount from '../../components/profile/profileSettings/DeleteAccount';
@@ -12,6 +13,8 @@ import { useLogout } from '../../util/useLogout';
 function ProfileSettingsPage(): JSX.Element {
   const { user, setUser } = useCurrentUser();
   const logout = useLogout();
+
+  const [hasSelectedAnAvatar, setSelectedAvatar] = useState(false);
 
   async function updateAccount(section: keyof UserAccount, data: string) {
     const payload: Partial<UserAccount> = { [section]: data };
@@ -29,13 +32,21 @@ function ProfileSettingsPage(): JSX.Element {
   }
 
   function updateAvatar(avatar: File) {
-    userService.updateUserAvatar(user.user_id, avatar);
+    userService.updateUserAvatar(user.user_id, avatar).then(() => {
+      setSelectedAvatar(false);
+    });
   }
 
   return (
     <ProfilePage className="bg-[#F5F5F5]">
       <div className="flex flex-col gap-8">
-        <AvatarSettings key={user?.avatar + '0'} avatar={user.avatar} onSubmit={updateAvatar} />
+        <AvatarSettings
+          hasSelected={hasSelectedAnAvatar}
+          onSelect={setSelectedAvatar}
+          key={user?.avatar + '0'}
+          avatar={user.avatar}
+          onSubmit={updateAvatar}
+        />
         <UsernameSettings
           onSubmit={(u) => updateAndLogout('username', u)}
           key={user.username + '1'}
