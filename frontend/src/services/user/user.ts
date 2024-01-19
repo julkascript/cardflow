@@ -88,4 +88,8 @@ export const userService = {
     const updatedData = await httpService.patch<UserAccount>(api.accounts.user(id), data);
     return updatedData!;
   },
+
+  deleteUser(id: number): Promise<void> {
+    return httpService.del(api.accounts.user(id));
+  },
 };

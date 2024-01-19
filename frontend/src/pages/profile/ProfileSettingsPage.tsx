@@ -24,6 +24,10 @@ function ProfileSettingsPage(): JSX.Element {
     updateAccount(field, value).then(logout);
   }
 
+  function deleteAccount() {
+    userService.deleteUser(user.user_id).then(logout);
+  }
+
   return (
     <ProfilePage className="bg-[#F5F5F5]">
       <div className="flex flex-col gap-8">
@@ -43,7 +47,7 @@ function ProfileSettingsPage(): JSX.Element {
           onSubmit={(a) => updateAccount('shipping_address', a)}
           key={user.shipping_address + '3'}
         />
-        <DeleteAccount />
+        <DeleteAccount onDelete={deleteAccount} />
       </div>
     </ProfilePage>
   );
