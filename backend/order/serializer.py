@@ -9,6 +9,7 @@ from order.models import Order
 class OrderSerializer(serializers.ModelSerializer):
     sender_user = serializers.SerializerMethodField(read_only=True)
     receiver_user = serializers.SerializerMethodField(read_only=True)
+    listing = ListingSerializer()
 
     class Meta:
         model = Order

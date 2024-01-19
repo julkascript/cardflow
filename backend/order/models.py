@@ -23,7 +23,7 @@ class Order(models.Model):
     sender_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender_user')
     receiver_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver_user')
 
-    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    listing = models.ManyToManyField(Listing)
 
     status = models.CharField(
         max_length=STATUS_CHOICES_MAX_LENGTH,
