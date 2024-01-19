@@ -60,6 +60,7 @@ const routes = createBrowserRouter([
           {
             path: 'settings',
             element: <ProfileSettingsPage />,
+            loader: authorizedGuard,
           },
           {
             path: 'blog',
