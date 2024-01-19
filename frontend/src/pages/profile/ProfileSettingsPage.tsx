@@ -38,7 +38,11 @@ function ProfileSettingsPage(): JSX.Element {
           key={user.email + '2'}
           email={user.email}
         />
-        <ShipmentAddressSettings />
+        <ShipmentAddressSettings
+          address={user.shipping_address}
+          onSubmit={(a) => updateAccount('shipping_address', a)}
+          key={user.shipping_address + '3'}
+        />
         <DeleteAccount />
       </div>
     </ProfilePage>
