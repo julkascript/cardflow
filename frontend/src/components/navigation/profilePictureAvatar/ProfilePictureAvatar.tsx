@@ -2,7 +2,7 @@ import { Avatar, Link } from '@mui/material';
 import { useCurrentUser } from '../../../context/user';
 
 type ProfilePictureAvatar = {
-  imageUrl?: string;
+  imageUrl: string | null;
 };
 
 /**
@@ -15,7 +15,7 @@ function ProfilePictureAvatar(props: ProfilePictureAvatar): JSX.Element {
 
   return (
     <Link href={`/user/${user.username}/settings`}>
-      <Avatar src={props.imageUrl} />
+      <Avatar src={props.imageUrl || ''} />
     </Link>
   );
 }
