@@ -32,8 +32,9 @@ function ProfileSettingsPage(): JSX.Element {
   }
 
   function updateAvatar(avatar: File) {
-    userService.updateUserAvatar(user.user_id, avatar).then(() => {
+    userService.updateUserAvatar(user.user_id, avatar).then((data) => {
       setSelectedAvatar(false);
+      setUser({ user_id: user.user_id, ...data });
     });
   }
 
