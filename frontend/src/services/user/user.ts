@@ -2,12 +2,12 @@ import { jwtDecode } from 'jwt-decode';
 import { api } from '../../constants/api';
 import { httpService } from '../http/http';
 import {
-  CurrentUser,
   AccessTokenResponse,
   UserRegister,
   SuccessfulAuthenticationResponse,
   UserLogin,
   UserAccount,
+  JwtPayload,
 } from './types';
 
 export const userService = {
@@ -66,11 +66,11 @@ export const userService = {
    * @param jwt the token to be decoded
    * @returns data about the user that was extracted from the token
    */
-  extractUserFromToken(jwt: string): CurrentUser {
+  extractUserFromToken(jwt: string): JwtPayload {
     const decodedToken: any = jwtDecode(jwt);
 
     // transfer only business data, not JWT metadata.
-    const user: CurrentUser = {
+    const user: JwtPayload = {
       user_id: decodedToken.user_id,
       email: decodedToken.email,
       username: decodedToken.username,

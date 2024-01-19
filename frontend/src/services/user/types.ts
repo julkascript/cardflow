@@ -10,6 +10,12 @@ export type CurrentUser = {
   avatar: string | null;
 };
 
+export type JwtPayload = {
+  user_id: number;
+  username: string;
+  email: string;
+};
+
 export type AccessTokenResponse = {
   access: string;
 };
