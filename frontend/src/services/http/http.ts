@@ -55,7 +55,7 @@ async function request<TResponseBody>(
 
   const accessToken = localStorage.getItem('accessToken');
   if (accessToken) {
-    headers.authorization = `Bearer ${accessToken}`;
+    headers.Authorization = `Bearer ${accessToken}`;
   }
 
   const request = {
@@ -75,7 +75,7 @@ async function request<TResponseBody>(
 
   if (res.status === 401) {
     const newAccessToken = await generateNewAccessToken();
-    request.headers.authorization = `Bearer ${newAccessToken}`;
+    request.headers.Authorization = `Bearer ${newAccessToken}`;
     localStorage.setItem('accessToken', newAccessToken);
 
     res = await fetch(url, request);

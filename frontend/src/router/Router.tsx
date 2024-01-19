@@ -13,6 +13,10 @@ import { loadCardDetails } from './loadCardDetails/loadCardDetails';
 import Search from '../pages/Search';
 import { loadSearchResults } from './loadSearchResults/loadSearchResults';
 import SellManagement from '../pages/yugioh/SellManagement';
+import Newlisting from '../pages/listing/NewListing';
+import SellListing from '../pages/listing/SellListing';
+import EditListing from '../pages/listing/EditListing';
+import { loadListingDetails } from './loadListingDetails/loadEditListingDetails';
 
 const routes = createBrowserRouter([
   {
@@ -89,6 +93,20 @@ const routes = createBrowserRouter([
             path: 'manage',
             element: <SellManagement />,
             loader: authorizedGuard,
+          },
+          {
+            path: 'new',
+            element: <Newlisting />,
+          },
+          {
+            path: 'new/:id',
+            loader: loadCardDetails,
+            element: <SellListing />,
+          },
+          {
+            path: 'listing/:id/edit',
+            loader: loadListingDetails,
+            element: <EditListing />,
           },
         ],
       },
