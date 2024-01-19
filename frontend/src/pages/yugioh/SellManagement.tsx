@@ -253,7 +253,7 @@ function SellManagement(): JSX.Element {
                 <td className="text-center w-[110px]">
                   {/* TO-DO: update URL */}
                   <Link
-                    href={`/sell/listing/${ld.listing.id}/${ld.listing.card}`}
+                    href={`/sell/listing/${ld.listing.id}/edit`}
                     sx={{
                       color: '#0B70E5',
                       textDecorationColor: '#0B70E5',

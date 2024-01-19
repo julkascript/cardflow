@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { Link, useLoaderData, useParams, useNavigate } from 'react-router-dom';
+import { useLoaderData, useParams, useNavigate } from 'react-router-dom';
 import {
-  CardDetailsLoaderData,
+  ListingDetailsLoaderData,
+  YugiohCardInSet,
   YugiohCardListing,
   YugiohCardSellListing,
 } from '../../services/yugioh/types';
@@ -13,21 +14,21 @@ import { Pagination } from '@mui/material';
 import ListingTopBar from '../../components/sellListing/ListingTopBar';
 import NewListingTopBar from '../../components/sellListing/NewListingTopBar';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import DeleteIcon from '@mui/icons-material/Delete';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import TagIcon from '@mui/icons-material/Tag';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 
-function SellListing(): JSX.Element {
+function EditListing(): JSX.Element {
   const [page, setPage] = useState(1);
-  const data = useLoaderData() as CardDetailsLoaderData;
+  const data = useLoaderData() as ListingDetailsLoaderData;
   const params = useParams();
   const id = Number(params.id);
-  const cardId = Number(params.cardid);
-  const { cardInSet, cardListings: cardListingsData } = data;
+  const { cardListings: cardListingsData } = data;
   const [cardListings, setCardListings] = useState(cardListingsData);
   const navigate = useNavigate();
   const { user: currentUser } = useCurrentUser();
+  const [cardId, setCardId] = useState(0);
+  const [cardInSet, setCardInSet] = useState<YugiohCardInSet>();
 
   const [formData, setFormData] = useState<YugiohCardListing>({
     id: 0,
@@ -66,6 +67,9 @@ function SellListing(): JSX.Element {
           if (currentUser.user_id !== user) {
             navigate('/sell/manage');
           }
+          setCardId(card);
+          const cardInSet = await yugiohService.getCardInSetById(card);
+          setCardInSet(cardInSet);
           setFormData(() => ({
             card,
             quantity,
@@ -118,21 +122,6 @@ function SellListing(): JSX.Element {
     } catch (error) {}
   }
 
-  async function handleSubmit(e: React.FormEvent): Promise<void> {
-    e.preventDefault();
-    try {
-      const newData: YugiohCardSellListing = {
-        quantity: Number(formData.quantity),
-        condition: formData.condition,
-        price: Number(formData.price),
-        is_sold: false,
-        is_listed: formData.is_listed,
-        card: Number(params.id),
-      };
-      await yugiohService.sellCardListing(newData);
-    } catch (error) {}
-  }
-
   async function updateListing(e: React.FormEvent): Promise<void> {
     e.preventDefault();
     try {
@@ -151,7 +140,7 @@ function SellListing(): JSX.Element {
   const pages = Math.ceil(cardListings.count / 10);
   function changePage(_event: React.ChangeEvent<unknown>, page: number) {
     yugiohService
-      .getCardListingsByCardSetId(cardId ? cardId : id, page)
+      .getCardListingsByCardSetId(cardId, page)
       .then((data) => {
         setCardListings(data);
         setPage(page);
@@ -160,69 +149,54 @@ function SellListing(): JSX.Element {
   }
 
   useEffectAfterInitialLoad(() => {
-    yugiohService
-      .getCardListingsByCardSetId(cardId ? cardId : id)
-      .then(setCardListings)
-      .catch();
+    yugiohService.getCardListingsByCardSetId(cardId).then(setCardListings).catch();
     setPage(1);
-  }, [params.cardid]);
+  }, [cardId]);
   return (
     <section className="bg-[#F5F5F5]">
       <ListingTopBar />
       <NewListingTopBar
-        handleSubmit={id && cardId ? updateListing : handleSubmit}
+        handleSubmit={updateListing}
         quantity={formData.quantity}
         price={formData.price}
         condition={formData.condition}
-        card={Number(params.cardid)}
+        card={Number(cardId)}
       />
       <div className="block mt-20 ml-40 mr-40 bg-white rounded-lg">
         <div className="flex flex-col border border-stone-300">
           <div className="bg-white ml-4 p-8 w-[314px] h-[422px] flex">
-            <img src={cardInSet.yugioh_card.image} />
+            <img src={cardInSet?.yugioh_card.image} />
             <div>
               <div>
                 <h3
                   className="ml-8 text-black text-nowrap text-4xl font-medium"
                   style={{ whiteSpace: 'nowrap' }}
                 >
-                  {cardInSet.yugioh_card.card_name}
+                  {cardInSet?.yugioh_card.card_name}
                 </h3>
                 <div className="absolute right-48 top-80">
-                  {id && cardId ? (
-                    <button
-                      onClick={deleteListing}
-                      className=" flex justify-center items-center w-20 h-8  mt-4 text-sm text-gray-700 border border-stone-300 pl-3 pr-4 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                    >
-                      Delete
-                    </button>
-                  ) : null}
-                  {id && cardId ? null : (
-                    <Link
-                      to="/sell/new"
-                      className=" flex justify-center items-center w-20 h-8  mt-4 text-sm text-gray-700 border border-stone-300 pl-3 pr-4 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                    >
-                      <DeleteIcon className="p-1" />
-                      Clear
-                    </Link>
-                  )}
-                  {id && cardId ? (
-                    <button
-                      onClick={delistItem}
-                      className=" flex justify-center items-center w-20 h-8  mt-4 text-sm text-gray-700 border border-stone-300 pl-3 pr-4 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                    >
-                      <VisibilityIcon className="p-1" />
-                      Delist
-                    </button>
-                  ) : null}
+                  <button
+                    onClick={deleteListing}
+                    className=" flex justify-center items-center w-20 h-8  mt-4 text-sm text-gray-700 border border-stone-300 pl-3 pr-4 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                  >
+                    Delete
+                  </button>
+
+                  <button
+                    onClick={delistItem}
+                    className=" flex justify-center items-center w-20 h-8  mt-4 text-sm text-gray-700 border border-stone-300 pl-3 pr-4 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                  >
+                    <VisibilityIcon className="p-1" />
+                    Delist
+                  </button>
                 </div>
               </div>
               <div className="flex">
                 <div className="w-[61px] h-[23px] rounded-[10px] text-neutral-500 text-sm font-normal text-center ml-8 mt-4 border border-neutral-300">
-                  {cardInSet.set.set_code}
+                  {cardInSet?.set.set_code}
                 </div>
                 <div className="w-[61px] h-[23px] rounded-[10px] text-neutral-500 text-sm font-normal text-center ml-4 mt-4 border border-neutral-300">
-                  {cardInSet.rarity.rarity_code}
+                  {cardInSet?.rarity.rarity_code}
                 </div>
               </div>
               <div className="flex mt-20">
@@ -293,4 +267,4 @@ function SellListing(): JSX.Element {
   );
 }
 
-export default SellListing;
+export default EditListing;

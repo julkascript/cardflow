@@ -13,9 +13,10 @@ import { loadCardDetails } from './loadCardDetails/loadCardDetails';
 import Search from '../pages/Search';
 import { loadSearchResults } from './loadSearchResults/loadSearchResults';
 import SellManagement from '../pages/yugioh/SellManagement';
-import Listing from '../pages/listing/Listing';
 import Newlisting from '../pages/listing/NewListing';
 import SellListing from '../pages/listing/SellListing';
+import EditListing from '../pages/listing/EditListing';
+import { loadListingDetails } from './loadListingDetails/loadEditListingDetails';
 
 const routes = createBrowserRouter([
   {
@@ -94,10 +95,6 @@ const routes = createBrowserRouter([
             loader: authorizedGuard,
           },
           {
-            path: 'listing',
-            element: <Listing />,
-          },
-          {
             path: 'new',
             element: <Newlisting />,
           },
@@ -107,9 +104,9 @@ const routes = createBrowserRouter([
             element: <SellListing />,
           },
           {
-            path: 'listing/:id/:cardid',
-            loader: loadCardDetails,
-            element: <SellListing />,
+            path: 'listing/:id/edit',
+            loader: loadListingDetails,
+            element: <EditListing />,
           },
         ],
       },

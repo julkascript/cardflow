@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { condition } from '../../services/yugioh/types';
+import PageHeader from '../PageHeader';
 
 type NewListingTopBarProps = {
   handleSubmit: (e: React.FormEvent, postAnother: boolean) => Promise<void>;
@@ -35,7 +36,7 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
 
   const onSubmit = (e: React.FormEvent) => {
     handleSubmit(e, postAnother);
-    if (!postAnother || postAnother === null) {
+    if (!postAnother) {
       navigate('/sell/manage');
     } else {
       navigate('/sell/new');
@@ -43,10 +44,8 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
   };
 
   return (
-    <div className="py-8 flex justify-between items-center bg-white border-b border-gray-200">
-      <span className="ml-40 text-4xl font-semibold text-gray-900">
-        <span className="text-stone-500 font-normal">Sell</span> / New Listing
-      </span>
+    <PageHeader heading="Sell / New Listing">
+      {/* TO-DO: update URL */}
       <div className="flex items-center">
         <input
           type="checkbox"
@@ -72,7 +71,7 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
           Post
         </button>
       </div>
-    </div>
+    </PageHeader>
   );
 };
 
