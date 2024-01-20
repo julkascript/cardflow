@@ -14,14 +14,17 @@ class ShoppingCartSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShoppingCart
         fields = '__all__'
+        ordering_fields = ['id']
 
 
 class ShoppingCartItemSerializer(serializers.ModelSerializer):
     listing = ListingSerializer()
+    cart_name = serializers.CharField(read_only=True, source='cart.user.username')
 
     class Meta:
         model = ShoppingCartItem
-        fields = ['id', 'listing', 'quantity', 'total_price']
+        fields = ['id', 'cart_name', 'listing', 'quantity', 'total_price']
+        ordering_fields = ['id']
 
 
 class WriteShoppingCartItemSerializer(serializers.ModelSerializer):
@@ -31,9 +34,15 @@ class WriteShoppingCartItemSerializer(serializers.ModelSerializer):
 
     listing_id = serializers.IntegerField()
 
-    def validate_product_id(self, listing_id):
+    def validate_listing_id(self, listing_id):
         if not Listing.objects.filter(pk=listing_id).exists():
             raise serializers.ValidationError('No product with the given id was found')
+
+        listing = Listing.objects.get(pk=listing_id)
+
+        if listing.user == self.context['cart'].user:
+            raise serializers.ValidationError('You cant add this item to the cart.')
+
         return listing_id
 
     def update(self, cart_item, validated_data):
@@ -53,11 +62,18 @@ class WriteShoppingCartItemSerializer(serializers.ModelSerializer):
         try:
             cart_item = ShoppingCartItem.objects.get(cart=cart, listing_id=listing_id)
             cart_item.quantity += quantity
+
+            if cart_item.quantity < 0:
+                cart_item.quantity = 0
+
         except ShoppingCartItem.DoesNotExist:
             cart_item = ShoppingCartItem(cart=cart, **self.validated_data)
 
-        if cart_item.quantity > cart_item.listing.quantity:
-            raise exceptions.ValidationError()
+            if cart_item.quantity > cart_item.listing.quantity:
+                raise exceptions.ValidationError()
+
+            if cart_item.quantity < 0:
+                raise ValueError("Quantity must be positive number")
 
         cart_item.save()
         self.instance = cart_item
