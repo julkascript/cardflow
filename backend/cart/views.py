@@ -7,6 +7,7 @@ from cart.serializers import WriteShoppingCartItemSerializer, ShoppingCartItemSe
 
 
 def get_cart_for_user(user):
+    # This statement is added for preventing Swagger from infinity loop
     if user.is_anonymous:
         return None
 
@@ -22,6 +23,7 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
 
+        # This statement is added for preventing Swagger from infinity loop
         if self.request.user.is_anonymous:
             return super().get_queryset()
 
@@ -29,8 +31,11 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
 
     def get_serializer_context(self):
         context = super().get_serializer_context()
+
+        # This statement is added for preventing Swagger from infinity loop
         if self.request.user.is_anonymous:
             return context
+
         context['cart'] = get_cart_for_user(self.request.user)
         return context
 
@@ -39,4 +44,3 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
             return WriteShoppingCartItemSerializer
         else:
             return ShoppingCartItemSerializer
-
