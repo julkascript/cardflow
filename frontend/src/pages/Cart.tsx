@@ -80,7 +80,7 @@ function ShoppingCart(): JSX.Element {
                         hidden={false}
                         onChange={() => {}}
                         quantity={shoppingCartItem.listing.quantity}
-                        max={shoppingCartItem.listing.quantity}
+                        max={shoppingCartItem.originalQuantity}
                       />
                     </td>
                     <td>

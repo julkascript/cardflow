@@ -134,4 +134,5 @@ export type ShoppingCardListing = {
   listing: YugiohCardListing;
   condition: condition;
   set_code: string;
+  originalQuantity: number;
 };
