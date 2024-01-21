@@ -16,7 +16,7 @@ function ShoppingCart(): JSX.Element {
     shoppingCart.reduce((totalPrice, item) => totalPrice + item.listing.price, 0).toFixed(2),
   );
   const shipmentCost = 9.55;
-  const quantity = shoppingCart.reduce((total, item) => total + item.listing.quantity, 0);
+  const quantity = shoppingCart.reduce((total, item) => total + item.boughtQuantity, 0);
   const sellers = shoppingCart.length;
 
   const [shipmentAddress, setShipmentAddress] = useState('');
@@ -79,8 +79,8 @@ function ShoppingCart(): JSX.Element {
                       <YugiohCardQuantityField
                         hidden={false}
                         onChange={() => {}}
-                        quantity={shoppingCartItem.listing.quantity}
-                        max={shoppingCartItem.originalQuantity}
+                        quantity={shoppingCartItem.boughtQuantity}
+                        max={shoppingCartItem.listing.quantity}
                       />
                     </td>
                     <td>
