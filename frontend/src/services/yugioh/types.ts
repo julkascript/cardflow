@@ -129,3 +129,9 @@ export type SellCardListing = {
   is_listed: boolean;
   is_sold: boolean;
 };
+
+export type ShoppingCardListing = {
+  listing: YugiohCardListing;
+  condition: condition;
+  set_code: string;
+};

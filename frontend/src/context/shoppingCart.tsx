@@ -1,10 +1,10 @@
 import { Reducer, createContext, useContext, useReducer } from 'react';
-import { YugiohCardListing } from '../services/yugioh/types';
+import { ShoppingCardListing } from '../services/yugioh/types';
 
 type ShoppingCartContextType = {
-  shoppingCart: YugiohCardListing[];
+  shoppingCart: ShoppingCardListing[];
   removeListing: (listingId: number) => void;
-  addListing: (listing: YugiohCardListing) => void;
+  addListing: (listing: ShoppingCardListing) => void;
   changeListingQuantity: (listingId: number, quantity: number) => void;
   loadListings: () => void;
 };
@@ -15,25 +15,25 @@ const ShoppingCartContext = createContext<ShoppingCartContextType>({
 
 type CartReducerAction = {
   type: 'add' | 'delete' | 'changeQuantity' | 'load';
-  listing?: YugiohCardListing;
+  listing?: ShoppingCardListing;
   listingId?: number;
   quantity?: number;
-  listings?: YugiohCardListing[];
+  listings?: ShoppingCardListing[];
 };
 
 function cartReducer(
-  state: YugiohCardListing[],
+  state: ShoppingCardListing[],
   action: CartReducerAction,
 ): React.ReducerState<Reducer<typeof state, typeof action>> {
   switch (action.type) {
     case 'add':
       return [...state, action.listing!];
     case 'delete':
-      const listings = state.filter((s) => s.id !== action.listingId);
+      const listings = state.filter((s) => s.listing.id !== action.listingId);
       return listings;
     case 'changeQuantity':
       const listingsForChangeQuantity = [...state];
-      listingsForChangeQuantity[action?.listingId || 0].quantity = action.quantity || 0;
+      listingsForChangeQuantity[action?.listingId || 0].listing.quantity = action.quantity || 0;
       return listingsForChangeQuantity;
     case 'load':
       return action?.listings || [];
@@ -46,7 +46,7 @@ export function ShoppingCartContextProvider({
   children: React.ReactNode;
 }): JSX.Element {
   const [shoppingCart, dispatch] = useReducer(cartReducer, []);
-  function addListing(listing: YugiohCardListing) {
+  function addListing(listing: ShoppingCardListing) {
     dispatch({ type: 'add', listing });
   }
 
@@ -60,7 +60,7 @@ export function ShoppingCartContextProvider({
 
   function loadListings() {
     const listingsJSON = localStorage.getItem('cart');
-    const listings: YugiohCardListing[] = listingsJSON ? JSON.parse(listingsJSON) : [];
+    const listings: ShoppingCardListing[] = listingsJSON ? JSON.parse(listingsJSON) : [];
     dispatch({ type: 'load', listings });
   }
 

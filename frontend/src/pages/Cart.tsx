@@ -7,15 +7,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import MarketTable from '../components/marketTable/MarketTable';
 import YugiohCardQuantityField from '../components/yugioh/table/market/YugiohCardQuantityField';
 import React, { useState } from 'react';
+import YugiohCardConditionLabel from '../components/yugioh/YugiohCardConditionLabel';
 
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
   const { shoppingCart } = useShoppingCart();
   const price = Number(
-    shoppingCart.reduce((totalPrice, listing) => totalPrice + listing.price, 0).toFixed(2),
+    shoppingCart.reduce((totalPrice, item) => totalPrice + item.listing.price, 0).toFixed(2),
   );
   const shipmentCost = 9.55;
-  const quantity = shoppingCart.reduce((total, listing) => total + listing.quantity, 0);
+  const quantity = shoppingCart.reduce((total, item) => total + item.listing.quantity, 0);
   const sellers = shoppingCart.length;
 
   const [shipmentAddress, setShipmentAddress] = useState('');
@@ -67,18 +68,19 @@ function ShoppingCart(): JSX.Element {
                 </tr>
               </thead>
               <tbody>
-                {shoppingCart.map((listing) => (
-                  <tr key={listing.id}>
-                    <td>{listing.card_name}</td>
-                    {/* TO-DO: find a way to pass the set code and rarity */}
-                    <td>MS22</td>
-                    <td>Rare</td>
+                {shoppingCart.map((shoppingCartItem) => (
+                  <tr key={shoppingCartItem.listing.id}>
+                    <td>{shoppingCartItem.listing.card_name}</td>
+                    <td>{shoppingCartItem.set_code}</td>
+                    <td>
+                      <YugiohCardConditionLabel condition={shoppingCartItem.condition} />
+                    </td>
                     <td>
                       <YugiohCardQuantityField
                         hidden={false}
                         onChange={() => {}}
-                        quantity={listing.quantity}
-                        max={listing.quantity}
+                        quantity={shoppingCartItem.listing.quantity}
+                        max={shoppingCartItem.listing.quantity}
                       />
                     </td>
                     <td>
