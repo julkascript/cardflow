@@ -82,10 +82,11 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
             # Process each group of cart items
             for sender_user, grouped_cart_items in cart_items_by_sender.items():
 
-                sender = User.object.get(pk=sender_user.user)
+                sender = User.objects.filter(pk=sender_user.id).first()
+
                 order_data = {
-                    'sender_user': sender_user.id,  # Use the primary key of the sender user
-                    'receiver_user': self.request.user.id,  # Use the primary key of the receiver user
+                    'sender_user': sender, 
+                    'receiver_user': self.request.user,
                     'status': 'ordered',
                     'delivery_address': request.data.get('delivery_address', ''),
                 }
