@@ -7,19 +7,19 @@ from order.models import Order
 from order.serializer import OrderSerializer
 
 
-@extend_schema(tags=['Order'])
-class OrderViewSet(viewsets.ModelViewSet):
-    """
-
-    """
-
-    queryset = Order.objects.all().order_by('id')
-    serializer_class = OrderSerializer
-    permission_classes = [permissions.IsAuthenticated]
-    filter_backends = [DjangoFilterBackend]
-
-    # filterset_class =
-
-    def perform_create(self, serializer):
-        serializer.save(receiver_user=self.request.user)
-
+# @extend_schema(tags=['Order'])
+# class OrderViewSet(viewsets.ModelViewSet):
+#     """
+#
+#     """
+#
+#     queryset = Order.objects.all().order_by('id')
+#     serializer_class = OrderSerializer
+#     permission_classes = [permissions.IsAuthenticated]
+#     filter_backends = [DjangoFilterBackend]
+#
+#     # filterset_class =
+#
+#     def perform_create(self, serializer):
+#         serializer.save(receiver_user=self.request.user)
+#

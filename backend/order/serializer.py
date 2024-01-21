@@ -1,32 +1,30 @@
+from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from accounts.serializers import UserSerializer
 from listing.models import Listing
 from listing.serializers import ListingSerializer
 from order.models import Order
 
+User = get_user_model()
+
 
 class OrderSerializer(serializers.ModelSerializer):
-    sender_user = serializers.SerializerMethodField(read_only=True)
-    receiver_user = serializers.SerializerMethodField(read_only=True)
-    listing = ListingSerializer()
+    sender_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    receiver_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    listing = ListingSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
-        fields = '__all__'
-
-    def get_sender_user(self, obj):
-        return UserSerializer(obj.listing.user).data
-
-    def get_receiver_user(self, obj):
-        user = None
-        request = self.context.get("request")
-        if request and hasattr(request, "user"):
-            user = request.user
-        return UserSerializer(user).data
+        fields = ['id', 'sender_user', 'receiver_user', 'status', 'delivery_address', 'listing']
 
     def create(self, validated_data):
-        listing = validated_data.pop('listing')
-        order = Order.objects.create(**validated_data, listing_id=listing.pk, sender_user=listing.user)
+        # Extract listings from validated_data
+        listing_data = validated_data.pop('listing', [])
+
+        order = Order.objects.create(**validated_data)
+
+        # Add listings to the order
+        for listing in listing_data:
+            order.listing.add(listing)
 
         return order
