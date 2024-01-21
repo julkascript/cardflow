@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from django.db import transaction
 from drf_spectacular.types import OpenApiTypes
 from drf_spectacular.utils import extend_schema
@@ -8,8 +9,10 @@ from rest_framework.response import Response
 from cart.models import ShoppingCart, ShoppingCartItem
 from cart.permissions import IsItemOwner
 from cart.serializers import WriteShoppingCartItemSerializer, ShoppingCartItemSerializer
+from order.models import Order
 from order.serializer import OrderSerializer
 
+User = get_user_model()
 
 def get_cart_for_user(user):
     # This statement is added for preventing Swagger from infinity loop
@@ -57,7 +60,10 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
     )
     @action(detail=False, methods=['post'])
     def checkout(self, request, *args, **kwargs):
-        cart_items = ShoppingCartItem.objects.filter(cart=get_cart_for_user(self.request.user))
+        """
+        Checkout and create orders based on user's cart items.
+        """
+        cart_items = ShoppingCartItem.objects.filter(cart=get_cart_for_user(request.user))
 
         orders = []
 
@@ -75,23 +81,21 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
 
             # Process each group of cart items
             for sender_user, grouped_cart_items in cart_items_by_sender.items():
+
+                sender = User.object.get(pk=sender_user.user)
                 order_data = {
-                    'sender_user': sender_user,
-                    'receiver_user': self.request.user,
-                    'status': self.request.data.get('status', 'ordered'),
-                    'delivery_address': self.request.data.get('delivery_address', ''),
+                    'sender_user': sender_user.id,  # Use the primary key of the sender user
+                    'receiver_user': self.request.user.id,  # Use the primary key of the receiver user
+                    'status': 'ordered',
+                    'delivery_address': request.data.get('delivery_address', ''),
                 }
 
-                order_serializer = OrderSerializer(data=order_data, context={'request': request})
-                if order_serializer.is_valid():
-                    order = order_serializer.save()
+                order = Order.objects.create(**order_data)
 
-                    # Add listings from the cart to the order
-                    order.listing.set([cart_item.listing for cart_item in grouped_cart_items])
+                # Add listings from the cart to the order
+                order.listing.set([cart_item.listing for cart_item in grouped_cart_items])
 
-                    orders.append(order_serializer.data)
-                else:
-                    return Response(order_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+                orders.append(order.id)
 
             # Delete cart items after successful checkout
             cart_items.delete()
