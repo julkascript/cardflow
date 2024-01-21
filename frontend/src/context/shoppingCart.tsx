@@ -7,6 +7,7 @@ type ShoppingCartContextType = {
   addListing: (listing: ShoppingCardListing) => void;
   changeListingQuantity: (listingId: number, quantity: number) => void;
   loadListings: () => void;
+  removeAll: () => void;
 };
 
 const ShoppingCartContext = createContext<ShoppingCartContextType>({
@@ -14,7 +15,7 @@ const ShoppingCartContext = createContext<ShoppingCartContextType>({
 } as unknown as ShoppingCartContextType);
 
 type CartReducerAction = {
-  type: 'add' | 'delete' | 'changeQuantity' | 'load';
+  type: 'add' | 'delete' | 'changeQuantity' | 'load' | 'deleteAll';
   listing?: ShoppingCardListing;
   listingId?: number;
   quantity?: number;
@@ -33,10 +34,12 @@ function cartReducer(
       return listings;
     case 'changeQuantity':
       const listingsForChangeQuantity = [...state];
-      listingsForChangeQuantity[action?.listingId || 0].listing.quantity = action.quantity || 0;
+      listingsForChangeQuantity[action?.listingId || 0].boughtQuantity = action.quantity || 0;
       return listingsForChangeQuantity;
     case 'load':
       return action?.listings || [];
+    case 'deleteAll':
+      return [];
   }
 }
 
@@ -58,6 +61,10 @@ export function ShoppingCartContextProvider({
     dispatch({ type: 'changeQuantity', listingId, quantity });
   }
 
+  function removeAll() {
+    dispatch({ type: 'deleteAll' });
+  }
+
   function loadListings() {
     const listingsJSON = localStorage.getItem('cart');
     const listings: ShoppingCardListing[] = listingsJSON ? JSON.parse(listingsJSON) : [];
@@ -66,7 +73,14 @@ export function ShoppingCartContextProvider({
 
   return (
     <ShoppingCartContext.Provider
-      value={{ shoppingCart, addListing, removeListing, changeListingQuantity, loadListings }}
+      value={{
+        shoppingCart,
+        addListing,
+        removeListing,
+        changeListingQuantity,
+        loadListings,
+        removeAll,
+      }}
     >
       {children}
     </ShoppingCartContext.Provider>
