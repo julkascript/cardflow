@@ -9,7 +9,9 @@ type ShoppingCartContextType = {
   loadListings: () => void;
 };
 
-const ShoppingCartContext = createContext<ShoppingCartContextType>({} as ShoppingCartContextType);
+const ShoppingCartContext = createContext<ShoppingCartContextType>({
+  shoppingCart: [],
+} as unknown as ShoppingCartContextType);
 
 type CartReducerAction = {
   type: 'add' | 'delete' | 'changeQuantity' | 'load';

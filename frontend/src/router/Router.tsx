@@ -17,6 +17,7 @@ import Newlisting from '../pages/listing/NewListing';
 import SellListing from '../pages/listing/SellListing';
 import EditListing from '../pages/listing/EditListing';
 import { loadListingDetails } from './loadListingDetails/loadEditListingDetails';
+import Cart from '../pages/Cart';
 
 const routes = createBrowserRouter([
   {
@@ -53,6 +54,11 @@ const routes = createBrowserRouter([
         path: '/search/:query',
         element: <Search />,
         loader: loadSearchResults,
+      },
+      {
+        path: '/cart',
+        element: <Cart />,
+        loader: authorizedGuard,
       },
       {
         path: '/user/:username',
