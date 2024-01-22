@@ -1,6 +1,12 @@
 import { api } from '../../constants/api';
 import { httpService } from '../http/http';
-import { BuyYugiohCardListing, PaginatedItem, YugiohCardInSet, YugiohCardListing } from './types';
+import {
+  BuyYugiohCardListing,
+  PaginatedItem,
+  YugiohCardInSet,
+  YugiohCardListing,
+  YugiohCardSellListing,
+} from './types';
 
 export const yugiohService = {
   async getCardInSetById(id: number): Promise<YugiohCardInSet> {
@@ -47,6 +53,19 @@ export const yugiohService = {
     return data!;
   },
 
+  async sellCardListing(listing: YugiohCardSellListing): Promise<YugiohCardListing> {
+    const data = await httpService.post<YugiohCardListing>(
+      api.yugioh.listing.sellListing(),
+      listing,
+    );
+    return data!;
+  },
+
+  async updateCardListing(listing: YugiohCardSellListing, id: number): Promise<YugiohCardListing> {
+    const data = await httpService.patch<YugiohCardListing>(api.yugioh.listing.id(id), listing);
+    return data!;
+  },
+
   async searchCardsByName(name: string, page?: number): Promise<PaginatedItem<YugiohCardInSet>> {
     const cards = await httpService.get<PaginatedItem<YugiohCardInSet>>(api.yugioh.cardInSet.root, {
       card_name: name,
@@ -62,6 +81,11 @@ export const yugiohService = {
       listing,
     );
     return result!;
+  },
+
+  async getListingById(id: number): Promise<YugiohCardListing> {
+    const listing = await httpService.get<YugiohCardListing>(api.yugioh.listing.id(id));
+    return listing!;
   },
 
   async deleteListingById(id: number): Promise<void> {

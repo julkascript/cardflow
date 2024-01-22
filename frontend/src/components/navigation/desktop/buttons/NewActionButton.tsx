@@ -31,7 +31,7 @@ function NewActionButton(): JSX.Element {
   const menuItems: MenuItem[] = [
     {
       label: 'New listing',
-      href: '#',
+      href: '/sell/new',
     },
     {
       label: 'New trade',

@@ -66,6 +66,10 @@ export type BuyYugiohCardListing = {
   is_sold: boolean;
 };
 
+export type YugiohCardSellListing = BuyYugiohCardListing & {
+  quantity: number;
+};
+
 export type YugiohCardInSet = {
   id: number;
   yugioh_card: {
@@ -94,6 +98,10 @@ export type CardDetailsLoaderData = {
   cardListings: PaginatedItem<YugiohCardListing>;
 };
 
+export type ListingDetailsLoaderData = {
+  cardListings: PaginatedItem<YugiohCardListing>;
+};
+
 export type YugiohCardSearchResults = {
   cardName: string;
   card: YugiohCardSet;
@@ -106,4 +114,18 @@ export type YugiohCardSearchResultsDisplay = {
 
 export type CardSearchLoader = {
   cards: PaginatedItem<YugiohCardInSet>;
+};
+
+export type SellCardListing = {
+  id: number;
+  card: number;
+  card_name: string;
+  card_set_id: number;
+  user: number;
+  user_name: string;
+  price: number;
+  condition: string;
+  quantity: number;
+  is_listed: boolean;
+  is_sold: boolean;
 };
