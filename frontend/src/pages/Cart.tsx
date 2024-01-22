@@ -121,7 +121,11 @@ function ShoppingCart(): JSX.Element {
               <span>Total:</span>
               <span>${(price + shipmentCost).toFixed(2)}</span>
             </div>
-            <Button disabled={!shipmentAddressIsValid} variant="contained" color="success">
+            <Button
+              disabled={!shipmentAddressIsValid || shoppingCart.length === 0}
+              variant="contained"
+              color="success"
+            >
               Checkout
             </Button>
             <Divider />
