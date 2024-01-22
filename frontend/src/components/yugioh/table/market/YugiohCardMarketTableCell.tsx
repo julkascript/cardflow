@@ -4,39 +4,49 @@ import YugiohSellerRankBadge from '../../seller/YugiohSellerRankBadge';
 import YugiohSellerRankLabel from '../../seller/YugiohSellerRankLabel';
 import AddToCartButton from './AddToCartButton';
 import YugiohCardQuantityField from './YugiohCardQuantityField';
-import { BuyYugiohCardListing, YugiohCardListing } from '../../../../services/yugioh/types';
+import { ShoppingCardListing, YugiohCardListing } from '../../../../services/yugioh/types';
 import React, { useState } from 'react';
 import { useAuthenticationStatus, useCurrentUser } from '../../../../context/user';
 import { useNavigate } from 'react-router-dom';
-import { yugiohService } from '../../../../services/yugioh/yugiohService';
+import { useShoppingCart } from '../../../../context/shoppingCart';
+import { useEffectAfterInitialLoad } from '../../../../util/useEffectAfterInitialLoad';
 
 type YugiohCardMarketTableCellProps = {
   listing: YugiohCardListing;
+  rarity: string;
+  set_code: string;
 };
 
 function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.Element {
   const [quantity, setQuantity] = useState(1);
   const { user } = useCurrentUser();
+  const { shoppingCart, addListing } = useShoppingCart();
   const { isAuthenticated } = useAuthenticationStatus();
   const navigate = useNavigate();
 
-  function handleBuy(event: React.MouseEvent<HTMLButtonElement>) {
+  function handleAddToCart(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
-    const listing: BuyYugiohCardListing = {
-      card: props.listing.card,
-      price: props.listing.price,
-      condition: props.listing.condition,
-      is_listed: props.listing.is_listed,
-      is_sold: props.listing.is_sold,
+
+    const listing: ShoppingCardListing = {
+      listing: props.listing,
+      rarity: props.rarity,
+      set_code: props.set_code,
+      boughtQuantity: quantity,
     };
 
-    yugiohService
-      .buyCardListing(props.listing.id, listing)
-      .then(() => navigate('/'))
-      .catch(() => {}); // TO-DO: implement feedback for failed requests
+    addListing(listing);
+    localStorage.setItem('cart', JSON.stringify(shoppingCart));
   }
 
   const cannotBuy = user.user_id === props.listing.user || !isAuthenticated;
+
+  /*
+    ensure that the user is redirected after dispatch is done
+    updating the state
+  */
+  useEffectAfterInitialLoad(() => {
+    navigate('/cart');
+  }, [shoppingCart]);
   return (
     <tr>
       <td className="text-center w-16">
@@ -76,7 +86,7 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
         />
       </td>
       <td>
-        <AddToCartButton hidden={cannotBuy} onClick={handleBuy} />
+        <AddToCartButton hidden={cannotBuy} onClick={handleAddToCart} />
       </td>
     </tr>
   );
