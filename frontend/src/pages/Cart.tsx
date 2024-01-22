@@ -11,7 +11,7 @@ import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
-  const { shoppingCart, removeListing } = useShoppingCart();
+  const { shoppingCart, removeListing, removeAll } = useShoppingCart();
   const price = Number(
     shoppingCart
       .reduce((totalPrice, item) => totalPrice + item.listing.price * item.boughtQuantity, 0)
@@ -34,6 +34,11 @@ function ShoppingCart(): JSX.Element {
     removeListing(id);
   }
 
+  function deleteAllListings(event: React.MouseEvent) {
+    event.preventDefault();
+    removeAll();
+  }
+
   useEffectAfterInitialLoad(() => {
     localStorage.setItem('cart', JSON.stringify(shoppingCart));
   }, [shoppingCart]);
@@ -45,9 +50,11 @@ function ShoppingCart(): JSX.Element {
         <PageSection>
           <section>
             <h2>{user.username}</h2>
-            <IconButton>
-              <DeleteIcon color="error" />
-            </IconButton>
+            <Tooltip title="Empty out the shopping cart (remove all listings)">
+              <IconButton onClick={deleteAllListings} disabled={shoppingCart.length === 0}>
+                <DeleteIcon color={shoppingCart.length === 0 ? 'disabled' : 'error'} />
+              </IconButton>
+            </Tooltip>
           </section>
           <div>
             <section>
