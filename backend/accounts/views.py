@@ -46,16 +46,15 @@ class RegistrationView(viewsets.ModelViewSet):
 class UserUpdateView(viewsets.ModelViewSet):
     """
     View for get or update the user personal information and user delete \n
-        - API endpoint: /api/accounts/user/<int:pk>/
+        - API endpoint: /api/accounts/user/
     """
 
     queryset = User.objects.all()
     permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerOfObject]
     serializer_class = UpdateUserSerializer
-    parser_classes = [JSONParser, MultiPartParser, FormParser]
+    parser_classes = [JSONParser, FormParser, MultiPartParser]
     filter_backends = [DjangoFilterBackend]
     filterset_class = UserFilter
-    http_method_names = ['get', 'put', 'patch', 'delete']
 
     def list(self, request, *args, **kwargs):
 
@@ -63,13 +62,18 @@ class UserUpdateView(viewsets.ModelViewSet):
         user_name = self.request.query_params.get('username', None)
 
         if user_name is None:
-            raise ValidationError('Username is required')
+            data = queryset.values('username', 'avatar')
+
+            return Response(data)
 
         queryset = queryset.filter(username=user_name)
 
         serializer = self.get_serializer(queryset, many=True)
 
-        return Response({'username': serializer.data[0]['username'], 'avatar': serializer.data[0]['avatar']})
+        try:
+            return Response({'username': serializer.data[0]['username'], 'avatar': serializer.data[0]['avatar']})
+        except IndexError:
+            return Response('User not found', status=status.HTTP_404_NOT_FOUND)
 
     def retrieve(self, request, *args, **kwargs):
         instance = self.get_object()
