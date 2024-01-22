@@ -11,7 +11,7 @@ import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
-  const { shoppingCart, removeListing, removeAll } = useShoppingCart();
+  const { shoppingCart, removeListing, removeAll, changeListingQuantity } = useShoppingCart();
   const price = Number(
     shoppingCart
       .reduce((totalPrice, item) => totalPrice + item.listing.price * item.boughtQuantity, 0)
@@ -94,7 +94,9 @@ function ShoppingCart(): JSX.Element {
                     <td>
                       <YugiohCardQuantityField
                         hidden={false}
-                        onChange={() => {}}
+                        onChange={(quantity) =>
+                          changeListingQuantity(shoppingCartItem.listing.id, quantity)
+                        }
                         quantity={shoppingCartItem.boughtQuantity}
                         max={shoppingCartItem.listing.quantity}
                       />

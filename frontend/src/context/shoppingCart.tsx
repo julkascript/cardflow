@@ -44,7 +44,13 @@ function cartReducer(
       return listings;
     case 'changeQuantity':
       const listingsForChangeQuantity = [...state];
-      listingsForChangeQuantity[action?.listingId || 0].boughtQuantity = action.quantity || 0;
+
+      const listingIndex = state.findIndex((item) => item.listing.id === action.listingId);
+      if (listingIndex === -1) {
+        return state;
+      }
+
+      listingsForChangeQuantity[listingIndex].boughtQuantity = action.quantity || 0;
       return listingsForChangeQuantity;
     case 'load':
       return action?.listings || [];
