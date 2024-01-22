@@ -35,16 +35,16 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
     };
 
     addListing(listing);
-    localStorage.setItem('cart', JSON.stringify(shoppingCart));
   }
 
   const cannotBuy = user.user_id === props.listing.user || !isAuthenticated;
 
   /*
-    ensure that the user is redirected after dispatch is done
-    updating the state
+    ensure that the user is redirected and the item is saved after
+    dispatch is done updating the state
   */
   useEffectAfterInitialLoad(() => {
+    localStorage.setItem('cart', JSON.stringify(shoppingCart));
     navigate('/cart');
   }, [shoppingCart]);
   return (
