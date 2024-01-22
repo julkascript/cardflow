@@ -51,3 +51,8 @@ export type UserAccount = {
 export type UserAccountLoader = {
   data: UserAccount;
 };
+
+export type PublicUserInfo = {
+  username: string;
+  avatar: string;
+};

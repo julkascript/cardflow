@@ -8,6 +8,7 @@ import {
   UserLogin,
   UserAccount,
   JwtPayload,
+  PublicUserInfo,
 } from './types';
 
 export const userService = {
@@ -81,6 +82,13 @@ export const userService = {
 
   async getUserById(id: number): Promise<UserAccount> {
     const data = await httpService.get<UserAccount>(api.accounts.userById(id));
+    return data!;
+  },
+
+  async getUserByUsername(username: string): Promise<PublicUserInfo> {
+    const data = await httpService.get<PublicUserInfo>(api.accounts.user, {
+      username,
+    });
     return data!;
   },
 
