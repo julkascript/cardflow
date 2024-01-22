@@ -2,11 +2,13 @@ import { jwtDecode } from 'jwt-decode';
 import { api } from '../../constants/api';
 import { httpService } from '../http/http';
 import {
-  CurrentUser,
   AccessTokenResponse,
   UserRegister,
   SuccessfulAuthenticationResponse,
   UserLogin,
+  UserAccount,
+  JwtPayload,
+  PublicUserInfo,
 } from './types';
 
 export const userService = {
@@ -65,16 +67,44 @@ export const userService = {
    * @param jwt the token to be decoded
    * @returns data about the user that was extracted from the token
    */
-  extractUserFromToken(jwt: string): CurrentUser {
+  extractUserFromToken(jwt: string): JwtPayload {
     const decodedToken: any = jwtDecode(jwt);
 
     // transfer only business data, not JWT metadata.
-    const user: CurrentUser = {
+    const user: JwtPayload = {
       user_id: decodedToken.user_id,
       email: decodedToken.email,
       username: decodedToken.username,
     };
 
     return user;
+  },
+
+  async getUserById(id: number): Promise<UserAccount> {
+    const data = await httpService.get<UserAccount>(api.accounts.userById(id));
+    return data!;
+  },
+
+  async getUserByUsername(username: string): Promise<PublicUserInfo> {
+    const data = await httpService.get<PublicUserInfo>(api.accounts.user, {
+      username,
+    });
+    return data!;
+  },
+
+  async updateUser(id: number, data: Partial<UserAccount>): Promise<UserAccount> {
+    const updatedData = await httpService.patch<UserAccount>(api.accounts.userById(id), data);
+    return updatedData!;
+  },
+
+  async updateUserAvatar(id: number, avatar: File): Promise<UserAccount> {
+    const formData = new FormData();
+    formData.append('avatar', avatar, id.toString() + '.' + avatar.type.split('/')[1]);
+    const result = await httpService.patch<UserAccount>(api.accounts.userById(id), formData);
+    return result!;
+  },
+
+  deleteUser(id: number): Promise<void> {
+    return httpService.del(api.accounts.userById(id));
   },
 };

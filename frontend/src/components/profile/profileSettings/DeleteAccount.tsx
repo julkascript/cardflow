@@ -2,7 +2,11 @@ import { Button, useTheme } from '@mui/material';
 import PageSection from '../../PageSection';
 import ProfileSectionFooter from '../ProfileSectionFooter';
 
-function DeleteAccount(): JSX.Element {
+type DeleteAccountProps = {
+  onDelete: () => void;
+};
+
+function DeleteAccount(props: DeleteAccountProps): JSX.Element {
   const theme = useTheme();
   return (
     <PageSection borderColor={theme.palette.error.light}>
@@ -15,7 +19,7 @@ function DeleteAccount(): JSX.Element {
       </div>
       <ProfileSectionFooter backgroundColor="red">
         <p>We will definitely miss you...</p>
-        <Button color="error" variant="contained" className="inline-block">
+        <Button onClick={props.onDelete} color="error" variant="contained" className="inline-block">
           Delete Account
         </Button>
       </ProfileSectionFooter>

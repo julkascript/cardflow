@@ -84,7 +84,7 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
       <ListItem disablePadding>
         <ListItemButton href={`/user/${user.username}/settings`}>
           <ListItemAvatar>
-            <Avatar sx={{ width: 24, height: 24 }} src="#" />
+            <Avatar sx={{ width: 24, height: 24 }} src={user.avatar || ''} />
           </ListItemAvatar>
           <ListItemText primary="My profile" />
         </ListItemButton>
