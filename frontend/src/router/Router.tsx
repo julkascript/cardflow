@@ -13,6 +13,7 @@ import { loadCardDetails } from './loadCardDetails/loadCardDetails';
 import Search from '../pages/Search';
 import { loadSearchResults } from './loadSearchResults/loadSearchResults';
 import SellManagement from '../pages/yugioh/SellManagement';
+import { loadPublicUserInfo } from './loadPublicUserInfo/loadPublicUserInfo';
 
 const routes = createBrowserRouter([
   {
@@ -56,6 +57,7 @@ const routes = createBrowserRouter([
           {
             path: '',
             element: <ProfilePublicInfoPage />,
+            loader: loadPublicUserInfo,
           },
           {
             path: 'settings',

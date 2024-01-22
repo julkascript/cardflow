@@ -3,14 +3,19 @@ import TrophyIcon from '@mui/icons-material/EmojiEvents';
 import PageSection from '../PageSection';
 import YugiohSellerRankBadge from '../yugioh/seller/YugiohSellerRankBadge';
 import { sellerRankData } from '../../constants/sellerRank';
+import { PublicUserInfo } from '../../services/user/types';
 
-function ProfilePublicData(): JSX.Element {
+type ProfilePublicDataProps = {
+  user: PublicUserInfo;
+};
+
+function ProfilePublicData(props: ProfilePublicDataProps): JSX.Element {
   return (
     <PageSection className="text-center lg:text-left mb-8">
       <div className="pt-4 pb-4 lg:pl-12 lg:pr-12 flex flex-col-reverse lg:justify-between lg:flex-row">
         <div className="self-center">
           <h2 className="font-bold text-2xl mb-2 flex gap-4 items-center">
-            @TheAverageTCGEnjoyer
+            @{props.user.username}
             <Tooltip
               title={sellerRankData.renowned.tooltipText}
               arrow
@@ -27,7 +32,7 @@ function ProfilePublicData(): JSX.Element {
           </Typography>
         </div>
         <div className="flex justify-center lg:block">
-          <Avatar src="#" sx={{ width: 80, height: 80 }} />
+          <Avatar src={props.user.avatar} sx={{ width: 80, height: 80 }} />
         </div>
       </div>
       <Divider sx={{ width: '90%', margin: '0 auto' }} />
