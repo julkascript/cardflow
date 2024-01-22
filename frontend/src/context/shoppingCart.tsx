@@ -28,6 +28,16 @@ function cartReducer(
 ): React.ReducerState<Reducer<typeof state, typeof action>> {
   switch (action.type) {
     case 'add':
+      const currentListingIndex = state.findIndex(
+        (item) => item.listing.id === action?.listing?.listing.id,
+      );
+
+      if (currentListingIndex !== -1 && action.listing) {
+        const updatedListings = [...state];
+        updatedListings[currentListingIndex] = action.listing;
+        return updatedListings;
+      }
+
       return [...state, action.listing!];
     case 'delete':
       const listings = state.filter((s) => s.listing.id !== action.listingId);
