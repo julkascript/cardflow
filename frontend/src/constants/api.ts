@@ -9,6 +9,8 @@ export const api = Object.freeze({
     refresh: `${accounts}/refresh/`,
     register: `${accounts}/register/`,
     login: `${accounts}/login/`,
+    user: `${accounts}/user/`,
+    userById: (id: string | number) => `${accounts}/user/${id}/`,
   },
   yugioh: {
     listing: {

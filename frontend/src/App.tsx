@@ -58,10 +58,12 @@ function App() {
     if (refreshToken && accessToken) {
       userService
         .verifySession(refreshToken)
-        .then((jwt) => {
-          const user = userService.extractUserFromToken(jwt);
-          setUser(user);
+        .then(async (jwt) => {
           localStorage.setItem('accessToken', jwt);
+          const { user_id } = userService.extractUserFromToken(jwt);
+          const user = await userService.getUserById(user_id);
+
+          setUser({ user_id, ...user });
         })
         .catch((res) => {
           if (res instanceof HttpError && res.err.status < 500) {

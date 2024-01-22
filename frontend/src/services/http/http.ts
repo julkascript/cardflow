@@ -49,19 +49,25 @@ async function request<TResponseBody>(
   body?: any,
   params?: object,
 ): Promise<TResponseBody | undefined> {
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-  };
-
+  const headers: HeadersInit = {};
+  if (!(body instanceof FormData)) {
+    headers['Content-Type'] = 'application/json';
+  }
   const accessToken = localStorage.getItem('accessToken');
   if (accessToken) {
     headers.Authorization = `Bearer ${accessToken}`;
   }
 
+  let requestBody;
+
+  if (body) {
+    requestBody = body instanceof FormData ? body : JSON.stringify(body);
+  }
+
   const request = {
     headers,
     method,
-    body: body ? JSON.stringify(body) : undefined,
+    body: requestBody,
   };
 
   if (params) {

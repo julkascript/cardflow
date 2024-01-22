@@ -22,7 +22,7 @@ export const handleAvatarUpload = async (file: File) =>
     fileReader.onload = () => {
       const result = fileReader.result;
       if (result) {
-        return resolve(result.toString());
+        return resolve(result as string);
       } else {
         return reject(errorMessages.uploadFailed);
       }
