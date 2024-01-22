@@ -27,7 +27,7 @@ class ShoppingCartItemSerializer(serializers.ModelSerializer):
         ordering_fields = ['id']
 
 
-class WriteShoppingCartItemSerializer(serializers.ModelSerializer):
+class AddShoppingCartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = ShoppingCartItem
         fields = ['id', 'listing_id', 'quantity']
@@ -39,6 +39,9 @@ class WriteShoppingCartItemSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('No product with the given id was found')
 
         listing = Listing.objects.get(pk=listing_id)
+
+        if listing.is_sold:
+            raise serializers.ValidationError('This listing is already sold and cannot be added to the cart.')
 
         if listing.user == self.context['cart'].user:
             raise serializers.ValidationError('You cant add this item to the cart.')
@@ -59,12 +62,10 @@ class WriteShoppingCartItemSerializer(serializers.ModelSerializer):
 
         listing_id = self.validated_data['listing_id']
         quantity = self.validated_data['quantity']
+
         try:
             cart_item = ShoppingCartItem.objects.get(cart=cart, listing_id=listing_id)
-            cart_item.quantity += quantity
-
-            if cart_item.quantity < 0:
-                cart_item.quantity = 0
+            cart_item.quantity = quantity
 
         except ShoppingCartItem.DoesNotExist:
             cart_item = ShoppingCartItem(cart=cart, **self.validated_data)
@@ -72,9 +73,10 @@ class WriteShoppingCartItemSerializer(serializers.ModelSerializer):
             if cart_item.quantity > cart_item.listing.quantity:
                 raise exceptions.ValidationError()
 
-            if cart_item.quantity < 0:
-                raise ValueError("Quantity must be positive number")
-
         cart_item.save()
         self.instance = cart_item
         return self.instance
+
+
+class CheckoutSerializer(serializers.Serializer):
+    delivery_address = serializers.CharField(required=True)

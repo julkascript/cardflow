@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import transaction
-from drf_spectacular.types import OpenApiTypes
+from django.test import RequestFactory
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
@@ -8,11 +8,13 @@ from rest_framework.response import Response
 
 from cart.models import ShoppingCart, ShoppingCartItem
 from cart.permissions import IsItemOwner
-from cart.serializers import WriteShoppingCartItemSerializer, ShoppingCartItemSerializer
+from cart.serializers import AddShoppingCartItemSerializer, ShoppingCartItemSerializer, CheckoutSerializer
+from listing.models import Listing
+from listing.views import ListingViewSet
 from order.models import Order
-from order.serializer import OrderSerializer
 
 User = get_user_model()
+
 
 def get_cart_for_user(user):
     # This statement is added for preventing Swagger from infinity loop
@@ -49,25 +51,34 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
 
     def get_serializer_class(self, *args, **kwargs):
         if self.action in ['create', 'partial_update']:
-            return WriteShoppingCartItemSerializer
+            return AddShoppingCartItemSerializer
         else:
             return ShoppingCartItemSerializer
 
     @extend_schema(
-        request=None,  # Set request to None to indicate an empty request body
-        responses={status.HTTP_201_CREATED: OrderSerializer(many=True)},
+        request=CheckoutSerializer,
+        responses={status.HTTP_201_CREATED: CheckoutSerializer},
         description="Checkout and create orders based on user's cart items."
     )
     @action(detail=False, methods=['post'])
     def checkout(self, request, *args, **kwargs):
         """
-        Checkout and create orders based on user's cart items.
+        Checkout and create orders based on user's cart items grouped by sender.
         """
+        serializer = CheckoutSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+
+        delivery_address = serializer.validated_data['delivery_address']
+
         cart_items = ShoppingCartItem.objects.filter(cart=get_cart_for_user(request.user))
+
+        if not cart_items:
+            return Response({'error': 'No items for checkout'}, status=status.HTTP_400_BAD_REQUEST)
 
         orders = []
 
         with transaction.atomic():
+
             # Create a dictionary to group cart items by sender user
             cart_items_by_sender = {}
 
@@ -81,22 +92,42 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
 
             # Process each group of cart items
             for sender_user, grouped_cart_items in cart_items_by_sender.items():
-
                 sender = User.objects.filter(pk=sender_user.id).first()
 
                 order_data = {
-                    'sender_user': sender, 
+                    'sender_user': sender,
                     'receiver_user': self.request.user,
                     'status': 'ordered',
-                    'delivery_address': request.data.get('delivery_address', ''),
+                    'delivery_address': delivery_address,
                 }
 
                 order = Order.objects.create(**order_data)
 
-                # Add listings from the cart to the order
                 order.listing.set([cart_item.listing for cart_item in grouped_cart_items])
 
                 orders.append(order.id)
+
+                # Decrement quantity from the listing after successful transaction
+                for cart_item in grouped_cart_items:
+                    listing = cart_item.listing
+
+                    updated_quantity = listing.quantity - cart_item.quantity
+
+                    Listing.objects.filter(pk=listing.pk).update(quantity=updated_quantity)
+
+                    updated_listing = Listing.objects.get(pk=listing.pk)
+
+                    if updated_listing.quantity == 0:
+                        request_factory = RequestFactory()
+
+                        mark_as_sold_view = ListingViewSet.as_view({'post': 'mark_as_sold'})
+
+                        mark_as_sold_request = request_factory.put(f"/api/listings/{updated_listing.pk}/mark_as_sold/")
+
+                        mark_as_sold_response = mark_as_sold_view(mark_as_sold_request, pk=listing.pk)
+
+                        if mark_as_sold_response.status_code != status.HTTP_200_OK:
+                            return mark_as_sold_response
 
             # Delete cart items after successful checkout
             cart_items.delete()

@@ -23,7 +23,7 @@ class ShoppingCartItem(models.Model):
 
     cart = models.ForeignKey(ShoppingCart, on_delete=models.CASCADE)
     listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
-    quantity = models.IntegerField()
+    quantity = models.PositiveIntegerField(MinValueValidator(1))
 
     @property
     def total_price(self) -> float:
