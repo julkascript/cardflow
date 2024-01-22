@@ -49,7 +49,7 @@ export type UserAccount = {
 };
 
 export type UserAccountLoader = {
-  data: UserAccount;
+  data: PublicUserInfo;
 };
 
 export type PublicUserInfo = {
