@@ -6,7 +6,7 @@ import { useCurrentUser } from '../context/user';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MarketTable from '../components/marketTable/MarketTable';
 import YugiohCardQuantityField from '../components/yugioh/table/market/YugiohCardQuantityField';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 
 function ShoppingCart(): JSX.Element {
@@ -42,6 +42,12 @@ function ShoppingCart(): JSX.Element {
   useEffectAfterInitialLoad(() => {
     localStorage.setItem('cart', JSON.stringify(shoppingCart));
   }, [shoppingCart]);
+
+  useEffect(() => {
+    if (user.shipping_address) {
+      setShipmentAddress(user.shipping_address || '');
+    }
+  }, [user]);
 
   return (
     <>
