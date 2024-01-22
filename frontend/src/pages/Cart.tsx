@@ -101,7 +101,7 @@ function ShoppingCart(): JSX.Element {
                         max={shoppingCartItem.listing.quantity}
                       />
                     </td>
-                    <td>{shoppingCartItem.listing.price}</td>
+                    <td>${shoppingCartItem.listing.price.toFixed(2)}</td>
                     <td>
                       <Tooltip title="Remove this listing">
                         <IconButton onClick={(e) => deleteListing(e, shoppingCartItem.listing.id)}>
@@ -119,7 +119,7 @@ function ShoppingCart(): JSX.Element {
           <section>
             <div>
               <span>Total:</span>
-              <span>${price + shipmentCost}</span>
+              <span>${(price + shipmentCost).toFixed(2)}</span>
             </div>
             <Button disabled={!shipmentAddressIsValid} variant="contained" color="success">
               Checkout
@@ -152,7 +152,7 @@ function SummaryData(props: SummaryDataProps): JSX.Element {
     <li>
       <div>
         <span>{props.summary}</span>
-        <span className={props.boldedData ? 'font-bold' : ''}>{props.data}</span>
+        <span className={props.boldedData ? 'font-bold' : ''}>${props.data.toFixed(2)}</span>
       </div>
     </li>
   );
@@ -167,7 +167,7 @@ function CheckoutData(props: CheckoutDataProps): JSX.Element {
   return (
     <li>
       <span>{props.summary}</span>
-      <span>${props.data}</span>
+      <span>${props.data.toFixed(2)}</span>
     </li>
   );
 }
