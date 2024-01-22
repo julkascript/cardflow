@@ -51,8 +51,8 @@ function ShoppingCart(): JSX.Element {
           <section>
             <h2>{user.username}</h2>
             <Tooltip title="Empty out the shopping cart (remove all listings)">
-              <IconButton onClick={deleteAllListings} disabled={shoppingCart.length === 0}>
-                <DeleteIcon color={shoppingCart.length === 0 ? 'disabled' : 'error'} />
+              <IconButton onClick={deleteAllListings}>
+                <DeleteIcon color="error" />
               </IconButton>
             </Tooltip>
           </section>
