@@ -29,8 +29,8 @@ function ShoppingCart(): JSX.Element {
   return (
     <>
       <PageHeader heading="Shopping cart" />
-      <PageSection>
-        <section>
+      <div>
+        <PageSection>
           <section>
             <h2>{user.username}</h2>
             <IconButton>
@@ -92,27 +92,29 @@ function ShoppingCart(): JSX.Element {
               </tbody>
             </MarketTable>
           </section>
-        </section>
-        <section>
-          <div>
-            <span>Total:</span>
-            <span>${price + shipmentCost}</span>
-          </div>
-          <Button disabled={!shipmentAddressIsValid} variant="contained" color="success">
-            Checkout
-          </Button>
-          <Divider />
-          <ul>
-            <CheckoutData summary="Shipping cost" data={shipmentCost} />
-            <CheckoutData summary="Items cost" data={price} />
-          </ul>
-          <Divider />
-          <ul>
-            <CheckoutData summary="Amount of sellers" data={sellers} />
-            <CheckoutData summary="Amount of cards" data={quantity} />
-          </ul>
-        </section>
-      </PageSection>
+        </PageSection>
+        <PageSection>
+          <section>
+            <div>
+              <span>Total:</span>
+              <span>${price + shipmentCost}</span>
+            </div>
+            <Button disabled={!shipmentAddressIsValid} variant="contained" color="success">
+              Checkout
+            </Button>
+            <Divider />
+            <ul>
+              <CheckoutData summary="Shipping cost" data={shipmentCost} />
+              <CheckoutData summary="Items cost" data={price} />
+            </ul>
+            <Divider />
+            <ul>
+              <CheckoutData summary="Amount of sellers" data={sellers} />
+              <CheckoutData summary="Amount of cards" data={quantity} />
+            </ul>
+          </section>
+        </PageSection>
+      </div>
     </>
   );
 }
