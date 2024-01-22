@@ -8,6 +8,7 @@ import { linkBehaviorConfiguration } from './linkBehaviorConfiguration';
 import { userService } from './services/user/user';
 import { useCurrentUser } from './context/user';
 import { HttpError } from './util/HttpError';
+import { useShoppingCart } from './context/shoppingCart';
 
 function App() {
   const theme = useMemo(
@@ -48,6 +49,7 @@ function App() {
   );
 
   const { setUser, restartUser } = useCurrentUser();
+  const { loadListings } = useShoppingCart();
 
   useEffect(() => {
     const refreshToken = localStorage.getItem('refreshToken');
@@ -67,7 +69,10 @@ function App() {
           }
         });
     }
+
+    loadListings();
   }, []);
+
   return (
     <>
       <ThemeProvider theme={theme}>
