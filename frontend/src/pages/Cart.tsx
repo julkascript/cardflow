@@ -13,7 +13,9 @@ function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
   const { shoppingCart, removeListing } = useShoppingCart();
   const price = Number(
-    shoppingCart.reduce((totalPrice, item) => totalPrice + item.listing.price, 0).toFixed(2),
+    shoppingCart
+      .reduce((totalPrice, item) => totalPrice + item.listing.price * item.boughtQuantity, 0)
+      .toFixed(2),
   );
   const shipmentCost = 9.55;
   const quantity = shoppingCart.reduce((total, item) => total + item.boughtQuantity, 0);
