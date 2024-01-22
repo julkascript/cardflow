@@ -62,9 +62,14 @@ class UserUpdateView(viewsets.ModelViewSet):
         user_name = self.request.query_params.get('username', None)
 
         if user_name is None:
-            data = queryset.values('username', 'avatar')
+            data = self.get_serializer(queryset, many=True).data
 
-            return Response(data)
+            result = []
+
+            for user in data:
+                result.append({'username': user['username'], 'avatar': user['avatar']})
+
+            return Response(result)
 
         queryset = queryset.filter(username=user_name)
 
