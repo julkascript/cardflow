@@ -23,7 +23,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
   async function authenticaticateUser(id: number, tokens: SuccessfulAuthenticationResponse) {
     localStorage.setItem('accessToken', tokens.access);
     localStorage.setItem('refreshToken', tokens.refresh);
-    const data = await userService.getUser(id);
+    const data = await userService.getUserById(id);
     setUser({ user_id: id, ...data });
     navigate('/');
   }

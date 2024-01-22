@@ -59,7 +59,7 @@ function App() {
         .then(async (jwt) => {
           localStorage.setItem('accessToken', jwt);
           const { user_id } = userService.extractUserFromToken(jwt);
-          const user = await userService.getUser(user_id);
+          const user = await userService.getUserById(user_id);
 
           setUser({ user_id, ...user });
         })
