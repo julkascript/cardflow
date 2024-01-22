@@ -7,7 +7,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import MarketTable from '../components/marketTable/MarketTable';
 import YugiohCardQuantityField from '../components/yugioh/table/market/YugiohCardQuantityField';
 import React, { useState } from 'react';
-import YugiohCardConditionLabel from '../components/yugioh/YugiohCardConditionLabel';
 
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
@@ -72,9 +71,7 @@ function ShoppingCart(): JSX.Element {
                   <tr key={shoppingCartItem.listing.id}>
                     <td>{shoppingCartItem.listing.card_name}</td>
                     <td>{shoppingCartItem.set_code}</td>
-                    <td>
-                      <YugiohCardConditionLabel condition={shoppingCartItem.condition} />
-                    </td>
+                    <td>{shoppingCartItem.rarity}</td>
                     <td>
                       <YugiohCardQuantityField
                         hidden={false}

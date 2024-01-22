@@ -132,7 +132,7 @@ export type SellCardListing = {
 
 export type ShoppingCardListing = {
   listing: YugiohCardListing;
-  condition: condition;
+  rarity: string;
   set_code: string;
   boughtQuantity: number;
 };
