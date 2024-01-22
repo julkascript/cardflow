@@ -1,7 +1,7 @@
 import { Button, Divider, IconButton, TextField, Tooltip } from '@mui/material';
 import PageHeader from '../components/PageHeader';
 import PageSection from '../components/PageSection';
-import { ShoppingCartContextProvider, useShoppingCart } from '../context/shoppingCart';
+import { useShoppingCart } from '../context/shoppingCart';
 import { useCurrentUser } from '../context/user';
 import DeleteIcon from '@mui/icons-material/Delete';
 import MarketTable from '../components/marketTable/MarketTable';
@@ -27,7 +27,7 @@ function ShoppingCart(): JSX.Element {
   const shipmentAddressIsValid = shipmentAddress !== '';
 
   return (
-    <ShoppingCartContextProvider>
+    <>
       <PageHeader heading="Shopping cart" />
       <PageSection>
         <section>
@@ -113,7 +113,7 @@ function ShoppingCart(): JSX.Element {
           </ul>
         </section>
       </PageSection>
-    </ShoppingCartContextProvider>
+    </>
   );
 }
 
