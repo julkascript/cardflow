@@ -7,10 +7,11 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import MarketTable from '../components/marketTable/MarketTable';
 import YugiohCardQuantityField from '../components/yugioh/table/market/YugiohCardQuantityField';
 import React, { useState } from 'react';
+import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
-  const { shoppingCart } = useShoppingCart();
+  const { shoppingCart, removeListing } = useShoppingCart();
   const price = Number(
     shoppingCart.reduce((totalPrice, item) => totalPrice + item.listing.price, 0).toFixed(2),
   );
@@ -25,6 +26,15 @@ function ShoppingCart(): JSX.Element {
   }
 
   const shipmentAddressIsValid = shipmentAddress !== '';
+
+  function deleteListing(event: React.MouseEvent, id: number) {
+    event.preventDefault();
+    removeListing(id);
+  }
+
+  useEffectAfterInitialLoad(() => {
+    localStorage.setItem('cart', JSON.stringify(shoppingCart));
+  }, [shoppingCart]);
 
   return (
     <>
@@ -83,7 +93,7 @@ function ShoppingCart(): JSX.Element {
                     <td>{shoppingCartItem.listing.price}</td>
                     <td>
                       <Tooltip title="Remove this listing">
-                        <IconButton>
+                        <IconButton onClick={(e) => deleteListing(e, shoppingCartItem.listing.id)}>
                           <DeleteIcon color="error" />
                         </IconButton>
                       </Tooltip>
