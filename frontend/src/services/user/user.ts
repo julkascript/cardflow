@@ -80,23 +80,23 @@ export const userService = {
   },
 
   async getUserById(id: number): Promise<UserAccount> {
-    const data = await httpService.get<UserAccount>(api.accounts.user(id));
+    const data = await httpService.get<UserAccount>(api.accounts.userById(id));
     return data!;
   },
 
   async updateUser(id: number, data: Partial<UserAccount>): Promise<UserAccount> {
-    const updatedData = await httpService.patch<UserAccount>(api.accounts.user(id), data);
+    const updatedData = await httpService.patch<UserAccount>(api.accounts.userById(id), data);
     return updatedData!;
   },
 
   async updateUserAvatar(id: number, avatar: File): Promise<UserAccount> {
     const formData = new FormData();
     formData.append('avatar', avatar, id.toString() + '.' + avatar.type.split('/')[1]);
-    const result = await httpService.patch<UserAccount>(api.accounts.user(id), formData);
+    const result = await httpService.patch<UserAccount>(api.accounts.userById(id), formData);
     return result!;
   },
 
   deleteUser(id: number): Promise<void> {
-    return httpService.del(api.accounts.user(id));
+    return httpService.del(api.accounts.userById(id));
   },
 };
