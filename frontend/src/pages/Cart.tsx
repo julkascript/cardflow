@@ -80,10 +80,11 @@ function ShoppingCart(): JSX.Element {
                         max={shoppingCartItem.listing.quantity}
                       />
                     </td>
+                    <td>{shoppingCartItem.listing.price}</td>
                     <td>
                       <Tooltip title="Remove this listing">
                         <IconButton>
-                          <DeleteIcon />
+                          <DeleteIcon color="error" />
                         </IconButton>
                       </Tooltip>
                     </td>
