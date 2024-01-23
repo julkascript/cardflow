@@ -17,8 +17,7 @@ import MarketTable from '../components/marketTable/MarketTable';
 import YugiohCardQuantityField from '../components/yugioh/table/market/YugiohCardQuantityField';
 import React, { useEffect, useState } from 'react';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
-import { Home } from '@mui/icons-material';
-
+import { Home, Info } from '@mui/icons-material';
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
   const { shoppingCart, removeListing, removeAll, changeListingQuantity } = useShoppingCart();
@@ -40,6 +39,10 @@ function ShoppingCart(): JSX.Element {
   }
 
   const shipmentAddressIsValid = shipmentAddress !== '';
+
+  const shipmentAddressTooltipText = user.shipping_address
+    ? 'Your details were pre-filled from your profile.'
+    : 'You can set a default shipment address from your profile, which will be pre-filled for future purchases.';
 
   function deleteListing(event: React.MouseEvent, id: number) {
     event.preventDefault();
@@ -99,7 +102,16 @@ function ShoppingCart(): JSX.Element {
             <Divider className="none lg:block" orientation="vertical" flexItem />
             <Divider className="block lg:none" flexItem />
             <section>
-              <h3 className="font-bold mb-2">Shipping details</h3>
+              <h3 className="font-bold mb-2">
+                <div className="flex items-center gap-2">
+                  <span>Shipping details</span>
+                  <Tooltip title={shipmentAddressTooltipText} placement="top">
+                    <IconButton>
+                      <Info />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+              </h3>
               <TextField
                 error={!shipmentAddressIsValid}
                 helperText={shipmentAddressIsValid ? '' : 'Please enter a valid address!'}
