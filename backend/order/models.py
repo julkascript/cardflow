@@ -23,7 +23,7 @@ class Order(models.Model):
     sender_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender_user')
     receiver_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver_user')
 
-    listing = models.ManyToManyField(Listing)
+    # listing = models.ManyToManyField(Listing)
 
     status = models.CharField(
         max_length=STATUS_CHOICES_MAX_LENGTH,
@@ -36,3 +36,12 @@ class Order(models.Model):
 
     def __str__(self):
         return f'OrderID {self.id} from {self.receiver_user}'
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    listing = models.ForeignKey(Listing, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField()
+
+    def __str__(self):
+        return f'{self.listing} : {self.quantity}'

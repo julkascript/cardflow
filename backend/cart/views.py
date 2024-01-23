@@ -11,7 +11,7 @@ from cart.permissions import IsItemOwner
 from cart.serializers import AddShoppingCartItemSerializer, ShoppingCartItemSerializer, CheckoutSerializer
 from listing.models import Listing
 from listing.views import BuyListingViewSet
-from order.models import Order
+from order.models import Order, OrderItem
 
 User = get_user_model()
 
@@ -103,10 +103,6 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
 
                 order = Order.objects.create(**order_data)
 
-                order.listing.set([cart_item.listing for cart_item in grouped_cart_items])
-
-                orders.append(order.id)
-
                 # Decrement quantity from the listing after successful transaction
                 for cart_item in grouped_cart_items:
                     listing = cart_item.listing
@@ -134,7 +130,17 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
                         if response.status_code != status.HTTP_200_OK:
                             raise Exception('Failed to mark listing as sold')
 
-            # Delete cart items after successful checkout
+                    # Create an order item for each cart item
+                    order_item_data = {
+                        'order': order,
+                        'listing': listing,
+                        'quantity': cart_item.quantity
+                    }
+
+                    OrderItem.objects.create(**order_item_data)
+
+                orders.append(order.id)
+
             cart_items.delete()
 
         return Response({'message': 'Checkout successful', 'orders': orders}, status=status.HTTP_201_CREATED)
