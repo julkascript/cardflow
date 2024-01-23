@@ -1,4 +1,13 @@
-import { Button, Divider, IconButton, TextField, Tooltip } from '@mui/material';
+import {
+  Button,
+  Divider,
+  IconButton,
+  InputAdornment,
+  Link,
+  TextField,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import PageHeader from '../components/PageHeader';
 import PageSection from '../components/PageSection';
 import { useShoppingCart } from '../context/shoppingCart';
@@ -8,6 +17,7 @@ import MarketTable from '../components/marketTable/MarketTable';
 import YugiohCardQuantityField from '../components/yugioh/table/market/YugiohCardQuantityField';
 import React, { useEffect, useState } from 'react';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
+import { Home } from '@mui/icons-material';
 
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
@@ -17,11 +27,13 @@ function ShoppingCart(): JSX.Element {
       .reduce((totalPrice, item) => totalPrice + item.listing.price * item.boughtQuantity, 0)
       .toFixed(2),
   );
-  const shipmentCost = 9.55;
+
   const quantity = shoppingCart.reduce((total, item) => total + item.boughtQuantity, 0);
   const sellers = shoppingCart.length;
 
   const [shipmentAddress, setShipmentAddress] = useState('');
+
+  const shipmentCost = shipmentAddress && shoppingCart.length ? 9.55 : 0;
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     setShipmentAddress(event.target.value);
@@ -52,49 +64,74 @@ function ShoppingCart(): JSX.Element {
   return (
     <>
       <PageHeader heading="Shopping cart" />
-      <div>
-        <PageSection>
-          <section>
-            <h2>{user.username}</h2>
+      <div className="flex flex-col items-center lg:flex-row lg:items-start pb-4 pt-4 justify-center gap-4 bg-[#F5F5F5]">
+        <PageSection className="p-8 pt-4 w-11/12 lg:w-1/2">
+          <section className="flex items-end justify-between flex-wrap border-b-2 border-b-[#D9D9D9]">
+            <h2 className="m-0 p-0 font-bold text-xl">
+              <Link
+                sx={{
+                  color: '#0B70E5',
+                  textDecoration: 'none',
+                  ':hover': {
+                    textDecoration: 'underline',
+                  },
+                }}
+                href={`/user/${user.username}`}
+              >
+                {user.username}
+              </Link>
+            </h2>
             <Tooltip title="Empty out the shopping cart (remove all listings)">
               <IconButton onClick={deleteAllListings}>
                 <DeleteIcon color="error" />
               </IconButton>
             </Tooltip>
           </section>
-          <div>
-            <section>
-              <h3>Summary</h3>
-              <ul>
+          <div className="flex flex-wrap flex-col items-center lg:items-start text-center lg:text-left lg:flex-row gap-4 pt-4 pb-4">
+            <section className="w-2/5">
+              <h3 className="font-bold mb-4">Summary</h3>
+              <ul className="mr-4">
                 <SummaryData summary="Card(s) total price" data={price} />
                 <SummaryData summary="Shipment price" data={shipmentCost} />
-                <SummaryData boldedData summary="Card(s) total price" data={price + shipmentCost} />
+                <SummaryData boldedData summary="Total" data={price + shipmentCost} />
               </ul>
             </section>
+            <Divider className="none lg:block" orientation="vertical" flexItem />
+            <Divider className="block lg:none" flexItem />
             <section>
-              <h3>Shipping details</h3>
+              <h3 className="font-bold mb-2">Shipping details</h3>
               <TextField
                 error={!shipmentAddressIsValid}
                 helperText={shipmentAddressIsValid ? '' : 'Please enter a valid address!'}
                 value={shipmentAddress}
                 onChange={handleChange}
+                size="small"
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Home />
+                    </InputAdornment>
+                  ),
+                }}
+                disabled={shoppingCart.length === 0}
+                className="w-full"
               />
             </section>
           </div>
-          <section>
-            <MarketTable>
+          <section className="flex mt-4 lg:justify-center w-full overflow-auto">
+            <MarketTable className="text-center w-full">
               <thead>
                 <tr>
                   <th colSpan={3}>Card Details</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
-                  <th>Actions</th>
+                  <th style={{ textAlign: 'center', padding: 8 }}>Quantity</th>
+                  <th style={{ textAlign: 'center', padding: 8 }}>Price</th>
+                  <th style={{ textAlign: 'center', padding: 8 }}>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {shoppingCart.map((shoppingCartItem) => (
                   <tr key={shoppingCartItem.listing.id}>
-                    <td>{shoppingCartItem.listing.card_name}</td>
+                    <td className="font-bold">{shoppingCartItem.listing.card_name}</td>
                     <td>{shoppingCartItem.set_code}</td>
                     <td>{shoppingCartItem.rarity}</td>
                     <td>
@@ -107,7 +144,9 @@ function ShoppingCart(): JSX.Element {
                         max={shoppingCartItem.listing.quantity}
                       />
                     </td>
-                    <td>${shoppingCartItem.listing.price.toFixed(2)}</td>
+                    <td className="font-bold">
+                      $&nbsp;{shoppingCartItem.listing.price.toFixed(2)}
+                    </td>
                     <td>
                       <Tooltip title="Remove this listing">
                         <IconButton onClick={(e) => deleteListing(e, shoppingCartItem.listing.id)}>
@@ -121,11 +160,17 @@ function ShoppingCart(): JSX.Element {
             </MarketTable>
           </section>
         </PageSection>
-        <PageSection>
-          <section>
-            <div>
-              <span>Total:</span>
-              <span>${(price + shipmentCost).toFixed(2)}</span>
+        <PageSection className="p-4 w-1/2 lg:w-1/6 h-[600px]">
+          <div className="flex justify-center flex-col gap-4">
+            <div className="flex flex-col lg:flex-row items-center lg:justify-between">
+              <Typography
+                sx={{ fontWeight: 'bold', fontSize: '16pt', margin: 0 }}
+                color="text.secondary"
+                component="h3"
+              >
+                Total:
+              </Typography>
+              <span className="font-bold text-[16pt]">${(price + shipmentCost).toFixed(2)}</span>
             </div>
             <Button
               disabled={!shipmentAddressIsValid || shoppingCart.length === 0}
@@ -134,7 +179,7 @@ function ShoppingCart(): JSX.Element {
             >
               Checkout
             </Button>
-            <Divider />
+            <Divider flexItem />
             <ul>
               <CheckoutData summary="Shipping cost" data={shipmentCost} />
               <CheckoutData summary="Items cost" data={price} />
@@ -144,7 +189,7 @@ function ShoppingCart(): JSX.Element {
               <CheckoutData summary="Amount of sellers" data={sellers} />
               <CheckoutData summary="Amount of cards" data={quantity} />
             </ul>
-          </section>
+          </div>
         </PageSection>
       </div>
     </>
@@ -159,8 +204,8 @@ type SummaryDataProps = {
 
 function SummaryData(props: SummaryDataProps): JSX.Element {
   return (
-    <li>
-      <div>
+    <li className="mb-2">
+      <div className="flex justify-between">
         <span>{props.summary}</span>
         <span className={props.boldedData ? 'font-bold' : ''}>${props.data.toFixed(2)}</span>
       </div>
@@ -175,9 +220,13 @@ type CheckoutDataProps = {
 
 function CheckoutData(props: CheckoutDataProps): JSX.Element {
   return (
-    <li>
-      <span>{props.summary}</span>
-      <span>${props.data.toFixed(2)}</span>
+    <li className="flex justify-between gap-4">
+      <Typography color="text.secondary" component="span">
+        {props.summary}
+      </Typography>
+      <Typography color="text.secondary" component="span">
+        ${props.data.toFixed(2)}
+      </Typography>
     </li>
   );
 }
