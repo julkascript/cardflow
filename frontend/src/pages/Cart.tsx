@@ -67,7 +67,10 @@ function ShoppingCart(): JSX.Element {
   return (
     <>
       <PageHeader heading="Shopping cart" />
-      <div className="flex flex-col items-center lg:flex-row lg:items-start pb-4 pt-4 justify-center gap-4 bg-[#F5F5F5]">
+      <div
+        id="summary"
+        className="flex flex-col items-center lg:flex-row lg:items-start pb-4 pt-4 justify-center gap-4 bg-[#F5F5F5]"
+      >
         <PageSection className="p-8 pt-4 w-11/12 lg:w-1/2">
           <section className="flex items-end justify-between flex-wrap border-b-2 border-b-[#D9D9D9]">
             <h2 className="m-0 p-0 font-bold text-xl">
@@ -103,7 +106,7 @@ function ShoppingCart(): JSX.Element {
             <Divider className="block lg:none" flexItem />
             <section>
               <h3 className="font-bold mb-2">
-                <div className="flex items-center gap-2">
+                <div className="flex items-center justify-center lg:justify-start gap-2">
                   <span>Shipping details</span>
                   <Tooltip title={shipmentAddressTooltipText} placement="top">
                     <IconButton>
@@ -130,6 +133,11 @@ function ShoppingCart(): JSX.Element {
               />
             </section>
           </div>
+          <p className="block lg:hidden text-center">
+            <a className="text-gray-700 hover:underline font-bold" href="#checkout">
+              Go to checkout
+            </a>
+          </p>
           <section className="flex mt-4 lg:justify-center w-full overflow-auto">
             <MarketTable className="text-center w-full">
               <thead>
@@ -172,8 +180,8 @@ function ShoppingCart(): JSX.Element {
             </MarketTable>
           </section>
         </PageSection>
-        <PageSection className="p-4 w-1/2 lg:w-1/6 h-[600px]">
-          <div className="flex justify-center flex-col gap-4">
+        <PageSection className="p-4 w-1/2 lg:w-1/6 h-[600px] lg:sticky top-0">
+          <div id="checkout" className="flex justify-center flex-col gap-4">
             <div className="flex flex-col lg:flex-row items-center lg:justify-between">
               <Typography
                 sx={{ fontWeight: 'bold', fontSize: '16pt', margin: 0 }}
@@ -201,6 +209,11 @@ function ShoppingCart(): JSX.Element {
               <CheckoutData summary="Amount of sellers" data={sellers} />
               <CheckoutData summary="Amount of cards" data={quantity} />
             </ul>
+            <p className="block lg:hidden">
+              <a className="text-gray-700 hover:underline font-bold" href="#summary">
+                Back to summary
+              </a>
+            </p>
           </div>
         </PageSection>
       </div>
