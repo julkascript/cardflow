@@ -10,7 +10,7 @@ from cart.models import ShoppingCart, ShoppingCartItem
 from cart.permissions import IsItemOwner
 from cart.serializers import AddShoppingCartItemSerializer, ShoppingCartItemSerializer, CheckoutSerializer
 from listing.models import Listing
-from listing.views import ListingViewSet
+from listing.views import BuyListingViewSet
 from order.models import Order
 
 User = get_user_model()
@@ -118,16 +118,21 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
                     updated_listing = Listing.objects.get(pk=listing.pk)
 
                     if updated_listing.quantity == 0:
-                        request_factory = RequestFactory()
 
-                        mark_as_sold_view = ListingViewSet.as_view({'post': 'mark_as_sold'})
+                        # make Request to BuyListingViewSet
+                        factory = RequestFactory()
+                        put_request = factory.put(f'/{updated_listing.pk}/buy/')
+                        put_request.user = self.request.user
 
-                        mark_as_sold_request = request_factory.put(f"/api/listings/{updated_listing.pk}/mark_as_sold/")
+                        buy_listing_viewset = BuyListingViewSet()
+                        buy_listing_viewset.request = put_request
+                        buy_listing_viewset.kwargs = {'pk': updated_listing.pk}
+                        buy_listing_viewset.format_kwarg = None
 
-                        mark_as_sold_response = mark_as_sold_view(mark_as_sold_request, pk=listing.pk)
+                        response = buy_listing_viewset.mark_as_sold(put_request)
 
-                        if mark_as_sold_response.status_code != status.HTTP_200_OK:
-                            return mark_as_sold_response
+                        if response.status_code != status.HTTP_200_OK:
+                            raise Exception('Failed to mark listing as sold')
 
             # Delete cart items after successful checkout
             cart_items.delete()
