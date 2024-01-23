@@ -18,9 +18,15 @@ import YugiohCardQuantityField from '../components/yugioh/table/market/YugiohCar
 import React, { useEffect, useState } from 'react';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 import { Home, Info } from '@mui/icons-material';
+import { BuyYugiohCardListing } from '../services/yugioh/types';
+import { yugiohService } from '../services/yugioh/yugiohService';
+import { useNavigate } from 'react-router-dom';
+
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
   const { shoppingCart, removeListing, removeAll, changeListingQuantity } = useShoppingCart();
+  const navigate = useNavigate();
+
   const price = Number(
     shoppingCart
       .reduce((totalPrice, item) => totalPrice + item.listing.price * item.boughtQuantity, 0)
@@ -52,6 +58,27 @@ function ShoppingCart(): JSX.Element {
   function deleteAllListings(event: React.MouseEvent) {
     event.preventDefault();
     removeAll();
+  }
+
+  function checkout(event: React.MouseEvent) {
+    event.preventDefault();
+    const fetchFunctions = shoppingCart.map((item) => {
+      const listing: BuyYugiohCardListing = {
+        card: item.listing.card,
+        price: item.listing.price,
+        condition: item.listing.condition,
+        is_listed: item.listing.is_listed,
+        is_sold: item.listing.is_sold,
+      };
+
+      return yugiohService.buyCardListing(item.listing.id, listing);
+    });
+
+    Promise.all(fetchFunctions).then(() => {
+      localStorage.removeItem('cart');
+      removeAll();
+      navigate('/');
+    });
   }
 
   useEffectAfterInitialLoad(() => {
@@ -196,6 +223,7 @@ function ShoppingCart(): JSX.Element {
               disabled={!shipmentAddressIsValid || shoppingCart.length === 0}
               variant="contained"
               color="success"
+              onClick={checkout}
             >
               Checkout
             </Button>
