@@ -44,6 +44,11 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "order",
     "cart",
+
+
+    # MUST be the last app
+    'django_cleanup.apps.CleanupConfig',
+
 ]
 
 MIDDLEWARE = [
@@ -122,6 +127,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
+MEDIA_URL = "media/"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media/")
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
@@ -156,4 +163,8 @@ SIMPLE_JWT = {
     "ALGORITHM": "RS256",
     "SIGNING_KEY": JWT_PRIVATE_KEY,
     "VERIFYING_KEY": JWT_PUBLIC_KEY,
+}
+
+SPECTACULAR_SETTINGS = {
+    'COMPONENT_SPLIT_REQUEST': True,
 }

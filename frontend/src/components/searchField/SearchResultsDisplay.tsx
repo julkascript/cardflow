@@ -6,6 +6,7 @@ import { searchRules } from '../../constants/searchRules';
 type SearchResultsDisplayProps = {
   results: PaginatedItem<YugiohCardInSet>;
   query: string;
+  isListing?: boolean;
   onClose: () => void;
 };
 
@@ -28,7 +29,7 @@ function SearchResultsDisplay(props: SearchResultsDisplayProps): JSX.Element {
       }}
     >
       {firstFourResults.map((r) => (
-        <SearchResultItem onClose={props.onClose} key={r.id} data={r} />
+        <SearchResultItem isListing={props.isListing} onClose={props.onClose} key={r.id} data={r} />
       ))}
       <BottomDisplayText
         onClose={props.onClose}
@@ -42,6 +43,7 @@ function SearchResultsDisplay(props: SearchResultsDisplayProps): JSX.Element {
 type SearchResultItemProps = {
   data: YugiohCardInSet;
   onClose: () => void;
+  isListing?: boolean;
 };
 
 function SearchResultItem(props: SearchResultItemProps): JSX.Element {
@@ -53,7 +55,7 @@ function SearchResultItem(props: SearchResultItemProps): JSX.Element {
           backgroundColor: '#15B58D33',
         },
       }}
-      href={`/details/yugioh/${data.id}`}
+      href={props.isListing ? `/sell/new/${data.id}` : `/details/yugioh/${data.id}`}
       onClick={onClose}
     >
       <ListItemIcon sx={{ color: 'black' }}>

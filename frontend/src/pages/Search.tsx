@@ -8,6 +8,7 @@ import { Pagination, TextField } from '@mui/material';
 import SearchButton from '../components/navigation/desktop/buttons/SearchButton';
 import { yugiohService } from '../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
+import ListingTopBar from '../components/sellListing/ListingTopBar';
 
 function Search(): JSX.Element {
   const data: CardSearchLoader = useLoaderData() as CardSearchLoader;
@@ -69,6 +70,7 @@ function Search(): JSX.Element {
   }, [params.query]);
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
+      <ListingTopBar />
       <PageHeader heading="Buy / Search" />
       <div className="min-h-full mt-2 flex items-center w-full flex-col gap-4">
         <form className="w-2/3 bg-white relative z-0" onSubmit={handleSubmit}>

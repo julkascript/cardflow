@@ -2,6 +2,7 @@
 __pycache__
 .idea/
 venv/
+*.jpg
 
 # ENV files and folders
 backend/.env
@@ -40,3 +41,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Avatars
+backend/media

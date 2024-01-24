@@ -9,12 +9,15 @@ export const api = Object.freeze({
     refresh: `${accounts}/refresh/`,
     register: `${accounts}/register/`,
     login: `${accounts}/login/`,
+    user: `${accounts}/user/`,
+    userById: (id: string | number) => `${accounts}/user/${id}/`,
   },
   yugioh: {
     listing: {
       root: listing,
       id: (id: number | string) => `${listing}/${id}/`,
       buyById: (id: number | string) => `${listing}/${id}/buy/`,
+      sellListing: () => `${listing}/`,
     },
     cardInSet: {
       root: cardInSet,

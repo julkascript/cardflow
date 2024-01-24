@@ -1,7 +1,12 @@
 import React, { useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { userService } from '../../services/user/user';
-import { UserLogin, UserRegister } from '../../services/user/types';
+import {
+  SuccessfulAuthenticationResponse,
+  UserLogin,
+  UserRegister,
+} from '../../services/user/types';
+import { useCurrentUser } from '../../context/user';
 
 type AuthFormProps = {
   isLogin: boolean;
@@ -14,10 +19,12 @@ type ErrorProps = {
 };
 
 const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
-  async function authenticaticateUser(loginData: UserLogin) {
-    const data = await userService.login(loginData);
-    localStorage.setItem('accessToken', data.access);
-    localStorage.setItem('refreshToken', data.refresh);
+  const { setUser } = useCurrentUser();
+  async function authenticaticateUser(id: number, tokens: SuccessfulAuthenticationResponse) {
+    localStorage.setItem('accessToken', tokens.access);
+    localStorage.setItem('refreshToken', tokens.refresh);
+    const data = await userService.getUserById(id);
+    setUser({ user_id: id, ...data });
     navigate('/');
   }
 
@@ -50,21 +57,24 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     event.preventDefault();
     validate(isLogin);
     try {
+      let tokens: SuccessfulAuthenticationResponse;
       const loginData: UserLogin = {
         username: usernameRef.current!.value,
         password: passwordRef.current!.value,
       };
       if (isLogin) {
-        authenticaticateUser(loginData);
+        tokens = await userService.login(loginData);
       } else {
         const formData: UserRegister = {
           email: emailRef.current!.value,
           password: passwordRef.current!.value,
           username: usernameRef.current!.value,
         };
-        await userService.register(formData);
-        authenticaticateUser(loginData);
+        tokens = await userService.register(formData);
       }
+
+      const payload = userService.extractUserFromToken(tokens.access);
+      await authenticaticateUser(payload.user_id, tokens);
     } catch (error: any) {
       const data = await error.err.json();
       setError(data);

@@ -7,7 +7,11 @@ import { yugiohService } from '../../services/yugioh/yugiohService';
 import SearchResultsDisplay from './SearchResultsDisplay';
 import { useNavigate } from 'react-router-dom';
 
-function SearchField(): JSX.Element {
+type SearchFieldProps = {
+  isListing?: boolean;
+};
+
+function SearchField({ isListing }: SearchFieldProps): JSX.Element {
   const navigate = useNavigate();
   function search(event: FormEvent) {
     event.preventDefault();
@@ -59,7 +63,12 @@ function SearchField(): JSX.Element {
           }}
         />
         <div>
-          <SearchResultsDisplay onClose={clear} results={searchResults} query={searchQuery} />
+          <SearchResultsDisplay
+            isListing={isListing}
+            onClose={clear}
+            results={searchResults}
+            query={searchQuery}
+          />
         </div>
       </form>
     </ClickAwayListener>
