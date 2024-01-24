@@ -21,13 +21,13 @@ class AdminListingFilter(admin.SimpleListFilter):
 class OrderFilter(filters.FilterSet):
     sender_user = filters.CharFilter(
         field_name='sender_user__username',
-        lookup_expr='icontains',
+        lookup_expr='exact',
         label='Search by sender user'
     )
 
     receiver_user = filters.CharFilter(
         field_name='receiver_user__username',
-        lookup_expr='icontains',
+        lookup_expr='exact',
         label='Search by receiver user'
     )
 
