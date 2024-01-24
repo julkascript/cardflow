@@ -1,58 +1,72 @@
-import { Button } from '@mui/material';
+import { Button, useTheme } from '@mui/material';
 import Logo from '../components/logo/Logo';
-import { useTheme } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { useAuthenticationStatus } from '../context/user';
+import classes from './Home.module.css';
 
 function Home(): JSX.Element {
-  const theme = useTheme();
-  const secondary = theme.palette.grey['900'];
-  const secondaryTextColor = theme.palette.text.secondary;
   const navigate = useNavigate();
   const { isAuthenticated } = useAuthenticationStatus();
+  const theme = useTheme();
+  const secondary = theme.palette.grey['200'];
 
   return (
-    <div className="flex justify-center items-center flex-col">
+    <div className="pt-40 flex justify-center items-center flex-col">
       <div className="flex">
-        <h1 className="text-9xl font-extrabold px-4 py-2 text-secondary">Buy.</h1>
-        <h1 className="text-9xl font-extrabold px-4 py-2 text-secondary">Sell.</h1>
-        <h1 className="text-9xl font-extrabold px-4 py-2 text-secondary">Trade.</h1>
+        <h1 className={`text-7xl font-extrabold pl-4 py-2 text-secondary ${classes.firstWordText}`}>
+          Buy.
+        </h1>
+        <h1
+          className={`text-7xl font-extrabold pl-4 py-2 text-secondary ${classes.secondWordText}`}
+        >
+          Sell.
+        </h1>
+        <h1 className={`text-7xl font-extrabold pl-4 py-2 text-secondary ${classes.thirdWordText}`}>
+          Trade.
+        </h1>
       </div>
-      <p className="text-lg mt-2 font-normal text-inter mt-2" color={secondary}>
+      <p className="mt-4 text-center text-neutral-500 text-2xl font-normal font-['Inter']">
         Cardflow provides you with the tools and infrastructure
       </p>
-      <p className="text-lg mt-2 font-normal text-inter mt-2" color={secondary}>
+      <p className="text-center text-neutral-500 text-2xl font-normal font-['Inter']">
         to move your cards from A to B.
       </p>
-      <div className="flex mt-2 pt-20">
-        <div className="pr-40">
+      <div className="flex mt-2 pt-12">
+        <div>
           <Button
             variant="contained"
             sx={{
               padding: '10px',
-              width: 210,
+              width: 170,
               textTransform: 'none',
-              backgroundColor: `${secondaryTextColor}`,
+              backgroundColor: 'black',
+              height: 47,
             }}
+            className="rounded-[7px]"
             startIcon={<Logo color="white" size={20} />}
           >
             Start exploring
           </Button>
         </div>
-        <div>
+        <div className={`ml-12 ${classes.buttonContainer}`}>
           {!isAuthenticated && (
             <Button
               onClick={() => navigate('/login')}
-              color="secondary"
               variant="contained"
               sx={{
                 fontWeight: 'bold',
                 backgroundColor: 'white',
                 color: '#666666',
-                width: 210,
+                width: 170,
                 padding: '10px',
                 textTransform: 'none',
+                border: '0.5px solid #666',
+                borderRadius: '7px',
+                ':hover': {
+                  backgroundColor: secondary,
+                },
               }}
+              className="hover:bg-gray-200"
             >
               Sign In
             </Button>
