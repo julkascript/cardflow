@@ -9,8 +9,6 @@ from listing.serializers import ListingSerializer
 class ShoppingCartSerializer(serializers.ModelSerializer):
     user = UserSerializer()
 
-    # orders = OrderSerializer(many=True)
-
     class Meta:
         model = ShoppingCart
         fields = '__all__'
