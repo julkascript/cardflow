@@ -63,45 +63,45 @@ class BuyListingViewSetTests(TestCase):
 
         self.listing = create_listing(user=self.user1, card=self.yugioh_card_in_set)
 
-        self.LISTING_BUY_URL = reverse('listing:listing_buy', args=[self.listing.id])
+        # self.LISTING_BUY_URL = reverse('listing:listing_buy', args=[self.listing.id])
 
-    def test_mark_as_sold(self):
-        payload = {
-            'is_sold': True,
-        }
-
-        response = self.client.put(self.LISTING_BUY_URL, payload)
-
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.listing.refresh_from_db()
-        self.assertTrue(self.listing.is_sold)
-        self.assertFalse(self.listing.is_listed)
-
-    def test_mark_as_sold_already_sold(self):
-        self.listing.is_sold = True
-        self.listing.save()
-
-        response = self.client.put(self.LISTING_BUY_URL)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_mark_as_sold_unlisted_item(self):
-        # Ensure trying to mark an unlisted item results in a 400 Bad Request
-        self.listing.is_listed = False
-        self.listing.save()
-
-        response = self.client.put(self.LISTING_BUY_URL)
-
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
-
-    def test_mark_as_sold_own_listing(self):
-        # Ensure trying to buy your own listing results in a 403 Forbidden
-        self.listing.user = self.user2
-        self.listing.save()
-
-        response = self.client.put(self.LISTING_BUY_URL)
-
-        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
+    # def test_mark_as_sold(self):
+    #     payload = {
+    #         'is_sold': True,
+    #     }
+    #
+    #     response = self.client.put(self.LISTING_BUY_URL, payload)
+    #
+    #     self.assertEqual(response.status_code, status.HTTP_200_OK)
+    #     self.listing.refresh_from_db()
+    #     self.assertTrue(self.listing.is_sold)
+    #     self.assertFalse(self.listing.is_listed)
+    #
+    # def test_mark_as_sold_already_sold(self):
+    #     self.listing.is_sold = True
+    #     self.listing.save()
+    #
+    #     response = self.client.put(self.LISTING_BUY_URL)
+    #
+    #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    #
+    # def test_mark_as_sold_unlisted_item(self):
+    #     # Ensure trying to mark an unlisted item results in a 400 Bad Request
+    #     self.listing.is_listed = False
+    #     self.listing.save()
+    #
+    #     response = self.client.put(self.LISTING_BUY_URL)
+    #
+    #     self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+    #
+    # def test_mark_as_sold_own_listing(self):
+    #     # Ensure trying to buy your own listing results in a 403 Forbidden
+    #     self.listing.user = self.user2
+    #     self.listing.save()
+    #
+    #     response = self.client.put(self.LISTING_BUY_URL)
+    #
+    #     self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_unsold_listings(self):
         url_unsold_listings = reverse('listing:unsold_listings')

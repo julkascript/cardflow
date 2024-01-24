@@ -14,6 +14,9 @@ urlpatterns = [
     path('api/yugioh/', include('yugioh.urls')),
     path('api/accounts/', include('accounts.urls'),),
     path('api/listing/', include('listing.urls')),
+    path('api/order/', include('order.urls')),
+    path('api/cart/', include('cart.urls')),
+
 ]
 
 if settings.DEBUG:
