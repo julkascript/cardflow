@@ -18,10 +18,6 @@ User = get_user_model()
 
 
 def get_cart_for_user(user):
-    # This statement is added for preventing Swagger from infinity loop
-    if user.is_anonymous:
-        return None
-
     cart, created = ShoppingCart.objects.get_or_create(user=user)
 
     return cart
@@ -29,26 +25,39 @@ def get_cart_for_user(user):
 
 @extend_schema(tags=['ShoppingCartItem'], )
 class ShoppingCartItemViewSet(viewsets.ModelViewSet):
+    """
+        Viewset for API endpoint that allows users to manage their shopping cart items.
+
+        - To view all shopping cart items for the logged user, use the base endpoint (api/cart/item/). \n
+
+        - To filter shopping cart items by listing user, use the base endpoint
+                with the ?listing_username=<username> parameter. \n
+
+        - To add new shopping cart item, use the base endpoint with POST method
+                (if the items is already in the shopping cart the quantity will be updated)
+
+        - To delete a shopping cart item, use the base endpoint with the /<item_id> parameter and the DELETE method.
+
+        - For pagination, use the following format: /api/cart/item/?page=<number> \n
+
+        For checkout of items use /api/cart/item/checkout with POST method
+
+    """
+
     queryset = ShoppingCartItem.objects.all().order_by('id')
     permission_classes = [IsItemOwner, permissions.IsAuthenticated]
     filterset_class = ShoppingCartItemFilter
+    http_method_names = ['get', 'post', 'delete']
 
     def get_queryset(self):
-
-        # This statement is added for preventing Swagger from infinity loop
-        if self.request.user.is_anonymous:
-            return super().get_queryset()
 
         return ShoppingCartItem.objects.filter(cart=get_cart_for_user(self.request.user)).order_by('id')
 
     def get_serializer_context(self):
+
         context = super().get_serializer_context()
-
-        # This statement is added for preventing Swagger from infinity loop
-        if self.request.user.is_anonymous:
-            return context
-
         context['cart'] = get_cart_for_user(self.request.user)
+
         return context
 
     def get_serializer_class(self, *args, **kwargs):
@@ -60,13 +69,11 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
     @extend_schema(
         request=CheckoutSerializer,
         responses={status.HTTP_201_CREATED: CheckoutSerializer},
-        description="Checkout and create orders based on user's cart items."
+        description="Checkout and create orders based on user's cart items grouped by sender."
     )
     @action(detail=False, methods=['post'])
     def checkout(self, request, *args, **kwargs):
-        """
-        Checkout and create orders based on user's cart items grouped by sender.
-        """
+
         serializer = CheckoutSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 

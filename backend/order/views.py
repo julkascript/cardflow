@@ -10,7 +10,12 @@ from order.serializer import OrderSerializer
 @extend_schema(tags=['Order'])
 class OrderViewSet(viewsets.ReadOnlyModelViewSet):
     """
+    Viewset for API endpoint that allows to see the orders.
 
+    - To view all Orders use the base endpoint (api/order/).
+    - To view specific order use the endpoint (api/order/<id>/)
+
+    - For pagination, use the following format: (/api/order/?page=2)
     """
 
     queryset = Order.objects.all().order_by('id')
@@ -19,6 +24,3 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = [DjangoFilterBackend]
 
     filterset_class = OrderFilter
-
-
-
