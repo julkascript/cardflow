@@ -6,6 +6,6 @@ router = DefaultRouter()
 
 app_name = 'order'
 
-# router.register('', views.OrderViewSet)
-#
+router.register('', views.OrderViewSet)
+
 urlpatterns = router.urls

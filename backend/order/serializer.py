@@ -1,6 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
+from accounts.serializers import UserSerializer
 from listing.serializers import ListingSerializer
 from order.models import Order, OrderItem
 
@@ -16,11 +17,14 @@ class OrderItemSerializer(serializers.ModelSerializer):
 
 
 class OrderSerializer(serializers.ModelSerializer):
-    sender_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
-    receiver_user = serializers.PrimaryKeyRelatedField(queryset=User.objects.all())
+    order_id = serializers.SerializerMethodField()
+    sender_user = UserSerializer()
+    receiver_user = UserSerializer()
     order_items = OrderItemSerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
-        fields = ['id', 'sender_user', 'receiver_user', 'status', 'delivery_address', 'order_items']
+        fields = ['order_id', 'sender_user', 'receiver_user', 'status', 'delivery_address', 'order_items']
 
+    def get_order_id(self, obj):
+        return obj.id
