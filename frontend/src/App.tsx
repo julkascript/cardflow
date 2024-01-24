@@ -10,6 +10,7 @@ import { HttpError } from './util/HttpError';
 import { Toaster } from 'react-hot-toast';
 import { theme } from './constants/theme';
 import { linkBehaviorConfiguration } from './linkBehaviorConfiguration';
+import { errorToast } from './util/errorToast';
 
 function App() {
   const appTheme = useMemo(() => createTheme({ ...theme, ...linkBehaviorConfiguration }), []);
@@ -33,6 +34,8 @@ function App() {
         .catch((res) => {
           if (res instanceof HttpError && res.err.status < 500) {
             restartUser();
+          } else if (res instanceof HttpError) {
+            errorToast(res);
           }
         });
     }

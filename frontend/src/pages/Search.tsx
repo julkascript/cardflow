@@ -9,6 +9,7 @@ import SearchButton from '../components/navigation/desktop/buttons/SearchButton'
 import { yugiohService } from '../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 import ListingTopBar from '../components/sellListing/ListingTopBar';
+import { errorToast } from '../util/errorToast';
 
 function Search(): JSX.Element {
   const data: CardSearchLoader = useLoaderData() as CardSearchLoader;
@@ -49,13 +50,13 @@ function Search(): JSX.Element {
         setCards(data);
         setPage(page);
       })
-      .catch(() => {}); // TO-DO: implement feedback for failed requests.
+      .catch(errorToast);
   }
 
   useEffectAfterInitialLoad(() => {
     const query = params.query || '';
     if (query) {
-      yugiohService.searchCardsByName(query).then(setCards);
+      yugiohService.searchCardsByName(query).then(setCards).catch(errorToast);
     } else {
       setCards({
         results: [],

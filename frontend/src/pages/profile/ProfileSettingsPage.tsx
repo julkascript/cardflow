@@ -9,6 +9,9 @@ import { useCurrentUser } from '../../context/user';
 import { UserAccount } from '../../services/user/types';
 import { userService } from '../../services/user/user';
 import { useLogout } from '../../util/useLogout';
+import toast from 'react-hot-toast';
+import { toastMessages } from '../../constants/toast';
+import { errorToast } from '../../util/errorToast';
 
 function ProfileSettingsPage(): JSX.Element {
   const { user, setUser } = useCurrentUser();
@@ -16,25 +19,45 @@ function ProfileSettingsPage(): JSX.Element {
 
   const [hasSelectedAnAvatar, setSelectedAvatar] = useState(false);
 
-  async function updateAccount(section: keyof UserAccount, data: string) {
+  async function updateAccount(section: keyof UserAccount, data: string, toastMessage?: string) {
     const payload: Partial<UserAccount> = { [section]: data };
-    return userService.updateUser(user.user_id, payload).then((data) => {
-      setUser({ user_id: user.user_id, ...data });
-    });
+    return userService
+      .updateUser(user.user_id, payload)
+      .then((data) => {
+        setUser({ user_id: user.user_id, ...data });
+        if (toastMessage) {
+          toast.success(toastMessage);
+        }
+      })
+      .catch(errorToast);
   }
 
   function updateAndLogout(field: 'username' | 'email', value: string) {
-    updateAccount(field, value).then(logout);
+    updateAccount(field, value).then(() => {
+      logout();
+      toast.success(
+        field === 'username'
+          ? toastMessages.success.usernameChanged
+          : toastMessages.success.emailChanged,
+      );
+    });
   }
 
   function deleteAccount() {
-    userService.deleteUser(user.user_id).then(logout);
+    userService
+      .deleteUser(user.user_id)
+      .then(() => {
+        logout();
+        toast.success(toastMessages.success.accountDeleted);
+      })
+      .catch(errorToast);
   }
 
   function updateAvatar(avatar: File) {
     userService.updateUserAvatar(user.user_id, avatar).then((data) => {
       setSelectedAvatar(false);
       setUser({ user_id: user.user_id, ...data });
+      toast.success(toastMessages.success.avatarChanged);
     });
   }
 
@@ -60,7 +83,9 @@ function ProfileSettingsPage(): JSX.Element {
         />
         <ShipmentAddressSettings
           address={user.shipping_address}
-          onSubmit={(a) => updateAccount('shipping_address', a)}
+          onSubmit={(a) =>
+            updateAccount('shipping_address', a, toastMessages.success.shipmentAddressChanged)
+          }
           key={user.shipping_address + '3'}
         />
         <DeleteAccount onDelete={deleteAccount} />

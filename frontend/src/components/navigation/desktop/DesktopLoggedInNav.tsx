@@ -4,6 +4,8 @@ import NewActionButton from './buttons/NewActionButton';
 import NotificationButton from './buttons/NotificationButton';
 import { useLogout } from '../../../util/useLogout';
 import { useCurrentUser } from '../../../context/user';
+import toast from 'react-hot-toast';
+import { toastMessages } from '../../../constants/toast';
 
 /**
  * A list of navigation items for logged in users.
@@ -13,6 +15,11 @@ import { useCurrentUser } from '../../../context/user';
 function DesktopLoggedInNav(): JSX.Element {
   const logout = useLogout();
   const { user } = useCurrentUser();
+
+  function handleLogout() {
+    logout();
+    toast.success(toastMessages.success.logout);
+  }
 
   return (
     <ul className="list-none flex gap-4 items-center">
@@ -26,7 +33,7 @@ function DesktopLoggedInNav(): JSX.Element {
         <ProfilePictureAvatar imageUrl={user.avatar} />
       </li>
       <li>
-        <Button onClick={logout} color="primary" variant="outlined">
+        <Button onClick={handleLogout} color="primary" variant="outlined">
           Sign Out
         </Button>
       </li>
