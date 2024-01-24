@@ -25,10 +25,10 @@ function Home(): JSX.Element {
           Trade.
         </h1>
       </div>
-      <p className="mt-4 text-center text-neutral-500 text-2xl font-normal font-['Inter']">
+      <p className="mt-4 text-center text-neutral-500 text-2xl font-normal">
         Cardflow provides you with the tools and infrastructure
       </p>
-      <p className="text-center text-neutral-500 text-2xl font-normal font-['Inter']">
+      <p className="text-center text-neutral-500 text-2xl font-normal">
         to move your cards from A to B.
       </p>
       <div className="flex mt-2 pt-12">
