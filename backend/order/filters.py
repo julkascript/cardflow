@@ -22,13 +22,13 @@ class OrderFilter(filters.FilterSet):
     sender_user = filters.CharFilter(
         field_name='sender_user__username',
         lookup_expr='exact',
-        label='Search by sender user'
+        label='Search by sender username'
     )
 
     receiver_user = filters.CharFilter(
         field_name='receiver_user__username',
         lookup_expr='exact',
-        label='Search by receiver user'
+        label='Search by receiver username'
     )
 
     status = filters.CharFilter(
