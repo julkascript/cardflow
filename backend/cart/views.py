@@ -6,6 +6,7 @@ from rest_framework import viewsets, permissions, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
+from cart.filters import ShoppingCartItemFilter
 from cart.models import ShoppingCart, ShoppingCartItem
 from cart.permissions import IsItemOwner
 from cart.serializers import AddShoppingCartItemSerializer, ShoppingCartItemSerializer, CheckoutSerializer
@@ -30,6 +31,7 @@ def get_cart_for_user(user):
 class ShoppingCartItemViewSet(viewsets.ModelViewSet):
     queryset = ShoppingCartItem.objects.all().order_by('id')
     permission_classes = [IsItemOwner, permissions.IsAuthenticated]
+    filterset_class = ShoppingCartItemFilter
 
     def get_queryset(self):
 
