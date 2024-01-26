@@ -52,4 +52,4 @@ class Listing(models.Model):
     )
 
     def __str__(self):
-        return f'{self.card.yugioh_card.card_name}'
+        return f'{self.card.yugioh_card.card_name} {self.card.set} {self.card.rarity}'
