@@ -8,6 +8,7 @@ import { ShoppingCartItem } from '../services/shoppingCart/types';
 import { shoppingCartService } from '../services/shoppingCart/shoppingCart';
 import { PaginatedItem } from '../services/yugioh/types';
 import { useShoppingCart } from '../context/shoppingCart';
+import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
@@ -34,7 +35,12 @@ function ShoppingCart(): JSX.Element {
   function removeListing(id: number) {
     shoppingCartService
       .deleteItem(id)
-      .then(() => shoppingCartService.getItems(undefined, page))
+      .then(() => {
+        if (shoppingCart.length - 1 === 0) {
+          setPage(page - 1 || 1);
+        }
+        return shoppingCartService.getItems(undefined, page);
+      })
       .then(loadShoppingCart);
   }
 
@@ -71,6 +77,10 @@ function ShoppingCart(): JSX.Element {
       shoppingCartService.getItems(undefined, page).then(loadShoppingCart);
     }
   }, [user]);
+
+  useEffectAfterInitialLoad(() => {
+    shoppingCartService.getItems(undefined, page).then(loadShoppingCart);
+  }, [page]);
 
   return (
     <>

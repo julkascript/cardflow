@@ -125,8 +125,20 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
           <tbody>
             {props.shoppingCart.map((shoppingCartItem) => (
               <tr key={shoppingCartItem.listing.id}>
-                <td className="font-bold">{shoppingCartItem.listing.card_name}</td>
-                <td>{shoppingCartItem.listing.user_name}</td>
+                <td className="font-bold">
+                  <Link underline="hover" href={`/yugioh/details/${shoppingCartItem.listing.id}`}>
+                    {shoppingCartItem.listing.card_name}
+                  </Link>
+                </td>
+                <td className="font-bold">
+                  <Link
+                    sx={{ color: '#0B70E5' }}
+                    underline="hover"
+                    href={`/user/${shoppingCartItem.listing.user_name}`}
+                  >
+                    {shoppingCartItem.listing.user_name}
+                  </Link>
+                </td>
                 <td>
                   <YugiohCardQuantityField
                     hidden={false}
