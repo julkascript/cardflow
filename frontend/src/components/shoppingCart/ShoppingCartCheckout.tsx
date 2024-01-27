@@ -51,11 +51,6 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
           <CheckoutData withDollar summary="Amount of sellers" data={sellers} />
           <CheckoutData withDollar summary="Amount of cards" data={quantity} />
         </ul>
-        <p className="block lg:hidden">
-          <a className="text-gray-700 hover:underline font-bold" href="#summary">
-            Back to summary
-          </a>
-        </p>
       </div>
     </PageSection>
   );

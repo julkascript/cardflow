@@ -107,11 +107,6 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
           />
         </section>
       </div>
-      <p className="block lg:hidden text-center">
-        <a className="text-gray-700 hover:underline font-bold" href="#checkout">
-          Go to checkout
-        </a>
-      </p>
       <section className="flex mt-4 lg:justify-center w-full overflow-auto">
         <MarketTable className="text-center w-full">
           <thead>
