@@ -1,24 +1,19 @@
 import { Button, Divider, Typography } from '@mui/material';
-import { ShoppingCardListing } from '../../services/yugioh/types';
 import PageSection from '../PageSection';
 import CheckoutData from './CheckoutData';
+import { ShoppingCartItem } from '../../services/shoppingCart/types';
 
 type ShoppingCartCheckoutProps = {
-  shoppingCart: ShoppingCardListing[];
+  shoppingCart: ShoppingCartItem[];
   onCheckout: () => void;
   shipmentAddress: string;
   shipmentCost: number;
+  totalPrice: number;
 };
 
 function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
-  const price = Number(
-    props.shoppingCart
-      .reduce((totalPrice, item) => totalPrice + item.listing.price * item.boughtQuantity, 0)
-      .toFixed(2),
-  );
-
   const shipmentAddressIsValid = props.shipmentAddress !== '';
-  const quantity = props.shoppingCart.reduce((total, item) => total + item.boughtQuantity, 0);
+  const quantity = props.shoppingCart.reduce((total, item) => total + item.quantity, 0);
   const sellers = props.shoppingCart.length;
   return (
     <PageSection className="p-4 w-1/2 lg:w-1/6 h-[600px] lg:sticky top-0">
@@ -31,7 +26,9 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
           >
             Total:
           </Typography>
-          <span className="font-bold text-[16pt]">${(price + props.shipmentCost).toFixed(2)}</span>
+          <span className="font-bold text-[16pt]">
+            ${(props.totalPrice + props.shipmentCost).toFixed(2)}
+          </span>
         </div>
         <Button
           disabled={!shipmentAddressIsValid || props.shoppingCart.length === 0}
@@ -47,7 +44,7 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
         <Divider flexItem />
         <ul>
           <CheckoutData summary="Shipping cost" data={props.shipmentCost} />
-          <CheckoutData summary="Items cost" data={price} />
+          <CheckoutData summary="Items cost" data={props.totalPrice} />
         </ul>
         <Divider />
         <ul>

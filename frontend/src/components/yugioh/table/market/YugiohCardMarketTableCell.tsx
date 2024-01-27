@@ -4,12 +4,11 @@ import YugiohSellerRankBadge from '../../seller/YugiohSellerRankBadge';
 import YugiohSellerRankLabel from '../../seller/YugiohSellerRankLabel';
 import AddToCartButton from './AddToCartButton';
 import YugiohCardQuantityField from './YugiohCardQuantityField';
-import { ShoppingCardListing, YugiohCardListing } from '../../../../services/yugioh/types';
+import { YugiohCardListing } from '../../../../services/yugioh/types';
 import React, { useState } from 'react';
 import { useAuthenticationStatus, useCurrentUser } from '../../../../context/user';
 import { useNavigate } from 'react-router-dom';
-import { useShoppingCart } from '../../../../context/shoppingCart';
-import { useEffectAfterInitialLoad } from '../../../../util/useEffectAfterInitialLoad';
+import { shoppingCartService } from '../../../../services/shoppingCart/shoppingCart';
 
 type YugiohCardMarketTableCellProps = {
   listing: YugiohCardListing;
@@ -20,33 +19,19 @@ type YugiohCardMarketTableCellProps = {
 function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.Element {
   const [quantity, setQuantity] = useState(1);
   const { user } = useCurrentUser();
-  const { shoppingCart, addListing } = useShoppingCart();
   const { isAuthenticated } = useAuthenticationStatus();
   const navigate = useNavigate();
 
   function handleAddToCart(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
 
-    const listing: ShoppingCardListing = {
-      listing: props.listing,
-      rarity: props.rarity,
-      set_code: props.set_code,
-      boughtQuantity: quantity,
-    };
-
-    addListing(listing);
+    shoppingCartService
+      .addItem({ listing_id: props.listing.id, quantity })
+      .then(() => navigate('/cart'))
+      .catch(); // TO-DO: toast
   }
 
   const cannotBuy = user.user_id === props.listing.user || !isAuthenticated;
-
-  /*
-    ensure that the user is redirected and the item is saved after
-    dispatch is done updating the state
-  */
-  useEffectAfterInitialLoad(() => {
-    localStorage.setItem('cart', JSON.stringify(shoppingCart));
-    navigate('/cart');
-  }, [shoppingCart]);
   return (
     <tr>
       <td className="text-center w-16">

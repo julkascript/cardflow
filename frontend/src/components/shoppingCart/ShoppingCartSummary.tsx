@@ -1,30 +1,36 @@
 import { Delete, Home, Info } from '@mui/icons-material';
-import { Divider, IconButton, InputAdornment, Link, TextField, Tooltip } from '@mui/material';
+import {
+  Divider,
+  IconButton,
+  InputAdornment,
+  Link,
+  Pagination,
+  TextField,
+  Tooltip,
+} from '@mui/material';
 import SummaryData from './SummaryData';
 import MarketTable from '../marketTable/MarketTable';
 import PageSection from '../PageSection';
 import { CurrentUser } from '../../services/user/types';
-import { ShoppingCardListing } from '../../services/yugioh/types';
 import YugiohCardQuantityField from '../yugioh/table/market/YugiohCardQuantityField';
+import { ShoppingCartItem } from '../../services/shoppingCart/types';
 
 type ShoppingCartSummaryProps = {
   user: CurrentUser;
-  shoppingCart: ShoppingCardListing[];
+  shoppingCart: ShoppingCartItem[];
   shipmentCost: number;
   shipmentAddress: string;
   onShipmentAddressChange: (shipmentAddress: string) => void;
   onRemoveAll: () => void;
   onRemove: (id: number) => void;
   onChangeQuantity: (id: number, quantity: number) => void;
+  page: number;
+  pages: number;
+  onChangePage: (page: number) => void;
+  totalPrice: number;
 };
 
 function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
-  const price = Number(
-    props.shoppingCart
-      .reduce((totalPrice, item) => totalPrice + item.listing.price * item.boughtQuantity, 0)
-      .toFixed(2),
-  );
-
   const shipmentAddressIsValid = props.shipmentAddress !== '';
 
   const shipmentAddressTooltipText = props.shipmentAddress
@@ -62,9 +68,9 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
         <section className="w-2/5">
           <h3 className="font-bold mb-4">Summary</h3>
           <ul className="mr-4">
-            <SummaryData summary="Card(s) total price" data={price} />
+            <SummaryData summary="Card(s) total price" data={props.totalPrice} />
             <SummaryData summary="Shipment price" data={props.shipmentCost} />
-            <SummaryData boldedData summary="Total" data={price + props.shipmentCost} />
+            <SummaryData boldedData summary="Total" data={props.totalPrice + props.shipmentCost} />
           </ul>
         </section>
         <Divider className="none lg:block" orientation="vertical" flexItem />
@@ -110,7 +116,7 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
         <MarketTable className="text-center w-full">
           <thead>
             <tr>
-              <th colSpan={3}>Card Details</th>
+              <th colSpan={2}>Card Details</th>
               <th style={{ textAlign: 'center', padding: 8 }}>Quantity</th>
               <th style={{ textAlign: 'center', padding: 8 }}>Price</th>
               <th style={{ textAlign: 'center', padding: 8 }}>Actions</th>
@@ -120,15 +126,14 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
             {props.shoppingCart.map((shoppingCartItem) => (
               <tr key={shoppingCartItem.listing.id}>
                 <td className="font-bold">{shoppingCartItem.listing.card_name}</td>
-                <td>{shoppingCartItem.set_code}</td>
-                <td>{shoppingCartItem.rarity}</td>
+                <td>{shoppingCartItem.listing.user_name}</td>
                 <td>
                   <YugiohCardQuantityField
                     hidden={false}
                     onChange={(quantity) =>
                       props.onChangeQuantity(shoppingCartItem.listing.id, quantity)
                     }
-                    quantity={shoppingCartItem.boughtQuantity}
+                    quantity={shoppingCartItem.quantity}
                     max={shoppingCartItem.listing.quantity}
                   />
                 </td>
@@ -138,7 +143,7 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
                     <IconButton
                       onClick={(e) => {
                         e.preventDefault();
-                        props.onRemove(shoppingCartItem.listing.id);
+                        props.onRemove(shoppingCartItem.id);
                       }}
                     >
                       <Delete color="error" />
@@ -149,6 +154,16 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
             ))}
           </tbody>
         </MarketTable>
+      </section>
+      <section className="flex justify-center">
+        <Pagination
+          page={props.page}
+          count={props.pages}
+          onChange={(e, p) => {
+            e.preventDefault();
+            props.onChangePage(p);
+          }}
+        />
       </section>
     </PageSection>
   );

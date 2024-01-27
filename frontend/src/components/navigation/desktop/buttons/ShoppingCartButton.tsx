@@ -8,7 +8,7 @@ function ShoppingCartButton(): JSX.Element {
   const infoColor = theme.palette.info.main;
   const { shoppingCart } = useShoppingCart();
 
-  if (shoppingCart.length) {
+  if (shoppingCart > 0) {
     return (
       <Badge color="error" badgeContent=" ">
         <Button
