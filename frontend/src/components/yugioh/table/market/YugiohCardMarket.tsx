@@ -4,8 +4,6 @@ import YugiohCardMarketTableCell from './YugiohCardMarketTableCell';
 
 type YugiohCardMarketProps = {
   listings: YugiohCardListing[];
-  rarity: string;
-  set_code: string;
 };
 
 function YugiohCardMarket(props: YugiohCardMarketProps): JSX.Element {
@@ -23,12 +21,7 @@ function YugiohCardMarket(props: YugiohCardMarketProps): JSX.Element {
           </thead>
           <tbody>
             {props.listings.map((l) => (
-              <YugiohCardMarketTableCell
-                set_code={props.set_code}
-                key={l.id}
-                rarity={props.rarity}
-                listing={l}
-              />
+              <YugiohCardMarketTableCell key={l.id} listing={l} />
             ))}
           </tbody>
         </MarketTable>

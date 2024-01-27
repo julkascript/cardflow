@@ -12,8 +12,6 @@ import { shoppingCartService } from '../../../../services/shoppingCart/shoppingC
 
 type YugiohCardMarketTableCellProps = {
   listing: YugiohCardListing;
-  rarity: string;
-  set_code: string;
 };
 
 function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.Element {
