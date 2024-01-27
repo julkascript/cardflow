@@ -40,11 +40,7 @@ function YugiohCardDetails(): JSX.Element {
         <YugiohCardImage src={cardInSet.yugioh_card.image} />
         <YugiohCardDetailsTable cardInSet={cardInSet} />
       </div>
-      <YugiohCardMarket
-        set_code={cardInSet.set.set_code}
-        rarity={cardInSet.rarity.rarity}
-        listings={cardListings.results}
-      />
+      <YugiohCardMarket listings={cardListings.results} />
       <Pagination
         page={page}
         className="flex justify-center pb-8"
