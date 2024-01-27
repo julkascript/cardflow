@@ -26,6 +26,7 @@ export const theme = {
     },
     grey: {
       '900': '#6F6F6F',
+      '300': '#A9A9A9'
     },
   },
 };

@@ -42,9 +42,13 @@ INSTALLED_APPS = [
     "yugioh",
     "listing",
     "drf_spectacular",
+    "order",
+    "cart",
+
 
     # MUST be the last app
     'django_cleanup.apps.CleanupConfig',
+
 ]
 
 MIDDLEWARE = [
