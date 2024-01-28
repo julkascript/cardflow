@@ -107,7 +107,10 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
             {props.shoppingCart.map((shoppingCartItem) => (
               <tr key={shoppingCartItem.listing.id}>
                 <td className="font-bold">
-                  <Link underline="hover" href={`/details/yugioh/${shoppingCartItem.listing.id}`}>
+                  <Link
+                    underline="hover"
+                    href={`/details/yugioh/${shoppingCartItem.listing.card_set_id}`}
+                  >
                     {shoppingCartItem.listing.card_name}
                   </Link>
                 </td>
