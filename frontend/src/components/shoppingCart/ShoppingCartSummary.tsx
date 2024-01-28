@@ -37,22 +37,8 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
     ? 'Your details were pre-filled from your profile.'
     : 'You can set a default shipment address from your profile, which will be pre-filled for future purchases.';
   return (
-    <PageSection className="p-8 pt-4 w-11/12 lg:w-1/2">
-      <section className="flex items-end justify-between flex-wrap border-b-2 border-b-[#D9D9D9]">
-        <h2 className="m-0 p-0 font-bold text-xl">
-          <Link
-            sx={{
-              color: '#0B70E5',
-              textDecoration: 'none',
-              ':hover': {
-                textDecoration: 'underline',
-              },
-            }}
-            href={`/user/${props.user.username}`}
-          >
-            {props.user.username}
-          </Link>
-        </h2>
+    <PageSection className="p-8 pt-4 w-11/12 lg:w-1/2 relative">
+      <section className="flex items-end justify-end absolute right-4 top-2">
         <Tooltip title="Empty out the shopping cart (remove all listings)">
           <IconButton
             onClick={(e) => {
