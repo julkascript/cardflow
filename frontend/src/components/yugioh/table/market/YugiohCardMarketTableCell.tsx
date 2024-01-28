@@ -7,7 +7,6 @@ import YugiohCardQuantityField from './YugiohCardQuantityField';
 import { YugiohCardListing } from '../../../../services/yugioh/types';
 import React, { useState } from 'react';
 import { useAuthenticationStatus, useCurrentUser } from '../../../../context/user';
-import { useNavigate } from 'react-router-dom';
 import { shoppingCartService } from '../../../../services/shoppingCart/shoppingCart';
 
 type YugiohCardMarketTableCellProps = {
@@ -18,15 +17,11 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
   const [quantity, setQuantity] = useState(1);
   const { user } = useCurrentUser();
   const { isAuthenticated } = useAuthenticationStatus();
-  const navigate = useNavigate();
 
   function handleAddToCart(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
 
-    shoppingCartService
-      .addItem({ listing_id: props.listing.id, quantity })
-      .then(() => navigate('/cart'))
-      .catch(); // TO-DO: toast
+    shoppingCartService.addItem({ listing_id: props.listing.id, quantity }).then().catch(); // TO-DO: toast
   }
 
   const cannotBuy = user.user_id === props.listing.user || !isAuthenticated;
