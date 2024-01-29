@@ -46,6 +46,7 @@ export type YugiohCardListing = {
   card: number;
   card_name: string;
   card_set_id: number;
+  card_in_set: YugiohCardInSet;
 
   /** This is the user's ID */
   user: number;
