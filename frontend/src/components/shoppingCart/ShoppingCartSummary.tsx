@@ -97,7 +97,7 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
         <MarketTable className="text-center w-full">
           <thead>
             <tr>
-              <th colSpan={2}>Card Details</th>
+              <th colSpan={3}>Card Details</th>
               <th style={{ textAlign: 'center', padding: 8 }}>Quantity</th>
               <th style={{ textAlign: 'center', padding: 8 }}>Price</th>
               <th style={{ textAlign: 'center', padding: 8 }}>Actions</th>
@@ -114,15 +114,8 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
                     {shoppingCartItem.listing.card_name}
                   </Link>
                 </td>
-                <td className="font-bold">
-                  <Link
-                    sx={{ color: '#0B70E5' }}
-                    underline="hover"
-                    href={`/user/${shoppingCartItem.listing.user_name}`}
-                  >
-                    {shoppingCartItem.listing.user_name}
-                  </Link>
-                </td>
+                <td>{shoppingCartItem.listing.card_in_set.set.set_code}</td>
+                <td>{shoppingCartItem.listing.card_in_set.rarity.rarity}</td>
                 <td>
                   <YugiohCardQuantityField
                     hidden={false}
