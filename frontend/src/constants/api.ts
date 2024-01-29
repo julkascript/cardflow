@@ -4,6 +4,8 @@ const listing = `${base}/listing`;
 const yugioh = `${base}/yugioh`;
 const cardInSet = `${yugioh}/cards_in_set`;
 const card = `${yugioh}/cards`;
+const shoppingCart = `${base}/cart`;
+
 export const api = Object.freeze({
   accounts: {
     refresh: `${accounts}/refresh/`,
@@ -27,5 +29,10 @@ export const api = Object.freeze({
       root: card,
       id: (id: number | string) => `${card}/${id}`,
     },
+  },
+  shoppingCart: {
+    items: `${shoppingCart}/items/`,
+    id: (id: number | string) => `${shoppingCart}/items/${id}/`,
+    checkout: `${shoppingCart}/items/checkout/`,
   },
 });
