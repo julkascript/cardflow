@@ -7,6 +7,8 @@ import { Outlet } from 'react-router-dom';
 import { userService } from './services/user/user';
 import { useCurrentUser } from './context/user';
 import { HttpError } from './util/HttpError';
+import { useShoppingCart } from './context/shoppingCart';
+import { shoppingCartService } from './services/shoppingCart/shoppingCart';
 import { Toaster } from 'react-hot-toast';
 import { theme } from './constants/theme';
 import { linkBehaviorConfiguration } from './linkBehaviorConfiguration';
@@ -16,6 +18,7 @@ function App() {
   const appTheme = useMemo(() => createTheme({ ...theme, ...linkBehaviorConfiguration }), []);
 
   const { setUser, restartUser } = useCurrentUser();
+  const { setShoppingCart } = useShoppingCart();
 
   useEffect(() => {
     const refreshToken = localStorage.getItem('refreshToken');
@@ -30,6 +33,10 @@ function App() {
           const user = await userService.getUserById(user_id);
 
           setUser({ user_id, ...user });
+          return shoppingCartService.getItems(undefined, 1);
+        })
+        .then((data) => {
+          setShoppingCart(data.count);
         })
         .catch((res) => {
           if (res instanceof HttpError && res.err.status < 500) {
@@ -40,6 +47,7 @@ function App() {
         });
     }
   }, []);
+
   return (
     <>
       <ThemeProvider theme={appTheme}>

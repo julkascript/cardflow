@@ -43,6 +43,33 @@ function SellListing(): JSX.Element {
     user: 0,
     card_name: '',
     card_set_id: 0,
+    card_in_set: {
+      id: 0,
+      yugioh_card: {
+        id: 0,
+        card_name: '',
+        type: '',
+        frame_type: '',
+        description: '',
+        attack: '',
+        defense: '',
+        level: '',
+        race: '',
+        attribute: '',
+        archetype: '',
+        image: '',
+      },
+      set: {
+        id: 0,
+        card_set_name: '',
+        set_code: '',
+      },
+      rarity: {
+        id: 0,
+        rarity: '',
+        rarity_code: '',
+      },
+    },
   });
 
   useEffect(() => {
@@ -80,6 +107,33 @@ function SellListing(): JSX.Element {
             user,
             card_name,
             card_set_id,
+            card_in_set: {
+              id: 0,
+              yugioh_card: {
+                id: 0,
+                card_name: '',
+                type: '',
+                frame_type: '',
+                description: '',
+                attack: '',
+                defense: '',
+                level: '',
+                race: '',
+                attribute: '',
+                archetype: '',
+                image: '',
+              },
+              set: {
+                id: 0,
+                card_set_name: '',
+                set_code: '',
+              },
+              rarity: {
+                id: 0,
+                rarity: '',
+                rarity_code: '',
+              },
+            },
           }));
         }
       } catch (error) {

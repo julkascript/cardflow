@@ -8,3 +8,9 @@ html {
   position: relative;
   z-index: 1;
 }
+
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}

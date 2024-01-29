@@ -46,6 +46,7 @@ export type YugiohCardListing = {
   card: number;
   card_name: string;
   card_set_id: number;
+  card_in_set: YugiohCardInSet;
 
   /** This is the user's ID */
   user: number;
@@ -128,4 +129,11 @@ export type SellCardListing = {
   quantity: number;
   is_listed: boolean;
   is_sold: boolean;
+};
+
+export type ShoppingCardListing = {
+  listing: YugiohCardListing;
+  rarity: string;
+  set_code: string;
+  boughtQuantity: number;
 };
