@@ -19,7 +19,7 @@ try:
 except:
     DEBUG = False
 
-ALLOWED_HOSTS = ["localhost"]
+ALLOWED_HOSTS = ["0.0.0.0", "localhost"]
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False

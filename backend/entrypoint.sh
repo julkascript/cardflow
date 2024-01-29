@@ -44,6 +44,6 @@ else
   echo "Superuser already exists. Skipping creation."
 fi
 
-python manage.py runserver 0.0.0.0:8000
+#python manage.py runserver 0.0.0.0:8000
 
-
+gunicorn cardflow.wsgi --bind 0.0.0.0:8000 --workers 4 --threads 4

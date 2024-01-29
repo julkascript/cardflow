@@ -63,7 +63,7 @@ services:
     volumes:
       - ./pgadmin4:/var/lib/pgadmin
     ports:
-      - "5433:80"
+      - "5433:81"
     depends_on:
       - postgres
     networks:
@@ -73,10 +73,11 @@ services:
     image: nginx
     ports:
       - "80:80"
-      - "443:443"
+#      - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./certs:/etc/nginx/certs
+      - ./usr/src/app:/usr/share/nginx/html;
+#      - ./certs:/etc/nginx/certs
     depends_on:
       - frontend
       - backend
