@@ -84,10 +84,10 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
       const data = await error.err.json();
       setError(data);
       if (error instanceof HttpError) {
-        if (isLogin && error.err.status === 400) {
+        if (isLogin && error.err.status === 401) {
           errorToast(error, toastMessages.error.failedLogin);
         } else {
-          errorToast(error);
+          errorToast(error, undefined, 400);
         }
       }
     }

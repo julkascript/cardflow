@@ -18,6 +18,7 @@ import DiamondIcon from '@mui/icons-material/Diamond';
 import TagIcon from '@mui/icons-material/Tag';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { errorToast } from '../../util/errorToast';
+import toast from 'react-hot-toast';
 
 function SellListing(): JSX.Element {
   const [page, setPage] = useState(1);
@@ -82,7 +83,7 @@ function SellListing(): JSX.Element {
           }));
         }
       } catch (error) {
-        errorToast(error);
+        errorToast(error, undefined, 404);
       }
     }
     loadCardListing();
@@ -152,6 +153,7 @@ function SellListing(): JSX.Element {
         card: Number(params.id),
       };
       await yugiohService.updateCardListing(newData, id);
+      toast.success('test');
     } catch (error) {
       errorToast(error);
     }
@@ -165,7 +167,7 @@ function SellListing(): JSX.Element {
         setCardListings(data);
         setPage(page);
       })
-      .catch(errorToast); // TO-DO: implement feedback for failed requests.
+      .catch(errorToast);
   }
 
   useEffectAfterInitialLoad(() => {

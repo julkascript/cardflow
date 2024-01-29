@@ -148,7 +148,7 @@ function EditListing(): JSX.Element {
   }
 
   useEffectAfterInitialLoad(() => {
-    yugiohService.getCardListingsByCardSetId(cardId).then(setCardListings).catch(errorToast);
+    yugiohService.getCardListingsByCardSetId(cardId).then(setCardListings).catch();
     setPage(1);
   }, [cardId]);
   return (
