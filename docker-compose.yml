@@ -19,6 +19,8 @@ services:
     tty: true
     ports:
       - "5173:5173"
+    expose:
+      - "5173"
     command: npm run dev
 
   backend:
@@ -76,14 +78,14 @@ services:
 #      - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./usr/src/app:/usr/share/nginx/html;
+      - ./frontend/dist:/usr/share/nginx/html
 #      - ./certs:/etc/nginx/certs
     depends_on:
       - frontend
       - backend
     networks:
       - cardflow
-  
+
 networks:
   cardflow:
     driver: bridge
