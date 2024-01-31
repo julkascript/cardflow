@@ -122,6 +122,33 @@ describe('yugiohService', () => {
         quantity: 0,
         is_listed: true,
         is_sold: false,
+        card_in_set: {
+          id: 0,
+          yugioh_card: {
+            id: 0,
+            card_name: '',
+            type: '',
+            frame_type: '',
+            description: '',
+            attack: '',
+            defense: '',
+            level: '',
+            race: '',
+            attribute: '',
+            archetype: '',
+            image: '',
+          },
+          set: {
+            id: 0,
+            card_set_name: '',
+            set_code: '',
+          },
+          rarity: {
+            id: 0,
+            rarity: '',
+            rarity_code: '',
+          },
+        },
       };
 
       vi.spyOn(httpService, 'put').mockResolvedValueOnce(sampleListing);
