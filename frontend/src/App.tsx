@@ -61,11 +61,13 @@ function App() {
             success: {
               style: {
                 background: theme.palette.success.main,
+                color: 'white',
               },
             },
             error: {
               style: {
                 background: theme.palette.error.main,
+                color: 'white',
               },
             },
           }}
