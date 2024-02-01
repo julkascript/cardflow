@@ -16,6 +16,8 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useState } from 'react';
 import { useCurrentUser } from '../../../../context/user';
 import { useLogout } from '../../../../util/useLogout';
+import toast from 'react-hot-toast';
+import { toastMessages } from '../../../../constants/toast';
 
 type NewActionLink = {
   url: string;
@@ -37,6 +39,7 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
   function handleLogout() {
     logout();
     props.onClose();
+    toast.success(toastMessages.success.logout);
   }
 
   const actions: NewActionLink[] = [
@@ -74,11 +77,11 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
         </List>
       </Collapse>
       <ListItem disablePadding>
-        <ListItemButton>
+        <ListItemButton href="/sell/manage">
           <ListItemIcon>
             <NotificationsIcon />
           </ListItemIcon>
-          <ListItemText primary="Notifications" />
+          <ListItemText primary="My listings" />
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>

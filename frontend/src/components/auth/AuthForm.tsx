@@ -7,6 +7,10 @@ import {
   UserRegister,
 } from '../../services/user/types';
 import { useCurrentUser } from '../../context/user';
+import toast from 'react-hot-toast';
+import { toastMessages } from '../../constants/toast';
+import { errorToast } from '../../util/errorToast';
+import { HttpError } from '../../util/HttpError';
 
 type AuthFormProps = {
   isLogin: boolean;
@@ -26,6 +30,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     const data = await userService.getUserById(id);
     setUser({ user_id: id, ...data });
     navigate('/');
+    toast.success(isLogin ? toastMessages.success.login : toastMessages.success.register);
   }
 
   function validate(isLogin: boolean) {
@@ -78,6 +83,13 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     } catch (error: any) {
       const data = await error.err.json();
       setError(data);
+      if (error instanceof HttpError) {
+        if (isLogin && error.err.status === 401) {
+          errorToast(error, toastMessages.error.failedLogin);
+        } else {
+          errorToast(error, undefined, 400);
+        }
+      }
     }
   }
 

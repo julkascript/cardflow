@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { Pagination } from '@mui/material';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../../util/useEffectAfterInitialLoad';
+import { errorToast } from '../../util/errorToast';
 
 function YugiohCardDetails(): JSX.Element {
   const data = useLoaderData() as CardDetailsLoaderData;
@@ -25,11 +26,14 @@ function YugiohCardDetails(): JSX.Element {
         setCardListings(data);
         setPage(page);
       })
-      .catch(() => {}); // TO-DO: implement feedback for failed requests.
+      .catch(errorToast);
   }
 
   useEffectAfterInitialLoad(() => {
-    yugiohService.getCardListingsByCardSetId(Number(params.id)).then(setCardListings).catch();
+    yugiohService
+      .getCardListingsByCardSetId(Number(params.id))
+      .then(setCardListings)
+      .catch(errorToast);
     setPage(1);
   }, [params.id]);
 

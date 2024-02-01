@@ -10,6 +10,9 @@ import PageHeader from '../../components/PageHeader';
 import LensIcon from '@mui/icons-material/Lens';
 import AddIcon from '@mui/icons-material/Add';
 import ListingTopBar from '../../components/sellListing/ListingTopBar';
+import { errorToast } from '../../util/errorToast';
+import toast from 'react-hot-toast';
+import { toastMessages } from '../../constants/toast';
 
 type ListingData = {
   listing: YugiohCardListing;
@@ -69,22 +72,25 @@ function SellManagement(): JSX.Element {
   }
 
   function retrieveListings(page: number) {
-    yugiohService.getCardListingsByUserId(user.user_id, page).then((listings) => {
-      const data: ListingData[] = listings.results.map((l) => ({
-        listing: l,
-        selected: false,
-      }));
+    yugiohService
+      .getCardListingsByUserId(user.user_id, page)
+      .then((listings) => {
+        const data: ListingData[] = listings.results.map((l) => ({
+          listing: l,
+          selected: false,
+        }));
 
-      setPages(Math.ceil(listings.count / 10));
+        setPages(Math.ceil(listings.count / 10));
 
-      dispatch({
-        type: 'set',
-        newListings: data,
-      });
+        dispatch({
+          type: 'set',
+          newListings: data,
+        });
 
-      setCheckedAll(false);
-      setPage(page);
-    });
+        setCheckedAll(false);
+        setPage(page);
+      })
+      .catch(errorToast);
   }
 
   function handleCheck(index: number) {
@@ -118,9 +124,12 @@ function SellManagement(): JSX.Element {
       return yugiohService.editListing({ ...d.listing, is_listed: false });
     });
 
-    Promise.all(fetchFunctions).then(() => {
-      retrieveListings(1);
-    });
+    Promise.all(fetchFunctions)
+      .then(() => {
+        retrieveListings(1);
+        toast.success(toastMessages.success.sellListingsDelisted);
+      })
+      .catch(errorToast);
   }
 
   function listAll(event: React.MouseEvent) {
@@ -129,10 +138,13 @@ function SellManagement(): JSX.Element {
       return yugiohService.editListing({ ...d.listing, is_listed: true });
     });
 
-    Promise.all(fetchFunctions).then(() => {
-      retrieveListings(page);
-      setAnchorEl(null);
-    });
+    Promise.all(fetchFunctions)
+      .then(() => {
+        retrieveListings(page);
+        setAnchorEl(null);
+        toast.success(toastMessages.success.sellListingsListed);
+      })
+      .catch(errorToast);
   }
 
   function deleteAll(event: React.MouseEvent) {
@@ -148,9 +160,12 @@ function SellManagement(): JSX.Element {
       newPage = page === pages && page !== 1 ? page - 1 : page;
     }
 
-    Promise.all(fetchFunctions).then(() => {
-      retrieveListings(newPage);
-    });
+    Promise.all(fetchFunctions)
+      .then(() => {
+        toast.success(toastMessages.success.sellListingsDeleted);
+        retrieveListings(newPage);
+      })
+      .catch(errorToast);
   }
 
   function deleteSelectedItems(event: React.MouseEvent) {
@@ -168,10 +183,13 @@ function SellManagement(): JSX.Element {
       newPage = page === pages && page !== 1 ? page - 1 : page;
     }
 
-    Promise.all(fetchFunctions).then(() => {
-      retrieveListings(newPage);
-      setAnchorEl(null);
-    });
+    Promise.all(fetchFunctions)
+      .then(() => {
+        toast.success(toastMessages.success.sellListingsDeleted);
+        retrieveListings(newPage);
+        setAnchorEl(null);
+      })
+      .catch(errorToast);
   }
 
   function delistSelectedItems(event: React.MouseEvent) {
@@ -182,10 +200,13 @@ function SellManagement(): JSX.Element {
         return yugiohService.editListing({ ...d.listing, is_listed: false });
       });
 
-    Promise.all(fetchFunctions).then(() => {
-      retrieveListings(page);
-      setAnchorEl(null);
-    });
+    Promise.all(fetchFunctions)
+      .then(() => {
+        retrieveListings(page);
+        setAnchorEl(null);
+        toast.success(toastMessages.success.sellListingsDelisted);
+      })
+      .catch(errorToast);
   }
 
   function listSelectedItems(event: React.MouseEvent) {
@@ -196,16 +217,27 @@ function SellManagement(): JSX.Element {
         return yugiohService.editListing({ ...d.listing, is_listed: true });
       });
 
-    Promise.all(fetchFunctions).then(() => {
-      retrieveListings(page);
-      setAnchorEl(null);
-    });
+    Promise.all(fetchFunctions)
+      .then(() => {
+        retrieveListings(page);
+        setAnchorEl(null);
+        toast.success(toastMessages.success.sellListingsListed);
+      })
+      .catch(errorToast);
   }
 
   function toggleListingVisibility(listing: YugiohCardListing, newStatus: boolean) {
     yugiohService
       .editListing({ ...listing, is_listed: newStatus })
-      .then(() => retrieveListings(page));
+      .then(() => {
+        retrieveListings(page);
+        if (newStatus) {
+          toast.success(toastMessages.success.sellListingListed);
+        } else {
+          toast.success(toastMessages.success.sellListingDelisted);
+        }
+      })
+      .catch(errorToast);
   }
   useEffect(() => {
     if (isAuthenticated) {

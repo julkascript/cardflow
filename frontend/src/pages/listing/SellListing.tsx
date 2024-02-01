@@ -17,6 +17,9 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import TagIcon from '@mui/icons-material/Tag';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { errorToast } from '../../util/errorToast';
+import toast from 'react-hot-toast';
+import { toastMessages } from '../../constants/toast';
 
 function SellListing(): JSX.Element {
   const [page, setPage] = useState(1);
@@ -135,7 +138,7 @@ function SellListing(): JSX.Element {
           }));
         }
       } catch (error) {
-        // need to handle error
+        errorToast(error, undefined, 404);
       }
     }
     loadCardListing();
@@ -160,7 +163,9 @@ function SellListing(): JSX.Element {
     try {
       await yugiohService.deleteListingById(Number(params.id));
       navigate('/sell/manage');
-    } catch (error) {}
+    } catch (error) {
+      errorToast(error);
+    }
   }
   function delistItem() {
     try {
@@ -169,7 +174,9 @@ function SellListing(): JSX.Element {
       } else {
         yugiohService.editListing({ ...formData, is_listed: true });
       }
-    } catch (error) {}
+    } catch (error) {
+      errorToast(error);
+    }
   }
 
   async function handleSubmit(e: React.FormEvent): Promise<void> {
@@ -183,8 +190,13 @@ function SellListing(): JSX.Element {
         is_listed: formData.is_listed,
         card: Number(params.id),
       };
-      await yugiohService.sellCardListing(newData);
-    } catch (error) {}
+      const data = await yugiohService.sellCardListing(newData);
+      toast.success(
+        toastMessages.success.listingCreated(data.card_name, data.card_in_set.set.set_code),
+      );
+    } catch (error) {
+      errorToast(error);
+    }
   }
 
   async function updateListing(e: React.FormEvent): Promise<void> {
@@ -199,7 +211,9 @@ function SellListing(): JSX.Element {
         card: Number(params.id),
       };
       await yugiohService.updateCardListing(newData, id);
-    } catch (error) {}
+    } catch (error) {
+      errorToast(error);
+    }
   }
 
   const pages = Math.ceil(cardListings.count / 10);
@@ -210,14 +224,14 @@ function SellListing(): JSX.Element {
         setCardListings(data);
         setPage(page);
       })
-      .catch(() => {}); // TO-DO: implement feedback for failed requests.
+      .catch(errorToast);
   }
 
   useEffectAfterInitialLoad(() => {
     yugiohService
       .getCardListingsByCardSetId(cardId ? cardId : id)
       .then(setCardListings)
-      .catch();
+      .catch(errorToast);
     setPage(1);
   }, [params.cardid]);
   return (
