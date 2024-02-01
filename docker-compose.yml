@@ -21,7 +21,7 @@ services:
       - "5173:5173"
     expose:
       - "5173"
-    command: /app/frontend-entrypoint
+    command: frontend-entrypoint.sh
 
   backend:
     build:
