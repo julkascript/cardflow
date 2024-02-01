@@ -12,6 +12,8 @@ export const toastMessages = {
       'Your account was deleted successfully! Please remember that you cannot undo this action!',
     shoppingCartItemDeleted: 'Listing removed from the shopping cart',
     shoppingCartEmptiedOut: 'You have emptied your shopping cart out',
+    shoppingCartItemAdded: (name: string, setCode: string) =>
+      `${name} (${setCode}) was added to your cart!`,
     checkout: 'Checkout was successful!',
     listingUpdated: (name: string, setCode: string) =>
       `Listing for ${name} (${setCode}) was updated successfully!`,
