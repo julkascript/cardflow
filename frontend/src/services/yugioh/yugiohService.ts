@@ -61,7 +61,10 @@ export const yugiohService = {
     return data!;
   },
 
-  async updateCardListing(listing: YugiohCardSellListing, id: number): Promise<YugiohCardListing> {
+  async updateCardListing(
+    listing: Partial<YugiohCardSellListing>,
+    id: number,
+  ): Promise<YugiohCardListing> {
     const data = await httpService.patch<YugiohCardListing>(api.yugioh.listing.id(id), listing);
     return data!;
   },
