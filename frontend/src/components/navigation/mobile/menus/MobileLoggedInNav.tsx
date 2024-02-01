@@ -74,11 +74,11 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
         </List>
       </Collapse>
       <ListItem disablePadding>
-        <ListItemButton>
+        <ListItemButton href="/sell/manage">
           <ListItemIcon>
             <NotificationsIcon />
           </ListItemIcon>
-          <ListItemText primary="Notifications" />
+          <ListItemText primary="My listings" />
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>

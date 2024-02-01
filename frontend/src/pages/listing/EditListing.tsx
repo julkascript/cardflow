@@ -179,14 +179,13 @@ function EditListing(): JSX.Element {
   async function updateListing(e: React.FormEvent): Promise<void> {
     e.preventDefault();
     try {
-      const newData: YugiohCardSellListing = {
+      const newData: Partial<YugiohCardSellListing> = {
         quantity: Number(formData.quantity),
         condition: formData.condition,
         price: Number(formData.price),
-        is_sold: false,
         is_listed: formData.is_listed,
-        card: Number(params.id),
       };
+
       await yugiohService.updateCardListing(newData, id);
     } catch (error) {}
   }
