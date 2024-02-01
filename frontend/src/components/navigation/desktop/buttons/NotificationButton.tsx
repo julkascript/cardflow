@@ -8,6 +8,7 @@ function NotificationButton(): JSX.Element {
     <IconButton
       size="small"
       sx={{ borderWidth: 1, borderColor: secondaryTextColor, borderStyle: 'solid' }}
+      href="/sell/manage"
     >
       <NotificationsIcon />
     </IconButton>
