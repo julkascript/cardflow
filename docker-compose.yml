@@ -21,7 +21,7 @@ services:
       - "5173:5173"
     expose:
       - "5173"
-    command: /usr/src/app/frontend-entrypoint
+    command: npm run dev
 
   backend:
     build:
