@@ -83,7 +83,8 @@ services:
       - ./frontend/dist:/usr/share/nginx/html
       - ./backend/media:/usr/share/nginx/media
       - ./backend/static_files:/usr/share/nginx/static_files/
-      - /etc/letsencrypt/live/cardflow.market/:/etc/letsencrypt/live/cardflow.market/
+      - /etc/letsencrypt/live/cardflow.market/fullchain.pem:/etc/letsencrypt/live/cardflow.market/fullchain.pem
+      - /etc/letsencrypt/live/cardflow.market/privkey.pem:/etc/letsencrypt/live/cardflow.market/privkey.pem
     depends_on:
       - frontend
       - backend
