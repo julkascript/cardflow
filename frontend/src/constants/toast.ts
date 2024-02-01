@@ -23,6 +23,11 @@ export const toastMessages = {
       `Listing for ${name} (${setCode}) was deleted successfully`,
     listingCreated: (name: string, setCode: string) =>
       `Listing for ${name} (${setCode}) was created successfully!`,
+    sellListingsDelisted: 'Listings were delisted.',
+    sellListingsDeleted: 'Listings were deleted',
+    sellListingsListed: 'Listings were made public',
+    sellListingListed: 'Listing was made public',
+    sellListingDelisted: 'Listing was delisted',
   },
   error: {
     serverError: 'Something went wrong, please try again later!',

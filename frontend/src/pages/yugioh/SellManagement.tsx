@@ -11,6 +11,8 @@ import LensIcon from '@mui/icons-material/Lens';
 import AddIcon from '@mui/icons-material/Add';
 import ListingTopBar from '../../components/sellListing/ListingTopBar';
 import { errorToast } from '../../util/errorToast';
+import toast from 'react-hot-toast';
+import { toastMessages } from '../../constants/toast';
 
 type ListingData = {
   listing: YugiohCardListing;
@@ -125,6 +127,7 @@ function SellManagement(): JSX.Element {
     Promise.all(fetchFunctions)
       .then(() => {
         retrieveListings(1);
+        toast.success(toastMessages.success.sellListingsDelisted);
       })
       .catch(errorToast);
   }
@@ -139,6 +142,7 @@ function SellManagement(): JSX.Element {
       .then(() => {
         retrieveListings(page);
         setAnchorEl(null);
+        toast.success(toastMessages.success.sellListingsListed);
       })
       .catch(errorToast);
   }
@@ -158,6 +162,7 @@ function SellManagement(): JSX.Element {
 
     Promise.all(fetchFunctions)
       .then(() => {
+        toast.success(toastMessages.success.sellListingsDeleted);
         retrieveListings(newPage);
       })
       .catch(errorToast);
@@ -180,6 +185,7 @@ function SellManagement(): JSX.Element {
 
     Promise.all(fetchFunctions)
       .then(() => {
+        toast.success(toastMessages.success.sellListingsDeleted);
         retrieveListings(newPage);
         setAnchorEl(null);
       })
@@ -198,6 +204,7 @@ function SellManagement(): JSX.Element {
       .then(() => {
         retrieveListings(page);
         setAnchorEl(null);
+        toast.success(toastMessages.success.sellListingsDelisted);
       })
       .catch(errorToast);
   }
@@ -214,6 +221,7 @@ function SellManagement(): JSX.Element {
       .then(() => {
         retrieveListings(page);
         setAnchorEl(null);
+        toast.success(toastMessages.success.sellListingsListed);
       })
       .catch(errorToast);
   }
@@ -221,7 +229,14 @@ function SellManagement(): JSX.Element {
   function toggleListingVisibility(listing: YugiohCardListing, newStatus: boolean) {
     yugiohService
       .editListing({ ...listing, is_listed: newStatus })
-      .then(() => retrieveListings(page))
+      .then(() => {
+        retrieveListings(page);
+        if (newStatus) {
+          toast.success(toastMessages.success.sellListingListed);
+        } else {
+          toast.success(toastMessages.success.sellListingDelisted);
+        }
+      })
       .catch(errorToast);
   }
   useEffect(() => {
