@@ -19,6 +19,7 @@ import TagIcon from '@mui/icons-material/Tag';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { errorToast } from '../../util/errorToast';
 import toast from 'react-hot-toast';
+import { toastMessages } from '../../constants/toast';
 
 function SellListing(): JSX.Element {
   const [page, setPage] = useState(1);
@@ -189,7 +190,10 @@ function SellListing(): JSX.Element {
         is_listed: formData.is_listed,
         card: Number(params.id),
       };
-      await yugiohService.sellCardListing(newData);
+      const data = await yugiohService.sellCardListing(newData);
+      toast.success(
+        toastMessages.success.listingCreated(data.card_name, data.card_in_set.set.set_code),
+      );
     } catch (error) {
       errorToast(error);
     }
@@ -207,7 +211,6 @@ function SellListing(): JSX.Element {
         card: Number(params.id),
       };
       await yugiohService.updateCardListing(newData, id);
-      toast.success('test');
     } catch (error) {
       errorToast(error);
     }

@@ -18,6 +18,8 @@ import DiamondIcon from '@mui/icons-material/Diamond';
 import TagIcon from '@mui/icons-material/Tag';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { errorToast } from '../../util/errorToast';
+import toast from 'react-hot-toast';
+import { toastMessages } from '../../constants/toast';
 
 function EditListing(): JSX.Element {
   const [page, setPage] = useState(1);
@@ -165,12 +167,29 @@ function EditListing(): JSX.Element {
     try {
       await yugiohService.deleteListingById(Number(params.id));
       navigate('/sell/manage');
+      toast.success(
+        toastMessages.success.listingDeleted(
+          cardInSet?.yugioh_card.card_name || '',
+          cardInSet?.set.set_code || '',
+        ),
+      );
     } catch (error) {
       errorToast(error);
     }
   }
   function delistItem() {
-    yugiohService.editListing({ ...formData, is_listed: !formData.is_listed }).catch(errorToast);
+    yugiohService
+      .editListing({ ...formData, is_listed: !formData.is_listed })
+      .then((data) =>
+        toast.success(
+          toastMessages.success.listingVisibilityChanged(
+            data.card_name,
+            data.card_in_set.set.set_code,
+            !formData.is_listed,
+          ),
+        ),
+      )
+      .catch(errorToast);
   }
 
   async function updateListing(e: React.FormEvent): Promise<void> {
@@ -184,7 +203,10 @@ function EditListing(): JSX.Element {
         is_listed: formData.is_listed,
         card: Number(params.id),
       };
-      await yugiohService.updateCardListing(newData, id);
+      const listing = await yugiohService.updateCardListing(newData, id);
+      toast.success(
+        toastMessages.success.listingUpdated(listing.card_name, listing.card_in_set.set.set_code),
+      );
     } catch (error) {
       errorToast(error);
     }
@@ -202,7 +224,7 @@ function EditListing(): JSX.Element {
   }
 
   useEffectAfterInitialLoad(() => {
-    yugiohService.getCardListingsByCardSetId(cardId).then(setCardListings).catch();
+    yugiohService.getCardListingsByCardSetId(cardId).then(setCardListings).catch(errorToast);
     setPage(1);
   }, [cardId]);
   return (

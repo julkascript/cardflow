@@ -9,6 +9,9 @@ import { shoppingCartService } from '../services/shoppingCart/shoppingCart';
 import { PaginatedItem } from '../services/yugioh/types';
 import { useShoppingCart } from '../context/shoppingCart';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
+import { errorToast } from '../util/errorToast';
+import toast from 'react-hot-toast';
+import { toastMessages } from '../constants/toast';
 
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
@@ -28,8 +31,9 @@ function ShoppingCart(): JSX.Element {
       .then(() => {
         navigate('/');
         setShoppingCart(0);
+        toast.success(toastMessages.success.checkout);
       })
-      .catch(); // TO-DO: add toasts when this is merged
+      .catch(errorToast); // TO-DO: add toasts when this is merged
   }
 
   function removeListing(id: number) {
@@ -39,9 +43,13 @@ function ShoppingCart(): JSX.Element {
         if (shoppingCart.length - 1 === 0) {
           setPage(page - 1 || 1);
         }
+        toast.success(toastMessages.success.shoppingCartItemDeleted);
         return shoppingCartService.getItems(undefined, page);
       })
-      .then(loadShoppingCart);
+      .then((data) => {
+        loadShoppingCart(data);
+      })
+      .catch(errorToast);
   }
 
   function removeAll() {
@@ -51,6 +59,7 @@ function ShoppingCart(): JSX.Element {
       setCart([]);
       setPage(1);
       setTotalPrice(0);
+      toast.success(toastMessages.success.shoppingCartEmptiedOut);
     });
   }
 
@@ -58,7 +67,8 @@ function ShoppingCart(): JSX.Element {
     shoppingCartService
       .addItem({ listing_id: id, quantity })
       .then(() => shoppingCartService.getItems(undefined, page))
-      .then(loadShoppingCart);
+      .then(loadShoppingCart)
+      .catch((err) => errorToast(err, toastMessages.error.failedShoppingCartQuantityUpdate));
   }
 
   function loadShoppingCart(data: PaginatedItem<ShoppingCartItem>) {
@@ -74,12 +84,12 @@ function ShoppingCart(): JSX.Element {
     }
 
     if (user.user_id) {
-      shoppingCartService.getItems(undefined, page).then(loadShoppingCart);
+      shoppingCartService.getItems(undefined, page).then(loadShoppingCart).catch(errorToast);
     }
   }, [user]);
 
   useEffectAfterInitialLoad(() => {
-    shoppingCartService.getItems(undefined, page).then(loadShoppingCart);
+    shoppingCartService.getItems(undefined, page).then(loadShoppingCart).catch(errorToast);
   }, [page]);
 
   return (

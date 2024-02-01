@@ -9,6 +9,7 @@ import React, { useState } from 'react';
 import { useAuthenticationStatus, useCurrentUser } from '../../../../context/user';
 import { shoppingCartService } from '../../../../services/shoppingCart/shoppingCart';
 import { useShoppingCart } from '../../../../context/shoppingCart';
+import { errorToast } from '../../../../util/errorToast';
 
 type YugiohCardMarketTableCellProps = {
   listing: YugiohCardListing;
@@ -28,7 +29,7 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
         return shoppingCartService.getItems();
       })
       .then((data) => setShoppingCart(data.count))
-      .catch(); // TO-DO: toast
+      .catch(errorToast);
   }
 
   const cannotBuy = user.user_id === props.listing.user || !isAuthenticated;
