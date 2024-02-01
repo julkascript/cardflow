@@ -83,7 +83,7 @@ services:
       - ./frontend/dist:/usr/share/nginx/html
       - ./backend/media:/usr/share/nginx/media
       - ./backend/static_files:/usr/share/nginx/static_files/
-      - ./certs:/etc/nginx/certs
+      - /etc/letsencrypt/live/cardflow.market/:/etc/letsencrypt/live/cardflow.market/
     depends_on:
       - frontend
       - backend
