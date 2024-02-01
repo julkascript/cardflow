@@ -6,6 +6,7 @@ import { PaginatedItem, YugiohCardInSet } from '../../services/yugioh/types';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import SearchResultsDisplay from './SearchResultsDisplay';
 import { useNavigate } from 'react-router-dom';
+import { errorToast } from '../../util/errorToast';
 
 type SearchFieldProps = {
   isListing?: boolean;
@@ -34,7 +35,7 @@ function SearchField({ isListing }: SearchFieldProps): JSX.Element {
   });
 
   const debouncedRetrieve = useDebounce(() => {
-    yugiohService.searchCardsByName(searchQuery).then(setSearchResults);
+    yugiohService.searchCardsByName(searchQuery).then(setSearchResults).catch(errorToast);
   });
 
   function updateField(event: ChangeEvent) {

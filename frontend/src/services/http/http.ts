@@ -7,7 +7,8 @@ type method = 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
  * The HTTP service provides standardized configurations for making requests.
  *
  * The passed body is stringified if such is provided and all necessary headers are
- * attached
+ * attached. The service also supports multipart form data requests, which is
+ * achieved by simply passing a ``FormData`` object as a body.
  *
  * If the server responds with 401, the service will attempt to retrieve
  * a new access token and then redo the request.
@@ -79,12 +80,16 @@ async function request<TResponseBody>(
     return undefined;
   }
 
-  if (res.status === 401) {
-    const newAccessToken = await generateNewAccessToken();
-    request.headers.Authorization = `Bearer ${newAccessToken}`;
-    localStorage.setItem('accessToken', newAccessToken);
+  try {
+    if (res.status === 401) {
+      const newAccessToken = await generateNewAccessToken();
+      request.headers.Authorization = `Bearer ${newAccessToken}`;
+      localStorage.setItem('accessToken', newAccessToken);
 
-    res = await fetch(url, request);
+      res = await fetch(url, request);
+    }
+  } catch {
+    throw new HttpError(res);
   }
 
   if (!res.ok) {

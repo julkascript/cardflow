@@ -17,6 +17,9 @@ import PaymentsIcon from '@mui/icons-material/Payments';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import TagIcon from '@mui/icons-material/Tag';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import { errorToast } from '../../util/errorToast';
+import toast from 'react-hot-toast';
+import { toastMessages } from '../../constants/toast';
 
 function EditListing(): JSX.Element {
   const [page, setPage] = useState(1);
@@ -139,7 +142,7 @@ function EditListing(): JSX.Element {
           }));
         }
       } catch (error) {
-        // need to handle error
+        errorToast(error);
       }
     }
     loadCardListing();
@@ -164,16 +167,29 @@ function EditListing(): JSX.Element {
     try {
       await yugiohService.deleteListingById(Number(params.id));
       navigate('/sell/manage');
-    } catch (error) {}
+      toast.success(
+        toastMessages.success.listingDeleted(
+          cardInSet?.yugioh_card.card_name || '',
+          cardInSet?.set.set_code || '',
+        ),
+      );
+    } catch (error) {
+      errorToast(error);
+    }
   }
   function delistItem() {
-    try {
-      if (formData.is_listed === true) {
-        yugiohService.editListing({ ...formData, is_listed: false });
-      } else {
-        yugiohService.editListing({ ...formData, is_listed: true });
-      }
-    } catch (error) {}
+    yugiohService
+      .editListing({ ...formData, is_listed: !formData.is_listed })
+      .then((data) =>
+        toast.success(
+          toastMessages.success.listingVisibilityChanged(
+            data.card_name,
+            data.card_in_set.set.set_code,
+            !formData.is_listed,
+          ),
+        ),
+      )
+      .catch(errorToast);
   }
 
   async function updateListing(e: React.FormEvent): Promise<void> {
@@ -185,9 +201,13 @@ function EditListing(): JSX.Element {
         price: Number(formData.price),
         is_listed: formData.is_listed,
       };
-
-      await yugiohService.updateCardListing(newData, id);
-    } catch (error) {}
+      const listing = await yugiohService.updateCardListing(newData, id);
+      toast.success(
+        toastMessages.success.listingUpdated(listing.card_name, listing.card_in_set.set.set_code),
+      );
+    } catch (error) {
+      errorToast(error);
+    }
   }
 
   const pages = Math.ceil(cardListings.count / 10);
@@ -198,11 +218,11 @@ function EditListing(): JSX.Element {
         setCardListings(data);
         setPage(page);
       })
-      .catch(() => {}); // TO-DO: implement feedback for failed requests.
+      .catch(errorToast);
   }
 
   useEffectAfterInitialLoad(() => {
-    yugiohService.getCardListingsByCardSetId(cardId).then(setCardListings).catch();
+    yugiohService.getCardListingsByCardSetId(cardId).then(setCardListings).catch(errorToast);
     setPage(1);
   }, [cardId]);
   return (
