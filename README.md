@@ -6,7 +6,7 @@
 
 ## Getting started
 
-Visit https://cardflow.bg to get started with Cardflow!
+Visit https://cardflow.market to get started with Cardflow!
 
 ## Who is using Cardflow?
 
