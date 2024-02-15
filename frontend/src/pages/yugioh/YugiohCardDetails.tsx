@@ -40,7 +40,7 @@ function YugiohCardDetails(): JSX.Element {
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
       text: 'Buy',
-      href: '/search',
+      href: '/buy',
     },
     {
       text: 'Search',

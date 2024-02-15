@@ -94,7 +94,7 @@ function ShoppingCart(): JSX.Element {
 
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
-      href: '/search',
+      href: '/buy',
       text: 'Buy',
     },
   ];
