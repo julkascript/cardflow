@@ -1,4 +1,3 @@
-import PageHeader from '../components/PageHeader';
 import { useCurrentUser } from '../context/user';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +11,7 @@ import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 import { errorToast } from '../util/errorToast';
 import toast from 'react-hot-toast';
 import { toastMessages } from '../constants/toast';
+import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
 
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
@@ -92,9 +92,16 @@ function ShoppingCart(): JSX.Element {
     shoppingCartService.getItems(undefined, page).then(loadShoppingCart).catch(errorToast);
   }, [page]);
 
+  const breadcrumbNavigation: BreadcrumbLink[] = [
+    {
+      href: '/search',
+      text: 'Buy',
+    },
+  ];
+
   return (
     <>
-      <PageHeader heading="Shopping cart" />
+      <BreadcrumbNavigation links={breadcrumbNavigation} heading="Checkout" />
       <div
         id="summary"
         className="flex flex-col items-center lg:flex-row lg:items-start pb-4 pt-4 justify-center gap-4 bg-[#F5F5F5]"

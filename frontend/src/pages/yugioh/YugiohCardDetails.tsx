@@ -1,5 +1,4 @@
 import { useLoaderData, useParams } from 'react-router-dom';
-import PageHeader from '../../components/PageHeader';
 import YugiohCardImage from '../../components/yugioh/YugiohCardImage';
 import YugiohCardDetailsTable from '../../components/yugioh/table/YugiohCardDetailsTable';
 import YugiohCardMarket from '../../components/yugioh/table/market/YugiohCardMarket';
@@ -9,6 +8,7 @@ import { Pagination } from '@mui/material';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../../util/useEffectAfterInitialLoad';
 import { errorToast } from '../../util/errorToast';
+import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
 
 function YugiohCardDetails(): JSX.Element {
   const data = useLoaderData() as CardDetailsLoaderData;
@@ -37,9 +37,23 @@ function YugiohCardDetails(): JSX.Element {
     setPage(1);
   }, [params.id]);
 
+  const breadcrumbNavigation: BreadcrumbLink[] = [
+    {
+      text: 'Buy',
+      href: '/search',
+    },
+    {
+      text: 'Search',
+      href: '/search',
+    },
+  ];
+
   return (
     <section className="bg-[#F5F5F5]">
-      <PageHeader heading={`Buy / Search / ${cardInSet.yugioh_card.card_name}`}></PageHeader>
+      <BreadcrumbNavigation
+        links={breadcrumbNavigation}
+        heading={cardInSet.yugioh_card.card_name}
+      />
       <div className="flex flex-col pt-4 pb-4 lg:flex-row justify-center items-center lg:items-start gap-8">
         <YugiohCardImage src={cardInSet.yugioh_card.image} />
         <YugiohCardDetailsTable cardInSet={cardInSet} />
