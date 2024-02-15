@@ -25,7 +25,7 @@ function PageHeader(props: PageHeaderProps): JSX.Element {
 
   const heading =
     typeof props.heading === 'string' ? (
-      <h1 className="text-3xl font-bold">{props.heading}</h1>
+      <h1 className="text-3xl">{props.heading}</h1>
     ) : (
       props.heading
     );
