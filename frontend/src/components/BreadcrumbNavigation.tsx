@@ -17,6 +17,7 @@ type BreadcrumbNavigationProps = {
 };
 
 const fontSize = '1.875rem';
+const lineHeight = '2.25rem';
 
 /*
  *  Standard separator from MUI doesn't scale alongside
@@ -38,6 +39,7 @@ function BreadcrumbNavigation(props: BreadcrumbNavigationProps): JSX.Element {
           color="inherit"
           href={l.href}
           className="flex justify-self-start"
+          lineHeight={lineHeight}
         >
           {l.text}
         </Link>
@@ -48,6 +50,7 @@ function BreadcrumbNavigation(props: BreadcrumbNavigationProps): JSX.Element {
         className="m-0 p-0 inline align-middle"
         fontSize={fontSize}
         color="text.primary"
+        lineHeight={lineHeight}
       >
         {props.heading}
       </Typography>
