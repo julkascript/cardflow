@@ -1,6 +1,5 @@
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { CardSearchLoader } from '../services/yugioh/types';
-import PageHeader from '../components/PageHeader';
 import MarketTable from '../components/marketTable/MarketTable';
 import React, { useState } from 'react';
 import SearchTableRow from '../components/search/SearchTableRow';
@@ -10,6 +9,7 @@ import { yugiohService } from '../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 import ListingTopBar from '../components/sellListing/ListingTopBar';
 import { errorToast } from '../util/errorToast';
+import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
 
 function Search(): JSX.Element {
   const data: CardSearchLoader = useLoaderData() as CardSearchLoader;
@@ -19,6 +19,13 @@ function Search(): JSX.Element {
   const [page, setPage] = useState(1);
   const pages = Math.ceil(cards.count / 10);
   const [searchQuery, setSearchQuery] = useState(params.query || '');
+
+  const breadcrumbNavigation: BreadcrumbLink[] = [
+    {
+      href: '/buy',
+      text: 'Buy',
+    },
+  ];
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
@@ -72,7 +79,7 @@ function Search(): JSX.Element {
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <ListingTopBar />
-      <PageHeader heading="Buy / Search" />
+      <BreadcrumbNavigation heading="Search" links={breadcrumbNavigation} />
       <div className="min-h-full mt-2 flex items-center w-full flex-col gap-4">
         <form className="w-2/3 bg-white relative z-0" onSubmit={handleSubmit}>
           <TextField

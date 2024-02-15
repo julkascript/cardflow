@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { condition } from '../../services/yugioh/types';
-import PageHeader from '../PageHeader';
+import BreadcrumbNavigation, { BreadcrumbLink } from '../BreadcrumbNavigation';
 
 type NewListingTopBarProps = {
   handleSubmit: (e: React.FormEvent, postAnother: boolean) => Promise<void>;
@@ -43,8 +43,15 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
     }
   };
 
+  const breadcrumbNavigation: BreadcrumbLink[] = [
+    {
+      href: '/sell/manage',
+      text: 'Sell',
+    },
+  ];
+
   return (
-    <PageHeader heading="Sell / New Listing">
+    <BreadcrumbNavigation links={breadcrumbNavigation} heading="New Listing">
       {/* TO-DO: update URL */}
       <div className="flex items-center">
         <input
@@ -71,7 +78,7 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
           Post
         </button>
       </div>
-    </PageHeader>
+    </BreadcrumbNavigation>
   );
 };
 
