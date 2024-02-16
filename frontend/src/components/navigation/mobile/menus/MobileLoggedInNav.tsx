@@ -110,13 +110,13 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
             <ListItemIcon>
               <AddShoppingCartIcon />
             </ListItemIcon>
-            <ListItemText>My orders</ListItemText>
+            <ListItemText primary="My orders" />
           </ListItemButton>
           <ListItemButton sx={{ pl: 4 }} href="/sales">
             <ListItemIcon>
               <CurrencyExchangeIcon />
             </ListItemIcon>
-            <ListItemText>My sales</ListItemText>
+            <ListItemText primary="My sales" />
           </ListItemButton>
           <ListItemButton sx={{ pl: 4 }} onClick={handleLogout}>
             <ListItemIcon>
