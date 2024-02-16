@@ -43,3 +43,7 @@ Cardflow is an open-source Trading Card Game card market, currently supporting o
     - `docker exec -it <backend_container_id> sh`
     - `python manage.py seed staple`
 6. Visit Cardflow at `localhost:5173`
+
+## Feel like contributing?
+
+Check out our [guideline document](https://github.com/julkascript/cardflow/blob/develop/CONTRIBUTING.md) and start contributing right away!
