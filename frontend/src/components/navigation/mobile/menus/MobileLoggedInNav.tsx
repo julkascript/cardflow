@@ -18,6 +18,9 @@ import { useCurrentUser } from '../../../../context/user';
 import { useLogout } from '../../../../util/useLogout';
 import toast from 'react-hot-toast';
 import { toastMessages } from '../../../../constants/toast';
+import SettingsIcon from '@mui/icons-material/Settings';
+import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 
 type NewActionLink = {
   url: string;
@@ -33,9 +36,11 @@ type MobileLoggedInNavProps = {
  * @returns
  */
 function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
-  const [expanded, setExpanded] = useState(false);
+  const [newActionsExpanded, setNewActionsExpanded] = useState(false);
+  const [profileExpanded, setProfileExpanded] = useState(false);
   const { user } = useCurrentUser();
   const logout = useLogout();
+
   function handleLogout() {
     logout();
     props.onClose();
@@ -56,15 +61,15 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
   return (
     <>
       <ListItem disablePadding>
-        <ListItemButton onClick={() => setExpanded((e) => !e)}>
+        <ListItemButton onClick={() => setNewActionsExpanded((e) => !e)}>
           <ListItemIcon>
             <AddIcon />
           </ListItemIcon>
           <ListItemText primary="New action" />
-          {expanded ? <ExpandLess /> : <ExpandMore />}
+          {newActionsExpanded ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
       </ListItem>
-      <Collapse in={expanded} timeout="auto" unmountOnExit>
+      <Collapse in={newActionsExpanded} timeout="auto" unmountOnExit>
         <List disablePadding>
           {actions.map((a) => (
             <ListItemButton key={a.label} sx={{ pl: 4 }} href={a.url}>
@@ -85,19 +90,42 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>
-        <ListItemButton href={`/user/${user.username}/settings`}>
+        <ListItemButton onClick={() => setProfileExpanded((e) => !e)}>
           <ListItemAvatar>
             <Avatar sx={{ width: 24, height: 24 }} src={user.avatar || ''} />
           </ListItemAvatar>
           <ListItemText primary="My profile" />
+          {profileExpanded ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
       </ListItem>
-      <ListItemButton onClick={handleLogout}>
-        <ListItemIcon>
-          <LogoutIcon />
-        </ListItemIcon>
-        <ListItemText primary="Sign Out" />
-      </ListItemButton>
+      <Collapse in={profileExpanded} timeout="auto" unmountOnExit>
+        <List disablePadding>
+          <ListItemButton sx={{ pl: 4 }} href={`/user/${user.username}/settings`}>
+            <ListItemIcon>
+              <SettingsIcon />
+            </ListItemIcon>
+            <ListItemText primary="Account settings" />
+          </ListItemButton>
+          <ListItemButton sx={{ pl: 4 }} href="/orders">
+            <ListItemIcon>
+              <AddShoppingCartIcon />
+            </ListItemIcon>
+            <ListItemText>My orders</ListItemText>
+          </ListItemButton>
+          <ListItemButton sx={{ pl: 4 }} href="/sales">
+            <ListItemIcon>
+              <CurrencyExchangeIcon />
+            </ListItemIcon>
+            <ListItemText>My sales</ListItemText>
+          </ListItemButton>
+          <ListItemButton sx={{ pl: 4 }} onClick={handleLogout}>
+            <ListItemIcon>
+              <LogoutIcon />
+            </ListItemIcon>
+            <ListItemText primary="Sign Out" />
+          </ListItemButton>
+        </List>
+      </Collapse>
     </>
   );
 }
