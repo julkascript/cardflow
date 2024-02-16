@@ -32,3 +32,14 @@ Cardflow is an open-source Trading Card Game card market, currently supporting o
      </tr>
   </table>
 </div>
+
+## Setting up Cardflow for development
+
+1. `git clone git@github.com:julkascript/cardflow.git .`
+2. `cp sample.env .env && cp backend/sample.env backend/.env && cp frontend/sample.env frontend/.env`
+3. `docker compose up -d --build`
+5. You most likely want to seed data, so you can have cards to work with.
+    - `docker ps` to see the containers
+    - `docker exec -it <backend_container_id> sh`
+    - `python manage.py seed staple`
+6. Visit Cardflow at `localhost:5173`
