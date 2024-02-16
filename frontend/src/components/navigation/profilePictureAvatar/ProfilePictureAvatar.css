@@ -1,0 +1,7 @@
+.profile-picture-avatar-menu .MuiPaper-root {
+  border: 1px solid #666666;
+}
+
+.profile-picture-avatar-menu a:hover, .profile-picture-avatar-menu .logout-button:hover {
+  background-color: rgba(21, 181, 141, 0.2);
+}
