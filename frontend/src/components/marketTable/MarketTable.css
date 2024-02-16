@@ -1,0 +1,34 @@
+.market-table-wrapper {
+  background-color: white;
+  border-radius: 7px;
+  overflow: auto;
+}
+
+.market-table-wrapper th,
+.market-table-wrapper td {
+  padding: 8px;
+}
+
+.market-table-wrapper th {
+  background-color: black;
+  color: white;
+  font-size: 1.2rem;
+  text-align: left;
+  padding-left: 16px;
+}
+
+.market-table-wrapper th:not(:last-child) {
+  border-right: 1px solid gray;
+}
+
+.market-table-wrapper tr:not(:last-child) td {
+  border-bottom: 1px solid gray;
+}
+
+.market-table-wrapper th:first-child {
+  border-top-left-radius: 7px;
+}
+
+.market-table-wrapper th:last-child {
+  border-top-right-radius: 7px;
+}

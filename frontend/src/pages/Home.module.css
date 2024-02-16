@@ -1,0 +1,136 @@
+@keyframes firstWord {
+  0% {
+    color: black;
+    background: none;
+  }
+  1% {
+    background: linear-gradient(90deg, #007fef -11.26%, #00ddd8 99.78%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  20% {
+    background: linear-gradient(90deg, #007fef -11.26%, #00ddd8 99.78%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  30% {
+    color: black;
+    background: none;
+  }
+}
+
+@keyframes secondWord {
+  0% {
+    color: black;
+    background: none;
+  }
+  30% {
+    color: black;
+    background: none;
+  }
+  31% {
+    background: linear-gradient(90deg, #7e27c7 0%, #fb0181 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  50% {
+    background: linear-gradient(90deg, #7e27c7 0%, #fb0181 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  60% {
+    color: black;
+    background: none;
+  }
+}
+
+@keyframes thirdWord {
+  0% {
+    color: black;
+    background: none;
+  }
+  60% {
+    color: black;
+    background: none;
+  }
+  61% {
+    background: linear-gradient(90deg, #ff544b 0%, #f9c82b 106.03%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  90% {
+    background: linear-gradient(90deg, #ff544b 0%, #f9c82b 106.03%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  100% {
+    color: black;
+    background: none;
+  }
+}
+
+.firstWordText {
+  animation: firstWord 5s linear infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: black; /* Fallback for when the gradient is not applied */
+}
+
+.secondWordText {
+  animation: secondWord 5s linear infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: black;
+}
+
+.thirdWordText {
+  animation: thirdWord 5s linear infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: black;
+}
+
+.buttonContainer {
+  position: relative;
+  display: inline-block; /* Use 'inline-flex' if you're using flex properties */
+  /* No padding or margins that might create extra space around the button */
+}
+
+.buttonContainer::before {
+  content: '';
+  position: absolute;
+  top: 0; /* Align with the button's edges */
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: -1;
+  border-radius: 7px; /* Match your button's border-radius */
+  background: transparent; /* Ensure there's no solid background */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0); /* Start with a transparent shadow */
+  animation: shadingFlow 5s linear infinite;
+}
+
+@keyframes shadingFlow {
+  0%,
+  100% {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0); /* Transparent shadow */
+  }
+  16.666%,
+  33.333% {
+    box-shadow: 0 8px 16px rgba(0, 127, 239, 0.2); /* Blue shadow */
+  }
+  50%,
+  66.666% {
+    box-shadow: 0 8px 16px rgba(251, 1, 129, 0.2); /* Pink shadow */
+  }
+  83.333%,
+  100% {
+    box-shadow: 0 8px 16px rgba(249, 200, 43, 0.2); /* Yellow shadow */
+  }
+}

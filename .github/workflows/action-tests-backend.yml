@@ -1,0 +1,40 @@
+---
+name: Backend Tests
+
+on:
+  pull_request:
+    branches:
+      - develop
+      - master
+
+    paths-ignore:
+      - "*.md"
+
+jobs:
+  docker:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up environment variables
+        run: |
+          echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_DB=postgres" >> $GITHUB_ENV
+          echo "POSTGRES_HOST=localhost" >> $GITHUB_ENV
+          echo "SECRET_KEY=super secret" >> $GITHUB_ENV
+      - uses: actions/checkout@v3
+      - uses: iamsauravsharma/create-dotenv@v2.0.1
+        with:
+          file-path: '/home/runner/work/cardflow/cardflow/frontend/.env'
+      - uses: iamsauravsharma/create-dotenv@v2.0.1
+        with:
+          file-path: '/home/runner/work/cardflow/cardflow/backend/.env'
+      - uses: isbang/compose-action@v1.5.1
+        with:
+          compose-file: "./docker-compose.yml"
+          services: |
+            backend
+            postgres
+      - name: Run tests
+        run: |
+          docker exec cardflow-backend-1 sh -c "pytest"
