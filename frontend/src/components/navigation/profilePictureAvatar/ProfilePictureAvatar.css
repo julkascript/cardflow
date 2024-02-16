@@ -5,3 +5,8 @@
 .profile-picture-avatar-menu a:hover, .profile-picture-avatar-menu .logout-button:hover {
   background-color: rgba(21, 181, 141, 0.2);
 }
+
+.profile-picture-avatar-menu hr {
+  margin: 0 auto;
+  width: 85%;
+}

@@ -64,7 +64,7 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
         <ListItem sx={{ paddingTop: 2, paddingBottom: 2 }}>
           <Typography color="text.secondary">{user.email}</Typography>
         </ListItem>
-        <Divider className="w-4/5" sx={{ margin: '0 auto' }} />
+        <Divider />
         <ListItemButton
           onClick={handleClose}
           sx={{ padding }}
@@ -93,7 +93,7 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
             <CurrencyExchangeIcon fontSize="small" />
           </ListItemIcon>
         </ListItemButton>
-        <Divider className="w-4/5" sx={{ margin: '0 auto' }} />
+        <Divider />
         <ListItemButton
           className="logout-button"
           onClick={handleLogout}
