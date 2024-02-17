@@ -7,6 +7,7 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  SvgIconTypeMap,
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import ExpandLess from '@mui/icons-material/ExpandLess';
@@ -21,10 +22,19 @@ import { toastMessages } from '../../../../constants/toast';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 type NewActionLink = {
   url: string;
   label: string;
+};
+
+type ProfileLink = {
+  href: string;
+  icon: OverridableComponent<SvgIconTypeMap<object, 'svg'>> & {
+    muiName: string;
+  };
+  text: string;
 };
 
 type MobileLoggedInNavProps = {
@@ -40,6 +50,24 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
   const [profileExpanded, setProfileExpanded] = useState(false);
   const { user } = useCurrentUser();
   const logout = useLogout();
+
+  const links: ProfileLink[] = [
+    {
+      href: `/user/${user.username}/settings`,
+      text: 'Account settings',
+      icon: SettingsIcon,
+    },
+    {
+      href: '/orders',
+      text: 'My orders',
+      icon: AddShoppingCartIcon,
+    },
+    {
+      href: '/sales',
+      text: 'My sales',
+      icon: CurrencyExchangeIcon,
+    },
+  ];
 
   function handleLogout() {
     logout();
@@ -100,24 +128,17 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
       </ListItem>
       <Collapse in={profileExpanded} timeout="auto" unmountOnExit>
         <List disablePadding>
-          <ListItemButton sx={{ pl: 4 }} href={`/user/${user.username}/settings`}>
-            <ListItemIcon>
-              <SettingsIcon />
-            </ListItemIcon>
-            <ListItemText primary="Account settings" />
-          </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }} href="/orders">
-            <ListItemIcon>
-              <AddShoppingCartIcon />
-            </ListItemIcon>
-            <ListItemText primary="My orders" />
-          </ListItemButton>
-          <ListItemButton sx={{ pl: 4 }} href="/sales">
-            <ListItemIcon>
-              <CurrencyExchangeIcon />
-            </ListItemIcon>
-            <ListItemText primary="My sales" />
-          </ListItemButton>
+          {links.map((l) => {
+            const LinkIcon = l.icon;
+            return (
+              <ListItemButton sx={{ pl: 4 }} href={l.href}>
+                <ListItemIcon>
+                  <LinkIcon />
+                </ListItemIcon>
+                <ListItemText primary={l.text} />
+              </ListItemButton>
+            );
+          })}
           <ListItemButton sx={{ pl: 4 }} onClick={handleLogout}>
             <ListItemIcon>
               <LogoutIcon />
