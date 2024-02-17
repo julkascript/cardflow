@@ -7,10 +7,11 @@ import {
   ListItemIcon,
   ListItemText,
   Menu,
+  SvgIconTypeMap,
   Typography,
 } from '@mui/material';
 import { useCurrentUser } from '../../../context/user';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
@@ -18,6 +19,7 @@ import { useLogout } from '../../../util/useLogout';
 import toast from 'react-hot-toast';
 import { toastMessages } from '../../../constants/toast';
 import './ProfilePictureAvatar.css';
+import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 type ProfilePictureAvatarProps = {
   imageUrl: string | null;
@@ -36,6 +38,24 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const menuIsOpen = anchorEl !== null;
   const logout = useLogout();
+
+  const links: ProfileLink[] = [
+    {
+      href: `/user/${user.username}/settings`,
+      text: 'Account settings',
+      icon: SettingsIcon,
+    },
+    {
+      href: '/orders',
+      text: 'My orders',
+      icon: AddShoppingCartIcon,
+    },
+    {
+      href: '/sales',
+      text: 'My sales',
+      icon: CurrencyExchangeIcon,
+    },
+  ];
 
   function handleLogout() {
     logout();
@@ -66,7 +86,7 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
           <Typography color="text.secondary">{user.email}</Typography>
         </ListItem>
         <Divider />
-        <ListItemButton
+        {/* <ListItemButton
           onClick={handleClose}
           sx={{ padding }}
           href={`/user/${user.username}/settings`}
@@ -93,7 +113,20 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
           <ListItemIcon className="justify-end">
             <CurrencyExchangeIcon fontSize="small" />
           </ListItemIcon>
-        </ListItemButton>
+        </ListItemButton> */}
+        {links.map((l) => {
+          const LinkIcon = l.icon;
+          return (
+            <ListItemButton onClick={handleClose} sx={{ padding }} href={l.href}>
+              <ListItemText>
+                <Typography color="text.secondary">{l.text}</Typography>
+              </ListItemText>
+              <ListItemIcon className="justify-end">
+                <LinkIcon fontSize="small" />
+              </ListItemIcon>
+            </ListItemButton>
+          );
+        })}
         <Divider />
         <ListItemButton
           className="logout-button"
@@ -106,5 +139,13 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
     </>
   );
 }
+
+type ProfileLink = {
+  href: string;
+  icon: OverridableComponent<SvgIconTypeMap<object, 'svg'>> & {
+    muiName: string;
+  };
+  text: string;
+};
 
 export default ProfilePictureAvatar;
