@@ -26,7 +26,8 @@ type ProfilePictureAvatarProps = {
 const padding = '8px 16px';
 
 /**
- * An avatar image which links to the user's profile
+ * An avatar image which opens a dropdown with various links
+ * to personalized pages
  * @param props
  * @returns
  */
