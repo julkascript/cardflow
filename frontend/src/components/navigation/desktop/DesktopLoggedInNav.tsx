@@ -22,11 +22,6 @@ function DesktopLoggedInNav(): JSX.Element {
       <li>
         <ProfilePictureAvatar imageUrl={user.avatar} />
       </li>
-      {/* <li>
-        <Button onClick={handleLogout} color="primary" variant="outlined">
-          Sign Out
-        </Button>
-      </li> */}
     </ul>
   );
 }
