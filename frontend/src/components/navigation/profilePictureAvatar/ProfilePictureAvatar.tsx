@@ -86,34 +86,6 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
           <Typography color="text.secondary">{user.email}</Typography>
         </ListItem>
         <Divider />
-        {/* <ListItemButton
-          onClick={handleClose}
-          sx={{ padding }}
-          href={`/user/${user.username}/settings`}
-        >
-          <ListItemText>
-            <Typography color="text.secondary">Account settings</Typography>
-          </ListItemText>
-          <ListItemIcon className="justify-end">
-            <SettingsIcon fontSize="small" />
-          </ListItemIcon>
-        </ListItemButton>
-        <ListItemButton onClick={handleClose} sx={{ padding }} href="/orders">
-          <ListItemText>
-            <Typography color="text.secondary">My orders</Typography>
-          </ListItemText>
-          <ListItemIcon className="justify-end">
-            <AddShoppingCartIcon fontSize="small" />
-          </ListItemIcon>
-        </ListItemButton>
-        <ListItemButton onClick={handleClose} sx={{ padding }} href="/sales">
-          <ListItemText>
-            <Typography color="text.secondary">My sales</Typography>
-          </ListItemText>
-          <ListItemIcon className="justify-end">
-            <CurrencyExchangeIcon fontSize="small" />
-          </ListItemIcon>
-        </ListItemButton> */}
         {links.map((l) => {
           const LinkIcon = l.icon;
           return (
