@@ -19,11 +19,11 @@ type ChangeLogBulletProps = {
 
 const icons: Record<changelogBullet, ChangelogIcon> = {
   fix: {
-    BulletIcon: AddCircleIcon,
+    BulletIcon: CheckCircleIcon,
     color: 'info',
   },
   feature: {
-    BulletIcon: CheckCircleIcon,
+    BulletIcon: AddCircleIcon,
     color: 'success',
   },
   deprecation: {
