@@ -17,7 +17,7 @@ function Changelog(): JSX.Element {
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <ListingTopBar />
       <BreadcrumbNavigation links={breadcrumbNavigation} heading="Changelog" />
-      <PageSection className="mt-4 lg:px-12 lg:py-20 w-11/12 lg:w-4/5 mx-auto">
+      <PageSection className="mt-4 lg:px-12 py-4 lg:py-20 w-11/12 lg:w-4/5 mx-auto">
         {changelogArchive.map((milestone, i) => (
           <>
             <section
