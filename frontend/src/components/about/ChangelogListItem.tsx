@@ -7,7 +7,7 @@ type ChangelogListItemProps = {
 
 function ChangelogListItem(props: ChangelogListItemProps): JSX.Element {
   return (
-    <li className="flex items-center gap-2">
+    <li className="flex mb-4 lg:mb-0 items-center gap-2">
       <ChangelogBullet type={props.type} />
       {props.text}
     </li>

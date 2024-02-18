@@ -17,13 +17,18 @@ function Changelog(): JSX.Element {
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <ListingTopBar />
       <BreadcrumbNavigation links={breadcrumbNavigation} heading="Changelog" />
-      <PageSection className="mt-4 px-12 py-20 w-4/5 mx-auto">
+      <PageSection className="mt-4 lg:px-12 lg:py-20 w-11/12 lg:w-4/5 mx-auto">
         {changelogArchive.map((milestone, i) => (
           <>
-            <section className="flex w-3/5 justify-between" key={milestone.version}>
+            <section
+              className="flex items-center lg:w-3/5 flex-col lg:flex-row lg:justify-between"
+              key={milestone.version}
+            >
               <div>
-                <h2 className="font-bold">v{milestone.version}</h2>
-                <span>{milestone.date}</span>
+                <h2 className="text-3xl text-center lg:text-left lg:text-base font-bold">
+                  v{milestone.version}
+                </h2>
+                <div className="text-center mb-8 lg:text-left">{milestone.date}</div>
               </div>
               <div>
                 <ChangelogList

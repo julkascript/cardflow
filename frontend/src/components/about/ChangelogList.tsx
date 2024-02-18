@@ -24,7 +24,7 @@ function ChangelogList(props: ChangelogListProps): JSX.Element {
 
   return (
     <div className="mb-16">
-      <h3 className="font-bold text-2xl mb-2">{props.heading}</h3>
+      <h3 className="font-bold text-center text-2xl mb-2">{props.heading}</h3>
       <ul>
         {props.items.map((item) => (
           <ChangelogListItem
