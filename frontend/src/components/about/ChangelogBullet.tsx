@@ -4,7 +4,7 @@ import ErrorIcon from '@mui/icons-material/Error';
 import { SvgIconTypeMap } from '@mui/material';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
-type changelogBullet = 'feature' | 'fix' | 'deprecation';
+export type changelogBullet = 'feature' | 'fix' | 'deprecation';
 
 type ChangelogIcon = {
   BulletIcon: OverridableComponent<SvgIconTypeMap<object, 'svg'>> & {
