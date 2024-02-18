@@ -21,7 +21,7 @@ function Changelog(): JSX.Element {
         {changelogArchive.map((milestone, i) => (
           <>
             <section
-              className="flex items-center lg:w-3/5 flex-col lg:flex-row lg:justify-between"
+              className="flex items-center lg:items-start lg:w-3/5 flex-col lg:flex-row lg:justify-between"
               key={milestone.version}
             >
               <div>
