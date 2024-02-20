@@ -27,6 +27,14 @@ function ListingTopBar() {
           <Link to="#trade" className="p-4 text-gray-900 hover:text-gray-600  text-sm font-medium">
             Trade
           </Link>
+          <Link
+            to="/about"
+            className={`p-4 text-gray-900 hover:text-gray-600  text-sm font-medium ${
+              currentPath.includes('/about') && 'border-b-2 border-stone-500'
+            }`}
+          >
+            About
+          </Link>
         </div>
       </div>
     </div>

@@ -19,6 +19,7 @@ import EditListing from '../pages/listing/EditListing';
 import { loadListingDetails } from './loadListingDetails/loadEditListingDetails';
 import { loadPublicUserInfo } from './loadPublicUserInfo/loadPublicUserInfo';
 import Cart from '../pages/Cart';
+import Changelog from '../pages/about/Changelog';
 
 const routes = createBrowserRouter([
   {
@@ -60,6 +61,15 @@ const routes = createBrowserRouter([
         path: '/cart',
         element: <Cart />,
         loader: authorizedGuard,
+      },
+      {
+        path: '/about',
+        children: [
+          {
+            path: 'changelog',
+            element: <Changelog />,
+          },
+        ],
       },
       {
         path: '/user/:username',
