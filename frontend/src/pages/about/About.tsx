@@ -18,6 +18,7 @@ import OnePieceImage from '../../../assets/onepiece.png';
 import CardfightVanguardImage from '../../../assets/cardfightvanguard.png';
 import React, { HTMLAttributeAnchorTarget } from 'react';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
+import SupportedGamesImage from '../../components/about/SupportedGamesImage';
 
 type CardflowReasons = {
   logoColor: string;
@@ -117,14 +118,35 @@ function About(): JSX.Element {
           </div>
         </PageSection>
         <PageSection className="p-8 my-4">
-          <h2 className="text-2xl">Supported games</h2>
-          <div>
-            <img src={YugiohImage} alt="" />
-            <img src={MTGImage} alt="" />
-            <img src={PokemonImage} alt="" />
-            <img src={WoWImage} alt="" />
-            <img src={OnePieceImage} alt="" />
-            <img src={CardfightVanguardImage} alt="" />
+          <h2 className="text-2xl text-center lg:text-left">Supported games</h2>
+          <div className="mt-4 gap-12 flex flex-col items-center lg:grid lg:grid-cols-3 lg:place-items-center">
+            <SupportedGamesImage src={YugiohImage} game="Yu-Gi-Oh!" />
+            <SupportedGamesImage comingSoon src={MTGImage} game="Magic the Gathering" />
+            <SupportedGamesImage
+              last
+              comingSoon
+              src={PokemonImage}
+              game="Pokémon Trading Card Game"
+            />
+            <SupportedGamesImage
+              marginTop={8}
+              src={WoWImage}
+              comingSoon
+              game="World of Warcraft Trading Card Game"
+            />
+            <SupportedGamesImage
+              comingSoon
+              marginTop={8}
+              src={OnePieceImage}
+              game="One Piece Card Game"
+            />
+            <SupportedGamesImage
+              marginTop={8}
+              src={CardfightVanguardImage}
+              comingSoon
+              last
+              game="Cardfight! Vanguard"
+            />
           </div>
         </PageSection>
         <PageSection className="p-8 my-4">
