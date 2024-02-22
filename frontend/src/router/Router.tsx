@@ -20,6 +20,7 @@ import { loadListingDetails } from './loadListingDetails/loadEditListingDetails'
 import { loadPublicUserInfo } from './loadPublicUserInfo/loadPublicUserInfo';
 import Cart from '../pages/Cart';
 import Changelog from '../pages/about/Changelog';
+import About from '../pages/about/About';
 
 const routes = createBrowserRouter([
   {
@@ -65,6 +66,10 @@ const routes = createBrowserRouter([
       {
         path: '/about',
         children: [
+          {
+            path: '',
+            element: <About />,
+          },
           {
             path: 'changelog',
             element: <Changelog />,

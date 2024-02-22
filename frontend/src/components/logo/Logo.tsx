@@ -6,6 +6,9 @@ type LogoProps = {
 
   /** Defaults to ``'black'`` if not provided */
   color?: string;
+
+  /** Defaults to the theme success color */
+  textColor?: string;
 };
 
 /**
@@ -15,7 +18,7 @@ type LogoProps = {
  */
 function Logo(props: LogoProps): JSX.Element {
   const theme = useTheme();
-  const tildaColor = theme.palette.success.main;
+  const tildaColor = props.textColor || theme.palette.success.main;
 
   const color = props.color || 'black';
 
