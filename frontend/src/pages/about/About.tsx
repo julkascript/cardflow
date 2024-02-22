@@ -149,11 +149,17 @@ function About(): JSX.Element {
             />
           </div>
         </PageSection>
-        <PageSection className="p-8 my-4">
+        <PageSection className="p-8 flex justify-between items-center">
           <h2 className="text-2xl font-bold">There's so much more.</h2>
-          <LinkButton icon={HelpIcon}>FAQ</LinkButton>
-          <LinkButton icon={EmailIcon}>Reach out to us</LinkButton>
-          <LinkButton icon={CompareArrowsIcon}>What's changed</LinkButton>
+          <LinkButton href="/about/faq" icon={HelpIcon}>
+            FAQ
+          </LinkButton>
+          <LinkButton href="/about/contact" icon={EmailIcon}>
+            Reach out to us
+          </LinkButton>
+          <LinkButton href="/about/changelog" icon={CompareArrowsIcon}>
+            What's changed
+          </LinkButton>
         </PageSection>
       </div>
     </section>
