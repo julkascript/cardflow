@@ -1,4 +1,4 @@
-import { Button, Divider, SvgIconTypeMap, Typography } from '@mui/material';
+import { Button, Divider, SvgIconTypeMap, SxProps, Typography } from '@mui/material';
 import PageHeader from '../../components/PageHeader';
 import PageSection from '../../components/PageSection';
 import Logo from '../../components/logo/Logo';
@@ -16,7 +16,7 @@ import PokemonImage from '../../../assets/pokemon.png';
 import WoWImage from '../../../assets/worldofwarcraft.png';
 import OnePieceImage from '../../../assets/onepiece.png';
 import CardfightVanguardImage from '../../../assets/cardfightvanguard.png';
-import React from 'react';
+import React, { HTMLAttributeAnchorTarget } from 'react';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
 type CardflowReasons = {
@@ -70,27 +70,50 @@ function About(): JSX.Element {
             ))}
           </div>
         </PageSection>
-        <PageSection className="p-8 my-4">
-          <div>
-            <p>
-              Buy, sell and trade for free.{' '}
-              <Typography component="span" color="text.secondary">
-                Cardflow allows you to list items, buy and exchange with others in matter of
-                seconds, without cost.
-              </Typography>
-            </p>
-            <LinkButton icon={ArrowRightIcon}>Start exploring</LinkButton>
+        <PageSection className="p-8 my-4 flex flex-col gap-4 lg:flex-row lg:gap-0">
+          <div className="flex flex-col lg:w-5/6">
+            <h2 className="text-2xl text-center lg:text-left">Buy, sell and trade for free</h2>
+            <Typography
+              className="text-center lg:text-left"
+              sx={{ marginBottom: 2 }}
+              component="p"
+              color="text.secondary"
+            >
+              Cardflow allows you to list items, buy and exchange with others in matter of seconds,
+              without cost.
+            </Typography>
+            <LinkButton
+              href="/buy"
+              className="w-44 self-center lg:self-start"
+              icon={ArrowRightIcon}
+            >
+              Start exploring
+            </LinkButton>
           </div>
-          <Divider />
-          <div>
-            <p>
-              Join the community.{' '}
-              <Typography component="span" color="text.secondary">
-                Become a part of the team, contribute to the growth.
-              </Typography>
-            </p>
-            <LinkButton icon={GitHubIcon}>Contribute</LinkButton>
-            <LinkButton icon={FavoriteIcon}>Donate</LinkButton>
+          <Divider sx={{ marginTop: 2 }} className="block lg:none" />
+          <Divider variant="inset" flexItem orientation="vertical" className="none lg:block" />
+          <div className="flex flex-col lg:w-full">
+            <h2 className="text-2xl lg:pl-8 text-center lg:text-left">Join the community</h2>
+            <Typography
+              className="text-center lg:text-left lg:pl-8"
+              sx={{ marginBottom: 2 }}
+              component="p"
+              color="text.secondary"
+            >
+              Become a part of the team, contribute to the growth.
+            </Typography>
+            <div className="flex flex-col w-36 mx-auto gap-4 lg:flex-row lg:w-full lg:pl-8 lg:pt-5">
+              <LinkButton
+                href="https://github.com/julkascript/cardflow"
+                target="_blank"
+                icon={GitHubIcon}
+              >
+                Contribute
+              </LinkButton>
+              <LinkButton href="#" icon={FavoriteIcon}>
+                Donate
+              </LinkButton>
+            </div>
           </div>
         </PageSection>
         <PageSection className="p-8 my-4">
@@ -120,18 +143,23 @@ function LinkButton(props: {
   icon: OverridableComponent<SvgIconTypeMap<object, 'svg'>> & {
     muiName: string;
   };
-  // href: string;
-  target?: '_blank';
+  href: string;
+  target?: HTMLAttributeAnchorTarget;
+  className?: string;
+  sx?: SxProps;
 }): JSX.Element {
   const Icon = props.icon;
+  const sx = props.sx ? props.sx : {};
 
   return (
     <Button
       startIcon={<Icon fontSize={'large'} />}
       variant="outlined"
-      sx={{ color: theme.palette.text.secondary, borderRadius: 30, textTransform: 'none' }}
+      sx={{ color: theme.palette.text.secondary, borderRadius: 30, textTransform: 'none', ...sx }}
       size="large"
-      // target={props.target}
+      className={props.className}
+      target={props.target}
+      href={props.href}
     >
       {props.children}
     </Button>
