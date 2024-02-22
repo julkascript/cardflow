@@ -22,7 +22,7 @@ function SupportedGamesImage(props: SupportedGamesImageProps): JSX.Element {
       />
       <ComingSoon visible={props.comingSoon} />
       <div
-        className={`none last:none lg:block lg:w-[1px] lg:h-[75px] absolute right-[-91px] top-1/2 bottom-1/2 my-auto ${
+        className={`none last:none lg:block lg:w-[1px] lg:h-[75px] absolute right-[-60px] top-1/2 bottom-1/2 my-auto ${
           !props.last ? 'lg:border-r' : 'lg-border-none'
         }`}
       ></div>
