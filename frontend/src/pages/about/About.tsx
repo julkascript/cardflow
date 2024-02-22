@@ -45,16 +45,24 @@ function About(): JSX.Element {
       <PageHeader heading="About" />
       <div className="w-5/6 mx-auto my-4">
         <PageSection className="p-8 my-4">
-          <h2 className="text-2xl mb-12 font-bold">Why Cardflow?</h2>
-          <div className="flex justify-evenly">
+          <h2 className="text-2xl mb-12 font-bold text-center lg:text-center">Why Cardflow?</h2>
+          <div className="flex gap-4 lg:gap-0 flex-col lg:flex-row lg:justify-center">
             {cardflowReasons.map((r, i) => (
               <>
-                <div className="text-center flex items-center flex-col gap-6">
+                <div className="w-full justify-center flex items-center flex-col gap-6">
                   <Logo size={60} textColor={r.logoColor} />
                   <p className="text-2xl">{r.reason}</p>
                 </div>
                 {i < cardflowReasons.length - 1 ? (
-                  <Divider flexItem orientation="vertical" variant="inset" />
+                  <>
+                    <Divider
+                      className="none lg:block"
+                      flexItem
+                      orientation="vertical"
+                      variant="inset"
+                    />
+                    <Divider className="block lg:none" sx={{ marginBottom: 2 }} variant="inset" />
+                  </>
                 ) : (
                   <></>
                 )}
