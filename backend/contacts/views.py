@@ -6,6 +6,8 @@ from rest_framework.response import Response
 
 from contacts.serializers import ContactFormSerializer
 
+from cardflow import settings
+
 
 @extend_schema(tags=["Contact Form"])
 class ContactFormView(views.APIView):
@@ -24,10 +26,10 @@ class ContactFormView(views.APIView):
 
         serializer_class.save()
         send_mail(
-            "Contact Form Submission",
-            f"Email: {email}\nMessage: {message}",
-            "ha6tagz@gmail.com",
-            ["ha6tagz@gmail.com"],
+            subject="Contact Form Submission",
+            message=f"Email: {email}\nMessage: {message}",
+            from_email=settings.CONTACT_FORM_EMAIL,
+            recipient_list=[settings.CONTACT_FORM_EMAIL_RECIPIENT],
             fail_silently=False,
         )
 
