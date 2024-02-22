@@ -11,6 +11,9 @@ from cardflow import settings
 
 @extend_schema(tags=["Contact Form"])
 class ContactFormView(views.APIView):
+    """
+    View for handling contact form submissions
+    """
     serializer_class = ContactFormSerializer
 
     def post(self, request, *args, **kwargs):
