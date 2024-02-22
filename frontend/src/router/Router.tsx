@@ -21,6 +21,7 @@ import { loadPublicUserInfo } from './loadPublicUserInfo/loadPublicUserInfo';
 import Cart from '../pages/Cart';
 import Changelog from '../pages/about/Changelog';
 import About from '../pages/about/About';
+import FAQ from '../pages/about/FAQ';
 
 const routes = createBrowserRouter([
   {
@@ -69,6 +70,10 @@ const routes = createBrowserRouter([
           {
             path: '',
             element: <About />,
+          },
+          {
+            path: 'faq',
+            element: <FAQ />,
           },
           {
             path: 'changelog',

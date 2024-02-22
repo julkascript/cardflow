@@ -20,7 +20,7 @@ export const faq: readonly FAQ[] = Object.freeze([
     question: 'How do I create a listing?',
     answer: (
       <>
-        <p>
+        <p className="mb-4">
           To create a listing, go to the <Link href="/sell/new">new listing page</Link>. Type in the
           name of your card in the text field and select the specific set of your card. Afterwards,
           select the quality of the card via the dropdown menu and use the text fields to choose the
@@ -41,7 +41,7 @@ export const faq: readonly FAQ[] = Object.freeze([
     question: 'How do I delete my account?',
     answer: (
       <>
-        <p>
+        <p className="mb-4">
           To delete your account, navigate to your profile settings page and navigate to the bottom,
           where you will find a red-colored section. Afterwards, click the "Delete Account" button
           and your account will be permanently deleted.
@@ -82,7 +82,7 @@ export const faq: readonly FAQ[] = Object.freeze([
     question: 'How do I report a bug?',
     answer: (
       <>
-        <p>
+        <p className="mb-4">
           You can either <Link href="/about/contact">contact us</Link> or{' '}
           <Link href="https://github.com/julkascript/cardflow/issues/new" target="_blank">
             raise an issue on our GitHub repository
