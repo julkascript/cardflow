@@ -27,7 +27,7 @@ class ContactFormView(views.APIView):
             "Contact Form Submission",
             f"Email: {email}\nMessage: {message}",
             "ha6tagz@gmail.com",
-            ["simeon.s.todorov@gmail.com"],
+            ["ha6tagz@gmail.com"],
             fail_silently=False,
         )
 
