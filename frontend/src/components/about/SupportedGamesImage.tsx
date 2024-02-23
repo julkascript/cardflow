@@ -21,16 +21,11 @@ function SupportedGamesImage(props: SupportedGamesImageProps): JSX.Element {
         className={`w-[300px] lg:w-[182px] ${blurClass}`}
       />
       <ComingSoon visible={props.comingSoon} />
-      <div
-        className={`hidden lg:block lg:w-[1px] lg:h-[75px] absolute right-[-80px] top-1/2 bottom-1/2 my-auto ${
-          !props.last ? 'lg:border-r' : 'lg-border-none'
-        }`}
-      ></div>
     </div>
   );
 }
 
-function ComingSoon(props: { visible?: boolean; bottom?: number }): JSX.Element {
+function ComingSoon(props: { visible?: boolean }): JSX.Element {
   if (!props.visible) {
     return <></>;
   }
@@ -38,7 +33,7 @@ function ComingSoon(props: { visible?: boolean; bottom?: number }): JSX.Element 
   return (
     <p
       aria-hidden="true"
-      className={`absolute select-none right-[-24px] -rotate-[20deg] text-3xl top-${props.bottom}`}
+      className="absolute select-none right-[-24px] -rotate-[20deg] text-3xl"
       style={{ color: theme.palette.error.main, bottom: 8 }}
     >
       Coming soon

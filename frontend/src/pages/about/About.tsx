@@ -119,9 +119,11 @@ function About(): JSX.Element {
         </PageSection>
         <PageSection className="p-8 my-4">
           <h2 className="text-2xl text-center lg:text-left">Supported games</h2>
-          <div className="mt-4 gap-12 flex flex-col items-center lg:grid lg:grid-cols-3 lg:place-items-center">
+          <div className="mt-4 px-12 gap-12 lg:gap-x-0 lg:gap-y-12 flex flex-col items-center lg:grid lg:grid-cols-5 lg:place-items-center">
             <SupportedGamesImage src={YugiohImage} game="Yu-Gi-Oh!" />
+            <Divider orientation="vertical" className="hidden lg:block" />
             <SupportedGamesImage comingSoon src={MTGImage} game="Magic the Gathering" />
+            <Divider orientation="vertical" className="hidden lg:block" />
             <SupportedGamesImage
               last
               comingSoon
@@ -134,12 +136,14 @@ function About(): JSX.Element {
               comingSoon
               game="World of Warcraft Trading Card Game"
             />
+            <Divider orientation="vertical" className="hidden lg:block" />
             <SupportedGamesImage
               comingSoon
               marginTop={8}
               src={OnePieceImage}
               game="One Piece Card Game"
             />
+            <Divider orientation="vertical" className="hidden lg:block" />
             <SupportedGamesImage
               marginTop={8}
               src={CardfightVanguardImage}
