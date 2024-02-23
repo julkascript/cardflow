@@ -16,7 +16,7 @@ import PokemonImage from '../../../assets/pokemon.png';
 import WoWImage from '../../../assets/worldofwarcraft.png';
 import OnePieceImage from '../../../assets/onepiece.png';
 import CardfightVanguardImage from '../../../assets/cardfightvanguard.png';
-import React, { HTMLAttributeAnchorTarget } from 'react';
+import { HTMLAttributeAnchorTarget } from 'react';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import SupportedGamesImage from '../../components/about/SupportedGamesImage';
 
@@ -46,7 +46,7 @@ function About(): JSX.Element {
       <PageHeader heading="About" />
       <div className="w-5/6 mx-auto my-4">
         <PageSection className="p-8 my-4">
-          <h2 className="text-2xl mb-12 font-bold text-center lg:text-center">Why Cardflow?</h2>
+          <h2 className="text-2xl mb-12 font-bold text-center lg:text-left">Why Cardflow?</h2>
           <div className="flex gap-4 lg:gap-0 flex-col lg:flex-row lg:justify-center">
             {cardflowReasons.map((r, i) => (
               <>
