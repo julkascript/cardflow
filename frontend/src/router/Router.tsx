@@ -22,6 +22,7 @@ import Cart from '../pages/Cart';
 import Changelog from '../pages/about/Changelog';
 import About from '../pages/about/About';
 import FAQ from '../pages/about/FAQ';
+import Contact from '../pages/about/Contact';
 
 const routes = createBrowserRouter([
   {
@@ -74,6 +75,10 @@ const routes = createBrowserRouter([
           {
             path: 'faq',
             element: <FAQ />,
+          },
+          {
+            path: 'contact',
+            element: <Contact />,
           },
           {
             path: 'changelog',
