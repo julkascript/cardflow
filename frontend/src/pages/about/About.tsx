@@ -16,7 +16,7 @@ import PokemonImage from '../../../assets/pokemon.png';
 import WoWImage from '../../../assets/worldofwarcraft.png';
 import OnePieceImage from '../../../assets/onepiece.png';
 import CardfightVanguardImage from '../../../assets/cardfightvanguard.png';
-import { HTMLAttributeAnchorTarget } from 'react';
+import React, { HTMLAttributeAnchorTarget } from 'react';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import SupportedGamesImage from '../../components/about/SupportedGamesImage';
 
@@ -49,16 +49,13 @@ function About(): JSX.Element {
           <h2 className="text-2xl mb-12 font-bold text-center lg:text-left">Why Cardflow?</h2>
           <div className="flex gap-4 lg:gap-0 flex-col lg:flex-row lg:justify-center">
             {cardflowReasons.map((r, i) => (
-              <>
-                <div
-                  key={r.reason}
-                  className="w-full justify-center flex items-center flex-col gap-6"
-                >
+              <React.Fragment key={r.reason}>
+                <div className="w-full justify-center flex items-center flex-col gap-6">
                   <Logo size={60} textColor={r.logoColor} />
                   <p className="text-2xl">{r.reason}</p>
                 </div>
                 {i < cardflowReasons.length - 1 ? (
-                  <>
+                  <React.Fragment key={r.reason + 'divider'}>
                     <Divider
                       className="hidden lg:block"
                       flexItem
@@ -66,11 +63,11 @@ function About(): JSX.Element {
                       variant="inset"
                     />
                     <Divider className="block lg:hidden" sx={{ marginBottom: 2 }} variant="inset" />
-                  </>
+                  </React.Fragment>
                 ) : (
-                  <></>
+                  <React.Fragment key={r.reason + 'norender'}></React.Fragment>
                 )}
-              </>
+              </React.Fragment>
             ))}
           </div>
         </PageSection>
