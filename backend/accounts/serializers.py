@@ -85,3 +85,8 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
         token['email'] = user.email
 
         return token
+
+
+class ContactFormSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    message = serializers.CharField()

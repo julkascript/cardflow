@@ -45,7 +45,6 @@ INSTALLED_APPS = [
     "order",
     "cart",
 
-
     # MUST be the last app
     'django_cleanup.apps.CleanupConfig',
 
@@ -168,3 +167,11 @@ SIMPLE_JWT = {
 SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
 }
+
+EMAIL_HOST = os.getenv('EMAIL_HOST', None)
+EMAIL_USE_TLS = bool(int(os.getenv('EMAIL_USE_TLS', 0)))
+EMAIL_PORT = os.getenv('EMAIL_PORT', 0)
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', None)
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', None)
+CONTACT_FORM_EMAIL = os.getenv('CONTACT_FORM_EMAIL', None)
+CONTACT_FORM_EMAIL_RECIPIENT= os.getenv('CONTACT_FORM_EMAIL_RECIPIENT', None)
