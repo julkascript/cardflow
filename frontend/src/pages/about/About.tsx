@@ -149,7 +149,7 @@ function About(): JSX.Element {
             />
           </div>
         </PageSection>
-        <PageSection className="p-8 flex justify-between items-center">
+        <PageSection className="p-8 flex flex-col lg:flex-row gap-4 lg:gap-0 lg:justify-between items-center">
           <h2 className="text-2xl font-bold">There's so much more.</h2>
           <LinkButton href="/about/faq" icon={HelpIcon}>
             FAQ
