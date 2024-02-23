@@ -15,7 +15,7 @@ services:
       - cardflow
     volumes:
       - ./frontend:/usr/src/app
-      - /usr/src/app/node_modules
+      - node_modules:/usr/src/app/node_modules
     tty: true
     ports:
       - "5173:5173"
@@ -72,3 +72,11 @@ services:
 networks:
   cardflow:
     driver: bridge
+
+volumes:
+  node_modules:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./frontend/node_modules
