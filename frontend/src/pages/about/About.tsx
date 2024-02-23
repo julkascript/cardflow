@@ -41,7 +41,7 @@ function About(): JSX.Element {
     },
   ];
   return (
-    <section className="bg-[#F5F5F5] min-h-[100vh] py-4">
+    <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
       <ListingTopBar />
       <PageHeader heading="About" />
       <div className="w-5/6 mx-auto my-4">
@@ -57,12 +57,12 @@ function About(): JSX.Element {
                 {i < cardflowReasons.length - 1 ? (
                   <>
                     <Divider
-                      className="none lg:block"
+                      className="hidden lg:block"
                       flexItem
                       orientation="vertical"
                       variant="inset"
                     />
-                    <Divider className="block lg:none" sx={{ marginBottom: 2 }} variant="inset" />
+                    <Divider className="block lg:hidden" sx={{ marginBottom: 2 }} variant="inset" />
                   </>
                 ) : (
                   <></>
