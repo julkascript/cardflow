@@ -91,8 +91,8 @@ function About(): JSX.Element {
               Start exploring
             </LinkButton>
           </div>
-          <Divider sx={{ marginTop: 2 }} className="block lg:none" />
-          <Divider variant="inset" flexItem orientation="vertical" className="none lg:block" />
+          <Divider sx={{ marginTop: 2 }} className="block lg:hidden" />
+          <Divider variant="inset" flexItem orientation="vertical" className="hidden lg:block" />
           <div className="flex flex-col lg:w-full">
             <h2 className="text-2xl lg:pl-8 text-center lg:text-left">Join the community</h2>
             <Typography
