@@ -50,7 +50,7 @@ export const faq: readonly FAQ[] = Object.freeze([
         <p>
           Please note that{' '}
           <strong>this action is irreversible and any data associated with you will be lost</strong>
-          ! Because of this, please proceed with caution .
+          ! Because of this, please proceed with caution.
         </p>
       </>
     ),
