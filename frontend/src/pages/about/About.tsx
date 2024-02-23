@@ -50,7 +50,10 @@ function About(): JSX.Element {
           <div className="flex gap-4 lg:gap-0 flex-col lg:flex-row lg:justify-center">
             {cardflowReasons.map((r, i) => (
               <>
-                <div className="w-full justify-center flex items-center flex-col gap-6">
+                <div
+                  key={r.reason}
+                  className="w-full justify-center flex items-center flex-col gap-6"
+                >
                   <Logo size={60} textColor={r.logoColor} />
                   <p className="text-2xl">{r.reason}</p>
                 </div>
