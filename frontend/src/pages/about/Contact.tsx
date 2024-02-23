@@ -57,7 +57,7 @@ function Contact(): JSX.Element {
         <section
           className={`flex flex-col text-center rounded-tl-lg border-[${theme.palette.secondary.main}] rounded-tr-lg border-x border-t lg:rounded-tr-none lg:border-b lg:text-left`}
         >
-          <div className="p-4 pb-24">
+          <div className="p-4 lg:p-8 pb-24">
             <h2 className="text-3xl lg:mb-8">Reach out to us</h2>
             <p>
               We are open to all kind of suggestions and ideas. Bug reports are also greatly
