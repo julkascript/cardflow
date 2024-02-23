@@ -5,10 +5,17 @@ import { theme } from '../../constants/theme';
 import { Link } from '@mui/material';
 import { useState } from 'react';
 import { useDebounce } from '../../util/useDebounce';
+import { contactService } from '../../services/contact/contact';
+import toast from 'react-hot-toast';
+import { toastMessages } from '../../constants/toast';
+import { errorToast } from '../../util/errorToast';
+import { useNavigate } from 'react-router-dom';
 
 function Contact(): JSX.Element {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+
+  const navigate = useNavigate();
 
   const emailIsValid = /^.+@.+$/gim.test(email);
   const messageIsValid = message !== '';
@@ -27,6 +34,14 @@ function Contact(): JSX.Element {
 
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
+
+    contactService
+      .sendEmail({ email, message })
+      .then(() => {
+        toast.success(toastMessages.success.emailSent);
+        navigate('/');
+      })
+      .catch(errorToast);
   }
 
   function handleEmailChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -116,6 +131,7 @@ function Contact(): JSX.Element {
               <Button
                 variant="contained"
                 className="w-11/12 lg:w-1/2"
+                type="submit"
                 sx={{
                   backgroundColor: '#0072F5',
                   borderRadius: 20,
