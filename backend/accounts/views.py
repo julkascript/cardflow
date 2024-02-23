@@ -103,10 +103,13 @@ class ContactFormView(views.APIView):
         message = request.data.get("message")
 
         if not serializer_class.is_valid():
-            if not email:
-                return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
             if not message:
                 return Response({"error": "Message is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+            if not email:
+                return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response({"error": "Please enter a valid email"}, status=status.HTTP_400_BAD_REQUEST)
 
         send_mail(
             subject="Contact Form Submission",
