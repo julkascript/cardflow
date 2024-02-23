@@ -41,7 +41,7 @@ function About(): JSX.Element {
     },
   ];
   return (
-    <section className="bg-[#F5F5F5] min-h-[100vh]">
+    <section className="bg-[#F5F5F5] min-h-[100vh] py-4">
       <ListingTopBar />
       <PageHeader heading="About" />
       <div className="w-5/6 mx-auto my-4">

@@ -14,7 +14,7 @@ function Changelog(): JSX.Element {
   ];
 
   return (
-    <section className="bg-[#F5F5F5] min-h-[100vh]">
+    <section className="bg-[#F5F5F5] min-h-[100vh] py-4">
       <ListingTopBar />
       <BreadcrumbNavigation links={breadcrumbNavigation} heading="Changelog" />
       <PageSection className="mt-4 lg:px-12 py-4 lg:py-20 w-11/12 lg:w-4/5 mx-auto">
