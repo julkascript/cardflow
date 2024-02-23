@@ -44,8 +44,6 @@ INSTALLED_APPS = [
     "drf_spectacular",
     "order",
     "cart",
-    "contacts",
-
 
     # MUST be the last app
     'django_cleanup.apps.CleanupConfig',

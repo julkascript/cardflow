@@ -4,6 +4,7 @@ from django.urls import path, include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, SpectacularRedocView
 from rest_framework import permissions
 
+from accounts.views import ContactFormView
 from cardflow import settings
 
 urlpatterns = [
@@ -12,12 +13,11 @@ urlpatterns = [
     path('api/docs/', SpectacularSwaggerView.as_view(url_name='api-schema'), name='api-docs'),
     path('api/redoc/', SpectacularRedocView.as_view(url_name='api-schema'), name='api-redoc'),
     path('api/yugioh/', include('yugioh.urls')),
-    path('api/accounts/', include('accounts.urls'),),
+    path('api/accounts/', include('accounts.urls'), ),
     path('api/listing/', include('listing.urls')),
     path('api/order/', include('order.urls')),
     path('api/cart/', include('cart.urls')),
-    path('api/contacts/', include('contacts.urls')),
-
+    path('api/contacts/', ContactFormView.as_view(), name='contact_form'),
 ]
 
 if settings.DEBUG:
