@@ -92,7 +92,8 @@ class UserUpdateView(viewsets.ModelViewSet):
 @extend_schema(tags=["Contact Form"])
 class ContactFormView(views.APIView):
     """
-    View for handling contact form submissions
+    View for handling contact form submissions and sending emails \n
+        - API endpoint: /api/contacts/
     """
     serializer_class = ContactFormSerializer
 
