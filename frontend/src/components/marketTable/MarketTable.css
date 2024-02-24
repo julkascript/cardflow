@@ -33,7 +33,7 @@
   border-top-right-radius: 7px;
 }
 
-.market-table-wrapper tr:last-child {
-  border-bottom: 1px solid #666666;
+.market-table-wrapper tfoot tr td {
+  border-top: 1px solid #666666;
 }
 
