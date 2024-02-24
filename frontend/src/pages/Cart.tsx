@@ -33,7 +33,7 @@ function ShoppingCart(): JSX.Element {
         setShoppingCart(0);
         toast.success(toastMessages.success.checkout);
       })
-      .catch(errorToast); // TO-DO: add toasts when this is merged
+      .catch(errorToast);
   }
 
   function removeListing(id: number) {
