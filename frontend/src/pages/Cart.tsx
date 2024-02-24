@@ -40,11 +40,13 @@ function ShoppingCart(): JSX.Element {
     shoppingCartService
       .deleteItem(id)
       .then(() => {
+        const newPage = page - 1 || 1;
         if (shoppingCart.length - 1 === 0) {
-          setPage(page - 1 || 1);
+          setPage(newPage);
         }
+
         toast.success(toastMessages.success.shoppingCartItemDeleted);
-        return shoppingCartService.getItems(undefined, page);
+        return shoppingCartService.getItems(undefined, newPage);
       })
       .then((data) => {
         loadShoppingCart(data);
@@ -116,7 +118,7 @@ function ShoppingCart(): JSX.Element {
           onRemove={removeListing}
           onChangeQuantity={changeListingQuantity}
           page={page}
-          pages={Math.ceil(items / 10)}
+          count={items}
           onChangePage={setPage}
           totalPrice={totalPrice}
         />

@@ -262,7 +262,7 @@ function SellManagement(): JSX.Element {
       <div className="flex flex-col lg:items-center overflow-auto">
         <MarketTable
           page={page}
-          onPageChange={(p) => setPage(p)}
+          onPageChange={setPage}
           count={count}
           className="w-full rounded-md mt-4 lg:w-10/12 text-left"
         >
