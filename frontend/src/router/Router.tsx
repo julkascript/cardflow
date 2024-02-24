@@ -23,6 +23,8 @@ import Changelog from '../pages/about/Changelog';
 import About from '../pages/about/About';
 import FAQ from '../pages/about/FAQ';
 import Contact from '../pages/about/Contact';
+import Orders from '../pages/profile/Orders';
+import Sales from '../pages/profile/Sales';
 
 const routes = createBrowserRouter([
   {
@@ -102,6 +104,16 @@ const routes = createBrowserRouter([
           {
             path: 'blog',
             element: <ProfilePagePlaceholder />,
+          },
+          {
+            path: 'orders',
+            element: <Orders />,
+            loader: authorizedGuard,
+          },
+          {
+            path: 'sales',
+            element: <Sales />,
+            loader: authorizedGuard,
           },
         ],
       },
