@@ -1,6 +1,7 @@
 const base = `${import.meta.env.VITE_API_URL}/api`;
 const accounts = `${base}/accounts`;
 const listing = `${base}/listing`;
+const contacts = `${base}/contacts`;
 const yugioh = `${base}/yugioh`;
 const cardInSet = `${yugioh}/cards_in_set`;
 const card = `${yugioh}/cards`;
@@ -13,6 +14,9 @@ export const api = Object.freeze({
     login: `${accounts}/login/`,
     user: `${accounts}/user/`,
     userById: (id: string | number) => `${accounts}/user/${id}/`,
+  },
+  contacts: {
+    root: `${contacts}/`,
   },
   yugioh: {
     listing: {

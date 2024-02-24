@@ -3,6 +3,7 @@ export const toastMessages = {
     login: 'Logged in successfully!',
     register: 'Successful registration!',
     logout: 'Successfully logged out!',
+    emailSent: 'Your message has been sent successfully! Expect a response on your email address',
     usernameChanged:
       'Your username was changed successfully! Please log in again to see your changes',
     emailChanged: 'Your username was changed successfully! Please log in again to see your changes',

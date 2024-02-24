@@ -20,6 +20,9 @@ import { loadListingDetails } from './loadListingDetails/loadEditListingDetails'
 import { loadPublicUserInfo } from './loadPublicUserInfo/loadPublicUserInfo';
 import Cart from '../pages/Cart';
 import Changelog from '../pages/about/Changelog';
+import About from '../pages/about/About';
+import FAQ from '../pages/about/FAQ';
+import Contact from '../pages/about/Contact';
 
 const routes = createBrowserRouter([
   {
@@ -65,6 +68,18 @@ const routes = createBrowserRouter([
       {
         path: '/about',
         children: [
+          {
+            path: '',
+            element: <About />,
+          },
+          {
+            path: 'faq',
+            element: <FAQ />,
+          },
+          {
+            path: 'contact',
+            element: <Contact />,
+          },
           {
             path: 'changelog',
             element: <Changelog />,
