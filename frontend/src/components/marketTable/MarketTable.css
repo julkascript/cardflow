@@ -18,11 +18,11 @@
 }
 
 .market-table-wrapper th:not(:last-child) {
-  border-right: 1px solid gray;
+  border-right: 1px solid #666666;
 }
 
 .market-table-wrapper tr:not(:last-child) td {
-  border-bottom: 1px solid gray;
+  border-bottom: 1px solid #666666;
 }
 
 .market-table-wrapper th:first-child {
@@ -32,3 +32,8 @@
 .market-table-wrapper th:last-child {
   border-top-right-radius: 7px;
 }
+
+.market-table-wrapper tr:last-child {
+  border-bottom: 1px solid #666666;
+}
+
