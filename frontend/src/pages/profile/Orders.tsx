@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
 import OrdersTable from '../../components/orders/OrdersTable';
 import ListingTopBar from '../../components/sellListing/ListingTopBar';
@@ -23,12 +24,21 @@ function Orders(): JSX.Element {
     },
   ];
 
+  const [page, setPage] = useState(1);
+  const count = 10;
+
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
       <ListingTopBar />
       <BreadcrumbNavigation heading="My orders" links={breadcrumbNavigation} />
       <div className="flex flex-col lg:items-center overflow-auto">
-        <OrdersTable orders={orders} userPosition="seller" />
+        <OrdersTable
+          page={page}
+          onChangePage={setPage}
+          count={count}
+          orders={orders}
+          userPosition="seller"
+        />
       </div>
     </section>
   );

@@ -8,12 +8,20 @@ type OrdersTableProps = {
    */
   userPosition: 'seller' | 'buyer';
   orders: Order[];
+  page: number;
+  onChangePage: (page: number) => void;
+  count: number;
 };
 
 function OrdersTable(props: OrdersTableProps): JSX.Element {
   const userPosition = props.userPosition === 'seller' ? 'Seller' : 'Buyer';
   return (
-    <MarketTable className="w-full rounded-md mt-4 lg:w-10/12 text-left">
+    <MarketTable
+      page={props.page}
+      onPageChange={props.onChangePage}
+      count={props.count}
+      className="w-full rounded-md mt-4 lg:w-10/12 text-left"
+    >
       <thead>
         <tr>
           <th>Order</th>
