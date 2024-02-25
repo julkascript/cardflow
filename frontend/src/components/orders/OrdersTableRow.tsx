@@ -10,15 +10,15 @@ type OrdersTableRowProps = {
 function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
   return (
     <tr>
-      <td>{props.order.id}</td>
-      <td>
+      <td style={{ paddingLeft: 16 }}>{props.order.id}</td>
+      <td style={{ paddingLeft: 16 }}>
         <Link underline="hover" sx={{ color: '#0B70E5' }} href={`/user/${props.order.user}`}>
           {props.order.user}
         </Link>
       </td>
-      <td>{props.order.quantity}</td>
-      <td>${props.order.total}</td>
-      <td>
+      <td style={{ paddingLeft: 16 }}>{props.order.quantity}</td>
+      <td style={{ paddingLeft: 16 }}>${props.order.total}</td>
+      <td style={{ paddingLeft: 16 }}>
         <Badge
           invisible={!(props.userPosition === 'buyer' && props.order.state === 'ordered')}
           badgeContent=" "
