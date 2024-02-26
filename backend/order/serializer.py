@@ -3,7 +3,7 @@ from rest_framework import serializers
 
 from accounts.serializers import UserSerializer
 from listing.serializers import ListingSerializer
-from order.models import Order, OrderItem
+from order.models import Order, OrderItem, FeedbackAndRating
 
 User = get_user_model()
 
@@ -28,3 +28,13 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_order_id(self, obj):
         return obj.id
+
+
+class FeedbackAndRatingSerializer(serializers.ModelSerializer):
+    given_to = UserSerializer(read_only=True)
+    given_from = UserSerializer(read_only=True)
+    related_order = OrderSerializer(read_only=True)
+
+    class Meta:
+        model = FeedbackAndRating
+        fields = ['given_to', 'given_from', 'related_order', 'rating', 'comment']

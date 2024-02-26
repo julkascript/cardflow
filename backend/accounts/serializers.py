@@ -1,7 +1,10 @@
 from django.contrib.auth import get_user_model
+from django.db.models import Avg
 from rest_framework import serializers, status
 from rest_framework.exceptions import PermissionDenied
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
+from order.models import FeedbackAndRating
 
 User = get_user_model()
 
@@ -11,6 +14,9 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'email', 'password')
         extra_kwargs = {'password': {'write_only': True}}
+
+    def get_average_rating(self):
+        return FeedbackAndRating.objects.filter(given_to=self).aggregate(average_rating=Avg('rating'))
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
