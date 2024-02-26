@@ -70,10 +70,3 @@ services:
 networks:
   cardflow:
     driver: bridge
-# volumes:
-#   node_modules:
-# driver: local
-# driver_opts:
-#   type: none
-#   o: bind
-#   device: ./frontend/node_modules
