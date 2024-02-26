@@ -15,11 +15,10 @@ services:
       - cardflow
     volumes:
       - ./frontend:/usr/src/app
-      - node_modules:/usr/src/app/node_modules
     tty: true
     ports:
       - "5173:5173"
-    command: npm run dev
+    command: sh /usr/src/app/entrypoint.sh
 
   backend:
     build:
@@ -53,7 +52,6 @@ services:
     networks:
       - cardflow
 
-
   pgadmin4:
     image: dpage/pgadmin4
     user: "${UID}:${GID}" # to avoid permission issues
@@ -72,11 +70,10 @@ services:
 networks:
   cardflow:
     driver: bridge
-
-volumes:
-  node_modules:
-    driver: local
-    driver_opts:
-      type: none
-      o: bind
-      device: ./frontend/node_modules
+# volumes:
+#   node_modules:
+# driver: local
+# driver_opts:
+#   type: none
+#   o: bind
+#   device: ./frontend/node_modules
