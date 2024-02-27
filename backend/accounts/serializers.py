@@ -15,8 +15,9 @@ class UserSerializer(serializers.ModelSerializer):
         fields = ('id', 'username', 'email', 'password')
         extra_kwargs = {'password': {'write_only': True}}
 
-    def get_average_rating(self):
-        return FeedbackAndRating.objects.filter(given_to=self).aggregate(average_rating=Avg('rating'))
+    def get_average_rating(self) -> float:
+        return FeedbackAndRating.objects.filter(given_to=self).aggregate(average_rating=Avg('rating'))[
+            'average_rating'] or 0
 
 
 class RegistrationSerializer(serializers.ModelSerializer):

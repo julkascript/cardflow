@@ -63,10 +63,20 @@ class FeedbackAndRatingViewSet(viewsets.ModelViewSet):
 
     def retrieve(self, request, *args, **kwargs):
 
-        user = User.objects.get(id=kwargs['pk']).id
-        avg_rating = UserSerializer.get_average_rating(user)
-        comments = FeedbackAndRating.objects.filter(given_to=user).values('comment')
+        user = User.objects.filter(id=kwargs['pk']).first()
 
-        result = [{'user': user, 'average_rating': avg_rating, 'comments': comments}]
+        if not user:
+            return response.Response('User not found', status=404)
+
+        user_id = user.id
+        avg_rating = UserSerializer.get_average_rating(user_id)
+        orders = Order.objects.filter(sender_user=user_id).values('id')
+        comments = FeedbackAndRating.objects.filter(given_to=user).values('comment')
+        rating = FeedbackAndRating.objects.filter(given_to=user).values('rating')
+
+        rating_and_comments = [{'related_order': o['id'], 'rating': r['rating'], 'comment': c['comment']} for o, r, c in
+                               zip(orders, rating, comments)]
+
+        result = [{'user': user_id, 'average_rating': avg_rating, 'all_comments_and_ratings': rating_and_comments}]
 
         return response.Response(result)
