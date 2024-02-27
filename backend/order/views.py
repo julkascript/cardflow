@@ -39,6 +39,8 @@ class FeedbackAndRatingViewSet(viewsets.ModelViewSet):
 
         - To view all feedbacks and ratings use the base endpoint (api/feedback/).
         - To view feedbacks and ratings for specific user use the endpoint (api/feedback/user/<id>/)
+
+        - For pagination, use the following format: (/api/feedback/?page=2)
     """
 
     queryset = FeedbackAndRating.objects.all().order_by('id')
