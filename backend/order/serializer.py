@@ -31,9 +31,9 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class FeedbackAndRatingSerializer(serializers.ModelSerializer):
-    given_to = UserSerializer(read_only=True)
-    given_from = UserSerializer(read_only=True)
-    related_order = OrderSerializer(read_only=True)
+    given_to = UserSerializer()
+    given_from = UserSerializer()
+    related_order = OrderSerializer()
 
     class Meta:
         model = FeedbackAndRating

@@ -35,12 +35,10 @@ class OrderViewSet(viewsets.ReadOnlyModelViewSet):
 @extend_schema(tags=['Feedback and Rating'])
 class FeedbackAndRatingViewSet(viewsets.ModelViewSet):
     """
-    Viewset for API endpoint that allows to see the feedback and rating.
+    Viewset for API endpoint that allows to see the feedback and rating. \n
 
-    - To view all feedback and rating use the base endpoint (api/feedback/).
-    - To view specific feedback and rating use the endpoint (api/feedback/<id>/)
-
-    - For pagination, use the following format: (/api/feedback/?page=2)
+        - To view all feedbacks and ratings use the base endpoint (api/feedback/).
+        - To view feedbacks and ratings for specific user use the endpoint (api/feedback/user/<id>/)
     """
 
     queryset = FeedbackAndRating.objects.all().order_by('id')
@@ -53,11 +51,15 @@ class FeedbackAndRatingViewSet(viewsets.ModelViewSet):
         all_comments = [comment['comment'] for comment in FeedbackAndRating.objects.values('comment')]
         order = [order['related_order'] for order in FeedbackAndRating.objects.values('related_order')]
         comment_for_user = [user['given_to'] for user in FeedbackAndRating.objects.values('given_to')]
+        given_from = [user['given_from'] for user in FeedbackAndRating.objects.values('given_from')]
 
         result = []
 
-        for comment_for_user, order, rating, comment in zip(comment_for_user, order, all_ratings, all_comments):
-            result.append({'rated_user': comment_for_user, 'order': order, 'user_rating': rating, 'comment': comment})
+        for comment_for_user, order, given_from, rating, comment in zip(comment_for_user, order, given_from,
+                                                                        all_ratings, all_comments):
+            result.append(
+                {'rated_user': comment_for_user, 'order': order, 'given_from': given_from, 'user_rating': rating,
+                 'comment': comment})
 
         return response.Response(result)
 
@@ -73,10 +75,13 @@ class FeedbackAndRatingViewSet(viewsets.ModelViewSet):
         orders = Order.objects.filter(sender_user=user_id).values('id')
         comments = FeedbackAndRating.objects.filter(given_to=user).values('comment')
         rating = FeedbackAndRating.objects.filter(given_to=user).values('rating')
+        given_from = FeedbackAndRating.objects.filter(given_to=user).values('given_from')
 
-        rating_and_comments = [{'related_order': o['id'], 'rating': r['rating'], 'comment': c['comment']} for o, r, c in
-                               zip(orders, rating, comments)]
+        rating_and_comments = [
+            {'related_order': o['id'], 'given_from': g['given_from'], 'rating': r['rating'], 'comment': c['comment']}
+            for o, g, r, c in zip(orders, given_from, rating, comments)]
 
         result = [{'user': user_id, 'average_rating': avg_rating, 'all_comments_and_ratings': rating_and_comments}]
 
         return response.Response(result)
+

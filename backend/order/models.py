@@ -49,7 +49,7 @@ class OrderItem(models.Model):
 class FeedbackAndRating(models.Model):
     given_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='given_to')
     given_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name='given_from')
-    related_order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    related_order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='related_order')
     rating = models.PositiveIntegerField(
         default=1,
         choices=[(i, i) for i in range(1, 6)],
