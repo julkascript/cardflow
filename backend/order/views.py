@@ -48,9 +48,6 @@ class FeedbackAndRatingViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     http_method_names = ['get', 'post']
 
-    def perform_create(self, serializer):
-        serializer.save(given_from=self.request.user)
-
     def list(self, request, *args, **kwargs):
         all_ratings = [rating['rating'] for rating in FeedbackAndRating.objects.values('rating')]
         all_comments = [comment['comment'] for comment in FeedbackAndRating.objects.values('comment')]
