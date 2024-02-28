@@ -86,3 +86,6 @@ class FeedbackAndRatingViewSet(viewsets.ModelViewSet):
         result = [{'user': user_id, 'average_rating': avg_rating, 'all_comments_and_ratings': rating_and_comments}]
 
         return response.Response(result)
+
+    def perform_create(self, serializer):
+        serializer.save(given_from=self.request.user)
