@@ -44,6 +44,6 @@ class FeedbackAndRatingSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError('User cannot give feedback to himself')
 
         if attrs['related_order'].id in [order['related_order'] for order in FeedbackAndRating.objects.values('related_order')]:
-            raise serializers.ValidationError('User already gave feedback to this order')
+            raise serializers.ValidationError('User already gave feedback for this order')
 
         return attrs
