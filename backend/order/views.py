@@ -6,7 +6,7 @@ from rest_framework import viewsets, permissions, response
 
 from order.filters import OrderFilter
 from order.models import Order, FeedbackAndRating
-from order.serializer import OrderSerializer, FeedbackAndRatingSerializer
+from order.serializers import OrderSerializer, FeedbackAndRatingSerializer
 
 from accounts.serializers import UserSerializer
 
