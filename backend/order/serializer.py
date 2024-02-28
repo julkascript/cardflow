@@ -38,3 +38,12 @@ class FeedbackAndRatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeedbackAndRating
         fields = ['given_to', 'given_from', 'related_order', 'rating', 'comment']
+
+    def validate(self, attrs):
+        if attrs['given_from'] == attrs['given_to']:
+            raise serializers.ValidationError('User cannot give feedback to himself')
+
+        if attrs['related_order'].id in [order['related_order'] for order in FeedbackAndRating.objects.values('related_order')]:
+            raise serializers.ValidationError('User already gave feedback to this order')
+
+        return attrs
