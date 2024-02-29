@@ -51,8 +51,8 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
             <SummaryData boldedData summary="Total" data={props.totalPrice + props.shipmentCost} />
           </ul>
         </section>
-        <Divider className="none lg:block" orientation="vertical" flexItem />
-        <Divider className="block lg:none" flexItem />
+        <Divider className="hidden lg:block" orientation="vertical" flexItem />
+        <Divider className="block lg:hidden" flexItem />
         <section>
           <h3 className="font-bold mb-2">
             <div className="flex items-center justify-center lg:justify-start gap-2">

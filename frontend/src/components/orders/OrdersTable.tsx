@@ -29,6 +29,7 @@ function OrdersTable(props: OrdersTableProps): JSX.Element {
           <th>Quantity</th>
           <th>Total</th>
           <th>State</th>
+          <th>Review order</th>
         </tr>
       </thead>
       <tbody>
