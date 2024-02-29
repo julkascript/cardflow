@@ -31,19 +31,19 @@ class OrderSerializer(serializers.ModelSerializer):
 
 
 class FeedbackAndRatingSerializer(serializers.ModelSerializer):
-    given_to = FeedbackAndRating.given_to
-    given_from = FeedbackAndRating.given_from
+    receiver_user = FeedbackAndRating.receiver_user
+    sender_user = FeedbackAndRating.sender_user
     related_order = FeedbackAndRating.related_order
 
     class Meta:
         model = FeedbackAndRating
-        fields = ['given_to', 'given_from', 'related_order', 'rating', 'comment']
-        read_only_fields = ['given_from']
+        fields = ['receiver_user', 'sender_user', 'related_order', 'rating', 'comment']
+        read_only_fields = ['sender_user']
 
     def validate(self, attrs):
-        given_from = self.context['request'].user
+        sender_user = self.context['request'].user
 
-        if given_from == attrs['given_to']:
+        if sender_user == attrs['receiver_user']:
             raise serializers.ValidationError('User cannot give feedback to himself')
 
         if attrs['related_order'].id in [order['related_order'] for order in FeedbackAndRating.objects.values('related_order')]:

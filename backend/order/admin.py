@@ -45,21 +45,21 @@ class OrderAdmin(admin.ModelAdmin):
 @admin.register(FeedbackAndRating)
 class FeedbackAndRatingAdmin(admin.ModelAdmin):
     list_display = (
-        'given_to',
-        'given_from',
+        'receiver_user',
+        'sender_user',
         'related_order',
         'rating',
         'comment',
     )
 
     list_filter = (
-        'given_to',
-        'given_from',
+        'receiver_user',
+        'sender_user',
         'rating',
     )
 
     search_fields = (
-        'given_to',
-        'given_from',
+        'receiver_user',
+        'sender_user',
         'rating',
     )

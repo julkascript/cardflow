@@ -14,7 +14,7 @@ class FeedbackAndRatingTests(TestCase):
         self.user1 = User.objects.create_user(username='user1', email='vDnC9@example.com', password='password123')
         self.user2 = User.objects.create_user(username='user2', email='JQXp0@example.com', password='password456')
         self.order = Order.objects.create(sender_user=self.user1, receiver_user=self.user2)
-        self.feedback = FeedbackAndRating.objects.create(given_to=self.user1, given_from=self.user2,
+        self.feedback = FeedbackAndRating.objects.create(receiver_user=self.user1, sender_user=self.user2,
                                                          related_order=self.order, rating=4, comment='Great service')
 
     def test_list_feedbacks_and_ratings(self):

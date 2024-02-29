@@ -47,8 +47,8 @@ class OrderItem(models.Model):
 
 
 class FeedbackAndRating(models.Model):
-    given_to = models.ForeignKey(User, on_delete=models.CASCADE, related_name='given_to')
-    given_from = models.ForeignKey(User, on_delete=models.CASCADE, related_name='given_from')
+    receiver_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiveruser')
+    sender_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='senderuser')
     related_order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='related_order')
     rating = models.PositiveIntegerField(
         default=1,
@@ -60,4 +60,4 @@ class FeedbackAndRating(models.Model):
     comment = models.TextField(blank=True, null=True)
 
     def __str__(self):
-        return self.given_from.username
+        return self.sender_user.username
