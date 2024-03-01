@@ -2,7 +2,7 @@ from django.contrib.auth import get_user_model
 from django.http import JsonResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets, permissions, response
+from rest_framework import viewsets, permissions, response, serializers
 
 from order.filters import OrderFilter
 from order.models import Order, FeedbackAndRating
@@ -88,5 +88,9 @@ class FeedbackAndRatingViewSet(viewsets.ModelViewSet):
         return response.Response(result)
 
     def perform_create(self, serializer):
+        related_order = self.request.data['related_order']
+        receiver_user = Order.objects.get(id=related_order).sender_user
+        sender_user = Order.objects.get(id=related_order).receiver_user
 
-        serializer.save(sender_user=self.request.user)
+        if serializer.is_valid():
+            serializer.save(sender_user=sender_user, receiver_user=receiver_user)

@@ -38,13 +38,25 @@ class FeedbackAndRatingSerializer(serializers.ModelSerializer):
     class Meta:
         model = FeedbackAndRating
         fields = ['receiver_user', 'sender_user', 'related_order', 'rating', 'comment']
-        read_only_fields = ['sender_user']
+        read_only_fields = ['sender_user', 'receiver_user']
 
     def validate(self, attrs):
-        sender_user = self.context['request'].user
+        related_order = attrs['related_order']
 
-        if sender_user == attrs['receiver_user']:
+        if not related_order:
+            raise serializers.ValidationError('Order does not exist')
+
+        sender_user = related_order.receiver_user
+        receiver_user = related_order.sender_user
+
+        if receiver_user == self.context['request'].user:
             raise serializers.ValidationError('User cannot give feedback to himself')
+
+        if self.context['request'].user != sender_user:
+            raise serializers.ValidationError('You are not allowed to give feedback for this order')
+
+        if receiver_user != related_order.sender_user:
+            raise serializers.ValidationError('The user you are trying to give feedback is not the seller of the order')
 
         if attrs['related_order'].id in [order['related_order'] for order in FeedbackAndRating.objects.values('related_order')]:
             raise serializers.ValidationError('User already gave feedback for this order')
