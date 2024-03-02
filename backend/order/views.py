@@ -1,6 +1,9 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets, permissions
+from rest_framework import viewsets, permissions, status
+from rest_framework.decorators import action
+from rest_framework.generics import get_object_or_404
+from rest_framework.response import Response
 
 from order.filters import OrderFilter
 from order.models import Order
@@ -8,7 +11,7 @@ from order.serializer import OrderSerializer
 
 
 @extend_schema(tags=['Order'])
-class OrderViewSet(viewsets.ReadOnlyModelViewSet):
+class OrderViewSet(viewsets.ReadOnlyModelViewSet, viewsets.mixins.UpdateModelMixin):
     """
     Viewset for API endpoint that allows to see the orders.
 
