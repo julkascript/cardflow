@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from order.filters import AdminListingFilter
-from order.models import Order, OrderItem
+from order.models import Order, OrderItem, FeedbackAndRating
 
 
 class OrderItemInline(admin.StackedInline):
@@ -40,3 +40,26 @@ class OrderAdmin(admin.ModelAdmin):
         return ' || '.join([str(listing) for listing in obj.orderitem_set.all()])
 
     get_order_items.short_description = 'Order Items'
+
+
+@admin.register(FeedbackAndRating)
+class FeedbackAndRatingAdmin(admin.ModelAdmin):
+    list_display = (
+        'receiver_user',
+        'sender_user',
+        'related_order',
+        'rating',
+        'comment',
+    )
+
+    list_filter = (
+        'receiver_user',
+        'sender_user',
+        'rating',
+    )
+
+    search_fields = (
+        'receiver_user',
+        'sender_user',
+        'rating',
+    )
