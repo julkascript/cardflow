@@ -105,9 +105,11 @@ class BestSellerCardSerializer(serializers.ModelSerializer):
         model = Listing
         fields = ['card_name', 'set_name', 'set_code', 'card_image', 'lowest_price']
 
-    def get_card_image(self, obj):
+    @staticmethod
+    def get_card_image(obj):
         return obj.card.yugioh_card.image
 
-    def get_lowest_price(self, obj):
+    @staticmethod
+    def get_lowest_price(obj):
         lowest_price = Listing.objects.filter(card=obj.card).aggregate(Min('price'))['price__min']
         return lowest_price

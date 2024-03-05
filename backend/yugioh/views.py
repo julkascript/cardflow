@@ -41,12 +41,20 @@ class YugiohCardInSetViewSet(viewsets.ModelViewSet):
     http_method_names = ['get']
 
 
+@extend_schema(tags=['Best Seller Cards'])
 class BestSellerCardListView(generics.ListAPIView):
+    """
+    Viewset for API endpoint that shows 3 bestseller cards for all times.\n
+    The bestseller card is defined as the card that has been ordered the most.\n
+        - The endpoint is /api/bestseller/
+    """
     serializer_class = BestSellerCardSerializer
     authentication_classes = []
     permission_classes = []
+    pagination_class = None
 
     def get_queryset(self):
+
         top_cards = OrderItem.objects.values('listing__card').annotate(
             order_count=Count('quantity')).order_by('-order_count')[:10]
 
