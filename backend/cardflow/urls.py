@@ -5,6 +5,8 @@ from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView, Sp
 from rest_framework import permissions
 
 from accounts.views import ContactFormView
+
+from order.views import FeedbackAndRatingViewSet
 from cardflow import settings
 
 urlpatterns = [
@@ -18,6 +20,8 @@ urlpatterns = [
     path('api/order/', include('order.urls')),
     path('api/cart/', include('cart.urls')),
     path('api/contacts/', ContactFormView.as_view(), name='contact_form'),
+    path('api/feedback/', FeedbackAndRatingViewSet.as_view({'get': 'list', 'post': 'create'}), name='feedback'),
+    path('api/feedback/user/<int:pk>/', FeedbackAndRatingViewSet.as_view({'get': 'retrieve'}),)
 ]
 
 if settings.DEBUG:
