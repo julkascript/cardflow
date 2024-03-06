@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.core.validators import MaxValueValidator
 from django.db import models
 
 from listing.models import Listing
@@ -43,3 +44,20 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f'{self.listing} : {self.quantity}'
+
+
+class FeedbackAndRating(models.Model):
+    receiver_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiveruser')
+    sender_user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='senderuser')
+    related_order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='related_order')
+    rating = models.PositiveIntegerField(
+        default=1,
+        choices=[(i, i) for i in range(1, 6)],
+        validators=[MaxValueValidator(5)],
+        blank=True,
+        null=True
+    )
+    comment = models.TextField(blank=True, null=True)
+
+    def __str__(self):
+        return self.sender_user.username

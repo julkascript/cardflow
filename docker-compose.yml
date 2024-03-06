@@ -15,11 +15,10 @@ services:
       - cardflow
     volumes:
       - ./frontend:/usr/src/app
-      - /usr/src/app/node_modules
     tty: true
     ports:
       - "5173:5173"
-    command: npm run dev
+    command: sh /usr/src/app/entrypoint.sh
 
   backend:
     build:
@@ -52,7 +51,6 @@ services:
       - ./postgresql:/var/lib/postgresql/data
     networks:
       - cardflow
-
 
   pgadmin4:
     image: dpage/pgadmin4
