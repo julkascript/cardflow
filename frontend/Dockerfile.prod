@@ -1,0 +1,20 @@
+FROM node:14-alpine
+
+WORKDIR /usr/src/app
+
+COPY package.json .
+COPY prod.env .env
+
+COPY ./frontend-entrypoint.prod.sh .
+
+COPY . .
+
+RUN npm install
+
+RUN sed -i 's/\r$//g' /usr/src/app/frontend-entrypoint.prod.sh
+RUN chmod +x /usr/src/app/frontend-entrypoint.prod.sh
+
+
+EXPOSE 5173
+
+CMD ["npm", "run", "dev", "--host", "0.0.0.0"]

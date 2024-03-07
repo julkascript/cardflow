@@ -168,6 +168,12 @@ SPECTACULAR_SETTINGS = {
     'COMPONENT_SPLIT_REQUEST': True,
 }
 
+SESSION_COOKIE_SECURE = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTOCOL', 'https')
+CSRF_COOKIE_SECURE = True
+CSRF_TRUSTED_ORIGINS = ['https://*.cardflow.market', 'http://localhost:5173']
+
+
 EMAIL_HOST = os.getenv('EMAIL_HOST', None)
 EMAIL_USE_TLS = bool(int(os.getenv('EMAIL_USE_TLS', 0)))
 EMAIL_PORT = os.getenv('EMAIL_PORT', 0)

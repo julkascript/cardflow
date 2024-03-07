@@ -6,9 +6,12 @@ venv/
 
 # ENV files and folders
 backend/.env
+backend/.env.prod
 frontend/.env
+frontend/.env.prod
 .env
-
+.env.prod
+prod.env
 #KEYS
 keys/
 
