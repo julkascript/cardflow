@@ -54,18 +54,20 @@ class BestSellerCardListView(generics.ListAPIView):
     pagination_class = None
 
     def get_queryset(self):
-
-        top_cards = OrderItem.objects.values('listing__card').annotate(
-            order_count=Count('quantity')).order_by('-order_count')[:10]
+        top_cards = (
+            OrderItem.objects.filter(order__status='completed')
+            .values('listing__card')
+            .annotate(order_count=Sum('quantity'))
+            .order_by('-order_count')
+        )
 
         top_cards_ids = [card['listing__card'] for card in top_cards]
 
-        queryset = Listing.objects.filter(card__in=top_cards_ids
-                                          ).annotate(order_count=Subquery(
-                                            OrderItem.objects.filter(listing__card=OuterRef('card'))
-                                            .values('listing__card')
-                                            .annotate(count=Sum('quantity'))
-                                            .values('count')
-                                          ), lowest_price=Min('price')).order_by('-order_count')[:3]
+        queryset = Listing.objects.filter(card__in=top_cards_ids).annotate(order_count=Subquery(
+            OrderItem.objects.filter(order__status='completed', listing__card=OuterRef('card'))
+            .values('listing__card')
+            .annotate(count=Sum('quantity'))
+            .values('count')
+        ), lowest_price=Min('price')).order_by('-order_count')[:3]
 
         return queryset
