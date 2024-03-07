@@ -43,5 +43,5 @@ export const api = Object.freeze({
   feedback: {
     root: feedback + '/',
     user: (id: string | number) => `${feedback}/user/${id}`,
-  }
+  },
 });
