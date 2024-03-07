@@ -1,6 +1,8 @@
+from django.db.models import Min
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 from .models import YugiohCard, YugiohCardInSet, YugiohCardSet, YugiohCardRarity
+from listing.models import Listing
 
 
 class YugiohCardSetSerializer(serializers.ModelSerializer):
@@ -18,7 +20,6 @@ class YugiohCardRaritySerializer(serializers.ModelSerializer):
 
 
 class YugiohCardSerializer(serializers.ModelSerializer):
-
     card_in_sets = serializers.SerializerMethodField()
 
     class Meta:
@@ -91,3 +92,24 @@ class YugiohCardInSetSerializer(serializers.ModelSerializer):
         fields = ['id', 'yugioh_card', 'set', 'rarity']
         read_only_fields = ['id', 'rarity', 'set', 'yugioh_card']
         ordering_fields = ['id']
+
+
+class BestSellerCardSerializer(serializers.ModelSerializer):
+    card_name = serializers.CharField(source='card.yugioh_card.card_name')
+    set_name = serializers.CharField(source='card.set.card_set_name')
+    set_code = serializers.CharField(source='card.set.set_code')
+    card_image = serializers.SerializerMethodField()
+    lowest_price = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Listing
+        fields = ['card_name', 'set_name', 'set_code', 'card_image', 'lowest_price']
+
+    @staticmethod
+    def get_card_image(obj):
+        return obj.card.yugioh_card.image
+
+    @staticmethod
+    def get_lowest_price(obj):
+        lowest_price = Listing.objects.filter(card=obj.card).aggregate(Min('price'))['price__min']
+        return lowest_price
