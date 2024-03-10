@@ -1,3 +1,5 @@
+from django.utils import timezone
+
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator
 from django.db import models
@@ -36,6 +38,13 @@ class Order(models.Model):
     def __str__(self):
         return f'OrderID {self.id} from {self.receiver_user}'
 
+    def save(self, *args, **kwargs):
+        if self.pk:
+            old_order = Order.objects.get(pk=self.pk)
+            if old_order.status != self.status:
+                OrderStatusHistory.objects.create(order=self, status=self.status)
+        super().save(*args, **kwargs)
+
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -44,6 +53,18 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f'{self.listing} : {self.quantity}'
+
+
+class OrderStatusHistory(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='status_history')
+    status = models.CharField(max_length=10)
+    timestamp = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f'Order {self.order.id} - Status: {self.status}'
+
+    class Meta:
+        ordering = ['-timestamp']
 
 
 class FeedbackAndRating(models.Model):

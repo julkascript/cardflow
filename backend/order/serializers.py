@@ -3,9 +3,15 @@ from rest_framework import serializers, exceptions
 
 from accounts.serializers import UserSerializer
 from listing.serializers import ListingSerializer
-from order.models import Order, OrderItem, FeedbackAndRating
+from order.models import Order, OrderItem, FeedbackAndRating, OrderStatusHistory
 
 User = get_user_model()
+
+
+class OrderStatusHistorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = OrderStatusHistory
+        fields = ['status', 'timestamp']
 
 
 class OrderItemSerializer(serializers.ModelSerializer):
@@ -21,10 +27,12 @@ class OrderSerializer(serializers.ModelSerializer):
     sender_user = UserSerializer()
     receiver_user = UserSerializer()
     order_items = OrderItemSerializer(many=True, read_only=True)
+    status_history = OrderStatusHistorySerializer(many=True, read_only=True)
 
     class Meta:
         model = Order
-        fields = ['order_id', 'sender_user', 'receiver_user', 'status', 'delivery_address', 'order_items']
+        fields = ['order_id', 'sender_user', 'receiver_user', 'status', 'delivery_address', 'order_items',
+                  'status_history']
 
     def get_order_id(self, obj):
         return obj.id
@@ -37,7 +45,10 @@ class OrderSerializer(serializers.ModelSerializer):
 
         if 'status' in validated_data and validated_data['status'] == 'rejected':
 
-            if user != sender_user or user != receiver_user:
+            if instance.status == 'rejected':
+                raise serializers.ValidationError("The status of a rejected order cannot be updated.")
+
+            if user != sender_user and user != receiver_user:
                 raise exceptions.PermissionDenied("You don't have permission to update this order status.")
 
             for order_item in instance.orderitem_set.all():

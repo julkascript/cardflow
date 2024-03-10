@@ -1,14 +1,8 @@
 from django.contrib.auth import get_user_model
-from django.http import JsonResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
 
-from rest_framework import viewsets, permissions, status
-from rest_framework.decorators import action
-from rest_framework.generics import get_object_or_404
-from rest_framework.response import Response
-
-from rest_framework import viewsets, permissions, response, serializers
+from rest_framework import viewsets, permissions, response
 
 
 from order.filters import OrderFilter
