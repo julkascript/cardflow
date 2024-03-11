@@ -62,7 +62,7 @@ class OrderItem(models.Model):
 class OrderStatusHistory(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='status_history')
     status = models.CharField(max_length=10)
-    timestamp = models.DateTimeField(default=timezone.localtime().now())
+    timestamp = models.DateTimeField(auto_now=True, auto_now_add=False)
 
     def __str__(self):
         return f'Order {self.order.id} - Status: {self.status}'
