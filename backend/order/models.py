@@ -1,8 +1,7 @@
-from django.utils import timezone
-
 from django.contrib.auth import get_user_model
 from django.core.validators import MaxValueValidator
 from django.db import models
+from django.utils import timezone
 
 from listing.models import Listing
 
@@ -39,11 +38,16 @@ class Order(models.Model):
         return f'OrderID {self.id} from {self.receiver_user}'
 
     def save(self, *args, **kwargs):
-        if self.pk:
+        is_new_order = not self.pk
+        old_order = None
+
+        if not is_new_order:
             old_order = Order.objects.get(pk=self.pk)
-            if old_order.status != self.status:
-                OrderStatusHistory.objects.create(order=self, status=self.status)
+
         super().save(*args, **kwargs)
+
+        if is_new_order or (self.pk and old_order.status != self.status):
+            OrderStatusHistory.objects.create(order=self, status=self.status)
 
 
 class OrderItem(models.Model):
@@ -58,7 +62,7 @@ class OrderItem(models.Model):
 class OrderStatusHistory(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='status_history')
     status = models.CharField(max_length=10)
-    timestamp = models.DateTimeField(default=timezone.now)
+    timestamp = models.DateTimeField(default=timezone.localtime().now())
 
     def __str__(self):
         return f'Order {self.order.id} - Status: {self.status}'

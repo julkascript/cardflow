@@ -9,6 +9,8 @@ User = get_user_model()
 
 
 class OrderStatusHistorySerializer(serializers.ModelSerializer):
+    timestamp = serializers.DateTimeField(format='%Y-%m-%d %H:%M:%S')
+
     class Meta:
         model = OrderStatusHistory
         fields = ['status', 'timestamp']
@@ -43,10 +45,14 @@ class OrderSerializer(serializers.ModelSerializer):
         sender_user = instance.sender_user
         receiver_user = instance.receiver_user
 
-        if 'status' in validated_data and validated_data['status'] == 'rejected':
+        if instance.status == 'rejected' or instance.status == 'completed':
+            raise serializers.ValidationError("Rejected or Completed order cannot be updated.")
 
-            if instance.status == 'rejected':
-                raise serializers.ValidationError("The status of a rejected order cannot be updated.")
+        if 'status' in validated_data and validated_data['status'] == 'sent':
+            if user != sender_user:
+                raise exceptions.PermissionDenied("Only the sender is allowed to mark the order as 'sent'")
+
+        if 'status' in validated_data and validated_data['status'] == 'rejected':
 
             if user != sender_user and user != receiver_user:
                 raise exceptions.PermissionDenied("You don't have permission to update this order status.")
