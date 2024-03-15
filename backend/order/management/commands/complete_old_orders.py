@@ -22,6 +22,8 @@ class Command(BaseCommand):
 
         for order in max_timestamp_orders:
             order_for_complete = Order.objects.filter(pk=order['order_id']).get()
+
             order_for_complete.status = 'completed'
             order_for_complete.save()
 
+            print('Completed order', order['order_id'])
