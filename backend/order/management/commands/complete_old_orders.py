@@ -1,9 +1,10 @@
 from datetime import timedelta
 
 from django.core.management.base import BaseCommand
+from django.db.models import Max
 from django.utils import timezone
 
-from order.models import OrderStatusHistory
+from order.models import OrderStatusHistory, Order
 
 
 class Command(BaseCommand):
@@ -11,15 +12,16 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         # Define the time threshold for auto-completion (7 days)
-        auto_completion_threshold = timezone.now() - timedelta(minutes=1)
+        auto_completion_threshold = timezone.now() - timedelta(days=7)
 
-        # Filter orders with status 'sent'
-        orders_to_complete = OrderStatusHistory.objects.filter(status='sent', timestamp__lte=auto_completion_threshold)
+        sent_orders = Order.objects.filter(status='sent').values('id')
 
-        # Filter orders that have not been completed within 7 days
-        # orders_to_complete = orders_to_complete.exclude(
-        #     status_history__timestamp__lte=auto_completion_threshold
-        # )
+        max_timestamp_orders = OrderStatusHistory.objects.filter(order_id__in=sent_orders).values('order_id').annotate(
+            max_timestamp=Max('timestamp')).values('order_id', 'max_timestamp').filter(
+            max_timestamp__lte=auto_completion_threshold)
 
-        for order in orders_to_complete:
-            print(order)
+        for order in max_timestamp_orders:
+            order_for_complete = Order.objects.filter(pk=order['order_id']).get()
+            order_for_complete.status = 'completed'
+            order_for_complete.save()
+
