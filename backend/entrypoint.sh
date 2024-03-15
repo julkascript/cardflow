@@ -44,6 +44,11 @@ else
   echo "Superuser already exists. Skipping creation."
 fi
 
-python manage.py runserver 0.0.0.0:8000
+CRON_SCHEDULE="0 0 * * *"
+(crontab -l ; echo "$CRON_SCHEDULE python manage.py complete_old_orders") | crontab -
+
+echo "Cron job added successfully."
+
+python manage.py runserver 0.0.0.0:80008
 
 
