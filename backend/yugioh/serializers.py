@@ -113,7 +113,7 @@ class BestSellerCardSerializer(serializers.ModelSerializer):
             "set_code",
             "card_image",
             "lowest_price",
-            "id",
+            "card_id",
         ]
 
     @staticmethod

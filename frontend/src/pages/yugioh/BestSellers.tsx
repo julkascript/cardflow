@@ -13,8 +13,11 @@ export default function BestSellers() {
   const [cards, setCards] = useState<BestSeller[]>([]);
   const cardSection = cards.map((card) => {
     return (
-      <div className="mt-4 flex flex-col justify-items-center align-items-center" key={card.id}>
-        <Link to={`/details/yugioh/${card.id}`}>
+      <div
+        className="mt-4 flex flex-col justify-items-center align-items-center"
+        key={card.card_id}
+      >
+        <Link to={`/details/yugioh/${card.card_id}`}>
           <img
             src={card.card_image}
             className="w-[300px] lg:w-[182px] shadow-xl"

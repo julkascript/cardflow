@@ -1,5 +1,5 @@
 export type BestSeller = {
-  id: number;
+  card_id: number;
   card_name: string;
   set_name: string;
   set_code: string;
