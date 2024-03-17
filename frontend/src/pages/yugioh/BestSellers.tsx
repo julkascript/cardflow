@@ -59,7 +59,7 @@ export default function BestSellers() {
         <PageSection className="p-8 my-4">
           <Typography variant="h4">All-time best sellers</Typography>
           <hr />
-          <section className="flex flex-row gap-4 mt-6">{cardSection}</section>
+          <section className="flex flex-row gap-4 mt-6 flex justify-between">{cardSection}</section>
         </PageSection>
       </div>
     </section>
