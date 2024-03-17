@@ -23,6 +23,7 @@ import Changelog from '../pages/about/Changelog';
 import About from '../pages/about/About';
 import FAQ from '../pages/about/FAQ';
 import Contact from '../pages/about/Contact';
+import BestSellers from '../pages/yugioh/BestSellers';
 
 const routes = createBrowserRouter([
   {
@@ -34,6 +35,11 @@ const routes = createBrowserRouter([
         path: '/',
         index: true,
         element: <Home />,
+      },
+      {
+        path: '/yugioh',
+        index: true,
+        element: <BestSellers />,
       },
       {
         path: '/login',
@@ -117,6 +123,15 @@ const routes = createBrowserRouter([
                 element: <YugiohCardDetails />,
               },
             ],
+          },
+        ],
+      },
+      {
+        path: 'buy',
+        children: [
+          {
+            path: '',
+            element: <BestSellers />,
           },
         ],
       },
