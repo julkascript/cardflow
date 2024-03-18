@@ -20,7 +20,7 @@ export default function BestSellers() {
         <Link to={`/details/yugioh/${card.card_id}`}>
           <img
             src={card.card_image}
-            className="w-[300px] lg:w-[182px] shadow-xl"
+            className="mx-auto w-[300px] lg:w-[182px] shadow-xl"
             alt="card image"
           />
           <Typography
@@ -62,7 +62,7 @@ export default function BestSellers() {
         <PageSection className="p-8 my-4">
           <Typography variant="h4">All-time best sellers</Typography>
           <hr />
-          <section className="flex max-sm:flex-col gap-4 mt-6 flex justify-between">
+          <section className="max-sm:flex-col gap-4 mt-6 flex justify-between">
             {cardSection}
           </section>
         </PageSection>
