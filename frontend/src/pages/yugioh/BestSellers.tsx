@@ -27,6 +27,7 @@ export default function BestSellers() {
             variant="h6"
             display="flex"
             justifyContent="center"
+            textAlign="center"
             fontWeight="bolder"
             marginTop={3}
             color={theme.palette.info.secondary}
