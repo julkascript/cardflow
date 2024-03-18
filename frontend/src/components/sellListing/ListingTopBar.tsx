@@ -9,9 +9,10 @@ function ListingTopBar() {
       <div className="mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-start space-x-4">
           <Link
-            to="/search"
+            to="/buy"
             className={`p-4 text-gray-900 hover:text-gray-600  text-sm font-medium ${
-              currentPath === '/search' && 'border-b-2 border-stone-500'
+              (currentPath.includes('/buy') || currentPath.includes('/search')) &&
+              'border-b-2 border-stone-500'
             }`}
           >
             Buy
