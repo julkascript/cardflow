@@ -36,19 +36,16 @@ echo "PostgreSQL started"
 python manage.py migrate
 
 
-if [ "$(python manage.py shell -c 'from accounts.models import User; print(User.objects.filter(username="admin", email="'"$PGADMIN_DEFAULT_EMAIL"'").exists())')" = "False" ]; then
+exists=$(python manage.py shell -c 'import django; django.setup(); from django.contrib.auth import get_user_model; User = get_user_model(); print(User.objects.filter(username="admin").exists())' | tr -d '\n')
+
+if [ "$exists" = "False" ]; then
   echo "Creating superuser..."
-  python manage.py shell -c 'from accounts.models import User; User.objects.create_superuser("admin", "'"$PGADMIN_DEFAULT_EMAIL"'", password="'"$PGADMIN_DEFAULT_PASSWORD"'")'
-  echo "Superuser is created"
+  python manage.py shell -c 'import django; django.setup(); from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser("admin", $"PGADMIN_DEFAULT_EMAIL", password=$"PGADMIN_DEFAULT_PASSWORD")'
+  echo "Superuser created"
 else
   echo "Superuser already exists. Skipping creation."
 fi
 
-CRON_SCHEDULE="0 0 * * *"
-(crontab -l ; echo "$CRON_SCHEDULE python manage.py complete_old_orders") | crontab -
 
-echo "Cron job added successfully."
-
-python manage.py runserver 0.0.0.0:80008
-
+python manage.py runserver 0.0.0.0:8000
 
