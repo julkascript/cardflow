@@ -1,4 +1,11 @@
-import { List, ListItemButton, ListItemIcon, ListItemText, Typography } from '@mui/material';
+import {
+  List,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+  Tooltip,
+  Typography,
+} from '@mui/material';
 import { PaginatedItem, YugiohCardInSet } from '../../services/yugioh/types';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { searchRules } from '../../constants/searchRules';
@@ -8,6 +15,16 @@ type SearchResultsDisplayProps = {
   query: string;
   isListing?: boolean;
   onClose: () => void;
+};
+
+type SearchResultItemProps = {
+  data: YugiohCardInSet;
+  onClose: () => void;
+  isListing?: boolean;
+};
+
+type TooltipImageProps = {
+  imageUrl: string;
 };
 
 function SearchResultsDisplay(props: SearchResultsDisplayProps): JSX.Element {
@@ -23,7 +40,6 @@ function SearchResultsDisplay(props: SearchResultsDisplayProps): JSX.Element {
       className="border rounded-lg w-full"
       sx={{
         position: 'absolute',
-        zIndex: 500000,
         backgroundColor: 'white',
         paddingBottom: 0,
       }}
@@ -40,11 +56,9 @@ function SearchResultsDisplay(props: SearchResultsDisplayProps): JSX.Element {
   );
 }
 
-type SearchResultItemProps = {
-  data: YugiohCardInSet;
-  onClose: () => void;
-  isListing?: boolean;
-};
+function TooltipImage(props: TooltipImageProps) {
+  return <img src={props.imageUrl} className="w-64" alt="card image" />;
+}
 
 function SearchResultItem(props: SearchResultItemProps): JSX.Element {
   const { data, onClose } = props;
@@ -58,9 +72,11 @@ function SearchResultItem(props: SearchResultItemProps): JSX.Element {
       href={props.isListing ? `/sell/new/${data.id}` : `/details/yugioh/${data.id}`}
       onClick={onClose}
     >
-      <ListItemIcon sx={{ color: 'black' }}>
-        <CameraAltIcon />
-      </ListItemIcon>
+      <Tooltip title={<TooltipImage imageUrl={data.yugioh_card.image} />} placement="left-start">
+        <ListItemIcon sx={{ color: 'black' }}>
+          <CameraAltIcon />
+        </ListItemIcon>
+      </Tooltip>
       <ListItemText>
         <div className="flex items-center">
           <div className="flex mr-8">{data.set.set_code}</div>
