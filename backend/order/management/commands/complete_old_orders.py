@@ -11,6 +11,7 @@ class Command(BaseCommand):
     help = 'Marks Sent orders older than 7 days as completed if they are not already completed'
 
     def handle(self, *args, **options):
+        print(f'Cron job stared {timezone.now()}')
         # Define the time threshold for auto-completion (7 days)
         auto_completion_threshold = timezone.now() - timedelta(days=7)
 
@@ -27,3 +28,4 @@ class Command(BaseCommand):
             order_for_complete.save()
 
             print('Completed order', order['order_id'])
+

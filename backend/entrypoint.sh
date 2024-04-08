@@ -5,6 +5,8 @@ if [ -f .env ]; then
   export $(dotenv)
   fi
 
+
+
 if [ ! -d "keys" ]; then
   mkdir keys
 fi
@@ -31,8 +33,6 @@ done
 
 echo "PostgreSQL started"
 
-
-
 python manage.py migrate
 
 
@@ -47,5 +47,13 @@ else
 fi
 
 
+cron &
+crontab /etc/cron.d/crontab
+
+#python manage.py crontab add
+#python manage.py crontab show
+
 python manage.py runserver 0.0.0.0:8000
 
+
+exec "$@"
