@@ -1,12 +1,10 @@
 from django.contrib.auth import get_user_model
 from django.test import TestCase
-from rest_framework.exceptions import PermissionDenied
-from rest_framework.test import APIClient, APIRequestFactory
+from rest_framework.test import APIClient
 
 from cart.tests.test_shopping_cart import create_listing
 from game.models import Game
 from order.models import Order, OrderItem, OrderStatusHistory
-from order.serializers import OrderSerializer
 from yugioh.models import YugiohCardInSet, YugiohCardRarity, YugiohCardSet, YugiohCard
 
 User = get_user_model()
@@ -37,34 +35,39 @@ class OrderSerializerTests(TestCase):
 
         self.order = Order.objects.create(sender_user=self.user1, receiver_user=self.user2, status='ordered')
         self.listing = create_listing(user=self.user1, card=self.yugioh_card_in_set)
-        self.order_item = OrderItem.objects.create(order=self.order, listing=self.listing, quantity=1)
-        self.factory = APIRequestFactory()
+        self.order_item = OrderItem.objects.create(order=self.order, listing=self.listing, quantity=2)
 
     def test_update_order_status(self):
-        request = self.factory.patch('/api/order/{0}/'.format(self.order.pk))
-        request.user = self.user1
-        serializer = OrderSerializer(instance=self.order, data={'status': 'sent'}, context={'request': request},
-                                     partial=True)
-        self.assertTrue(serializer.is_valid())
-        serializer.save()
+        self.client.force_authenticate(user=self.user1)
+
+        # Make a PATCH request to update order status
+        response = self.client.patch(f'/api/order/{self.order.pk}/', {'status': 'sent'}, format='json')
+
+        self.assertEqual(response.status_code, 200)
+
+        # Refresh the order from the database and assert the status
         self.order.refresh_from_db()
         self.assertEqual(self.order.status, 'sent')
+        self.client.force_authenticate(user=None)
 
     def test_restricted_order_status_update(self):
-        request = self.factory.patch('/api/order/{0}/'.format(self.order.pk))
-        request.user = self.user2  # A user who shouldn't be allowed to update
-        serializer = OrderSerializer(instance=self.order, data={'status': 'sent'}, context={'request': request},
-                                     partial=True)
-        with self.assertRaises(PermissionDenied):
-            serializer.is_valid(raise_exception=True)
+        self.client.force_authenticate(user=self.user2)
+
+        # Make a PATCH request to update order status
+        response = self.client.patch(f'/api/order/{self.order.pk}/', {'status': 'sent'}, format='json')
+
+        self.assertEqual(response.status_code, 403)
+        self.client.force_authenticate(user=None)
 
     def test_update_order_status_history(self):
-        request = self.factory.patch('/api/order/{0}/'.format(self.order.pk))
-        request.user = self.user1
-        serializer = OrderSerializer(instance=self.order, data={'status': 'sent'}, context={'request': request},
-                                     partial=True)
-        self.assertTrue(serializer.is_valid())
-        serializer.save()
 
+        self.client.force_authenticate(user=self.user1)
+        response = self.client.patch(f'/api/order/{self.order.pk}/', {'status': 'rejected'}, format='json')
+
+        self.assertEqual(response.status_code, 200)
+        self.order.refresh_from_db()
+        self.assertEqual(self.order.status, 'rejected')
         # Check if a new status history entry is created
-        self.assertEqual(OrderStatusHistory.objects.count(), 1)
+        new_order_history = OrderStatusHistory.objects.filter(order=self.order).order_by('-timestamp').first()
+        self.assertEqual(new_order_history.status, 'rejected')
+
