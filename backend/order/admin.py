@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Sum
 
 from order.filters import AdminListingFilter
 from order.models import Order, OrderItem, FeedbackAndRating, OrderStatusHistory
@@ -24,6 +25,7 @@ class OrderAdmin(admin.ModelAdmin):
         'status',
         'get_order_items',
         'delivery_address',
+        'get_quantity',
     )
 
     list_filter = (
@@ -45,6 +47,11 @@ class OrderAdmin(admin.ModelAdmin):
         return ' || '.join([str(listing) for listing in obj.orderitem_set.all()])
 
     get_order_items.short_description = 'Order Items'
+
+    def get_quantity(self, obj):
+        return obj.orderitem_set.aggregate(Sum('quantity'))['quantity__sum']
+
+    get_quantity.short_description = 'Quantity'
 
 
 @admin.register(FeedbackAndRating)

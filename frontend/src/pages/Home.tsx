@@ -44,7 +44,7 @@ function Home(): JSX.Element {
             }}
             className="rounded-[7px]"
             startIcon={<Logo color="white" size={20} />}
-            href="/search"
+            href="/buy"
           >
             Start exploring
           </Button>
