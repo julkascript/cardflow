@@ -1,6 +1,5 @@
-export type acception = 'accepted' | 'rejected';
-export type reception = 'received' | 'not received';
-export type orderState = 'ordered' | 'sent' | acception | reception | 'completed';
+export type acception = 'received' | 'rejected';
+export type orderState = 'ordered' | 'sent' | acception | 'not received';
 
 export type Order = {
   id: number;

@@ -6,13 +6,11 @@ type OrderStatusBadgeProps = {
 };
 
 const iconsPerStatus: Record<orderState, React.ReactNode> = {
-  accepted: <CheckCircle color="success" />,
   rejected: <DoNotDisturbAlt color="error" />,
   sent: <Outbound className="-rotate-45" color="primary" />,
   ordered: <Outbound className="-rotate-45" color="primary" />,
-  received: <CheckCircle color="success" />,
   'not received': <DoNotDisturbOn color="error" />,
-  completed: <CheckCircle color="success" />,
+  received: <CheckCircle color="success" />,
 };
 
 function OrderStatusBadge(props: OrderStatusBadgeProps): JSX.Element {
