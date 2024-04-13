@@ -6,6 +6,7 @@ const yugioh = `${base}/yugioh`;
 const cardInSet = `${yugioh}/cards_in_set`;
 const card = `${yugioh}/cards`;
 const shoppingCart = `${base}/cart`;
+const bestSeller = `${base}/bestseller`;
 const feedback = `${base}/feedback`;
 
 export const api = Object.freeze({
@@ -18,6 +19,9 @@ export const api = Object.freeze({
   },
   contacts: {
     root: `${contacts}/`,
+  },
+  bestSeller: {
+    root: `${bestSeller}/`,
   },
   yugioh: {
     listing: {
