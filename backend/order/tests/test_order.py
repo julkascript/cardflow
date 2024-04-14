@@ -39,7 +39,6 @@ class OrderSerializerTests(TestCase):
 
     def test_update_order_status(self):
         self.client.force_authenticate(user=self.user1)
-
         # Make a PATCH request to update order status
         response = self.client.patch(f'/api/order/{self.order.pk}/', {'status': 'sent'}, format='json')
 
@@ -62,11 +61,16 @@ class OrderSerializerTests(TestCase):
     def test_update_order_status_history(self):
 
         self.client.force_authenticate(user=self.user1)
+        self.order.status = 'sent'
+        self.order.save()
+        self.order.refresh_from_db()
+
         response = self.client.patch(f'/api/order/{self.order.pk}/', {'status': 'rejected'}, format='json')
 
         self.assertEqual(response.status_code, 200)
         self.order.refresh_from_db()
         self.assertEqual(self.order.status, 'rejected')
+
         # Check if a new status history entry is created
         new_order_history = OrderStatusHistory.objects.filter(order=self.order).order_by('-timestamp').first()
         self.assertEqual(new_order_history.status, 'rejected')
