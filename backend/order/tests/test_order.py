@@ -65,13 +65,13 @@ class OrderSerializerTests(TestCase):
         self.order.save()
         self.order.refresh_from_db()
 
-        response = self.client.patch(f'/api/order/{self.order.pk}/', {'status': 'rejected'}, format='json')
+        response = self.client.patch(f'/api/order/{self.order.pk}/', {'status': 'completed'}, format='json')
 
         self.assertEqual(response.status_code, 200)
         self.order.refresh_from_db()
-        self.assertEqual(self.order.status, 'rejected')
+        self.assertEqual(self.order.status, 'completed')
 
         # Check if a new status history entry is created
         new_order_history = OrderStatusHistory.objects.filter(order=self.order).order_by('-timestamp').first()
-        self.assertEqual(new_order_history.status, 'rejected')
+        self.assertEqual(new_order_history.status, 'completed')
 
