@@ -28,7 +28,7 @@ class OrderSerializer(serializers.ModelSerializer):
     order_id = serializers.SerializerMethodField()
     sender_user = UserSerializer()
     receiver_user = UserSerializer()
-    order_items = OrderItemSerializer(many=True, read_only=True)
+    order_items = OrderItemSerializer(many=True, read_only=True, source='orderitem_set')
     status_history = OrderStatusHistorySerializer(many=True, read_only=True)
 
     class Meta:
@@ -48,23 +48,37 @@ class OrderSerializer(serializers.ModelSerializer):
         if instance.status == 'rejected' or instance.status == 'completed':
             raise serializers.ValidationError("Rejected or Completed order cannot be updated.")
 
-        if 'status' in validated_data and validated_data['status'] == 'sent':
-            if user != sender_user:
-                raise exceptions.PermissionDenied("Only the sender is allowed to mark the order as 'sent'")
+        if 'status' in validated_data:
 
-        if 'status' in validated_data and validated_data['status'] == 'rejected':
+            if self.get_status_index(validated_data['status']) < self.get_status_index(instance.status):
+                raise serializers.ValidationError("Cannot downgrade the status of an order")
 
-            if user != sender_user and user != receiver_user:
-                raise exceptions.PermissionDenied("You don't have permission to update this order status.")
+            if validated_data['status'] == 'sent':
+                if user != sender_user:
+                    raise exceptions.PermissionDenied("Only the sender is allowed to mark the order as sent")
 
-            for order_item in instance.orderitem_set.all():
-                order_listing = order_item.listing
-                order_listing.quantity += order_item.quantity
-                order_item.is_listed = True
-                order_listing.is_sold = False
-                order_listing.save()
+            if instance.status != 'sent' and (
+                    validated_data['status'] == 'completed' or validated_data['status'] == 'rejected'):
+                raise exceptions.ValidationError('Only sent orders can be marked as completed or rejected')
+
+            if validated_data['status'] == 'rejected':
+                if user != sender_user and user != receiver_user:
+                    raise exceptions.PermissionDenied("You don't have permission to update this order status.")
+
+                for order_item in instance.orderitem_set.all():
+                    order_listing = order_item.listing
+                    order_listing.quantity += order_item.quantity
+                    order_item.is_listed = True
+                    order_listing.is_sold = False
+                    order_listing.save()
 
         return super().update(instance, validated_data)
+
+    def get_status_index(self, status):
+
+        status_order = ['ordered', 'sent', 'received', 'completed', 'rejected']
+
+        return status_order.index(status)
 
 
 class FeedbackAndRatingSerializer(serializers.ModelSerializer):
