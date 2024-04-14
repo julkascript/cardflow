@@ -66,7 +66,6 @@ class OrderSerializerTests(TestCase):
         self.order.refresh_from_db()
 
         response = self.client.patch(f'/api/order/{self.order.pk}/', {'status': 'completed'}, format='json')
-
         self.assertEqual(response.status_code, 200)
         self.order.refresh_from_db()
         self.assertEqual(self.order.status, 'completed')
