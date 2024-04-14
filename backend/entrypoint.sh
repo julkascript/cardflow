@@ -40,7 +40,7 @@ exists=$(python manage.py shell -c 'import django; django.setup(); from django.c
 
 if [ "$exists" = "False" ]; then
   echo "Creating superuser..."
-  python manage.py shell -c 'import django; django.setup(); from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser("admin", $"PGADMIN_DEFAULT_EMAIL", password=$"PGADMIN_DEFAULT_PASSWORD")'
+  python manage.py shell -c "import django; django.setup(); from django.contrib.auth import get_user_model; User = get_user_model(); User.objects.create_superuser('admin', '$PGADMIN_DEFAULT_EMAIL', password='$PGADMIN_DEFAULT_PASSWORD')"
   echo "Superuser created"
 else
   echo "Superuser already exists. Skipping creation."
