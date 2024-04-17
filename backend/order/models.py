@@ -10,11 +10,8 @@ User = get_user_model()
 
 class Order(models.Model):
     STATUS_CHOICES = [
-        ('in_cart', 'In Cart'),
         ('ordered', 'Ordered'),
         ('sent', 'Sent'),
-        ('received', 'Received'),
-
         ('completed', 'Completed'),
         ('rejected', 'Rejected'),
     ]

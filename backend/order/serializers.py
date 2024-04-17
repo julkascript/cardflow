@@ -76,7 +76,7 @@ class OrderSerializer(serializers.ModelSerializer):
 
     def get_status_index(self, status):
 
-        status_order = ['ordered', 'sent', 'received', 'completed', 'rejected']
+        status_order = ['ordered', 'sent', 'completed', 'rejected']
 
         return status_order.index(status)
 
