@@ -1,18 +1,21 @@
-from django.db.models import Count, Subquery, OuterRef, Min, Sum
-from django_filters.rest_framework import DjangoFilterBackend
-from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets, generics
-from rest_framework import permissions
+from datetime import timedelta
 
+from django.db.models import Subquery, OuterRef, Min, Sum
+from django.utils import timezone
+from django_filters.rest_framework import DjangoFilterBackend
+from drf_spectacular.utils import extend_schema, OpenApiParameter
+from rest_framework import permissions
+from rest_framework import viewsets, generics
+
+from listing.models import Listing
+from order.models import OrderItem
+from .filters import YugiohCardFilter, YugiohCardInSetFilter
 from .models import YugiohCard, YugiohCardInSet
 from .serializers import (
     YugiohCardInSetSerializer,
     YugiohCardSerializer,
-    BestSellerCardSerializer,
+    BestSellerCardSerializer, TrendingCardSerializer,
 )
-from .filters import YugiohCardFilter, YugiohCardInSetFilter
-from listing.models import Listing
-from order.models import OrderItem
 
 
 @extend_schema(tags=["Yu-Gi-Oh Card"])
@@ -85,3 +88,65 @@ class BestSellerCardListView(generics.ListAPIView):
         )
 
         return queryset
+
+
+@extend_schema(tags=["Trending Cards"],
+               parameters=[OpenApiParameter(name="count", description='N cards to show', type=int, required=False)])
+class TrendingCardListView(generics.ListAPIView):
+    """
+    Viewset for API endpoint that shows N Trending cards for the past 30 days.\n
+    The trending card is defined as the card that has been sold the most during the past 30 days.\n
+        - The endpoint is /api/trending/
+    """
+
+    serializer_class = TrendingCardSerializer
+    authentication_classes = []
+    permission_classes = []
+
+    def get_queryset(self):
+        count = int(
+            self.request.query_params.get('count', 3))  # Default to 3 if count parameter not provided or invalid
+
+        # Calculate the date 30 days ago from now
+        thirty_days_ago = timezone.now() - timedelta(days=30)
+
+        top_cards = (
+            OrderItem.objects.filter(order__status_history__status="completed",
+                                     order__status_history__timestamp__gte=thirty_days_ago)
+            .values("listing__card")
+            .annotate(order_count=Sum("quantity"))
+            .order_by("-order_count")
+        )
+
+        top_cards_ids = [card["listing__card"] for card in top_cards]
+
+        queryset = (
+            Listing.objects.filter(card__in=top_cards_ids)
+            .annotate(
+                order_count=Subquery(
+                    OrderItem.objects.filter(
+                        order__status_history__status="completed",
+                        order__status_history__timestamp__gte=thirty_days_ago,
+                        listing__card=OuterRef("card")
+                    )
+                    .values("listing__card")
+                    .annotate(count=Sum("quantity"))
+                    .values("count")[:1]
+                ),
+                lowest_price=Min("price"),
+            )
+            .order_by("-order_count")
+            .distinct()
+        )
+
+        unique_results = set()
+        filtered_results = []
+        for obj in queryset:
+            if obj.card_id not in unique_results:
+                unique_results.add(obj.card_id)
+                filtered_results.append(obj)
+
+        if int(count) >= len(filtered_results):
+            return filtered_results
+
+        return filtered_results[:count]

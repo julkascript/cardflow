@@ -1,5 +1,6 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
+
 from . import views
 
 router = DefaultRouter()
@@ -11,4 +12,5 @@ app_name = 'yugioh'
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('api/trending/', views.TrendingCardListView.as_view(), name='trending-cards'),
 ]
