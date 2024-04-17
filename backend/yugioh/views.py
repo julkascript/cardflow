@@ -84,10 +84,19 @@ class BestSellerCardListView(generics.ListAPIView):
                 ),
                 lowest_price=Min("price"),
             )
-            .order_by("-order_count")[:3]
+            .order_by("-order_count")
         )
 
-        return queryset
+        unique_results = set()
+        filtered_results = []
+        for obj in queryset:
+            if obj.card_id not in unique_results:
+                unique_results.add(obj.card_id)
+                filtered_results.append(obj)
+        if len(filtered_results) < 3:
+            return filtered_results
+
+        return filtered_results[:3]
 
 
 @extend_schema(tags=["Trending Cards"],
