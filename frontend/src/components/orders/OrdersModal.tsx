@@ -19,6 +19,7 @@ import MarketTable from '../marketTable/MarketTable';
 import SummaryData from '../shoppingCart/SummaryData';
 import Home from '@mui/icons-material/Home';
 import { createPortal } from 'react-dom';
+import { orderStates } from '../../constants/orders';
 
 const Rating = styled(BaseRating)({
   '& .MuiRating-iconFilled': {
@@ -40,6 +41,11 @@ type OrdersModalProps = {
 function OrdersModal(props: OrdersModalProps): JSX.Element {
   const order = props.order;
   const [receivedOption, setReceivedOption] = useState(props.status);
+  const totalPrice = props.order.order_items.reduce(
+    (total, order) => total + order.quantity * order.listing.price,
+    0,
+  );
+  const shipmentPrice = 9.85;
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setReceivedOption(event.target.value as orderState);
@@ -57,19 +63,21 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
     >
       <div className="p-16">
         <section className="flex gap-4 items-center mb-6 justify-center lg:justify-start">
-          <h2 className="font-bold text-4xl">Order #{order.id}</h2>
-          <OrderStatusBadge orderState={order.state} />
+          <h2 className="font-bold text-4xl">Order #{order.order_id}</h2>
+          <OrderStatusBadge orderState={order.status} />
         </section>
         <div className="mb-4 justify-center flex lg:block">
           <FormControl>
-            {props.userPosition === 'seller' ? (
+            {props.userPosition === 'buyer' ? (
               <RadioGroup name="status" value={receivedOption} onChange={handleChange}>
                 <FormControlLabel
+                  disabled={props.status !== 'sent'}
                   control={<Radio color="info" />}
                   label="Received"
                   value="received"
                 />
                 <FormControlLabel
+                  disabled={props.status !== 'sent'}
                   control={<Radio color="info" />}
                   label="Not received"
                   value="not received"
@@ -87,10 +95,14 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             )}
           </FormControl>
         </div>
-        {/* TO-DO: update URL */}
         <div className="lg:text-left text-center">
-          <Link sx={{ color: '#0B70E5', fontSize: 20 }} underline="hover" className="font-bold">
-            Kadabra
+          <Link
+            href={`/user/${order.sender_user.username}`}
+            sx={{ color: '#0B70E5', fontSize: 20 }}
+            underline="hover"
+            className="font-bold"
+          >
+            {order.sender_user.username}
           </Link>
         </div>
         <Divider />
@@ -98,9 +110,9 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
           <section className="w-2/5">
             <h3 className="font-bold mb-4">Summary</h3>
             <ul className="mr-4">
-              <SummaryData summary="Card(s) total price" data={150} />
-              <SummaryData summary="Shipment price" data={9.85} />
-              <SummaryData boldedData summary="Total" data={150 + 9.85} />
+              <SummaryData summary="Card(s) total price" data={totalPrice} />
+              <SummaryData summary="Shipment price" data={shipmentPrice} />
+              <SummaryData boldedData summary="Total" data={totalPrice + shipmentPrice} />
             </ul>
           </section>
           <Divider className="hidden lg:block" orientation="vertical" flexItem />
@@ -116,7 +128,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
                   </InputAdornment>
                 ),
               }}
-              value="Lavender Town"
+              value={order.delivery_address}
               disabled={true}
               className="w-full"
             />
@@ -132,12 +144,14 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td className="font-bold">Dark Magical Circle</td>
-                <td>CT12</td>
-                <td>1</td>
-                <td className="font-bold">$&nbsp;0.03</td>
-              </tr>
+              {order.order_items.map((o) => (
+                <tr>
+                  <td className="font-bold">{o.listing.card_name}</td>
+                  <td>{o.listing.card_in_set.set.set_code}</td>
+                  <td>{o.quantity}</td>
+                  <td className="font-bold">$&nbsp;{o.listing.price * o.quantity}</td>
+                </tr>
+              ))}
             </tbody>
           </MarketTable>
         </div>
@@ -145,10 +159,11 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
           <section>
             <h3 className="font-bold mb-2 lg:mb-4 text-center lg:text-left">History</h3>
             <ul className="flex flex-col gap-2">
-              <li>State 1 - 20.11.2024</li>
-              <li>State 2 - 20.11.2024</li>
-              <li>State 3 - 20.11.2024</li>
-              <li>State 4 - 20.11.2024</li>
+              {props.order.status_history.map((s) => (
+                <li>
+                  {orderStates[s.status]} - {formatTimestamp(s.timestamp)}
+                </li>
+              ))}
             </ul>
           </section>
           <Divider className="hidden lg:block lg:px-[86px]" orientation="vertical" flexItem />
@@ -183,6 +198,11 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
     </Dialog>,
     document.body,
   );
+}
+
+function formatTimestamp(timestamp: string): string {
+  const date = new Date(timestamp);
+  return date.toLocaleDateString('de');
 }
 
 export default OrdersModal;

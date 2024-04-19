@@ -4,7 +4,7 @@ import OrdersTableRow from './OrdersTableRow';
 
 type OrdersTableProps = {
   /**
-   * If used in the My orders page, use ``seller``, otherwise, use ``buyer``
+   * If used in the My orders page, use ``buyer``, otherwise, use ``seller``
    */
   userPosition: 'seller' | 'buyer';
   orders: Order[];

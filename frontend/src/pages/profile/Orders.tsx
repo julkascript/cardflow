@@ -43,7 +43,7 @@ function Orders(): JSX.Element {
           onChangePage={setPage}
           count={count}
           orders={orders}
-          userPosition="seller"
+          userPosition="buyer"
         />
       </div>
     </section>

@@ -33,7 +33,7 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
         <td style={{ paddingLeft: 16 }}>${totalPrice}</td>
         <td style={{ paddingLeft: 16 }}>
           <Badge
-            invisible={!(props.userPosition === 'buyer' && props.order.status === 'ordered')}
+            invisible={!(props.userPosition === 'seller' && props.order.status === 'ordered')}
             badgeContent=" "
             color="error"
           >

@@ -18,7 +18,7 @@ export type Order = {
   order_items: OrderItem[];
   status: orderState;
   delivery_address: string;
-  statusHistory: StatusHistory[];
+  status_history: StatusHistory[];
 };
 
 export type OrderItem = {
