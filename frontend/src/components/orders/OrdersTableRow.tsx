@@ -51,7 +51,7 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
         open={open}
         onClose={() => setOpen(false)}
         order={props.order}
-        status="rejected"
+        status={props.order.status}
       />
     </>
   );

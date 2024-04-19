@@ -85,8 +85,14 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               </RadioGroup>
             ) : (
               <RadioGroup name="status" value={receivedOption} onChange={handleChange}>
-                <FormControlLabel control={<Radio color="info" />} label="Sent" value="sent" />
                 <FormControlLabel
+                  disabled={props.status === 'completed' || props.status === 'rejected'}
+                  control={<Radio color="info" />}
+                  label="Sent"
+                  value="sent"
+                />
+                <FormControlLabel
+                  disabled={props.status === 'completed' || props.status === 'rejected'}
                   control={<Radio color="info" />}
                   label="Rejected"
                   value="rejected"
