@@ -4,17 +4,19 @@ import { PaginatedItem } from '../yugioh/types';
 import { Order } from './types';
 
 export const orderService = {
-  async getOrders(username: string): Promise<PaginatedItem<Order>> {
+  async getOrders(username: string, page: number): Promise<PaginatedItem<Order>> {
     const orders = await httpService.get<PaginatedItem<Order>>(api.orders.root, {
       receiver_user: username,
+      page,
     });
 
     return orders!;
   },
 
-  async getSales(username: string): Promise<PaginatedItem<Order>> {
+  async getSales(username: string, page: number): Promise<PaginatedItem<Order>> {
     const orders = await httpService.get<PaginatedItem<Order>>(api.orders.root, {
       sender_user: username,
+      page,
     });
 
     return orders!;
