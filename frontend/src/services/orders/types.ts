@@ -1,4 +1,4 @@
-export type acception = 'received' | 'rejected';
+export type acception = 'completed' | 'rejected';
 export type orderState = 'ordered' | 'sent' | acception | 'not received';
 
 export type Order = {
