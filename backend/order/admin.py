@@ -2,12 +2,17 @@ from django.contrib import admin
 from django.db.models import Sum
 
 from order.filters import AdminListingFilter
-from order.models import Order, OrderItem, FeedbackAndRating
+from order.models import Order, OrderItem, FeedbackAndRating, OrderStatusHistory
 
 
 class OrderItemInline(admin.StackedInline):
     model = OrderItem
     extra = 1
+
+
+@admin.register(OrderStatusHistory)
+class OrderStatusHistoryAdmin(admin.ModelAdmin):
+    pass
 
 
 @admin.register(Order)
