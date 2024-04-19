@@ -1,20 +1,14 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
 import OrdersTable from '../../components/orders/OrdersTable';
 import ListingTopBar from '../../components/sellListing/ListingTopBar';
 import { useCurrentUser } from '../../context/user';
 import { Order } from '../../services/orders/types';
+import { orderService } from '../../services/orders/orderService';
+import { errorToast } from '../../util/errorToast';
 
 function Orders(): JSX.Element {
-  const orders: Order[] = [
-    {
-      id: 1,
-      user: 'admin',
-      quantity: 5,
-      total: 20,
-      state: 'sent',
-    },
-  ];
+  const [orders, setOrders] = useState<Order[]>([]);
 
   const { user } = useCurrentUser();
   const breadcrumbNavigation: BreadcrumbLink[] = [
@@ -25,7 +19,19 @@ function Orders(): JSX.Element {
   ];
 
   const [page, setPage] = useState(1);
-  const count = 10;
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (user.username) {
+      orderService
+        .getOrders(user.username, page)
+        .then((data) => {
+          setOrders(data.results);
+          setCount(data.count);
+        })
+        .catch(errorToast);
+    }
+  }, [user, page]);
 
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">

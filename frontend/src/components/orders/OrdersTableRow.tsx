@@ -11,24 +11,33 @@ type OrdersTableRowProps = {
 
 function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
   const [open, setOpen] = useState(false);
+  const quantity = props.order.order_items.reduce((total, order) => total + order.quantity, 0);
+  const totalPrice = props.order.order_items.reduce(
+    (total, order) => total + order.quantity * order.listing.price,
+    0,
+  );
   return (
     <>
       <tr>
-        <td style={{ paddingLeft: 16 }}>{props.order.id}</td>
+        <td style={{ paddingLeft: 16 }}>{props.order.order_id}</td>
         <td style={{ paddingLeft: 16 }}>
-          <Link underline="hover" sx={{ color: '#0B70E5' }} href={`/user/${props.order.user}`}>
-            {props.order.user}
+          <Link
+            underline="hover"
+            sx={{ color: '#0B70E5' }}
+            href={`/user/${props.order.sender_user.username}`}
+          >
+            {props.order.sender_user.username}
           </Link>
         </td>
-        <td style={{ paddingLeft: 16 }}>{props.order.quantity}</td>
-        <td style={{ paddingLeft: 16 }}>${props.order.total}</td>
+        <td style={{ paddingLeft: 16 }}>{quantity}</td>
+        <td style={{ paddingLeft: 16 }}>${totalPrice}</td>
         <td style={{ paddingLeft: 16 }}>
           <Badge
-            invisible={!(props.userPosition === 'buyer' && props.order.state === 'ordered')}
+            invisible={!(props.userPosition === 'buyer' && props.order.status === 'ordered')}
             badgeContent=" "
             color="error"
           >
-            <div className="pr-2">{orderStates[props.order.state]}</div>
+            <div className="pr-2">{orderStates[props.order.status]}</div>
           </Badge>
         </td>
         <td style={{ paddingLeft: 16 }}>

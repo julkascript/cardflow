@@ -34,7 +34,7 @@ function OrdersTable(props: OrdersTableProps): JSX.Element {
       </thead>
       <tbody>
         {props.orders.map((o) => (
-          <OrdersTableRow userPosition={props.userPosition} key={o.id} order={o} />
+          <OrdersTableRow userPosition={props.userPosition} key={o.order_id} order={o} />
         ))}
       </tbody>
     </MarketTable>
