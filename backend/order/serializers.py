@@ -45,13 +45,13 @@ class OrderSerializer(serializers.ModelSerializer):
         sender_user = instance.sender_user
         receiver_user = instance.receiver_user
 
-        if instance.status == 'rejected' or instance.status == 'completed':
-            raise serializers.ValidationError("Rejected or Completed order cannot be updated")
+        if 'status' in validated_data and len(validated_data) == 1:
 
-        if user != sender_user and user != receiver_user:
-            raise exceptions.PermissionDenied("You don't have permission to update this order")
+            if instance.status == 'rejected' or instance.status == 'completed':
+                raise serializers.ValidationError("Rejected or Completed order cannot be updated")
 
-        if 'status' in validated_data:
+            if user != sender_user and user != receiver_user:
+                raise exceptions.PermissionDenied("You don't have permission to update this order")
 
             if self.get_status_index(validated_data['status']) < self.get_status_index(instance.status):
                 raise serializers.ValidationError("Cannot downgrade the status of an order")
@@ -72,7 +72,9 @@ class OrderSerializer(serializers.ModelSerializer):
                     order_listing.is_sold = False
                     order_listing.save()
 
-        return super().update(instance, validated_data)
+            return super().update(instance, validated_data)
+
+        raise exceptions.PermissionDenied("You can update only the status from this endpoint")
 
     def get_status_index(self, status):
 
