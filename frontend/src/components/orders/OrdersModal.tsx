@@ -12,7 +12,7 @@ import {
   styled,
   Button,
 } from '@mui/material';
-import { Order, acception, reception } from '../../services/orders/types';
+import { Order, orderState } from '../../services/orders/types';
 import OrderStatusBadge from './OrderStatusBadge';
 import { useState } from 'react';
 import MarketTable from '../marketTable/MarketTable';
@@ -33,7 +33,7 @@ type OrdersModalProps = {
   open: boolean;
   onClose: () => void;
   order: Order;
-  status: acception | reception;
+  status: orderState;
   userPosition: 'seller' | 'buyer';
 };
 
@@ -42,7 +42,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
   const [receivedOption, setReceivedOption] = useState(props.status);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setReceivedOption(event.target.value as reception);
+    setReceivedOption(event.target.value as orderState);
   }
 
   function save() {}
