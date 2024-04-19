@@ -1,10 +1,32 @@
+import { YugiohCardListing } from '../yugioh/types';
+
 export type acception = 'completed' | 'rejected';
 export type orderState = 'ordered' | 'sent' | acception | 'not received';
 
 export type Order = {
-  id: number;
-  user: string;
+  order_id: number;
+  sender_user: {
+    id: number;
+    username: string;
+    email: string;
+  };
+  receiver_user: {
+    id: number;
+    username: string;
+    email: string;
+  };
+  order_items: OrderItem[];
+  status: orderState;
+  delivery_address: string;
+  statusHistory: StatusHistory[];
+};
+
+export type OrderItem = {
+  listing: YugiohCardListing;
   quantity: number;
-  total: number;
-  state: orderState;
+};
+
+export type StatusHistory = {
+  status: orderState;
+  timestamp: string;
 };
