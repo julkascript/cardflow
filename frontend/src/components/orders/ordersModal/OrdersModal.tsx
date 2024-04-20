@@ -22,6 +22,8 @@ import { createPortal } from 'react-dom';
 import { orderStates } from '../../../constants/orders';
 import { orderService } from '../../../services/orders/orderService';
 import { errorToast } from '../../../util/errorToast';
+import toast from 'react-hot-toast';
+import { toastMessages } from '../../../constants/toast';
 
 const Rating = styled(BaseRating)({
   '& .MuiRating-iconFilled': {
@@ -66,7 +68,10 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
     if (props.status !== receivedOption) {
       orderService
         .changeOrderStatus(order.order_id, receivedOption)
-        .then(() => props.onClose(true))
+        .then(() => {
+          props.onClose(true);
+          toast.success(toastMessages.success.orderStatusChanged(order.order_id, receivedOption));
+        })
         .catch(errorToast);
     }
   }
