@@ -15,7 +15,7 @@ type OrdersTableProps = {
 };
 
 function OrdersTable(props: OrdersTableProps): JSX.Element {
-  const userPosition = props.userPosition === 'seller' ? 'Seller' : 'Buyer';
+  const userPosition = props.userPosition === 'buyer' ? 'Seller' : 'Buyer';
   return (
     <MarketTable
       page={props.page}

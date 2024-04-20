@@ -18,6 +18,9 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
     0,
   );
 
+  const userToDisplay =
+    props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
+
   function onClose(closedFromAction?: boolean) {
     setOpen(false);
     if (closedFromAction) {
@@ -32,9 +35,9 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
           <Link
             underline="hover"
             sx={{ color: '#0B70E5' }}
-            href={`/user/${props.order.sender_user.username}`}
+            href={`/user/${userToDisplay.username}`}
           >
-            {props.order.sender_user.username}
+            {userToDisplay.username}
           </Link>
         </td>
         <td style={{ paddingLeft: 16 }}>{quantity}</td>

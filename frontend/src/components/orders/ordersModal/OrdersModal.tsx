@@ -55,6 +55,9 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
   );
   const shipmentPrice = 9.85;
 
+  const userToDisplay =
+    props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
+
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setReceivedOption(event.target.value as orderState);
   }
@@ -118,12 +121,12 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
         </div>
         <div className="lg:text-left text-center">
           <Link
-            href={`/user/${order.sender_user.username}`}
+            href={`/user/${userToDisplay.username}`}
             sx={{ color: '#0B70E5', fontSize: 20 }}
             underline="hover"
             className="font-bold"
           >
-            {order.sender_user.username}
+            {userToDisplay.username}
           </Link>
         </div>
         <Divider />
