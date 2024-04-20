@@ -195,7 +195,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               ))}
             </ul>
           </section>
-          <Divider className="hidden lg:block lg:px-[86px]" orientation="vertical" flexItem />
+          <Divider className="hidden lg:block lg:px-[78px]" orientation="vertical" flexItem />
           <Divider className="block lg:hidden" flexItem />
           <section className="w-full flex flex-col items-center lg:w-auto lg:block lg:mx-auto">
             <h3 className="font-bold mb-4 lg:mb-2 text-center lg:text-left">Feedback</h3>
