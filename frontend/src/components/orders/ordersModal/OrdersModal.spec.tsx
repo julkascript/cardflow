@@ -158,6 +158,30 @@ describe('OrdersModal component tests', () => {
 
       expect(spy).toHaveBeenCalledWith(1, 'sent');
     });
+
+    it('Triggers correct service method when clicked by the buyer and status has changed', async () => {
+      const spy = vi
+        .spyOn(orderService, 'changeOrderStatus')
+        .mockResolvedValueOnce(generateMockOrder('sent'));
+
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('sent')}
+          status={'sent'}
+          userPosition={'buyer'}
+        />,
+      );
+
+      const radio = await screen.findByLabelText(orderStates.completed);
+      fireEvent.click(radio);
+
+      const saveButton = await screen.findByText('Save');
+      fireEvent.click(saveButton);
+
+      expect(spy).toHaveBeenCalledWith(1, 'completed');
+    });
   });
 
   describe('Radio buttons', () => {
