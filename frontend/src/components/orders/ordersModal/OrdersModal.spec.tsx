@@ -3,6 +3,7 @@ import { describe, expect, it, vi } from 'vitest';
 import OrdersModal from './OrdersModal';
 import { Order, orderState } from '../../../services/orders/types';
 import { orderService } from '../../../services/orders/orderService';
+import { orderStates } from '../../../constants/orders';
 
 function generateMockOrder(status: orderState): Order {
   const mockOrder: Order = {
@@ -69,7 +70,7 @@ describe('OrdersModal component tests', () => {
         />,
       );
 
-      const radio = (await screen.findByLabelText('Sent')) as HTMLInputElement;
+      const radio = (await screen.findByLabelText(orderStates.sent)) as HTMLInputElement;
       fireEvent.click(radio);
 
       const saveButton = (await screen.findByText('Save')) as HTMLButtonElement;
@@ -102,7 +103,7 @@ describe('OrdersModal component tests', () => {
         />,
       );
 
-      const radio = (await screen.findByLabelText('Received')) as HTMLInputElement;
+      const radio = (await screen.findByLabelText(orderStates.completed)) as HTMLInputElement;
       fireEvent.click(radio);
 
       const saveButton = (await screen.findByText('Save')) as HTMLButtonElement;
@@ -120,8 +121,10 @@ describe('OrdersModal component tests', () => {
         />,
       );
 
-      const sentRadio = (await screen.findByLabelText('Sent')) as HTMLInputElement;
-      const rejectedRadio = (await screen.findByLabelText('Rejected')) as HTMLInputElement;
+      const sentRadio = (await screen.findByLabelText(orderStates.sent)) as HTMLInputElement;
+      const rejectedRadio = (await screen.findByLabelText(
+        orderStates.rejected,
+      )) as HTMLInputElement;
       fireEvent.click(rejectedRadio);
 
       const saveButton = (await screen.findByText('Save')) as HTMLButtonElement;
@@ -147,7 +150,7 @@ describe('OrdersModal component tests', () => {
         />,
       );
 
-      const radio = await screen.findByLabelText('Sent');
+      const radio = await screen.findByLabelText(orderStates.sent);
       fireEvent.click(radio);
 
       const saveButton = await screen.findByText('Save');

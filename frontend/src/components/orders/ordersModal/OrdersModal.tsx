@@ -96,7 +96,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
                 <FormControlLabel
                   disabled={props.status !== 'sent'}
                   control={<Radio color="info" />}
-                  label="Received"
+                  label={orderStates.completed}
                   value="completed"
                 />
                 <FormControlLabel
@@ -111,13 +111,13 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
                 <FormControlLabel
                   disabled={props.status === 'completed' || props.status === 'rejected'}
                   control={<Radio color="info" />}
-                  label="Sent"
+                  label={orderStates.sent}
                   value="sent"
                 />
                 <FormControlLabel
                   disabled={props.status === 'completed' || props.status === 'rejected'}
                   control={<Radio color="info" />}
-                  label="Rejected"
+                  label={orderStates.rejected}
                   value="rejected"
                 />
               </RadioGroup>
