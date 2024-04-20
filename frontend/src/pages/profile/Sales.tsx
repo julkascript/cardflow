@@ -21,6 +21,16 @@ function Sales(): JSX.Element {
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
 
+  function updateOrders() {
+    orderService
+      .getSales(user.username, page)
+      .then((data) => {
+        setOrders(data.results);
+        setCount(data.count);
+      })
+      .catch(errorToast);
+  }
+
   useEffect(() => {
     if (user.username) {
       orderService
@@ -39,6 +49,7 @@ function Sales(): JSX.Element {
       <BreadcrumbNavigation heading="My sales" links={breadcrumbNavigation} />
       <div className="flex flex-col lg:items-center overflow-auto">
         <OrdersTable
+          updateOrders={updateOrders}
           page={page}
           onChangePage={setPage}
           count={count}

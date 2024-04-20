@@ -20,6 +20,8 @@ import SummaryData from '../shoppingCart/SummaryData';
 import Home from '@mui/icons-material/Home';
 import { createPortal } from 'react-dom';
 import { orderStates } from '../../constants/orders';
+import { orderService } from '../../services/orders/orderService';
+import { errorToast } from '../../util/errorToast';
 
 const Rating = styled(BaseRating)({
   '& .MuiRating-iconFilled': {
@@ -32,7 +34,13 @@ const Rating = styled(BaseRating)({
 
 type OrdersModalProps = {
   open: boolean;
-  onClose: () => void;
+  /**
+   *
+   * @param closedFromAction if the modal was closed due to the user successfully
+   * performing some action (e.g. changing the status).
+   * @returns
+   */
+  onClose: (closedFromAction?: boolean) => void;
   order: Order;
   status: orderState;
   userPosition: 'seller' | 'buyer';
@@ -51,13 +59,20 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
     setReceivedOption(event.target.value as orderState);
   }
 
-  function save() {}
+  function save() {
+    if (props.status !== receivedOption) {
+      orderService
+        .changeOrderStatus(order.order_id, receivedOption)
+        .then(() => props.onClose(true))
+        .catch(errorToast);
+    }
+  }
 
   return createPortal(
     <Dialog
       className="orders-modal"
       open={props.open}
-      onClose={props.onClose}
+      onClose={() => props.onClose()}
       fullWidth
       maxWidth="md"
     >
@@ -74,7 +89,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
                   disabled={props.status !== 'sent'}
                   control={<Radio color="info" />}
                   label="Received"
-                  value="received"
+                  value="completed"
                 />
                 <FormControlLabel
                   disabled={props.status !== 'sent'}
@@ -192,10 +207,15 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             Report
           </Button>
           <div className="flex gap-4">
-            <Button variant="outlined" onClick={props.onClose}>
+            <Button variant="outlined" onClick={() => props.onClose()}>
               Cancel
             </Button>
-            <Button variant="contained" color="success" onClick={save}>
+            <Button
+              disabled={props.status === receivedOption}
+              variant="contained"
+              color="success"
+              onClick={save}
+            >
               Save
             </Button>
           </div>

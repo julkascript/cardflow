@@ -7,6 +7,7 @@ import OrdersModal from './OrdersModal';
 type OrdersTableRowProps = {
   order: Order;
   userPosition: 'buyer' | 'seller';
+  updateOrder: () => void;
 };
 
 function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
@@ -16,6 +17,13 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
     (total, order) => total + order.quantity * order.listing.price,
     0,
   );
+
+  function onClose(closedFromAction?: boolean) {
+    setOpen(false);
+    if (closedFromAction) {
+      props.updateOrder();
+    }
+  }
   return (
     <>
       <tr>
@@ -49,7 +57,7 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
       <OrdersModal
         userPosition={props.userPosition}
         open={open}
-        onClose={() => setOpen(false)}
+        onClose={onClose}
         order={props.order}
         status={props.order.status}
       />

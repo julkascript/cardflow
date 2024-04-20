@@ -1,7 +1,7 @@
 import { api } from '../../constants/api';
 import { httpService } from '../http/http';
 import { PaginatedItem } from '../yugioh/types';
-import { Order } from './types';
+import { Order, orderState } from './types';
 
 export const orderService = {
   async getOrders(username: string, page: number): Promise<PaginatedItem<Order>> {
@@ -24,6 +24,11 @@ export const orderService = {
 
   async getOrder(id: number): Promise<Order> {
     const order = await httpService.get<Order>(api.orders.id(id));
+    return order!;
+  },
+
+  async changeOrderStatus(id: number, status: orderState): Promise<Order> {
+    const order = await httpService.patch<Order>(api.orders.id(id), { status });
     return order!;
   },
 };

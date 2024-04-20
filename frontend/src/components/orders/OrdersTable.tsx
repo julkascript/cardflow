@@ -11,6 +11,7 @@ type OrdersTableProps = {
   page: number;
   onChangePage: (page: number) => void;
   count: number;
+  updateOrders: () => void;
 };
 
 function OrdersTable(props: OrdersTableProps): JSX.Element {
@@ -34,7 +35,12 @@ function OrdersTable(props: OrdersTableProps): JSX.Element {
       </thead>
       <tbody>
         {props.orders.map((o) => (
-          <OrdersTableRow userPosition={props.userPosition} key={o.order_id} order={o} />
+          <OrdersTableRow
+            updateOrder={props.updateOrders}
+            userPosition={props.userPosition}
+            key={o.order_id}
+            order={o}
+          />
         ))}
       </tbody>
     </MarketTable>

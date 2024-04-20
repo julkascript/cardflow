@@ -21,6 +21,16 @@ function Orders(): JSX.Element {
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
 
+  function updateOrders() {
+    orderService
+      .getOrders(user.username, page)
+      .then((data) => {
+        setOrders(data.results);
+        setCount(data.count);
+      })
+      .catch(errorToast);
+  }
+
   useEffect(() => {
     if (user.username) {
       orderService
@@ -44,6 +54,7 @@ function Orders(): JSX.Element {
           count={count}
           orders={orders}
           userPosition="buyer"
+          updateOrders={updateOrders}
         />
       </div>
     </section>
