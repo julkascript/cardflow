@@ -2,7 +2,7 @@ import { Badge, Button, Link } from '@mui/material';
 import { Order } from '../../services/orders/types';
 import { orderStates } from '../../constants/orders';
 import { useState } from 'react';
-import OrdersModal from './OrdersModal';
+import OrdersModal from './ordersModal/OrdersModal';
 
 type OrdersTableRowProps = {
   order: Order;

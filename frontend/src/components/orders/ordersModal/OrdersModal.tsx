@@ -12,16 +12,16 @@ import {
   styled,
   Button,
 } from '@mui/material';
-import { Order, orderState } from '../../services/orders/types';
-import OrderStatusBadge from './OrderStatusBadge';
+import { Order, orderState } from '../../../services/orders/types';
+import OrderStatusBadge from '../OrderStatusBadge';
 import { useState } from 'react';
-import MarketTable from '../marketTable/MarketTable';
-import SummaryData from '../shoppingCart/SummaryData';
+import MarketTable from '../../marketTable/MarketTable';
+import SummaryData from '../../shoppingCart/SummaryData';
 import Home from '@mui/icons-material/Home';
 import { createPortal } from 'react-dom';
-import { orderStates } from '../../constants/orders';
-import { orderService } from '../../services/orders/orderService';
-import { errorToast } from '../../util/errorToast';
+import { orderStates } from '../../../constants/orders';
+import { orderService } from '../../../services/orders/orderService';
+import { errorToast } from '../../../util/errorToast';
 
 const Rating = styled(BaseRating)({
   '& .MuiRating-iconFilled': {
