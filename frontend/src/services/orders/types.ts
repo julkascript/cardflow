@@ -1,7 +1,7 @@
 import { YugiohCardListing } from '../yugioh/types';
 
 export type acception = 'completed' | 'rejected';
-export type orderState = 'ordered' | 'sent' | acception | 'not received';
+export type orderState = 'ordered' | 'sent' | acception;
 
 export type Order = {
   order_id: number;
