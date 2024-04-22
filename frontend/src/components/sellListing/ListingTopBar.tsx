@@ -18,7 +18,7 @@ function CardflowTabs() {
   }
 
   return (
-    <Tabs className="bg-white pl-4" value={computeValue()}>
+    <Tabs className="bg-white pl-2 border-b-2" value={computeValue()}>
       <Tab value="buy" component={Link} to="/buy" label="Buy" />
       <Tab value="sell" component={Link} to="/sell/manage" label="Sell" />
       <Tab value="trade" component={Link} to="#" label="Trade" />
