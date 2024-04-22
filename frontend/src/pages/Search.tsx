@@ -7,7 +7,7 @@ import { Pagination, TextField } from '@mui/material';
 import SearchButton from '../components/navigation/desktop/buttons/SearchButton';
 import { yugiohService } from '../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
-import ListingTopBar from '../components/sellListing/ListingTopBar';
+import CardflowTabs from '../components/sellListing/ListingTopBar';
 import { errorToast } from '../util/errorToast';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
 
@@ -78,7 +78,7 @@ function Search(): JSX.Element {
   }, [params.query]);
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
-      <ListingTopBar />
+      <CardflowTabs />
       <BreadcrumbNavigation heading="Search" links={breadcrumbNavigation} />
       <div className="min-h-full mt-2 flex items-center w-full flex-col gap-4">
         <form className="w-2/3 bg-white relative z-0" onSubmit={handleSubmit}>

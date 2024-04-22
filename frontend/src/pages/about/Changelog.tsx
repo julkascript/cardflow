@@ -2,7 +2,7 @@ import { Divider } from '@mui/material';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
 import PageSection from '../../components/PageSection';
 import ChangelogList from '../../components/about/ChangelogList';
-import ListingTopBar from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/ListingTopBar';
 import { changelogArchive } from '../../constants/changelogArchive';
 
 function Changelog(): JSX.Element {
@@ -15,7 +15,7 @@ function Changelog(): JSX.Element {
 
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
-      <ListingTopBar />
+      <CardflowTabs />
       <BreadcrumbNavigation links={breadcrumbNavigation} heading="Changelog" />
       <PageSection className="mt-4 lg:px-12 py-4 lg:py-20 w-11/12 lg:w-4/5 mx-auto">
         {changelogArchive.map((milestone, i) => (

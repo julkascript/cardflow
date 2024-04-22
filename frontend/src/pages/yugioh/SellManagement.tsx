@@ -9,7 +9,7 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import PageHeader from '../../components/PageHeader';
 import LensIcon from '@mui/icons-material/Lens';
 import AddIcon from '@mui/icons-material/Add';
-import ListingTopBar from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/ListingTopBar';
 import { errorToast } from '../../util/errorToast';
 import toast from 'react-hot-toast';
 import { toastMessages } from '../../constants/toast';
@@ -246,7 +246,7 @@ function SellManagement(): JSX.Element {
   }, [user.user_id, page]);
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
-      <ListingTopBar />
+      <CardflowTabs />
       <PageHeader heading="Sell">
         {/* TO-DO: update URL */}
         <Button

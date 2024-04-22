@@ -1,11 +1,11 @@
-import ListingTopBar from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/ListingTopBar';
 import NewListingTopBar from '../../components/sellListing/NewListingTopBar';
 import NewListingBody from '../../components/sellListing/NewSellListingBody';
 
 function Newlisting() {
   return (
     <>
-      <ListingTopBar />
+      <CardflowTabs />
       <NewListingTopBar
         card={0}
         quantity={0}

@@ -8,7 +8,7 @@ const tabValues = Object.entries({
   '/about': 'about',
 });
 
-function ListingTopBar() {
+function CardflowTabs() {
   const location = useLocation();
   const currentPath = location.pathname;
 
@@ -27,4 +27,4 @@ function ListingTopBar() {
   );
 }
 
-export default ListingTopBar;
+export default CardflowTabs;
