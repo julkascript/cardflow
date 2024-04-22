@@ -1,8 +1,9 @@
 from django.contrib.auth import get_user_model
-from django.http import JsonResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets, permissions, response, serializers
+
+from rest_framework import viewsets, permissions, response
+
 
 from order.filters import OrderFilter
 from order.models import Order, FeedbackAndRating
@@ -14,7 +15,7 @@ User = get_user_model()
 
 
 @extend_schema(tags=['Order'])
-class OrderViewSet(viewsets.ReadOnlyModelViewSet):
+class OrderViewSet(viewsets.ReadOnlyModelViewSet, viewsets.mixins.UpdateModelMixin):
     """
     Viewset for API endpoint that allows to see the orders.
 
