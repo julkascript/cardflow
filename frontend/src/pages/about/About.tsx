@@ -2,7 +2,7 @@ import { Button, Divider, SvgIconTypeMap, SxProps, Typography } from '@mui/mater
 import PageHeader from '../../components/PageHeader';
 import PageSection from '../../components/PageSection';
 import Logo from '../../components/logo/Logo';
-import CardflowTabs from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import { theme } from '../../constants/theme';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import FavoriteIcon from '@mui/icons-material/Favorite';

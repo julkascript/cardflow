@@ -2,7 +2,7 @@ import { Divider } from '@mui/material';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
 import PageSection from '../../components/PageSection';
 import ChangelogList from '../../components/about/ChangelogList';
-import CardflowTabs from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import { changelogArchive } from '../../constants/changelogArchive';
 
 function Changelog(): JSX.Element {

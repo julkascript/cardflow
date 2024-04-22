@@ -7,7 +7,7 @@ import { Pagination, TextField } from '@mui/material';
 import SearchButton from '../components/navigation/desktop/buttons/SearchButton';
 import { yugiohService } from '../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
-import CardflowTabs from '../components/sellListing/ListingTopBar';
+import CardflowTabs from '../components/sellListing/CardflowTabs';
 import { errorToast } from '../util/errorToast';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
 

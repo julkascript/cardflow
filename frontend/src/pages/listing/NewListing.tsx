@@ -1,4 +1,4 @@
-import CardflowTabs from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import NewListingTopBar from '../../components/sellListing/NewListingTopBar';
 import NewListingBody from '../../components/sellListing/NewSellListingBody';
 

@@ -1,6 +1,6 @@
 import { Button, TextField, Typography } from '@mui/material';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
-import CardflowTabs from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import { theme } from '../../constants/theme';
 import { Link } from '@mui/material';
 import { useState } from 'react';

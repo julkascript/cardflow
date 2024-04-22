@@ -11,7 +11,7 @@ import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../../util/useEffectAfterInitialLoad';
 import YugiohCardMarket from '../../components/yugioh/table/market/YugiohCardMarket';
 import { Pagination } from '@mui/material';
-import CardflowTabs from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import NewListingTopBar from '../../components/sellListing/NewListingTopBar';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import DiamondIcon from '@mui/icons-material/Diamond';
