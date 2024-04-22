@@ -1,44 +1,29 @@
+import { Tab, Tabs } from '@mui/material';
 import { Link, useLocation } from 'react-router-dom';
+
+const tabValues = Object.entries({
+  '/buy': 'buy',
+  '/search': 'buy',
+  '/sell': 'sell',
+  '/about': 'about',
+});
 
 function ListingTopBar() {
   const location = useLocation();
   const currentPath = location.pathname;
 
+  function computeValue() {
+    const pathValue = tabValues.find((tv) => currentPath.includes(tv[0]));
+    return pathValue ? pathValue[1] : 'buy';
+  }
+
   return (
-    <div className="border-b border-gray-200 bg-white">
-      <div className="mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-start space-x-4">
-          <Link
-            to="/buy"
-            className={`p-4 text-gray-900 hover:text-gray-600  text-sm font-medium ${
-              (currentPath.includes('/buy') || currentPath.includes('/search')) &&
-              'border-b-2 border-stone-500'
-            }`}
-          >
-            Buy
-          </Link>
-          <Link
-            to="/sell/manage"
-            className={`p-4 text-gray-900 hover:text-gray-600  text-sm font-medium ${
-              currentPath.includes('/sell') && 'border-b-2 border-stone-500'
-            }`}
-          >
-            Sell
-          </Link>
-          <Link to="#trade" className="p-4 text-gray-900 hover:text-gray-600  text-sm font-medium">
-            Trade
-          </Link>
-          <Link
-            to="/about"
-            className={`p-4 text-gray-900 hover:text-gray-600  text-sm font-medium ${
-              currentPath.includes('/about') && 'border-b-2 border-stone-500'
-            }`}
-          >
-            About
-          </Link>
-        </div>
-      </div>
-    </div>
+    <Tabs className="bg-white pl-4" value={computeValue()}>
+      <Tab value="buy" component={Link} to="/buy" label="Buy" />
+      <Tab value="sell" component={Link} to="/sell/manage" label="Sell" />
+      <Tab value="trade" component={Link} to="#" label="Trade" />
+      <Tab value="about" component={Link} to="/about" label="About" />
+    </Tabs>
   );
 }
 
