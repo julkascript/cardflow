@@ -131,7 +131,7 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
           {links.map((l) => {
             const LinkIcon = l.icon;
             return (
-              <ListItemButton key={l.icon + '-mobile'} sx={{ pl: 4 }} href={l.href}>
+              <ListItemButton key={l.text + '-mobile'} sx={{ pl: 4 }} href={l.href}>
                 <ListItemIcon>
                   <LinkIcon />
                 </ListItemIcon>
