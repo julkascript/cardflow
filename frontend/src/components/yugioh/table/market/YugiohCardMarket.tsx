@@ -4,13 +4,21 @@ import YugiohCardMarketTableCell from './YugiohCardMarketTableCell';
 
 type YugiohCardMarketProps = {
   listings: YugiohCardListing[];
+  page: number;
+  onChangePage: (page: number) => void;
+  count: number;
 };
 
 function YugiohCardMarket(props: YugiohCardMarketProps): JSX.Element {
   return (
     <>
       <div className="flex flex-col md:items-center justify-center overflow-auto">
-        <MarketTable className="w-11/12 md:w-full lg:w-5/6 mb-12">
+        <MarketTable
+          page={props.page}
+          onPageChange={props.onChangePage}
+          count={props.count}
+          className="w-11/12 md:w-full lg:w-5/6 mb-12"
+        >
           <thead>
             <tr>
               <th colSpan={3}>Seller</th>

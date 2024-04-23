@@ -216,8 +216,7 @@ function SellListing(): JSX.Element {
     }
   }
 
-  const pages = Math.ceil(cardListings.count / 10);
-  function changePage(_event: React.ChangeEvent<unknown>, page: number) {
+  function changePage(page: number) {
     yugiohService
       .getCardListingsByCardSetId(cardId ? cardId : id, page)
       .then((data) => {
@@ -348,12 +347,11 @@ function SellListing(): JSX.Element {
         </div>
         <div className="w-full border-b border-l border-r border-stone-300">
           <h3 className="ml-12 text-lg font-semibold mb-4 pt-4">Market information</h3>
-          <YugiohCardMarket listings={cardListings.results} />
-          <Pagination
+          <YugiohCardMarket
             page={page}
-            className="flex justify-center pb-8"
-            count={pages}
-            onChange={changePage}
+            onChangePage={changePage}
+            count={cardListings.count}
+            listings={cardListings.results}
           />
         </div>
       </div>

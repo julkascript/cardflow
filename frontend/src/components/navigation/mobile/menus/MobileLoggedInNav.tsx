@@ -58,12 +58,12 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
       icon: SettingsIcon,
     },
     {
-      href: '/orders',
+      href: `/user/${user.username}/orders`,
       text: 'My orders',
       icon: AddShoppingCartIcon,
     },
     {
-      href: '/sales',
+      href: `/user/${user.username}/sales`,
       text: 'My sales',
       icon: CurrencyExchangeIcon,
     },
