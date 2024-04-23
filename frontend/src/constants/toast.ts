@@ -1,3 +1,5 @@
+import { orderState } from '../services/orders/types';
+
 export const toastMessages = {
   success: {
     login: 'Logged in successfully!',
@@ -29,6 +31,8 @@ export const toastMessages = {
     sellListingsListed: 'Listings were made public',
     sellListingListed: 'Listing was made public',
     sellListingDelisted: 'Listing was delisted',
+    orderStatusChanged: (orderId: number, status: orderState) =>
+      `Order #${orderId} was marked as "${status}" successfully!`,
   },
   error: {
     serverError: 'Something went wrong, please try again later!',

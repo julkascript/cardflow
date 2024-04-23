@@ -1,4 +1,4 @@
-import { Button, Checkbox, IconButton, Link, Menu, MenuItem, Pagination } from '@mui/material';
+import { Button, Checkbox, IconButton, Link, Menu, MenuItem } from '@mui/material';
 import MarketTable from '../../components/marketTable/MarketTable';
 import { YugiohCardListing } from '../../services/yugioh/types';
 import React, { Reducer, useEffect, useReducer, useState } from 'react';
@@ -56,7 +56,7 @@ function SellManagement(): JSX.Element {
   const { isAuthenticated } = useAuthenticationStatus();
   const [checkedAll, setCheckedAll] = useState(false);
   const [page, setPage] = useState(1);
-  const [pages, setPages] = useState(0);
+  const [count, setCount] = useState(0);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -80,7 +80,7 @@ function SellManagement(): JSX.Element {
           selected: false,
         }));
 
-        setPages(Math.ceil(listings.count / 10));
+        setCount(listings.count);
 
         dispatch({
           type: 'set',
@@ -157,7 +157,7 @@ function SellManagement(): JSX.Element {
     if (data.length > fetchFunctions.length) {
       newPage = page;
     } else {
-      newPage = page === pages && page !== 1 ? page - 1 : page;
+      newPage = page === Math.ceil(count / 10) && page !== 1 ? page - 1 : page;
     }
 
     Promise.all(fetchFunctions)
@@ -180,7 +180,7 @@ function SellManagement(): JSX.Element {
     if (data.length > fetchFunctions.length) {
       newPage = page;
     } else {
-      newPage = page === pages && page !== 1 ? page - 1 : page;
+      newPage = page === Math.ceil(count / 10) && page !== 1 ? page - 1 : page;
     }
 
     Promise.all(fetchFunctions)
@@ -260,7 +260,12 @@ function SellManagement(): JSX.Element {
         </Button>
       </PageHeader>
       <div className="flex flex-col lg:items-center overflow-auto">
-        <MarketTable className="w-full rounded-md mt-4 lg:w-10/12 text-left">
+        <MarketTable
+          page={page}
+          onPageChange={setPage}
+          count={count}
+          className="w-full rounded-md mt-4 lg:w-10/12 text-left"
+        >
           <thead>
             <tr className="text-center">
               <th>
@@ -283,7 +288,6 @@ function SellManagement(): JSX.Element {
                   />
                 </td>
                 <td className="text-center w-[110px]">
-                  {/* TO-DO: update URL */}
                   <Link
                     href={`/sell/listing/${ld.listing.id}/edit`}
                     sx={{
@@ -352,15 +356,6 @@ function SellManagement(): JSX.Element {
             </Menu>
           </div>
         </div>
-        <Pagination
-          className="self-center justify-self-end"
-          page={page}
-          onChange={(e, p) => {
-            e.preventDefault();
-            setPage(p);
-          }}
-          count={pages}
-        />
       </div>
     </section>
   );

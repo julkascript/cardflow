@@ -7,6 +7,8 @@ const cardInSet = `${yugioh}/cards_in_set`;
 const card = `${yugioh}/cards`;
 const shoppingCart = `${base}/cart`;
 const bestSeller = `${base}/bestseller`;
+const feedback = `${base}/feedback`;
+const orders = `${base}/order`;
 
 export const api = Object.freeze({
   accounts: {
@@ -42,5 +44,13 @@ export const api = Object.freeze({
     items: `${shoppingCart}/items/`,
     id: (id: number | string) => `${shoppingCart}/items/${id}/`,
     checkout: `${shoppingCart}/items/checkout/`,
+  },
+  feedback: {
+    root: feedback + '/',
+    user: (id: string | number) => `${feedback}/user/${id}`,
+  },
+  orders: {
+    root: orders + '/',
+    id: (id: number | string) => `${orders}/${id}/`,
   },
 });
