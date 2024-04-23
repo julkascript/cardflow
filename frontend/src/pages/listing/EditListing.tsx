@@ -10,7 +10,7 @@ import { useCurrentUser } from '../../context/user';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../../util/useEffectAfterInitialLoad';
 import YugiohCardMarket from '../../components/yugioh/table/market/YugiohCardMarket';
-import ListingTopBar from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import NewListingTopBar from '../../components/sellListing/NewListingTopBar';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import DiamondIcon from '@mui/icons-material/Diamond';
@@ -225,7 +225,7 @@ function EditListing(): JSX.Element {
   }, [cardId]);
   return (
     <section className="bg-[#F5F5F5]">
-      <ListingTopBar />
+      <CardflowTabs />
       <NewListingTopBar
         handleSubmit={updateListing}
         quantity={formData.quantity}

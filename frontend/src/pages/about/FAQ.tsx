@@ -1,7 +1,7 @@
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
 import PageSection from '../../components/PageSection';
-import ListingTopBar from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { faq } from '../../constants/faq';
 
@@ -14,7 +14,7 @@ function FAQ(): JSX.Element {
   ];
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
-      <ListingTopBar />
+      <CardflowTabs />
       <BreadcrumbNavigation links={breadcrumbNavigation} heading="FAQ" />
       <PageSection className="mt-4 w-11/12 py-4 lg:w-4/5 mx-auto">
         <h2 className="text-2xl text-center lg:text-left lg:px-12 px-8 pt-4 pb-8 text-bold">

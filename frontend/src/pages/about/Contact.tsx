@@ -1,6 +1,6 @@
 import { Button, TextField, Typography } from '@mui/material';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
-import ListingTopBar from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import { theme } from '../../constants/theme';
 import { Link } from '@mui/material';
 import { useState } from 'react';
@@ -66,7 +66,7 @@ function Contact(): JSX.Element {
 
   return (
     <section className="bg-[#f5f5f5] min-h-[100vh] pb-4">
-      <ListingTopBar />
+      <CardflowTabs />
       <BreadcrumbNavigation links={breadcrumbNavigation} heading="Contact us" />
       <div className="w-5/6 mx-auto mt-4 lg:flex">
         <section

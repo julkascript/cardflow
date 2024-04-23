@@ -89,7 +89,12 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
         {links.map((l) => {
           const LinkIcon = l.icon;
           return (
-            <ListItemButton onClick={handleClose} sx={{ padding }} href={l.href}>
+            <ListItemButton
+              key={l.text + '-desktop'}
+              onClick={handleClose}
+              sx={{ padding }}
+              href={l.href}
+            >
               <ListItemText>
                 <Typography color="text.secondary">{l.text}</Typography>
               </ListItemText>
