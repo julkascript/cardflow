@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
 import OrdersTable from '../../components/orders/OrdersTable';
-import ListingTopBar from '../../components/sellListing/ListingTopBar';
 import { useCurrentUser } from '../../context/user';
 import { Order } from '../../services/orders/types';
 import { errorToast } from '../../util/errorToast';
 import { orderService } from '../../services/orders/orderService';
+import CardflowTabs from '../../components/sellListing/CardflowTabs';
 
 function Sales(): JSX.Element {
   const [orders, setOrders] = useState<Order[]>([]);
@@ -45,7 +45,7 @@ function Sales(): JSX.Element {
 
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
-      <ListingTopBar />
+      <CardflowTabs />
       <BreadcrumbNavigation heading="My sales" links={breadcrumbNavigation} />
       <div className="flex flex-col lg:items-center overflow-auto">
         <OrdersTable
