@@ -39,7 +39,7 @@ function generateMockFeedback(): Feedback {
 
 describe('OrdersModal component tests', () => {
   describe('Save button', () => {
-    it('Is disabled when no option is selected by the seller', async () => {
+    it('Is disabled when no option is selected by the seller and feedback has been given', async () => {
       render(
         <OrdersModal
           open={true}
@@ -55,7 +55,7 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(true);
     });
 
-    it('Is disabled for the buyer when the status is ordered', async () => {
+    it('Is disabled for the buyer when the status is ordered and feedback has been given', async () => {
       render(
         <OrdersModal
           open={true}
@@ -71,7 +71,7 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(true);
     });
 
-    it('Is enabled when the seller changes the status from ordered to sent', async () => {
+    it('Is enabled when the seller changes the status from ordered to sent and feedback has been given', async () => {
       render(
         <OrdersModal
           open={true}
@@ -90,7 +90,7 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(false);
     });
 
-    it('Is disabled for the buyer when the status is sent, but the user has not selected an option', async () => {
+    it('Is disabled for the buyer when the status is sent, but the user has not selected an option and feedback has been given', async () => {
       render(
         <OrdersModal
           open={true}
@@ -106,7 +106,7 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(true);
     });
 
-    it('Is enabled for the buyer when the status is sent and the user has selected an option', async () => {
+    it('Is enabled for the buyer when the status is sent and the user has selected an option and feedback has been given', async () => {
       render(
         <OrdersModal
           open={true}
@@ -125,7 +125,7 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(false);
     });
 
-    it('Is enabled if the seller chooses a different option and disabled when they revert back to sent', async () => {
+    it('Is enabled if the seller chooses a different option and disabled when they revert back to sent and feedback has been given', async () => {
       render(
         <OrdersModal
           open={true}
@@ -151,7 +151,7 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(true);
     });
 
-    it('Triggers correct service method when clicked by the seller and status has changed', async () => {
+    it('Triggers correct service methods when clicked by the seller and status has changed and feedback has been given', async () => {
       const spy = vi
         .spyOn(orderService, 'changeOrderStatus')
         .mockResolvedValueOnce(generateMockOrder('sent'));
@@ -176,7 +176,7 @@ describe('OrdersModal component tests', () => {
       expect(spy).toHaveBeenCalledWith(1, 'sent');
     });
 
-    it('Triggers correct service method when clicked by the buyer and status has changed', async () => {
+    it('Triggers correct service methods when clicked by the buyer and status has changed and feedback has been given', async () => {
       const spy = vi
         .spyOn(orderService, 'changeOrderStatus')
         .mockResolvedValueOnce(generateMockOrder('sent'));
@@ -199,6 +199,57 @@ describe('OrdersModal component tests', () => {
       fireEvent.click(saveButton);
 
       expect(spy).toHaveBeenCalledWith(1, 'completed');
+    });
+
+    it('Is enabled when no feedback has been given, regardless of the status, as long as the user is a buyer', async () => {
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('completed')}
+          status={'completed'}
+          userPosition={'buyer'}
+          feedback={undefined}
+        />,
+      );
+
+      const saveButton = (await screen.findByText('Save')) as HTMLButtonElement;
+      expect(saveButton.disabled).toBe(false);
+    });
+
+    it('Is disabled for the seller, even if there is no feedback, if the seller has not chosen a different option', async () => {
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('completed')}
+          status={'completed'}
+          userPosition={'seller'}
+          feedback={undefined}
+        />,
+      );
+
+      const saveButton = (await screen.findByText('Save')) as HTMLButtonElement;
+      expect(saveButton.disabled).toBe(true);
+    });
+
+    it('Is enabled for the seller if there is no feedback, but a different option has been chosen', async () => {
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('sent')}
+          status={'sent'}
+          userPosition={'seller'}
+          feedback={undefined}
+        />,
+      );
+
+      const radio = await screen.findByLabelText(orderStates.rejected);
+      fireEvent.click(radio);
+
+      const saveButton = (await screen.findByText('Save')) as HTMLButtonElement;
+      expect(saveButton.disabled).toBe(false);
     });
   });
 

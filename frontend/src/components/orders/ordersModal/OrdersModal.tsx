@@ -60,6 +60,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
   const shipmentPrice = 9.85;
 
   const cannotGiveFeedback = props.feedback !== undefined || props.userPosition === 'seller';
+  const saveButtonIsDisabled = props.status === receivedOption && cannotGiveFeedback;
   const userToDisplay =
     props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
 
@@ -253,7 +254,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               Cancel
             </Button>
             <Button
-              disabled={props.status === receivedOption}
+              disabled={saveButtonIsDisabled}
               variant="contained"
               color="success"
               onClick={save}
