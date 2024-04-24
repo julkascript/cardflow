@@ -59,6 +59,8 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
   );
   const shipmentPrice = 9.85;
 
+  const ratingIsDisabled = props.feedback !== undefined || props.userPosition === 'seller';
+
   const userToDisplay =
     props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
 
@@ -215,11 +217,15 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
           <section className="w-full flex flex-col items-center lg:w-auto lg:block lg:mx-auto">
             <h3 className="font-bold mb-4 lg:mb-2 text-center lg:text-left">Feedback</h3>
             <form className="flex flex-col w-full items-center lg:w-auto lg:items-start">
-              <label className="flex items-center gap-2 mb-2">
+              <label
+                id="rating"
+                data-disabled={ratingIsDisabled}
+                className="flex items-center gap-2 mb-2"
+              >
                 <span>Rate:</span>{' '}
                 <Rating
                   onChange={changeRating}
-                  disabled={props.feedback !== undefined}
+                  disabled={ratingIsDisabled}
                   value={rating}
                   name="rating"
                 />
