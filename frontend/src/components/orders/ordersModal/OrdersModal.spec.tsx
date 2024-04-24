@@ -5,6 +5,7 @@ import { Order, orderState } from '../../../services/orders/types';
 import { orderService } from '../../../services/orders/orderService';
 import { orderStates } from '../../../constants/orders';
 import { Feedback } from '../../../services/feedback/types';
+import { feedbackService } from '../../../services/feedback/feedback';
 
 function generateMockOrder(status: orderState): Order {
   const mockOrder: Order = {
@@ -151,10 +152,18 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(true);
     });
 
-    it('Triggers correct service methods when clicked by the seller and status has changed and feedback has been given', async () => {
-      const spy = vi
+    it('Triggers correct service methods when clicked by the seller and status has changed and feedback has been given beforehand', async () => {
+      const orderServiceSpy = vi
         .spyOn(orderService, 'changeOrderStatus')
         .mockResolvedValueOnce(generateMockOrder('sent'));
+
+      const feedbackServiceSpy = vi.spyOn(feedbackService, 'sendFeedback').mockResolvedValueOnce({
+        receiver_user: 1,
+        sender_user: 1,
+        related_order: 1,
+        comment: 'a',
+        rating: 1,
+      });
 
       render(
         <OrdersModal
@@ -173,13 +182,22 @@ describe('OrdersModal component tests', () => {
       const saveButton = await screen.findByText('Save');
       fireEvent.click(saveButton);
 
-      expect(spy).toHaveBeenCalledWith(1, 'sent');
+      expect(orderServiceSpy).toHaveBeenCalledWith(1, 'sent');
+      expect(feedbackServiceSpy).not.toHaveBeenCalled();
     });
 
-    it('Triggers correct service methods when clicked by the buyer and status has changed and feedback has been given', async () => {
-      const spy = vi
+    it('Triggers correct service methods when clicked by the buyer and status has changed and feedback has been given beforehand', async () => {
+      const orderServiceSpy = vi
         .spyOn(orderService, 'changeOrderStatus')
         .mockResolvedValueOnce(generateMockOrder('sent'));
+
+      const feedbackServiceSpy = vi.spyOn(feedbackService, 'sendFeedback').mockResolvedValueOnce({
+        receiver_user: 1,
+        sender_user: 1,
+        related_order: 1,
+        comment: 'a',
+        rating: 1,
+      });
 
       render(
         <OrdersModal
@@ -198,7 +216,42 @@ describe('OrdersModal component tests', () => {
       const saveButton = await screen.findByText('Save');
       fireEvent.click(saveButton);
 
-      expect(spy).toHaveBeenCalledWith(1, 'completed');
+      expect(orderServiceSpy).toHaveBeenCalledWith(1, 'completed');
+      expect(feedbackServiceSpy).not.toHaveBeenCalled();
+    });
+
+    it('Triggers correct service methods when rating is selected, but an option has not been chosen', async () => {
+      const orderServiceSpy = vi
+        .spyOn(orderService, 'changeOrderStatus')
+        .mockResolvedValueOnce(generateMockOrder('sent'));
+
+      const feedbackServiceSpy = vi.spyOn(feedbackService, 'sendFeedback').mockResolvedValueOnce({
+        receiver_user: 1,
+        sender_user: 1,
+        related_order: 1,
+        comment: 'a',
+        rating: 1,
+      });
+
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('sent')}
+          status={'sent'}
+          userPosition={'buyer'}
+          feedback={undefined}
+        />,
+      );
+
+      const rating = await screen.findByText(/3 stars/i);
+      fireEvent.click(rating);
+
+      const saveButton = (await screen.findByText('Save')) as HTMLButtonElement;
+      fireEvent.click(saveButton);
+
+      expect(orderServiceSpy).not.toHaveBeenCalledWith();
+      expect(feedbackServiceSpy).toHaveBeenCalled();
     });
 
     it('Is enabled when no feedback has been given, regardless of the status, as long as the user is a buyer, and a rating has been given', async () => {
