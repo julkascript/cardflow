@@ -60,11 +60,12 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
   const shipmentPrice = 9.85;
 
   const cannotGiveFeedback = props.feedback !== undefined || props.userPosition === 'seller';
-  const saveButtonIsDisabled = props.status === receivedOption && cannotGiveFeedback;
   const userToDisplay =
     props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
 
   const [rating, setRating] = useState(props.feedback?.rating || 0);
+  const saveButtonIsDisabled =
+    props.status === receivedOption && (cannotGiveFeedback || rating === 0);
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setReceivedOption(event.target.value as orderState);

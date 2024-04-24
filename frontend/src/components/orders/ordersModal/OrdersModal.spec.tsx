@@ -201,7 +201,7 @@ describe('OrdersModal component tests', () => {
       expect(spy).toHaveBeenCalledWith(1, 'completed');
     });
 
-    it('Is enabled when no feedback has been given, regardless of the status, as long as the user is a buyer', async () => {
+    it('Is enabled when no feedback has been given, regardless of the status, as long as the user is a buyer, and a rating has been given', async () => {
       render(
         <OrdersModal
           open={true}
@@ -212,6 +212,9 @@ describe('OrdersModal component tests', () => {
           feedback={undefined}
         />,
       );
+
+      const rating = await screen.findByText(/3 stars/i);
+      fireEvent.click(rating);
 
       const saveButton = (await screen.findByText('Save')) as HTMLButtonElement;
       expect(saveButton.disabled).toBe(false);
