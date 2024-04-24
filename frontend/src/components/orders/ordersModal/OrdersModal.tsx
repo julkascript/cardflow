@@ -25,6 +25,7 @@ import { errorToast } from '../../../util/errorToast';
 import toast from 'react-hot-toast';
 import { toastMessages } from '../../../constants/toast';
 import { Feedback } from '../../../services/feedback/types';
+import { feedbackService } from '../../../services/feedback/feedback';
 
 const Rating = styled(BaseRating)({
   '& .MuiRating-iconFilled': {
@@ -67,6 +68,13 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
   const saveButtonIsDisabled =
     props.status === receivedOption && (cannotGiveFeedback || rating === 0);
 
+  const [comment, setComment] = useState(props.feedback?.comment || '');
+
+  function handleCommentChange(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+    setComment(event.target.value);
+  }
+
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setReceivedOption(event.target.value as orderState);
   }
@@ -77,15 +85,31 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
   }
 
   function save() {
-    if (props.status !== receivedOption) {
+    const hasChangedOption = props.status !== receivedOption;
+    if (hasChangedOption) {
       orderService
         .changeOrderStatus(order.order_id, receivedOption)
         .then(() => {
-          props.onClose(true);
           toast.success(toastMessages.success.orderStatusChanged(order.order_id, receivedOption));
         })
         .catch(errorToast);
     }
+
+    if (rating && !cannotGiveFeedback) {
+      feedbackService
+        .sendFeedback({
+          related_order: order.order_id,
+          rating,
+          comment,
+        })
+        .then(() => {
+          if (!hasChangedOption) {
+            toast.success(toastMessages.success.feedbackGiven(order.order_id));
+          }
+        });
+    }
+
+    props.onClose(true);
   }
 
   useEffect(() => {
@@ -192,7 +216,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             </thead>
             <tbody>
               {order.order_items.map((o) => (
-                <tr>
+                <tr key={o.listing.id}>
                   <td className="font-bold">{o.listing.card_name}</td>
                   <td>{o.listing.card_in_set.set.set_code}</td>
                   <td>{o.quantity}</td>
@@ -207,7 +231,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             <h3 className="font-bold mb-2 lg:mb-4 text-center lg:text-left">History</h3>
             <ul className="flex flex-col gap-2">
               {props.order.status_history.map((s) => (
-                <li>
+                <li key={s.timestamp + s.status}>
                   {orderStates[s.status]} - {formatTimestamp(s.timestamp)}
                 </li>
               ))}
@@ -231,16 +255,20 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
                   name="rating"
                 />
               </label>
-              <label className="block w-full">
+              <label
+                className="block w
+              -full"
+              >
                 <div>Comment:</div>
                 <TextField
-                  value={props.feedback?.comment || ''}
+                  value={comment}
                   fullWidth
                   className="w-full"
                   minRows={3}
                   multiline
                   name="comment"
                   disabled={cannotGiveFeedback}
+                  onChange={handleCommentChange}
                 />
               </label>
             </form>

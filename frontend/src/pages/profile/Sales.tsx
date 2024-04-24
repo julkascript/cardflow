@@ -34,7 +34,9 @@ function Sales(): JSX.Element {
       .then((data) => {
         setOrders(data.results);
         setCount(data.count);
+        return feedbackService.getUserFeedbacks(user.user_id);
       })
+      .then(setFeedbacks)
       .catch(errorToast);
   }
 
