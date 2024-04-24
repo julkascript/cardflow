@@ -60,7 +60,10 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
   );
   const shipmentPrice = 9.85;
 
-  const cannotGiveFeedback = props.feedback !== undefined || props.userPosition === 'seller';
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  const cannotGiveFeedback =
+    props.feedback !== undefined || props.userPosition === 'seller' || hasSubmitted;
   const userToDisplay =
     props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
 
@@ -91,6 +94,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
         .changeOrderStatus(order.order_id, receivedOption)
         .then(() => {
           toast.success(toastMessages.success.orderStatusChanged(order.order_id, receivedOption));
+          props.onClose(true);
         })
         .catch(errorToast);
     }
@@ -103,13 +107,13 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
           comment,
         })
         .then(() => {
+          setHasSubmitted(true);
           if (!hasChangedOption) {
             toast.success(toastMessages.success.feedbackGiven(order.order_id));
+            props.onClose(true);
           }
         });
     }
-
-    props.onClose(true);
   }
 
   useEffect(() => {
