@@ -4,6 +4,7 @@ import OrdersModal from './OrdersModal';
 import { Order, orderState } from '../../../services/orders/types';
 import { orderService } from '../../../services/orders/orderService';
 import { orderStates } from '../../../constants/orders';
+import { Feedback } from '../../../services/feedback/types';
 
 function generateMockOrder(status: orderState): Order {
   const mockOrder: Order = {
@@ -27,6 +28,15 @@ function generateMockOrder(status: orderState): Order {
   return mockOrder;
 }
 
+function generateMockFeedback(): Feedback {
+  return {
+    related_order: 1,
+    sender_user: 1,
+    rating: 1,
+    comment: 'test',
+  };
+}
+
 describe('OrdersModal component tests', () => {
   describe('Save button', () => {
     it('Is disabled when no option is selected by the seller', async () => {
@@ -37,6 +47,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('ordered')}
           status={'ordered'}
           userPosition={'seller'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -52,6 +63,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('ordered')}
           status={'ordered'}
           userPosition={'buyer'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -67,6 +79,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('ordered')}
           status={'ordered'}
           userPosition={'seller'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -85,6 +98,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('sent')}
           status={'sent'}
           userPosition={'buyer'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -100,6 +114,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('sent')}
           status={'sent'}
           userPosition={'buyer'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -118,6 +133,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('sent')}
           status={'sent'}
           userPosition={'seller'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -147,6 +163,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('ordered')}
           status={'ordered'}
           userPosition={'seller'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -171,6 +188,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('sent')}
           status={'sent'}
           userPosition={'buyer'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -193,6 +211,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('completed')}
           status={'completed'}
           userPosition={'buyer'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -213,6 +232,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('rejected')}
           status={'rejected'}
           userPosition={'buyer'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -233,6 +253,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('completed')}
           status={'completed'}
           userPosition={'seller'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -253,6 +274,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('rejected')}
           status={'rejected'}
           userPosition={'seller'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -273,6 +295,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('ordered')}
           status={'ordered'}
           userPosition={'buyer'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -293,6 +316,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('sent')}
           status={'sent'}
           userPosition={'buyer'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -313,6 +337,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('ordered')}
           status={'ordered'}
           userPosition={'seller'}
+          feedback={generateMockFeedback()}
         />,
       );
 
@@ -333,6 +358,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('sent')}
           status={'sent'}
           userPosition={'seller'}
+          feedback={generateMockFeedback()}
         />,
       );
 
