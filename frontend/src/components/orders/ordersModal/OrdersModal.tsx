@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { Order, orderState } from '../../../services/orders/types';
 import OrderStatusBadge from '../OrderStatusBadge';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MarketTable from '../../marketTable/MarketTable';
 import SummaryData from '../../shoppingCart/SummaryData';
 import Home from '@mui/icons-material/Home';
@@ -24,6 +24,7 @@ import { orderService } from '../../../services/orders/orderService';
 import { errorToast } from '../../../util/errorToast';
 import toast from 'react-hot-toast';
 import { toastMessages } from '../../../constants/toast';
+import { Feedback } from '../../../services/feedback/types';
 
 const Rating = styled(BaseRating)({
   '& .MuiRating-iconFilled': {
@@ -46,6 +47,7 @@ type OrdersModalProps = {
   order: Order;
   status: orderState;
   userPosition: 'seller' | 'buyer';
+  feedback: Feedback | undefined;
 };
 
 function OrdersModal(props: OrdersModalProps): JSX.Element {
@@ -60,8 +62,15 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
   const userToDisplay =
     props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
 
+  const [rating, setRating] = useState(props.feedback?.rating || 0);
+
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setReceivedOption(event.target.value as orderState);
+  }
+
+  function changeRating(event: React.SyntheticEvent<Element, Event>, value: number | null) {
+    event.preventDefault();
+    setRating(value || 0);
   }
 
   function save() {
@@ -75,6 +84,12 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
         .catch(errorToast);
     }
   }
+
+  useEffect(() => {
+    if (props.feedback) {
+      setRating(props.feedback.rating);
+    }
+  }, [props.feedback]);
 
   return createPortal(
     <Dialog
@@ -201,11 +216,24 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             <h3 className="font-bold mb-4 lg:mb-2 text-center lg:text-left">Feedback</h3>
             <form className="flex flex-col w-full items-center lg:w-auto lg:items-start">
               <label className="flex items-center gap-2 mb-2">
-                <span>Rate:</span> <Rating name="rating" />
+                <span>Rate:</span>{' '}
+                <Rating
+                  onChange={changeRating}
+                  disabled={props.feedback !== undefined}
+                  value={rating}
+                  name="rating"
+                />
               </label>
               <label className="block w-full">
                 <div>Comment:</div>
-                <TextField fullWidth className="w-full" minRows={3} multiline name="comment" />
+                <TextField
+                  value={props.feedback?.comment || ''}
+                  fullWidth
+                  className="w-full"
+                  minRows={3}
+                  multiline
+                  name="comment"
+                />
               </label>
             </form>
           </section>

@@ -1,3 +1,4 @@
+import { UserFeedback } from '../../services/feedback/types';
 import { Order } from '../../services/orders/types';
 import MarketTable from '../marketTable/MarketTable';
 import OrdersTableRow from './OrdersTableRow';
@@ -12,6 +13,7 @@ type OrdersTableProps = {
   onChangePage: (page: number) => void;
   count: number;
   updateOrders: () => void;
+  feedbacks: UserFeedback | undefined;
 };
 
 function OrdersTable(props: OrdersTableProps): JSX.Element {
@@ -40,6 +42,9 @@ function OrdersTable(props: OrdersTableProps): JSX.Element {
             userPosition={props.userPosition}
             key={o.order_id}
             order={o}
+            feedback={props.feedbacks?.all_comments_and_ratings?.find(
+              (f) => f.related_order === o.order_id,
+            )}
           />
         ))}
       </tbody>

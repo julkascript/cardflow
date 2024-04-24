@@ -3,11 +3,13 @@ import { Order } from '../../services/orders/types';
 import { orderStates } from '../../constants/orders';
 import { useState } from 'react';
 import OrdersModal from './ordersModal/OrdersModal';
+import { Feedback } from '../../services/feedback/types';
 
 type OrdersTableRowProps = {
   order: Order;
   userPosition: 'buyer' | 'seller';
   updateOrder: () => void;
+  feedback: Feedback | undefined;
 };
 
 function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
@@ -63,6 +65,7 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
         onClose={onClose}
         order={props.order}
         status={props.order.status}
+        feedback={props.feedback}
       />
     </>
   );

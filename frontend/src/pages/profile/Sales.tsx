@@ -6,9 +6,16 @@ import { useCurrentUser } from '../../context/user';
 import { Order } from '../../services/orders/types';
 import { errorToast } from '../../util/errorToast';
 import { orderService } from '../../services/orders/orderService';
+import { UserFeedback } from '../../services/feedback/types';
+import { feedbackService } from '../../services/feedback/feedback';
 
 function Sales(): JSX.Element {
   const [orders, setOrders] = useState<Order[]>([]);
+  const [feedbacks, setFeedbacks] = useState<UserFeedback>({
+    user: 0,
+    all_comments_and_ratings: [],
+    average_rating: 0,
+  });
 
   const { user } = useCurrentUser();
   const breadcrumbNavigation: BreadcrumbLink[] = [
@@ -38,7 +45,9 @@ function Sales(): JSX.Element {
         .then((data) => {
           setOrders(data.results);
           setCount(data.count);
+          return feedbackService.getUserFeedbacks(user.user_id);
         })
+        .then(setFeedbacks)
         .catch(errorToast);
     }
   }, [user, page]);
@@ -55,6 +64,7 @@ function Sales(): JSX.Element {
           count={count}
           orders={orders}
           userPosition="seller"
+          feedbacks={feedbacks}
         />
       </div>
     </section>
