@@ -6,16 +6,9 @@ import { useCurrentUser } from '../../context/user';
 import { Order } from '../../services/orders/types';
 import { orderService } from '../../services/orders/orderService';
 import { errorToast } from '../../util/errorToast';
-import { UserFeedback } from '../../services/feedback/types';
-import { feedbackService } from '../../services/feedback/feedback';
 
 function Orders(): JSX.Element {
   const [orders, setOrders] = useState<Order[]>([]);
-  const [feedbacks, setFeedbacks] = useState<UserFeedback>({
-    user: 0,
-    all_comments_and_ratings: [],
-    average_rating: 0,
-  });
 
   const { user } = useCurrentUser();
   const breadcrumbNavigation: BreadcrumbLink[] = [
@@ -33,10 +26,7 @@ function Orders(): JSX.Element {
       .getOrders(user.username, page)
       .then((data) => {
         setOrders(data.results);
-        setCount(data.count);
-        return feedbackService.getUserFeedbacks(user.user_id);
       })
-      .then(setFeedbacks)
       .catch(errorToast);
   }
 
@@ -47,10 +37,6 @@ function Orders(): JSX.Element {
         .then((data) => {
           setOrders(data.results);
           setCount(data.count);
-          return feedbackService.getUserFeedbacks(user.user_id);
-        })
-        .then((data) => {
-          setFeedbacks(data);
         })
         .catch(errorToast);
     }
@@ -68,7 +54,6 @@ function Orders(): JSX.Element {
           orders={orders}
           userPosition="buyer"
           updateOrders={updateOrders}
-          feedbacks={feedbacks}
         />
       </div>
     </section>

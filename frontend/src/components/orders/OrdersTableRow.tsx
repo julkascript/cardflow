@@ -1,15 +1,15 @@
 import { Badge, Button, Link } from '@mui/material';
 import { Order } from '../../services/orders/types';
 import { orderStates } from '../../constants/orders';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import OrdersModal from './ordersModal/OrdersModal';
 import { Feedback } from '../../services/feedback/types';
+import { feedbackService } from '../../services/feedback/feedback';
 
 type OrdersTableRowProps = {
   order: Order;
   userPosition: 'buyer' | 'seller';
   updateOrder: () => void;
-  feedback: Feedback | undefined;
 };
 
 function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
@@ -20,6 +20,8 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
     0,
   );
 
+  const [feedback, setFeedback] = useState<Feedback>();
+
   const userToDisplay =
     props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
 
@@ -29,6 +31,16 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
       props.updateOrder();
     }
   }
+
+  useEffect(() => {
+    feedbackService.getUserFeedbacks(props.order.sender_user.id).then((data) => {
+      const feedback = data.all_comments_and_ratings.find(
+        (feedback) => feedback.related_order === props.order.order_id,
+      );
+
+      setFeedback(feedback);
+    });
+  }, [props.order, props.userPosition]);
   return (
     <>
       <tr>
@@ -65,7 +77,7 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
         onClose={onClose}
         order={props.order}
         status={props.order.status}
-        feedback={props.feedback}
+        feedback={feedback}
       />
     </>
   );

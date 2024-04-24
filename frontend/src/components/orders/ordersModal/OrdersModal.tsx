@@ -255,13 +255,10 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
                   name="rating"
                 />
               </label>
-              <label
-                className="block w
-              -full"
-              >
+              <label className="block w-full">
                 <div>Comment:</div>
                 <TextField
-                  value={comment}
+                  value={props.feedback ? props.feedback.comment : comment}
                   fullWidth
                   className="w-full"
                   minRows={3}
