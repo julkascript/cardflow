@@ -371,4 +371,108 @@ describe('OrdersModal component tests', () => {
       expect(enabledRadios).toHaveLength(2);
     });
   });
+
+  describe('Rating', () => {
+    /*
+      For the purposes of these tests, a custom dataset called 'disabled' is used
+      due to the way the MUI Rating is rendered
+     */
+    it('Is disabled when a feedback is passed to the modal for the buyer', async () => {
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('completed')}
+          status={'completed'}
+          userPosition={'buyer'}
+          feedback={generateMockFeedback()}
+        />,
+      );
+
+      const rating = document.querySelector('#rating') as HTMLElement;
+      expect(rating.dataset.disabled).toBe('true');
+    });
+
+    it('Is enabled when no feedback is passed to the modal for the buyer', () => {
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('completed')}
+          status={'completed'}
+          userPosition={'buyer'}
+          feedback={undefined}
+        />,
+      );
+
+      const rating = document.querySelector('#rating') as HTMLElement;
+      expect(rating.dataset.disabled).toBe('false');
+    });
+
+    it('Is disabled for the seller, even if there is no feedback', async () => {
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('completed')}
+          status={'completed'}
+          userPosition={'seller'}
+          feedback={undefined}
+        />,
+      );
+
+      const rating = document.querySelector('#rating') as HTMLElement;
+      expect(rating.dataset.disabled).toBe('true');
+    });
+  });
+
+  describe('Comments field', () => {
+    it('Is disabled when a feedback is passed to the modal for the buyer', async () => {
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('completed')}
+          status={'completed'}
+          userPosition={'buyer'}
+          feedback={generateMockFeedback()}
+        />,
+      );
+
+      const commentsField = (await screen.findByLabelText(/Comment/i)) as HTMLInputElement;
+      expect(commentsField.disabled).toBe(true);
+    });
+
+    it('Is enabled when no feedback is passed to the modal for the buyer', async () => {
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('completed')}
+          status={'completed'}
+          userPosition={'buyer'}
+          feedback={undefined}
+        />,
+      );
+
+      const commentsField = (await screen.findByLabelText(/Comment/i)) as HTMLInputElement;
+      expect(commentsField.disabled).toBe(false);
+    });
+
+    it('Is disabled for the seller, even if there is no feedback', async () => {
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('completed')}
+          status={'completed'}
+          userPosition={'seller'}
+          feedback={undefined}
+        />,
+      );
+
+      const commentsField = (await screen.findByLabelText(/Comment/i)) as HTMLInputElement;
+      expect(commentsField.disabled).toBe(true);
+    });
+  });
 });
