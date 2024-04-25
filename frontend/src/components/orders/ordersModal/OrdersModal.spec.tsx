@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import OrdersModal from './OrdersModal';
 import { Order, orderState } from '../../../services/orders/types';
@@ -252,6 +252,8 @@ describe('OrdersModal component tests', () => {
 
       expect(orderServiceSpy).not.toHaveBeenCalledWith();
       expect(feedbackServiceSpy).toHaveBeenCalled();
+
+      await waitFor(() => expect(saveButton.disabled).toBe(true));
     });
 
     it('Is enabled when no feedback has been given, regardless of the status, as long as the user is a buyer, and a rating has been given', async () => {
