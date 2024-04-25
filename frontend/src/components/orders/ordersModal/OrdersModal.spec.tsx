@@ -40,7 +40,7 @@ function generateMockFeedback(): Feedback {
 
 describe('OrdersModal component tests', () => {
   describe('Save button', () => {
-    it('Is disabled when no option is selected by the seller and feedback has been given', async () => {
+    it('Is disabled when no option is selected by the seller', async () => {
       render(
         <OrdersModal
           open={true}
@@ -48,7 +48,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('ordered')}
           status={'ordered'}
           userPosition={'seller'}
-          feedback={generateMockFeedback()}
+          feedback={undefined}
         />,
       );
 
@@ -56,7 +56,7 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(true);
     });
 
-    it('Is disabled for the buyer when the status is ordered and feedback has been given', async () => {
+    it('Is disabled for the buyer when the status is anything but completed / rejected', async () => {
       render(
         <OrdersModal
           open={true}
@@ -64,7 +64,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('ordered')}
           status={'ordered'}
           userPosition={'buyer'}
-          feedback={generateMockFeedback()}
+          feedback={undefined}
         />,
       );
 
@@ -72,7 +72,7 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(true);
     });
 
-    it('Is enabled when the seller changes the status from ordered to sent and feedback has been given', async () => {
+    it('Is enabled when the seller changes the status from ordered to sent', async () => {
       render(
         <OrdersModal
           open={true}
@@ -80,7 +80,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('ordered')}
           status={'ordered'}
           userPosition={'seller'}
-          feedback={generateMockFeedback()}
+          feedback={undefined}
         />,
       );
 
@@ -91,7 +91,7 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(false);
     });
 
-    it('Is disabled for the buyer when the status is sent, but the user has not selected an option and feedback has been given', async () => {
+    it('Is enabled for the buyer when the status is sent and the user has selected an option', async () => {
       render(
         <OrdersModal
           open={true}
@@ -99,23 +99,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('sent')}
           status={'sent'}
           userPosition={'buyer'}
-          feedback={generateMockFeedback()}
-        />,
-      );
-
-      const saveButton = (await screen.findByText('Save')) as HTMLButtonElement;
-      expect(saveButton.disabled).toBe(true);
-    });
-
-    it('Is enabled for the buyer when the status is sent and the user has selected an option and feedback has been given', async () => {
-      render(
-        <OrdersModal
-          open={true}
-          onClose={() => {}}
-          order={generateMockOrder('sent')}
-          status={'sent'}
-          userPosition={'buyer'}
-          feedback={generateMockFeedback()}
+          feedback={undefined}
         />,
       );
 
@@ -126,7 +110,7 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(false);
     });
 
-    it('Is enabled if the seller chooses a different option and disabled when they revert back to sent and feedback has been given', async () => {
+    it('Is enabled if the seller chooses a different option and disabled when they revert back to sent', async () => {
       render(
         <OrdersModal
           open={true}
@@ -134,7 +118,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('sent')}
           status={'sent'}
           userPosition={'seller'}
-          feedback={generateMockFeedback()}
+          feedback={undefined}
         />,
       );
 
@@ -152,7 +136,7 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(true);
     });
 
-    it('Triggers correct service methods when clicked by the seller and status has changed and feedback has been given beforehand', async () => {
+    it('Triggers correct service methods when clicked by the seller and status has changed', async () => {
       const orderServiceSpy = vi
         .spyOn(orderService, 'changeOrderStatus')
         .mockResolvedValueOnce(generateMockOrder('sent'));
@@ -172,7 +156,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('ordered')}
           status={'ordered'}
           userPosition={'seller'}
-          feedback={generateMockFeedback()}
+          feedback={undefined}
         />,
       );
 
@@ -186,7 +170,7 @@ describe('OrdersModal component tests', () => {
       expect(feedbackServiceSpy).not.toHaveBeenCalled();
     });
 
-    it('Triggers correct service methods when clicked by the buyer and status has changed and feedback has been given beforehand', async () => {
+    it('Triggers correct service methods when clicked by the buyer, status has changed and the buyer has not given / cannot give rating', async () => {
       const orderServiceSpy = vi
         .spyOn(orderService, 'changeOrderStatus')
         .mockResolvedValueOnce(generateMockOrder('sent'));
@@ -206,7 +190,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('sent')}
           status={'sent'}
           userPosition={'buyer'}
-          feedback={generateMockFeedback()}
+          feedback={undefined}
         />,
       );
 
@@ -220,7 +204,7 @@ describe('OrdersModal component tests', () => {
       expect(feedbackServiceSpy).not.toHaveBeenCalled();
     });
 
-    it('Triggers correct service methods when rating is selected, but an option has not been chosen', async () => {
+    it('Triggers correct service methods when rating is selected', async () => {
       const orderServiceSpy = vi
         .spyOn(orderService, 'changeOrderStatus')
         .mockResolvedValueOnce(generateMockOrder('sent'));
@@ -237,8 +221,8 @@ describe('OrdersModal component tests', () => {
         <OrdersModal
           open={true}
           onClose={() => {}}
-          order={generateMockOrder('sent')}
-          status={'sent'}
+          order={generateMockOrder('completed')}
+          status={'completed'}
           userPosition={'buyer'}
           feedback={undefined}
         />,
@@ -256,7 +240,7 @@ describe('OrdersModal component tests', () => {
       await waitFor(() => expect(saveButton.disabled).toBe(true));
     });
 
-    it('Is enabled when no feedback has been given, regardless of the status, as long as the user is a buyer, and a rating has been given', async () => {
+    it('Is enabled when no feedback has been given, status is completed, the user is a buyer, and a rating has been given', async () => {
       render(
         <OrdersModal
           open={true}
@@ -275,7 +259,26 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(false);
     });
 
-    it('Is disabled for the seller, even if there is no feedback, if the seller has not chosen a different option', async () => {
+    it('Is enabled when no feedback has been given, status is rejected, the user is a buyer, and a rating has been given', async () => {
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('rejected')}
+          status={'rejected'}
+          userPosition={'buyer'}
+          feedback={undefined}
+        />,
+      );
+
+      const rating = await screen.findByText(/3 stars/i);
+      fireEvent.click(rating);
+
+      const saveButton = (await screen.findByText('Save')) as HTMLButtonElement;
+      expect(saveButton.disabled).toBe(false);
+    });
+
+    it('Is disabled for the seller if the seller has not chosen a different option', async () => {
       render(
         <OrdersModal
           open={true}
@@ -291,7 +294,7 @@ describe('OrdersModal component tests', () => {
       expect(saveButton.disabled).toBe(true);
     });
 
-    it('Is enabled for the seller if there is no feedback, but a different option has been chosen', async () => {
+    it('Is enabled for the seller if a different option has been chosen', async () => {
       render(
         <OrdersModal
           open={true}
@@ -308,6 +311,38 @@ describe('OrdersModal component tests', () => {
 
       const saveButton = (await screen.findByText('Save')) as HTMLButtonElement;
       expect(saveButton.disabled).toBe(false);
+    });
+
+    it('Is disabled for the buyer when the order is completed and a rating has been given', async () => {
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('completed')}
+          status={'completed'}
+          userPosition={'buyer'}
+          feedback={generateMockFeedback()}
+        />,
+      );
+
+      const saveButton = (await screen.findByText('Save')) as HTMLButtonElement;
+      expect(saveButton.disabled).toBe(true);
+    });
+
+    it('Is disabled for the buyer when the order is rejected and a rating has been given', async () => {
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('rejected')}
+          status={'rejected'}
+          userPosition={'buyer'}
+          feedback={generateMockFeedback()}
+        />,
+      );
+
+      const saveButton = (await screen.findByText('Save')) as HTMLButtonElement;
+      expect(saveButton.disabled).toBe(true);
     });
   });
 
@@ -362,7 +397,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('completed')}
           status={'completed'}
           userPosition={'seller'}
-          feedback={generateMockFeedback()}
+          feedback={undefined}
         />,
       );
 
@@ -383,7 +418,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('rejected')}
           status={'rejected'}
           userPosition={'seller'}
-          feedback={generateMockFeedback()}
+          feedback={undefined}
         />,
       );
 
@@ -404,7 +439,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('ordered')}
           status={'ordered'}
           userPosition={'buyer'}
-          feedback={generateMockFeedback()}
+          feedback={undefined}
         />,
       );
 
@@ -425,7 +460,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('sent')}
           status={'sent'}
           userPosition={'buyer'}
-          feedback={generateMockFeedback()}
+          feedback={undefined}
         />,
       );
 
@@ -446,7 +481,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('ordered')}
           status={'ordered'}
           userPosition={'seller'}
-          feedback={generateMockFeedback()}
+          feedback={undefined}
         />,
       );
 
@@ -467,7 +502,7 @@ describe('OrdersModal component tests', () => {
           order={generateMockOrder('sent')}
           status={'sent'}
           userPosition={'seller'}
-          feedback={generateMockFeedback()}
+          feedback={undefined}
         />,
       );
 

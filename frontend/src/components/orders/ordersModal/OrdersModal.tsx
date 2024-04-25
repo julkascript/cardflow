@@ -63,7 +63,11 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const cannotGiveFeedback =
-    props.feedback !== undefined || props.userPosition === 'seller' || hasSubmitted;
+    props.feedback !== undefined ||
+    props.userPosition === 'seller' ||
+    hasSubmitted ||
+    (props.status !== 'completed' && props.status !== 'rejected');
+
   const userToDisplay =
     props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
 
