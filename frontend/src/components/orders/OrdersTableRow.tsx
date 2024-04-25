@@ -66,7 +66,7 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
           </Badge>
         </td>
         <td style={{ paddingLeft: 16 }}>
-          <Button variant="contained" color="info" onClick={() => setOpen(true)}>
+          <Button variant="outlined" color="primary" onClick={() => setOpen(true)}>
             Review order
           </Button>
         </td>
