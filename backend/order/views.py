@@ -75,14 +75,18 @@ class FeedbackAndRatingViewSet(viewsets.ModelViewSet):
 
         user_id = user.id
         avg_rating = UserSerializer.get_average_rating(user_id)
-        orders = Order.objects.filter(sender_user=user_id).values('id')
-        comments = FeedbackAndRating.objects.filter(receiver_user=user).values('comment')
-        rating = FeedbackAndRating.objects.filter(receiver_user=user).values('rating')
-        sender_user = FeedbackAndRating.objects.filter(receiver_user=user).values('sender_user')
+        ratings = FeedbackAndRating.objects.filter(receiver_user=user).all()
 
-        rating_and_comments = [
-            {'related_order': o['id'], 'sender_user': g['sender_user'], 'rating': r['rating'], 'comment': c['comment']}
-            for o, g, r, c in zip(orders, sender_user, rating, comments)]
+        rating_and_comments = []
+
+        for rating in ratings:
+
+            rating_and_comments.append({
+                'related_order': rating.related_order_id,
+                'sender_user': rating.sender_user_id,
+                'rating': rating.rating,
+                'comment': rating.comment
+            })
 
         result = [{'user': user_id, 'average_rating': avg_rating, 'all_comments_and_ratings': rating_and_comments}]
 
