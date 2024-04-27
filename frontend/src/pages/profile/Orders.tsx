@@ -26,7 +26,6 @@ function Orders(): JSX.Element {
       .getOrders(user.username, page)
       .then((data) => {
         setOrders(data.results);
-        setCount(data.count);
       })
       .catch(errorToast);
   }

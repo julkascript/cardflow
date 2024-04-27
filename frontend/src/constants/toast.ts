@@ -33,6 +33,8 @@ export const toastMessages = {
     sellListingDelisted: 'Listing was delisted',
     orderStatusChanged: (orderId: number, status: orderState) =>
       `Order #${orderId} was marked as "${status}" successfully!`,
+    feedbackGiven: (orderId: number | string) =>
+      `Feedback for order #${orderId} has been given successfully!`,
   },
   error: {
     serverError: 'Something went wrong, please try again later!',

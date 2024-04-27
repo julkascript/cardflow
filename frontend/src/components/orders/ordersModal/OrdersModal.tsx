@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 import { Order, orderState } from '../../../services/orders/types';
 import OrderStatusBadge from '../OrderStatusBadge';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import MarketTable from '../../marketTable/MarketTable';
 import SummaryData from '../../shoppingCart/SummaryData';
 import Home from '@mui/icons-material/Home';
@@ -24,6 +24,8 @@ import { orderService } from '../../../services/orders/orderService';
 import { errorToast } from '../../../util/errorToast';
 import toast from 'react-hot-toast';
 import { toastMessages } from '../../../constants/toast';
+import { Feedback } from '../../../services/feedback/types';
+import { feedbackService } from '../../../services/feedback/feedback';
 
 const Rating = styled(BaseRating)({
   '& .MuiRating-iconFilled': {
@@ -46,6 +48,7 @@ type OrdersModalProps = {
   order: Order;
   status: orderState;
   userPosition: 'seller' | 'buyer';
+  feedback: Feedback | undefined;
 };
 
 function OrdersModal(props: OrdersModalProps): JSX.Element {
@@ -57,24 +60,71 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
   );
   const shipmentPrice = 9.85;
 
+  const [hasSubmitted, setHasSubmitted] = useState(false);
+
+  const cannotGiveFeedback =
+    props.feedback !== undefined ||
+    props.userPosition === 'seller' ||
+    hasSubmitted ||
+    (props.status !== 'completed' && props.status !== 'rejected');
+
   const userToDisplay =
     props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
+
+  const [rating, setRating] = useState(props.feedback?.rating || 0);
+  const saveButtonIsDisabled =
+    props.status === receivedOption && (cannotGiveFeedback || rating === 0);
+
+  const [comment, setComment] = useState(props.feedback?.comment || '');
+
+  function handleCommentChange(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+    setComment(event.target.value);
+  }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setReceivedOption(event.target.value as orderState);
   }
 
+  function changeRating(event: React.SyntheticEvent<Element, Event>, value: number | null) {
+    event.preventDefault();
+    setRating(value || 0);
+  }
+
   function save() {
-    if (props.status !== receivedOption) {
+    const hasChangedOption = props.status !== receivedOption;
+    if (hasChangedOption) {
       orderService
         .changeOrderStatus(order.order_id, receivedOption)
         .then(() => {
-          props.onClose(true);
           toast.success(toastMessages.success.orderStatusChanged(order.order_id, receivedOption));
+          props.onClose(true);
         })
         .catch(errorToast);
     }
+
+    if (rating && !cannotGiveFeedback) {
+      feedbackService
+        .sendFeedback({
+          related_order: order.order_id,
+          rating,
+          comment,
+        })
+        .then(() => {
+          setHasSubmitted(true);
+          if (!hasChangedOption) {
+            toast.success(toastMessages.success.feedbackGiven(order.order_id));
+            props.onClose(true);
+          }
+        });
+    }
   }
+
+  useEffect(() => {
+    if (props.feedback) {
+      setRating(props.feedback.rating);
+    }
+  }, [props.feedback]);
 
   return createPortal(
     <Dialog
@@ -174,7 +224,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             </thead>
             <tbody>
               {order.order_items.map((o) => (
-                <tr>
+                <tr key={o.listing.id}>
                   <td className="font-bold">{o.listing.card_name}</td>
                   <td>{o.listing.card_in_set.set.set_code}</td>
                   <td>{o.quantity}</td>
@@ -189,7 +239,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             <h3 className="font-bold mb-2 lg:mb-4 text-center lg:text-left">History</h3>
             <ul className="flex flex-col gap-2">
               {props.order.status_history.map((s) => (
-                <li>
+                <li key={s.timestamp + s.status}>
                   {orderStates[s.status]} - {formatTimestamp(s.timestamp)}
                 </li>
               ))}
@@ -200,12 +250,31 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
           <section className="w-full flex flex-col items-center lg:w-auto lg:block lg:mx-auto">
             <h3 className="font-bold mb-4 lg:mb-2 text-center lg:text-left">Feedback</h3>
             <form className="flex flex-col w-full items-center lg:w-auto lg:items-start">
-              <label className="flex items-center gap-2 mb-2">
-                <span>Rate:</span> <Rating name="rating" />
+              <label
+                id="rating"
+                data-disabled={cannotGiveFeedback}
+                className="flex items-center gap-2 mb-2"
+              >
+                <span>Rate:</span>{' '}
+                <Rating
+                  onChange={changeRating}
+                  disabled={cannotGiveFeedback}
+                  value={rating}
+                  name="rating"
+                />
               </label>
               <label className="block w-full">
                 <div>Comment:</div>
-                <TextField fullWidth className="w-full" minRows={3} multiline name="comment" />
+                <TextField
+                  value={props.feedback ? props.feedback.comment : comment}
+                  fullWidth
+                  className="w-full"
+                  minRows={3}
+                  multiline
+                  name="comment"
+                  disabled={cannotGiveFeedback}
+                  onChange={handleCommentChange}
+                />
               </label>
             </form>
           </section>
@@ -219,7 +288,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               Cancel
             </Button>
             <Button
-              disabled={props.status === receivedOption}
+              disabled={saveButtonIsDisabled}
               variant="contained"
               color="success"
               onClick={save}
