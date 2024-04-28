@@ -10,15 +10,17 @@ function ShoppingCartButton(): JSX.Element {
 
   if (shoppingCart > 0) {
     return (
-      <Badge color="error" badgeContent=" ">
-        <Button
-          href="/cart"
-          variant="outlined"
-          sx={{ color: infoColor, borderColor: secondaryTextColor }}
-        >
-          <ShoppingCartIcon />
-        </Button>
-      </Badge>
+      <div className="hidden lg:block">
+        <Badge color="error" badgeContent=" ">
+          <Button
+            href="/cart"
+            variant="outlined"
+            sx={{ color: infoColor, borderColor: secondaryTextColor }}
+          >
+            <ShoppingCartIcon />
+          </Button>
+        </Badge>
+      </div>
     );
   }
 
