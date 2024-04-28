@@ -33,7 +33,6 @@ function SellListing(): JSX.Element {
   const data = useLoaderData() as CardDetailsLoaderData;
   const params = useParams();
   const id = Number(params.id);
-  const cardId = Number(params.cardid);
   const { cardInSet, cardListings: cardListingsData } = data;
   const [cardListings, setCardListings] = useState(cardListingsData);
   const navigate = useNavigate();
@@ -234,7 +233,7 @@ function SellListing(): JSX.Element {
 
   function changePage(page: number) {
     yugiohService
-      .getCardListingsByCardSetId(cardId ? cardId : id, page)
+      .getCardListingsByCardSetId(id, page)
       .then((data) => {
         setCardListings(data);
         setPage(page);
@@ -243,17 +242,14 @@ function SellListing(): JSX.Element {
   }
 
   useEffectAfterInitialLoad(() => {
-    yugiohService
-      .getCardListingsByCardSetId(cardId ? cardId : id)
-      .then(setCardListings)
-      .catch(errorToast);
+    yugiohService.getCardListingsByCardSetId(id).then(setCardListings).catch(errorToast);
     setPage(1);
-  }, [params.cardid]);
+  }, [id]);
   return (
     <section className="bg-[#F5F5F5]">
       <CardflowTabs />
       <NewListingTopBar
-        handleSubmit={id && cardId ? updateListing : handleSubmit}
+        handleSubmit={id ? updateListing : handleSubmit}
         quantity={formData.quantity}
         price={formData.price}
       />
@@ -270,17 +266,17 @@ function SellListing(): JSX.Element {
                   {cardInSet.yugioh_card.card_name}
                 </h3>
                 <div className="absolute right-48 top-80">
-                  {id && cardId ? (
+                  {id ? (
                     <Button color="error" variant="outlined" onClick={deleteListing}>
                       Delete
                     </Button>
                   ) : null}
-                  {id && cardId ? null : (
+                  {id ? null : (
                     <Button href="/sell/new" variant="outlined" startIcon={<DeleteIcon />}>
                       Clear
                     </Button>
                   )}
-                  {id && cardId ? (
+                  {id ? (
                     <Button onClick={delistItem} variant="outlined" startIcon={<VisibilityIcon />}>
                       Delist
                     </Button>
