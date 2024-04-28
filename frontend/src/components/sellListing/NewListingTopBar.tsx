@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { condition } from '../../services/yugioh/types';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../BreadcrumbNavigation';
+import { Button } from '@mui/material';
 
 type NewListingTopBarProps = {
   handleSubmit: (e: React.FormEvent, postAnother: boolean) => Promise<void>;
@@ -52,8 +53,7 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
 
   return (
     <BreadcrumbNavigation links={breadcrumbNavigation} heading="New Listing">
-      {/* TO-DO: update URL */}
-      <div className="flex items-center">
+      <div className="flex items-center px-16 gap-4">
         <input
           type="checkbox"
           id="post-another"
@@ -64,19 +64,22 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
         <label htmlFor="post-another" className="ml-2 mr-4 text-sm text-gray-700">
           Post another
         </label>
-        <Link
-          to="/sell/manage"
-          className="px-6 py-1 mr-6 text-black border border-black rounded-lg hover:bg-gray-200"
+        <Button
+          href="/sell/manage"
+          variant="outlined"
+          sx={{ borderRadius: 2, padding: '8px 24px' }}
         >
           Cancel
-        </Link>
-        <button
+        </Button>
+        <Button
           onClick={onSubmit}
-          className="mr-48 px-6 py-1 text-white bg-emerald-500 border border-emerald-600 rounded-lg hover:bg-emerald-400 focus:outline-none focus:ring-blue-500"
           disabled={isButtonDisabled}
+          color="success"
+          variant="contained"
+          sx={{ color: 'white', borderRadius: 2, padding: '8px 24px' }}
         >
           Post
-        </button>
+        </Button>
       </div>
     </BreadcrumbNavigation>
   );
