@@ -1,5 +1,5 @@
 import Search from '@mui/icons-material/Search';
-import { IconButton } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import { useState } from 'react';
 import MobileSearchField from './MobileSearchField';
 import { useEffectAfterInitialLoad } from '../../util/useEffectAfterInitialLoad';
@@ -16,9 +16,11 @@ function MobileSearchFieldButton(): JSX.Element {
 
   return (
     <>
-      <IconButton sx={{ background: grayColor }} onClick={() => setOpen(true)}>
-        <Search />
-      </IconButton>
+      <Tooltip title="Search cards by name">
+        <IconButton sx={{ background: grayColor }} onClick={() => setOpen(true)}>
+          <Search />
+        </IconButton>
+      </Tooltip>
       <MobileSearchField open={open} onClose={() => setOpen(false)} />
     </>
   );
