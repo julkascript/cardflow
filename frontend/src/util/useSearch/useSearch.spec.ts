@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import * as useDebounce from '../useDebounce';
 import { yugiohService } from '../../services/yugioh/yugiohService';
-import { renderHook, waitFor } from '@testing-library/react';
+import { act, renderHook, waitFor } from '@testing-library/react';
 import { useSearch } from './useSearch';
 import { YugiohCardInSet } from '../../services/yugioh/types';
 
@@ -52,7 +52,7 @@ describe('useSearch', () => {
       results: cards,
     });
 
-    search.current.searchCards('Exodia');
+    act(() => search.current.searchCards('Exodia'));
 
     await waitFor(() => {
       expect(search.current.searchQuery).toBe('Exodia');
@@ -65,7 +65,7 @@ describe('useSearch', () => {
 
     const serviceSpy = vi.spyOn(yugiohService, 'searchCardsByName');
 
-    search.current.searchCards('');
+    act(() => search.current.searchCards(''));
 
     expect(search.current.searchQuery).toBe('');
     expect(search.current.searchResults.results).toEqual([]);
@@ -82,7 +82,7 @@ describe('useSearch', () => {
       results: cards,
     });
 
-    search.current.searchCards('Exodia');
+    act(() => search.current.searchCards(''));
 
     await waitFor(() => {
       search.current.clearResults();
