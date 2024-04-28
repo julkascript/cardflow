@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { condition } from '../../services/yugioh/types';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../BreadcrumbNavigation';
-import { Button } from '@mui/material';
+import { Button, Checkbox, FormControlLabel } from '@mui/material';
 
 type NewListingTopBarProps = {
   handleSubmit: (e: React.FormEvent, postAnother: boolean) => Promise<void>;
@@ -54,16 +54,10 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
   return (
     <BreadcrumbNavigation links={breadcrumbNavigation} heading="New Listing">
       <div className="flex items-center px-16 gap-4">
-        <input
-          type="checkbox"
-          id="post-another"
-          className="form-checkbox"
-          checked={postAnother}
-          onChange={handleCheckboxChange}
+        <FormControlLabel
+          control={<Checkbox checked={postAnother} onChange={handleCheckboxChange} />}
+          label="Post another"
         />
-        <label htmlFor="post-another" className="ml-2 mr-4 text-sm text-gray-700">
-          Post another
-        </label>
         <Button
           href="/sell/manage"
           variant="outlined"
