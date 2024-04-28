@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Link, useLoaderData, useParams, useNavigate } from 'react-router-dom';
+import { useLoaderData, useParams, useNavigate } from 'react-router-dom';
 import {
   CardDetailsLoaderData,
   YugiohCardListing,
   YugiohCardSellListing,
+  condition,
 } from '../../services/yugioh/types';
-import { useCurrentUser } from '../../context/user';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../../util/useEffectAfterInitialLoad';
 import YugiohCardMarket from '../../components/yugioh/table/market/YugiohCardMarket';
@@ -19,6 +19,14 @@ import VisibilityIcon from '@mui/icons-material/Visibility';
 import { errorToast } from '../../util/errorToast';
 import toast from 'react-hot-toast';
 import { toastMessages } from '../../constants/toast';
+import { Button, MenuItem, Select, TextField, SelectChangeEvent } from '@mui/material';
+
+const selectOptions: Record<condition, string> = {
+  poor: 'Poor',
+  played: 'Played',
+  good: 'Good',
+  excellent: 'Excellent',
+};
 
 function SellListing(): JSX.Element {
   const [page, setPage] = useState(1);
@@ -29,7 +37,6 @@ function SellListing(): JSX.Element {
   const { cardInSet, cardListings: cardListingsData } = data;
   const [cardListings, setCardListings] = useState(cardListingsData);
   const navigate = useNavigate();
-  const { user: currentUser } = useCurrentUser();
 
   const [formData, setFormData] = useState<YugiohCardListing>({
     id: 0,
@@ -92,9 +99,6 @@ function SellListing(): JSX.Element {
           card_set_id,
         } = currentCard;
         if (currentCard && currentCard !== null) {
-          if (currentUser.user_id !== user) {
-            navigate('/sell/manage');
-          }
           setFormData(() => ({
             card,
             quantity,
@@ -142,20 +146,40 @@ function SellListing(): JSX.Element {
     }
     loadCardListing();
   }, []);
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value, type } = e.target;
 
-    let newValue: string | boolean = value;
+  const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const quantity = Number(value);
 
-    if (type === 'checkbox') {
-      // 'checked' is only a property on input elements, specifically checkboxes
-      newValue = (e.target as HTMLInputElement).checked;
+    if (quantity > 0) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        quantity,
+      }));
     }
+  };
 
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: newValue,
-    }));
+  const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    const price = Number(value);
+
+    // Allow zero so users can input prices like 0.99 without issues
+    if (price >= 0) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        price,
+      }));
+    }
+  };
+
+  const handleConditionChange = (e: SelectChangeEvent<condition>) => {
+    const condition = e.target.value as condition;
+    if (condition) {
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        condition,
+      }));
+    }
   };
 
   async function deleteListing() {
@@ -166,16 +190,9 @@ function SellListing(): JSX.Element {
       errorToast(error);
     }
   }
+
   function delistItem() {
-    try {
-      if (formData.is_listed === true) {
-        yugiohService.editListing({ ...formData, is_listed: false });
-      } else {
-        yugiohService.editListing({ ...formData, is_listed: true });
-      }
-    } catch (error) {
-      errorToast(error);
-    }
+    yugiohService.editListing({ ...formData, is_listed: !formData.is_listed }).catch(errorToast);
   }
 
   async function handleSubmit(e: React.FormEvent): Promise<void> {
@@ -239,8 +256,6 @@ function SellListing(): JSX.Element {
         handleSubmit={id && cardId ? updateListing : handleSubmit}
         quantity={formData.quantity}
         price={formData.price}
-        condition={formData.condition}
-        card={Number(params.cardid)}
       />
       <div className="block mt-20 ml-40 mr-40 bg-white rounded-lg">
         <div className="flex flex-col border border-stone-300">
@@ -256,30 +271,19 @@ function SellListing(): JSX.Element {
                 </h3>
                 <div className="absolute right-48 top-80">
                   {id && cardId ? (
-                    <button
-                      onClick={deleteListing}
-                      className=" flex justify-center items-center w-20 h-8  mt-4 text-sm text-gray-700 border border-stone-300 pl-3 pr-4 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                    >
+                    <Button color="error" variant="outlined" onClick={deleteListing}>
                       Delete
-                    </button>
+                    </Button>
                   ) : null}
                   {id && cardId ? null : (
-                    <Link
-                      to="/sell/new"
-                      className=" flex justify-center items-center w-20 h-8  mt-4 text-sm text-gray-700 border border-stone-300 pl-3 pr-4 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                    >
-                      <DeleteIcon className="p-1" />
+                    <Button href="/sell/new" variant="outlined" startIcon={<DeleteIcon />}>
                       Clear
-                    </Link>
+                    </Button>
                   )}
                   {id && cardId ? (
-                    <button
-                      onClick={delistItem}
-                      className=" flex justify-center items-center w-20 h-8  mt-4 text-sm text-gray-700 border border-stone-300 pl-3 pr-4 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
-                    >
-                      <VisibilityIcon className="p-1" />
+                    <Button onClick={delistItem} variant="outlined" startIcon={<VisibilityIcon />}>
                       Delist
-                    </button>
+                    </Button>
                   ) : null}
                 </div>
               </div>
@@ -292,52 +296,57 @@ function SellListing(): JSX.Element {
                 </div>
               </div>
               <div className="flex mt-20">
-                <div className="inline-flex items-center p-1 ml-8 border rounded-md border-gray-300">
-                  <span className="pl-1 pr-1 text-gray-700 text-sm flex items-center">
-                    <TagIcon />
-                  </span>
-                  <input
+                <div className="w-40">
+                  <TextField
                     type="number"
                     name="quantity"
-                    min="0"
                     value={formData.quantity}
-                    onChange={handleChange}
-                    className="w-24 px-2 py-0.5 text-sm text-gray-700 border-none focus:ring-0 focus:outline-none"
+                    onChange={handleQuantityChange}
                     placeholder="Quantity"
+                    size="small"
+                    InputProps={{
+                      startAdornment: <TagIcon className="mr-2" />,
+                    }}
                   />
                 </div>
-                <div className="inline-flex items-center p-1 ml-8 border rounded-md border-gray-300">
-                  <span className="pl-1 pr-1 text-gray-700 text-sm flex items-center">
-                    <DiamondIcon />
-                  </span>
-                  <select
+                <div>
+                  <Select
                     id="condition"
                     name="condition"
+                    size="small"
+                    placeholder="Condition"
                     value={formData.condition}
-                    onChange={handleChange}
-                    className="w-28 px-2 py-0.5 text-sm text-left text-gray-700 border-none focus:ring-0 focus:outline-none"
+                    onChange={handleConditionChange}
+                    className="w-40"
+                    renderValue={(value) => (
+                      <>
+                        <DiamondIcon className="mr-2" />
+                        <span>{selectOptions[value]}</span>
+                      </>
+                    )}
                   >
-                    <option value="poor">Poor</option>
-                    <option value="played">Played</option>
-                    <option value="good">Good</option>
-                    <option value="excellent">Excellent</option>
-                  </select>
+                    <MenuItem disabled>
+                      <i>Condition</i>
+                    </MenuItem>
+                    <MenuItem value="poor">Poor</MenuItem>
+                    <MenuItem value="played">Played</MenuItem>
+                    <MenuItem value="good">Good</MenuItem>
+                    <MenuItem value="excellent">Excellent</MenuItem>
+                  </Select>
                 </div>
               </div>
-
               <div>
-                <div className="inline-flex items-center p-1 mt-16 ml-8 border rounded-md border-gray-300">
-                  <span className="pl-1 pr-1 text-gray-700 text-sm flex items-center">
-                    <PaymentsIcon />
-                  </span>
-                  <input
+                <div className="w-40">
+                  <TextField
                     type="number"
                     name="price"
                     value={formData.price}
-                    onChange={handleChange}
-                    min="0"
-                    className="w-24 px-2 py-0.5 text-sm text-gray-700 border-none focus:ring-0 focus:outline-none"
+                    onChange={handlePriceChange}
                     placeholder="Price"
+                    size="small"
+                    InputProps={{
+                      startAdornment: <PaymentsIcon className="mr-2" />,
+                    }}
                   />
                 </div>
               </div>
