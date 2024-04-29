@@ -1,13 +1,15 @@
 import toast from 'react-hot-toast';
 import ListingForm from '../../components/sellListing/ListingForm';
-import { YugiohCardSellListing } from '../../services/yugioh/types';
+import { CardDetailsLoaderData, YugiohCardSellListing } from '../../services/yugioh/types';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { toastMessages } from '../../constants/toast';
 import { errorToast } from '../../util/errorToast';
-import { useNavigate } from 'react-router-dom';
+import { useLoaderData, useNavigate } from 'react-router-dom';
 
 function SellListing(): JSX.Element {
   const navigate = useNavigate();
+  const data = useLoaderData() as CardDetailsLoaderData;
+
   function handleSubmit(data: YugiohCardSellListing, postAnother: boolean) {
     yugiohService
       .sellCardListing(data)
@@ -24,7 +26,9 @@ function SellListing(): JSX.Element {
       .catch(errorToast);
   }
 
-  return <ListingForm onSubmit={handleSubmit} />;
+  return (
+    <ListingForm cardInSet={data.cardInSet} listings={data.cardListings} onSubmit={handleSubmit} />
+  );
 }
 
 export default SellListing;
