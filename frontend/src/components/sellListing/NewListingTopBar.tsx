@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { condition } from '../../services/yugioh/types';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../BreadcrumbNavigation';
 import { Button, Checkbox, FormControlLabel } from '@mui/material';
 
@@ -8,28 +6,11 @@ type NewListingTopBarProps = {
   handleSubmit: (e: React.FormEvent, postAnother: boolean) => Promise<void>;
   quantity: number;
   price: number;
-  condition: condition;
-  card: number;
 };
 
-const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
-  handleSubmit,
-  quantity,
-  price,
-  condition,
-  card,
-}) => {
+const NewListingTopBar: React.FC<NewListingTopBarProps> = ({ handleSubmit, quantity, price }) => {
   const [postAnother, setPostAnother] = useState(false);
-  const navigate = useNavigate();
-  const isButtonDisabled =
-    quantity === null ||
-    quantity === 0 ||
-    price == null ||
-    price === 0 ||
-    price === undefined ||
-    condition === null ||
-    condition === undefined;
-  card === null || card === undefined;
+  const isButtonDisabled = !price || !quantity;
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostAnother(e.target.checked);
@@ -37,11 +18,6 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
 
   const onSubmit = (e: React.FormEvent) => {
     handleSubmit(e, postAnother);
-    if (!postAnother) {
-      navigate('/sell/manage');
-    } else {
-      navigate('/sell/new');
-    }
   };
 
   const breadcrumbNavigation: BreadcrumbLink[] = [
