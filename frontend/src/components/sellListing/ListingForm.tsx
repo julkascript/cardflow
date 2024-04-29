@@ -1,4 +1,12 @@
-import { SelectChangeEvent, Button, TextField, Select, MenuItem } from '@mui/material';
+import {
+  SelectChangeEvent,
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+  Chip,
+  Divider,
+} from '@mui/material';
 import { useState, useEffect } from 'react';
 import { useLoaderData, useParams, useNavigate } from 'react-router-dom';
 import {
@@ -18,6 +26,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import TagIcon from '@mui/icons-material/Tag';
 import VisibilityIcon from '@mui/icons-material/Visibility';
+import PageSection from '../PageSection';
 
 const selectOptions: Record<condition, string> = {
   poor: 'Poor',
@@ -235,59 +244,46 @@ function ListingForm(props: ListingFormProps) {
         quantity={formData.quantity}
         price={formData.price}
       />
-      <div className="block mt-20 ml-40 mr-40 bg-white rounded-lg">
-        <div className="flex flex-col border border-stone-300">
-          <div className="bg-white ml-4 p-8 w-[314px] h-[422px] flex">
-            <img src={cardInSet.yugioh_card.image} />
+      <PageSection className="w-4/5 mx-auto p-8">
+        <div className="flex justify-between">
+          <section className="flex gap-8">
+            <img src={cardInSet.yugioh_card.image} className="w-[314px] h-[422px]" />
             <div>
-              <div>
-                <h3
-                  className="ml-8 text-black text-nowrap text-4xl font-medium"
-                  style={{ whiteSpace: 'nowrap' }}
-                >
-                  {cardInSet.yugioh_card.card_name}
-                </h3>
-                <div className="absolute right-48 top-80">
-                  {id ? (
-                    <Button color="error" variant="outlined" onClick={deleteListing}>
-                      Delete
-                    </Button>
-                  ) : null}
-                  {id ? null : (
-                    <Button href="/sell/new" variant="outlined" startIcon={<DeleteIcon />}>
-                      Clear
-                    </Button>
-                  )}
-                  {id ? (
-                    <Button onClick={delistItem} variant="outlined" startIcon={<VisibilityIcon />}>
-                      Delist
-                    </Button>
-                  ) : null}
-                </div>
+              <h3 className="text-nowrap text-4xl font-medium">
+                {cardInSet.yugioh_card.card_name}
+              </h3>
+              <div className="hidden lg:flex">
+                <Chip
+                  size="small"
+                  color="secondary"
+                  variant="outlined"
+                  label={cardInSet.set.set_code}
+                />
+                <Chip
+                  size="small"
+                  color="secondary"
+                  variant="outlined"
+                  label={cardInSet.rarity.rarity_code}
+                />
               </div>
-              <div className="flex">
-                <div className="w-[61px] h-[23px] rounded-[10px] text-neutral-500 text-sm font-normal text-center ml-8 mt-4 border border-neutral-300">
-                  {cardInSet.set.set_code}
-                </div>
-                <div className="w-[61px] h-[23px] rounded-[10px] text-neutral-500 text-sm font-normal text-center ml-4 mt-4 border border-neutral-300">
-                  {cardInSet.rarity.rarity_code}
-                </div>
+              <div className="flex lg:hidden">
+                <Chip color="secondary" variant="outlined" label={cardInSet.set.set_code} />
+                <Chip color="secondary" variant="outlined" label={cardInSet.rarity.rarity_code} />
               </div>
-              <div className="flex mt-20">
-                <div className="w-40">
+              <div className="flex flex-col mt-20 gap-8">
+                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
                   <TextField
                     type="number"
                     name="quantity"
                     value={formData.quantity}
                     onChange={handleQuantityChange}
                     placeholder="Quantity"
+                    className="w-40"
                     size="small"
                     InputProps={{
                       startAdornment: <TagIcon className="mr-2" />,
                     }}
                   />
-                </div>
-                <div>
                   <Select
                     id="condition"
                     name="condition"
@@ -312,27 +308,45 @@ function ListingForm(props: ListingFormProps) {
                     <MenuItem value="excellent">Excellent</MenuItem>
                   </Select>
                 </div>
-              </div>
-              <div>
-                <div className="w-40">
-                  <TextField
-                    type="number"
-                    name="price"
-                    value={formData.price}
-                    onChange={handlePriceChange}
-                    placeholder="Price"
-                    size="small"
-                    InputProps={{
-                      startAdornment: <PaymentsIcon className="mr-2" />,
-                    }}
-                  />
+                <div>
+                  <div className="w-40">
+                    <TextField
+                      type="number"
+                      name="price"
+                      value={formData.price}
+                      onChange={handlePriceChange}
+                      placeholder="Price"
+                      size="small"
+                      InputProps={{
+                        startAdornment: <PaymentsIcon className="mr-2" />,
+                      }}
+                    />
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </section>
+          <section>
+            {props.editMode ? (
+              <Button color="error" variant="outlined" onClick={deleteListing}>
+                Delete
+              </Button>
+            ) : null}
+            {!id ? null : (
+              <Button href="/sell/new" variant="outlined" startIcon={<DeleteIcon />}>
+                Clear
+              </Button>
+            )}
+            {props.editMode ? (
+              <Button onClick={delistItem} variant="outlined" startIcon={<VisibilityIcon />}>
+                Delist
+              </Button>
+            ) : null}
+          </section>
         </div>
-        <div className="w-full border-b border-l border-r border-stone-300">
-          <h3 className="ml-12 text-lg font-semibold mb-4 pt-4">Market information</h3>
+        <Divider />
+        <div>
+          <h3 className="text-lg font-semibold">Market information</h3>
           <YugiohCardMarket
             page={page}
             onChangePage={changePage}
@@ -340,7 +354,7 @@ function ListingForm(props: ListingFormProps) {
             listings={cardListings.results}
           />
         </div>
-      </div>
+      </PageSection>
     </section>
   );
 }

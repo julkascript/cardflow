@@ -8,14 +8,18 @@ import { useNavigate } from 'react-router-dom';
 
 function SellListing(): JSX.Element {
   const navigate = useNavigate();
-  function handleSubmit(data: YugiohCardSellListing) {
+  function handleSubmit(data: YugiohCardSellListing, postAnother: boolean) {
     yugiohService
       .sellCardListing(data)
       .then((data) => {
         toast.success(
           toastMessages.success.listingCreated(data.card_name, data.card_in_set.set.set_code),
         );
-        navigate('/sell/manage');
+        if (postAnother) {
+          navigate('/sell/new');
+        } else {
+          navigate('/sell/manage');
+        }
       })
       .catch(errorToast);
   }
