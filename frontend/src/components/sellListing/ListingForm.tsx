@@ -7,13 +7,14 @@ import {
   Chip,
   Divider,
 } from '@mui/material';
-import { useState, useEffect } from 'react';
-import { useLoaderData, useParams, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
-  CardDetailsLoaderData,
   YugiohCardListing,
   condition,
   YugiohCardSellListing,
+  PaginatedItem,
+  YugiohCardInSet,
 } from '../../services/yugioh/types';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { errorToast } from '../../util/errorToast';
@@ -38,126 +39,60 @@ const selectOptions: Record<condition, string> = {
 type ListingFormProps = {
   editMode?: boolean;
   onSubmit: (data: YugiohCardSellListing, postAnother: boolean) => void;
+  listing?: YugiohCardListing;
+  listings: PaginatedItem<YugiohCardListing>;
+  cardInSet: YugiohCardInSet;
 };
 
 function ListingForm(props: ListingFormProps) {
   const [page, setPage] = useState(1);
-  const data = useLoaderData() as CardDetailsLoaderData;
   const params = useParams();
   const id = Number(params.id);
-  const { cardInSet, cardListings: cardListingsData } = data;
-  const [cardListings, setCardListings] = useState(cardListingsData);
+  const [cardListings, setCardListings] = useState(props.listings);
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<YugiohCardListing>({
-    id: 0,
-    quantity: 0,
-    condition: 'poor',
-    price: 0,
-    is_sold: true,
-    is_listed: true,
-    card: 0,
-    user_name: '',
-    user: 0,
-    card_name: '',
-    card_set_id: 0,
-    card_in_set: {
+  const [formData, setFormData] = useState<YugiohCardListing>(
+    props.listing || {
       id: 0,
-      yugioh_card: {
+      quantity: 0,
+      condition: 'poor',
+      price: 0,
+      is_sold: true,
+      is_listed: true,
+      card: 0,
+      user_name: '',
+      user: 0,
+      card_name: '',
+      card_set_id: 0,
+      card_in_set: {
         id: 0,
-        card_name: '',
-        type: '',
-        frame_type: '',
-        description: '',
-        attack: '',
-        defense: '',
-        level: '',
-        race: '',
-        attribute: '',
-        archetype: '',
-        image: '',
-      },
-      set: {
-        id: 0,
-        card_set_name: '',
-        set_code: '',
-      },
-      rarity: {
-        id: 0,
-        rarity: '',
-        rarity_code: '',
+        yugioh_card: {
+          id: 0,
+          card_name: '',
+          type: '',
+          frame_type: '',
+          description: '',
+          attack: '',
+          defense: '',
+          level: '',
+          race: '',
+          attribute: '',
+          archetype: '',
+          image: '',
+        },
+        set: {
+          id: 0,
+          card_set_name: '',
+          set_code: '',
+        },
+        rarity: {
+          id: 0,
+          rarity: '',
+          rarity_code: '',
+        },
       },
     },
-  });
-
-  useEffect(() => {
-    async function loadCardListing() {
-      try {
-        const currentCard: YugiohCardListing = await yugiohService.getListingById(
-          Number(params.id),
-        );
-        const {
-          card,
-          quantity,
-          condition,
-          price,
-          is_listed,
-          is_sold,
-          id,
-          user_name,
-          user,
-          card_name,
-          card_set_id,
-        } = currentCard;
-        if (currentCard && currentCard !== null) {
-          setFormData({
-            card,
-            quantity,
-            condition,
-            price,
-            is_sold,
-            is_listed,
-            id,
-            user_name,
-            user,
-            card_name,
-            card_set_id,
-            card_in_set: {
-              id: 0,
-              yugioh_card: {
-                id: 0,
-                card_name: '',
-                type: '',
-                frame_type: '',
-                description: '',
-                attack: '',
-                defense: '',
-                level: '',
-                race: '',
-                attribute: '',
-                archetype: '',
-                image: '',
-              },
-              set: {
-                id: 0,
-                card_set_name: '',
-                set_code: '',
-              },
-              rarity: {
-                id: 0,
-                rarity: '',
-                rarity_code: '',
-              },
-            },
-          });
-        }
-      } catch (error) {
-        errorToast(error, undefined, 404);
-      }
-    }
-
-    loadCardListing();
-  }, [params.id]);
+  );
 
   const handleQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
@@ -216,7 +151,7 @@ function ListingForm(props: ListingFormProps) {
       price: formData.price,
       is_sold: false,
       is_listed: formData.is_listed,
-      card: id,
+      card: props.cardInSet.id,
     };
 
     props.onSubmit(newData, postAnother);
@@ -244,34 +179,38 @@ function ListingForm(props: ListingFormProps) {
         quantity={formData.quantity}
         price={formData.price}
       />
-      <PageSection className="w-4/5 mx-auto p-8">
-        <div className="flex justify-between">
+      <PageSection className="w-5/6 mx-auto p-8 flex flex-col gap-8">
+        <div className="flex justify-between flex-wrap">
           <section className="flex gap-8">
-            <img src={cardInSet.yugioh_card.image} className="w-[314px] h-[422px]" />
+            <img src={props.cardInSet.yugioh_card.image} className="w-[314px] h-[422px]" />
             <div>
               <h3 className="text-nowrap text-4xl font-medium">
-                {cardInSet.yugioh_card.card_name}
+                {props.cardInSet.yugioh_card.card_name}
               </h3>
-              <div className="hidden lg:flex">
+              <div className="hidden lg:flex gap-4">
                 <Chip
                   size="small"
                   color="secondary"
                   variant="outlined"
-                  label={cardInSet.set.set_code}
+                  label={props.cardInSet.set.set_code}
                 />
                 <Chip
                   size="small"
                   color="secondary"
                   variant="outlined"
-                  label={cardInSet.rarity.rarity_code}
+                  label={props.cardInSet.rarity.rarity_code}
                 />
               </div>
               <div className="flex lg:hidden">
-                <Chip color="secondary" variant="outlined" label={cardInSet.set.set_code} />
-                <Chip color="secondary" variant="outlined" label={cardInSet.rarity.rarity_code} />
+                <Chip color="secondary" variant="outlined" label={props.cardInSet.set.set_code} />
+                <Chip
+                  color="secondary"
+                  variant="outlined"
+                  label={props.cardInSet.rarity.rarity_code}
+                />
               </div>
-              <div className="flex flex-col mt-20 gap-8">
-                <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
+              <div className="flex flex-col mt-20 gap-4">
+                <div className="flex flex-col lg:flex-row gap-4">
                   <TextField
                     type="number"
                     name="quantity"
@@ -326,19 +265,24 @@ function ListingForm(props: ListingFormProps) {
               </div>
             </div>
           </section>
-          <section>
+          <section className="flex flex-col gap-4">
             {props.editMode ? (
-              <Button color="error" variant="outlined" onClick={deleteListing}>
+              <Button size="small" color="error" variant="outlined" onClick={deleteListing}>
                 Delete
               </Button>
             ) : null}
             {!id ? null : (
-              <Button href="/sell/new" variant="outlined" startIcon={<DeleteIcon />}>
+              <Button size="small" href="/sell/new" variant="outlined" startIcon={<DeleteIcon />}>
                 Clear
               </Button>
             )}
             {props.editMode ? (
-              <Button onClick={delistItem} variant="outlined" startIcon={<VisibilityIcon />}>
+              <Button
+                size="small"
+                onClick={delistItem}
+                variant="outlined"
+                startIcon={<VisibilityIcon />}
+              >
                 Delist
               </Button>
             ) : null}
@@ -346,7 +290,7 @@ function ListingForm(props: ListingFormProps) {
         </div>
         <Divider />
         <div>
-          <h3 className="text-lg font-semibold">Market information</h3>
+          <h3 className="text-lg font-semibold mb-6">Market information</h3>
           <YugiohCardMarket
             page={page}
             onChangePage={changePage}
