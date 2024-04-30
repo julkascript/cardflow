@@ -9,7 +9,13 @@ function DeleteListingButton(props: DeleteListingButtonProps): JSX.Element {
   return (
     <>
       <div className="hidden lg:block">
-        <Button size="small" color="error" variant="outlined" onClick={props.onClick}>
+        <Button
+          className="w-full"
+          size="small"
+          color="error"
+          variant="outlined"
+          onClick={props.onClick}
+        >
           Delete
         </Button>
       </div>

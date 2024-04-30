@@ -10,7 +10,13 @@ function ToggleVisibilityButton(props: ToggleVisibilityButtonProps): JSX.Element
   return (
     <>
       <div className="hidden lg:block">
-        <Button size="small" variant="outlined" onClick={props.onClick}>
+        <Button
+          startIcon={<VisibilityIcon />}
+          size="small"
+          variant="outlined"
+          onClick={props.onClick}
+          className="w-full"
+        >
           {props.public ? 'List' : 'Delist'}
         </Button>
       </div>

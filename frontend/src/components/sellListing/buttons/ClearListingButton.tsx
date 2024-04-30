@@ -5,7 +5,13 @@ function ClearListingButton() {
   return (
     <>
       <div className="hidden lg:block">
-        <Button size="small" href="/sell/new" variant="outlined" startIcon={<DeleteIcon />}>
+        <Button
+          className="w-full"
+          size="small"
+          href="/sell/new"
+          variant="outlined"
+          startIcon={<DeleteIcon />}
+        >
           Clear
         </Button>
       </div>
