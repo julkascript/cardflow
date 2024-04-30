@@ -78,7 +78,7 @@ function SearchResultItem(props: SearchResultItemProps): JSX.Element {
         </ListItemIcon>
       </Tooltip>
       <ListItemText>
-        <div className="flex items-center">
+        <div className="flex items-center text-sm md:text-base">
           <div className="flex mr-8">{data.set.set_code}</div>
           <div className="w-full">{data.yugioh_card.card_name}</div>
         </div>
