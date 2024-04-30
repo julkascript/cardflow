@@ -276,7 +276,7 @@ function ListingForm(props: ListingFormProps) {
         <div className="w-full overflow-auto">
           <h3 className="text-lg font-semibold mb-6">Market information</h3>
           <MarketTable
-            className="w-full"
+            className="w-full max-md:text-sm"
             page={page}
             onPageChange={changePage}
             count={cardListings.count}
