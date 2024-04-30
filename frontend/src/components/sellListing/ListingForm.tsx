@@ -1,12 +1,4 @@
-import {
-  SelectChangeEvent,
-  Button,
-  TextField,
-  Select,
-  MenuItem,
-  Chip,
-  Divider,
-} from '@mui/material';
+import { SelectChangeEvent, TextField, Select, MenuItem, Chip, Divider, Link } from '@mui/material';
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
@@ -18,16 +10,19 @@ import {
 } from '../../services/yugioh/types';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { errorToast } from '../../util/errorToast';
-import { useEffectAfterInitialLoad } from '../../util/useEffectAfterInitialLoad';
-import YugiohCardMarket from '../yugioh/table/market/YugiohCardMarket';
 import CardflowTabs from './CardflowTabs';
 import NewListingTopBar from './NewListingTopBar';
 import PaymentsIcon from '@mui/icons-material/Payments';
-import DeleteIcon from '@mui/icons-material/Delete';
 import DiamondIcon from '@mui/icons-material/Diamond';
 import TagIcon from '@mui/icons-material/Tag';
-import VisibilityIcon from '@mui/icons-material/Visibility';
 import PageSection from '../PageSection';
+import MarketTable from '../marketTable/MarketTable';
+import YugiohSellerRankLabel from '../yugioh/seller/YugiohSellerRankLabel';
+import YugiohSellerRankBadge from '../yugioh/seller/YugiohSellerRankBadge';
+import YugiohCardConditionLabel from '../yugioh/YugiohCardConditionLabel';
+import DeleteListingButton from './buttons/DeleteListingButton';
+import ClearListingButton from './buttons/ClearListingButton';
+import ToggleVisibilityButton from './buttons/ToggleVisibilityButton';
 
 const selectOptions: Record<condition, string> = {
   poor: 'Poor',
@@ -110,7 +105,7 @@ function ListingForm(props: ListingFormProps) {
     const value = e.target.value;
     const price = Number(value);
 
-    // Allow zero so users can input prices like 0.99 without issues
+    // Allow zero so users can input prices like $0.99 without issues
     if (price >= 0) {
       setFormData((prevFormData) => ({
         ...prevFormData,
@@ -138,8 +133,11 @@ function ListingForm(props: ListingFormProps) {
     }
   }
 
-  function delistItem() {
-    yugiohService.editListing({ ...formData, is_listed: !formData.is_listed }).catch(errorToast);
+  function changeVisibility() {
+    yugiohService
+      .editListing({ ...formData, is_listed: !formData.is_listed })
+      .then(() => setFormData((state) => ({ ...state, is_listed: !state.is_listed })))
+      .catch(errorToast);
   }
 
   async function handleSubmit(e: React.FormEvent, postAnother: boolean): Promise<void> {
@@ -159,18 +157,13 @@ function ListingForm(props: ListingFormProps) {
 
   function changePage(page: number) {
     yugiohService
-      .getCardListingsByCardSetId(id, page)
+      .getCardListingsByCardSetId(props.cardInSet.id, page)
       .then((data) => {
         setCardListings(data);
         setPage(page);
       })
       .catch(errorToast);
   }
-
-  useEffectAfterInitialLoad(() => {
-    yugiohService.getCardListingsByCardSetId(id).then(setCardListings).catch(errorToast);
-    setPage(1);
-  }, [id]);
   return (
     <section className="bg-[#F5F5F5]">
       <CardflowTabs />
@@ -180,11 +173,14 @@ function ListingForm(props: ListingFormProps) {
         price={formData.price}
       />
       <PageSection className="w-5/6 mx-auto p-8 flex flex-col gap-8">
-        <div className="flex justify-between flex-wrap">
-          <section className="flex gap-8">
-            <img src={props.cardInSet.yugioh_card.image} className="w-[314px] h-[422px]" />
+        <div className="flex justify-between">
+          <section className="flex gap-8 justify-center">
+            <img
+              src={props.cardInSet.yugioh_card.image}
+              className="w-[110px] h-[161px] sm:w-[160px] sm:h-[211px]  md:w-[210px] md:h-[261px] lg:w-[314px] lg:h-[422px]"
+            />
             <div>
-              <h3 className="text-nowrap text-4xl font-medium">
+              <h3 className="text-sm md:text-2xl lg:text-4xl font-medium">
                 {props.cardInSet.yugioh_card.card_name}
               </h3>
               <div className="hidden lg:flex gap-4">
@@ -201,7 +197,7 @@ function ListingForm(props: ListingFormProps) {
                   label={props.cardInSet.rarity.rarity_code}
                 />
               </div>
-              <div className="flex lg:hidden">
+              <div className="flex lg:hidden gap-4">
                 <Chip color="secondary" variant="outlined" label={props.cardInSet.set.set_code} />
                 <Chip
                   color="secondary"
@@ -209,7 +205,7 @@ function ListingForm(props: ListingFormProps) {
                   label={props.cardInSet.rarity.rarity_code}
                 />
               </div>
-              <div className="flex flex-col mt-20 gap-4">
+              <div className="flex flex-col mt-10 lg:mt-20 gap-4">
                 <div className="flex flex-col lg:flex-row gap-4">
                   <TextField
                     type="number"
@@ -266,37 +262,68 @@ function ListingForm(props: ListingFormProps) {
             </div>
           </section>
           <section className="flex flex-col gap-4">
+            {props.editMode ? <DeleteListingButton onClick={deleteListing} /> : null}
+            {!id ? null : <ClearListingButton />}
             {props.editMode ? (
-              <Button size="small" color="error" variant="outlined" onClick={deleteListing}>
-                Delete
-              </Button>
-            ) : null}
-            {!id ? null : (
-              <Button size="small" href="/sell/new" variant="outlined" startIcon={<DeleteIcon />}>
-                Clear
-              </Button>
-            )}
-            {props.editMode ? (
-              <Button
-                size="small"
-                onClick={delistItem}
-                variant="outlined"
-                startIcon={<VisibilityIcon />}
-              >
-                Delist
-              </Button>
+              <ToggleVisibilityButton onClick={changeVisibility} public={formData.is_listed} />
             ) : null}
           </section>
         </div>
         <Divider />
-        <div>
+        <div className="w-full overflow-auto">
           <h3 className="text-lg font-semibold mb-6">Market information</h3>
-          <YugiohCardMarket
+          <MarketTable
+            className="w-full"
             page={page}
-            onChangePage={changePage}
+            onPageChange={changePage}
             count={cardListings.count}
-            listings={cardListings.results}
-          />
+          >
+            <thead>
+              <tr>
+                <th className="hidden lg:table-cell" colSpan={3}>
+                  Seller
+                </th>
+                <th className="table-cell lg:hidden">Seller</th>
+                <th colSpan={2}>Card details</th>
+                <th>Available</th>
+                <th>Price</th>
+              </tr>
+            </thead>
+            <tbody>
+              {cardListings.results.map((l) => (
+                <tr key={l.id}>
+                  <td className="text-center w-16 hidden lg:table-cell">
+                    <YugiohSellerRankBadge sales={900} />
+                  </td>
+                  <td className="text-center w-16 hidden lg:table-cell">
+                    <YugiohSellerRankLabel sales={900} />
+                  </td>
+                  <td className="text-xl">
+                    <Link
+                      sx={{ color: '#0B70E5' }}
+                      className="font-bold"
+                      href={`/user/${l.user_name}`}
+                      underline="hover"
+                    >
+                      {l.user_name}
+                    </Link>
+                  </td>
+                  <td className="w-[50px]">
+                    <YugiohCardConditionLabel className="w-[110px]" condition={l.condition} />
+                  </td>
+                  <td className="text-center">
+                    <img
+                      className="min-w-[40px] max-w-[40px] min-h-[20px] max-h-[20px] rounded-md inline-block"
+                      src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a5/Flag_of_the_United_Kingdom_%281-2%29.svg/1920px-Flag_of_the_United_Kingdom_%281-2%29.svg.png"
+                    />
+                    <br />
+                  </td>
+                  <td className="text-center text-xl p-1">{l.quantity}</td>
+                  <td className="font-bold text-xl w-[200px]">$&nbsp;{l.price}</td>
+                </tr>
+              ))}
+            </tbody>
+          </MarketTable>
         </div>
       </PageSection>
     </section>
