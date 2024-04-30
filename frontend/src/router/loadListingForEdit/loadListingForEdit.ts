@@ -25,7 +25,7 @@ export async function loadListingForEdit({
   }
 
   const listing = await yugiohService.getListingById(id);
-  const listings = await yugiohService.getCardListingsByCardSetId(listing.card_set_id);
+  const listings = await yugiohService.getCardListingsByCardSetId(listing.card_in_set.id);
 
   return { listing, listings };
 }
