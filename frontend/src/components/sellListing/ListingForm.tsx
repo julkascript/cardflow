@@ -175,7 +175,7 @@ function ListingForm(props: ListingFormProps) {
       <PageSection className="w-11/12 mt-4 md:w-5/6 mx-auto p-4 md:p-8 flex flex-col gap-8">
         <div className="flex justify-between gap-4 md:gap-0">
           <section className="flex gap-4 md:gap-8">
-            <img src={props.cardInSet.yugioh_card.image} className="w-1/2 lg:w-1/3" />
+            <img src={props.cardInSet.yugioh_card.image} className="w-1/2 lg:w-1/4" />
             <div>
               <h3 className="text-xl md:text-2xl lg:text-4xl font-medium">
                 {props.cardInSet.yugioh_card.card_name}
