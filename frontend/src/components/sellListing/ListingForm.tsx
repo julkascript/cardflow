@@ -165,22 +165,19 @@ function ListingForm(props: ListingFormProps) {
       .catch(errorToast);
   }
   return (
-    <section className="bg-[#F5F5F5]">
+    <section className="bg-[#F5F5F5] pb-4">
       <CardflowTabs />
       <NewListingTopBar
         handleSubmit={handleSubmit}
         quantity={formData.quantity}
         price={formData.price}
       />
-      <PageSection className="w-5/6 mx-auto p-8 flex flex-col gap-8">
-        <div className="flex justify-between">
-          <section className="flex gap-8 justify-center">
-            <img
-              src={props.cardInSet.yugioh_card.image}
-              className="w-[110px] h-[161px] sm:w-[160px] sm:h-[211px]  md:w-[210px] md:h-[261px] lg:w-[314px] lg:h-[422px]"
-            />
+      <PageSection className="w-11/12 mt-4 md:w-5/6 mx-auto p-4 md:p-8 flex flex-col gap-8">
+        <div className="flex justify-between gap-4 md:gap-0">
+          <section className="flex gap-4 md:gap-8">
+            <img src={props.cardInSet.yugioh_card.image} className="w-1/2 h-full" />
             <div>
-              <h3 className="text-sm md:text-2xl lg:text-4xl font-medium">
+              <h3 className="text-xl md:text-2xl lg:text-4xl font-medium">
                 {props.cardInSet.yugioh_card.card_name}
               </h3>
               <div className="hidden lg:flex gap-4">
@@ -197,10 +194,16 @@ function ListingForm(props: ListingFormProps) {
                   label={props.cardInSet.rarity.rarity_code}
                 />
               </div>
-              <div className="flex lg:hidden gap-4">
-                <Chip color="secondary" variant="outlined" label={props.cardInSet.set.set_code} />
+              <div className="flex lg:hidden gap-2">
+                <Chip
+                  size="small"
+                  color="secondary"
+                  variant="outlined"
+                  label={props.cardInSet.set.set_code}
+                />
                 <Chip
                   color="secondary"
+                  size="small"
                   variant="outlined"
                   label={props.cardInSet.rarity.rarity_code}
                 />
@@ -213,7 +216,7 @@ function ListingForm(props: ListingFormProps) {
                     value={formData.quantity}
                     onChange={handleQuantityChange}
                     placeholder="Quantity"
-                    className="w-40"
+                    className="w-36"
                     size="small"
                     InputProps={{
                       startAdornment: <TagIcon className="mr-2" />,
@@ -226,7 +229,7 @@ function ListingForm(props: ListingFormProps) {
                     placeholder="Condition"
                     value={formData.condition}
                     onChange={handleConditionChange}
-                    className="w-40"
+                    className="w-36"
                     renderValue={(value) => (
                       <>
                         <DiamondIcon className="mr-2" />
@@ -244,7 +247,7 @@ function ListingForm(props: ListingFormProps) {
                   </Select>
                 </div>
                 <div>
-                  <div className="w-40">
+                  <div className="w-36">
                     <TextField
                       type="number"
                       name="price"
@@ -261,7 +264,7 @@ function ListingForm(props: ListingFormProps) {
               </div>
             </div>
           </section>
-          <section className="flex flex-col gap-4">
+          <section className="flex flex-col gap-2 md:gap-4">
             {props.editMode ? <DeleteListingButton onClick={deleteListing} /> : null}
             {!id ? null : <ClearListingButton />}
             {props.editMode ? (
