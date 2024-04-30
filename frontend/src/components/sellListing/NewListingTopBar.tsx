@@ -6,9 +6,15 @@ type NewListingTopBarProps = {
   handleSubmit: (e: React.FormEvent, postAnother: boolean) => Promise<void>;
   quantity: number;
   price: number;
+  title: string;
 };
 
-const NewListingTopBar: React.FC<NewListingTopBarProps> = ({ handleSubmit, quantity, price }) => {
+const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
+  handleSubmit,
+  quantity,
+  price,
+  title,
+}) => {
   const [postAnother, setPostAnother] = useState(false);
   const isButtonDisabled = !price || !quantity;
 
@@ -28,7 +34,7 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({ handleSubmit, quant
   ];
 
   return (
-    <BreadcrumbNavigation links={breadcrumbNavigation} heading="New Listing">
+    <BreadcrumbNavigation links={breadcrumbNavigation} heading={title}>
       <div className="flex items-center px-16 gap-4">
         <FormControlLabel
           control={<Checkbox checked={postAnother} onChange={handleCheckboxChange} />}

@@ -37,6 +37,7 @@ type ListingFormProps = {
   listing?: YugiohCardListing;
   listings: PaginatedItem<YugiohCardListing>;
   cardInSet: YugiohCardInSet;
+  title: string;
 };
 
 function ListingForm(props: ListingFormProps) {
@@ -171,6 +172,7 @@ function ListingForm(props: ListingFormProps) {
         handleSubmit={handleSubmit}
         quantity={formData.quantity}
         price={formData.price}
+        title={props.title}
       />
       <PageSection className="w-11/12 mt-4 md:w-5/6 mx-auto p-4 md:p-8 flex flex-col gap-8">
         <div className="flex justify-between gap-4 md:gap-0">

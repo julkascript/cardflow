@@ -27,7 +27,12 @@ function SellListing(): JSX.Element {
   }
 
   return (
-    <ListingForm cardInSet={data.cardInSet} listings={data.cardListings} onSubmit={handleSubmit} />
+    <ListingForm
+      title="New listing"
+      cardInSet={data.cardInSet}
+      listings={data.cardListings}
+      onSubmit={handleSubmit}
+    />
   );
 }
 

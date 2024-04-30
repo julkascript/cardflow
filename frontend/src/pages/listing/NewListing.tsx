@@ -12,6 +12,7 @@ function Newlisting() {
         handleSubmit={(): Promise<void> => {
           throw new Error('Function not implemented.');
         }}
+        title="New listing"
       />
       <NewListingBody />
     </>

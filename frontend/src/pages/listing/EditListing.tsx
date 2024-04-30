@@ -35,6 +35,7 @@ function EditListing(): JSX.Element {
       listings={listings}
       onSubmit={handleSubmit}
       editMode
+      title="Edit listing"
     />
   );
 }
