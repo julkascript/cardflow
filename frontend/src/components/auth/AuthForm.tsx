@@ -106,11 +106,11 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
   return (
     <form onSubmit={handleSubmitAuthForm}>
       <div className="flex justify-center items-center flex-col">
-        <h2 className="text-4xl font-bold pt-20 pb-10 text-secondary">
+        <h2 className="text-4xl text-center font-bold pt-20 pb-10 text-secondary">
           {isLogin ? 'Log in' : 'Sign up'} for Cardflow
         </h2>
         <input
-          className={`w-96 h-8 p-4 mb-4 bg-white rounded-md border ${
+          className={`w-3/4 md:w-96 h-8 p-4 mb-4 bg-white rounded-md border ${
             usernameError && 'border-red-500'
           } border-primary-border`}
           placeholder="Username"
@@ -120,7 +120,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
         {error.username && <p className="text-red-500">{error.username}</p>}
         {!isLogin ? (
           <input
-            className={`w-96 h-8 p-4 mb-4 bg-white rounded-md border border-primary-border ${
+            className={`w-3/4 md:w-96 h-8 p-4 mb-4 bg-white rounded-md border border-primary-border ${
               emailError && 'border-red-500'
             }`}
             placeholder="Email Address"
@@ -130,7 +130,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
         ) : null}
         {error.email && <p className="text-red-500">{error.email}</p>}
         <input
-          className={`w-96 h-8 p-4 bg-white rounded-md border border-primary-border ${
+          className={`w-3/4 md:w-96 h-8 p-4 bg-white rounded-md border border-primary-border ${
             passwordError && 'border-red-500'
           }`}
           placeholder="Password"
@@ -144,7 +144,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
           </button>
         </div>
         <div className="flex justify-center items-center flex-col py-5">
-          <p className="font-extrabold">
+          <p className="font-extrabold text-center">
             {isLogin ? 'Don’t have an account?' : 'Already have an account?'}{' '}
             <Link
               to={isLogin ? '/register' : '/login'}
