@@ -43,7 +43,7 @@ function NotFound(): JSX.Element {
         <CssBaseline />
         <Navigation />
         <main className="flex flex-grow justify-center">
-          <section className="flex items-center justify-center flex-col text-center gap-3">
+          <section className="flex items-center justify-center flex-col text-center gap-8">
             <div className="flex items-center justify-center gap-4">
               <h1 className="text-2xl md:text-3xl lg:text-5xl">404</h1>
               <Divider orientation="vertical" flexItem />
