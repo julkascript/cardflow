@@ -128,7 +128,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
         <h2 className="text-4xl text-center font-bold pt-20 pb-10 text-secondary">
           {isLogin ? 'Log in' : 'Sign up'} for Cardflow
         </h2>
-        <div className="w-full flex justify-center mb-4">
+        <div className="w-full flex justify-center mb-8 lg:mb-4">
           <TextField
             className="w-3/4 lg:w-96"
             placeholder="Username"
@@ -140,7 +140,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
           />
         </div>
         {!isLogin ? (
-          <div className="w-full flex justify-center mb-4">
+          <div className="w-full flex justify-center mb-8 lg:mb-4">
             <TextField
               size="small"
               label={emailError ? error.email : 'Email Address'}
