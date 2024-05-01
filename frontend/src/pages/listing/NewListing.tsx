@@ -7,13 +7,12 @@ function Newlisting() {
     <>
       <CardflowTabs />
       <NewListingTopBar
-        card={0}
         quantity={0}
         price={0}
-        condition={'poor'}
         handleSubmit={(): Promise<void> => {
           throw new Error('Function not implemented.');
         }}
+        title="New listing"
       />
       <NewListingBody />
     </>

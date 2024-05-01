@@ -248,7 +248,6 @@ function SellManagement(): JSX.Element {
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <CardflowTabs />
       <PageHeader heading="Sell">
-        {/* TO-DO: update URL */}
         <Button
           className="rounded-md"
           startIcon={<AddIcon />}
