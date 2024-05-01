@@ -27,10 +27,15 @@ function NotFound(): JSX.Element {
         <CssBaseline />
         <Navigation />
         <main className="flex flex-grow justify-center">
-          <section className="flex items-center justify-center flex-col text-center gap-8">
-            <div className="flex items-center justify-center gap-4">
-              <h1 className="text-2xl md:text-3xl lg:text-5xl">404</h1>
-              <Divider orientation="vertical" flexItem />
+          <section className="flex items-center justify-center flex-col text-center gap-4 lg:gap-8">
+            <div className="flex items-center flex-col lg:flex-row justify-center lg:gap-4">
+              <h1 className="text-2xl md:text-3xl lg:text-5xl mb-0 pb-0">404</h1>
+              <Divider
+                orientation="vertical"
+                flexItem
+                sx={{ borderRight: 3, borderColor: 'gray' }}
+                className="hidden lg:block"
+              />
               <Typography component="p">This page could not be found</Typography>
             </div>
             <Button
