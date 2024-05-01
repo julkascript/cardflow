@@ -1,12 +1,9 @@
 import { ClickAwayListener, TextField } from '@mui/material';
-import { ChangeEvent, FormEvent, useState } from 'react';
+import { ChangeEvent, FormEvent } from 'react';
 import SearchButton from '../navigation/desktop/buttons/SearchButton';
-import { useDebounce } from '../../util/useDebounce';
-import { PaginatedItem, YugiohCardInSet } from '../../services/yugioh/types';
-import { yugiohService } from '../../services/yugioh/yugiohService';
 import SearchResultsDisplay from './SearchResultsDisplay';
 import { useNavigate } from 'react-router-dom';
-import { errorToast } from '../../util/errorToast';
+import { useSearch } from '../../util/useSearch/useSearch';
 
 type SearchFieldProps = {
   isListing?: boolean;
@@ -14,45 +11,25 @@ type SearchFieldProps = {
 
 function SearchField({ isListing }: SearchFieldProps): JSX.Element {
   const navigate = useNavigate();
+  const { searchQuery, searchCards, searchResults, clearResults } = useSearch();
   function search(event: FormEvent) {
     event.preventDefault();
     if (searchQuery) {
       navigate('/search/' + searchQuery);
-      setSearchQuery('');
-      clear();
+      clearResults();
     }
   }
-
-  function clear() {
-    setSearchResults({ results: [], count: 0, next: null, previous: null });
-  }
-  const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<PaginatedItem<YugiohCardInSet>>({
-    results: [],
-    count: 0,
-    next: null,
-    previous: null,
-  });
-
-  const debouncedRetrieve = useDebounce(() => {
-    yugiohService.searchCardsByName(searchQuery).then(setSearchResults).catch(errorToast);
-  });
 
   function updateField(event: ChangeEvent) {
     event.preventDefault();
     const target = event.target as HTMLInputElement;
     const value = target.value;
-    setSearchQuery(value);
-    if (value) {
-      debouncedRetrieve();
-    } else {
-      clear();
-    }
+    searchCards(value);
   }
 
   return (
-    <ClickAwayListener onClickAway={clear}>
-      <form onSubmit={search} className="relative z-50000">
+    <ClickAwayListener onClickAway={clearResults}>
+      <form onSubmit={search} className="relative z-[50000]">
         <TextField
           placeholder={'Type "/" to search'}
           onChange={updateField}
@@ -66,7 +43,7 @@ function SearchField({ isListing }: SearchFieldProps): JSX.Element {
         <div>
           <SearchResultsDisplay
             isListing={isListing}
-            onClose={clear}
+            onClose={clearResults}
             results={searchResults}
             query={searchQuery}
           />
