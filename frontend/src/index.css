@@ -4,13 +4,22 @@
 
 body,
 html {
-  min-height: 100%;
   position: relative;
   z-index: 1;
+}
+
+body {
+  min-height: 100vh;
 }
 
 @media (prefers-reduced-motion: no-preference) {
   html {
     scroll-behavior: smooth;
   }
+}
+
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
