@@ -9,29 +9,13 @@ import {
 import Navigation from '../components/navigation/Navigation';
 import { linkBehaviorConfiguration } from '../linkBehaviorConfiguration';
 import { useMemo } from 'react';
+import { theme } from '../constants/theme';
 
 function NotFound(): JSX.Element {
-  const theme = useMemo(
+  const appTheme = useMemo(
     () =>
       createTheme({
-        palette: {
-          primary: {
-            main: '#000',
-          },
-          secondary: {
-            main: '#15B58D',
-          },
-          info: {
-            main: '#000',
-          },
-          text: {
-            primary: '#000',
-            secondary: '#666666',
-          },
-          warning: {
-            main: '#F73378',
-          },
-        },
+        ...theme,
         ...linkBehaviorConfiguration,
       }),
     [],
@@ -39,7 +23,7 @@ function NotFound(): JSX.Element {
 
   return (
     <>
-      <ThemeProvider theme={theme}>
+      <ThemeProvider theme={appTheme}>
         <CssBaseline />
         <Navigation />
         <main className="flex flex-grow justify-center">
