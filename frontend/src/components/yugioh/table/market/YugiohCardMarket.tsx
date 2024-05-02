@@ -12,14 +12,14 @@ type YugiohCardMarketProps = {
 function YugiohCardMarket(props: YugiohCardMarketProps): JSX.Element {
   return (
     <>
-      <div className="flex flex-col md:items-center justify-center overflow-auto">
+      <div className="hidden lg:flex flex-col md:items-center justify-center overflow-auto">
         <MarketTable
           page={props.page}
           onPageChange={props.onChangePage}
           count={props.count}
           className="w-11/12 md:w-full lg:w-5/6 mb-12"
         >
-          <thead>
+          <thead className="text-sm lg:text-base">
             <tr>
               <th colSpan={3}>Seller</th>
               <th colSpan={2}>Card details</th>
@@ -27,7 +27,29 @@ function YugiohCardMarket(props: YugiohCardMarketProps): JSX.Element {
               <th colSpan={3}>Buy</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="text-sm lg:text-base">
+            {props.listings.map((l) => (
+              <YugiohCardMarketTableCell key={l.id} listing={l} />
+            ))}
+          </tbody>
+        </MarketTable>
+      </div>
+      <div className="flex lg:hidden flex-col mx-auto overflow-auto">
+        <MarketTable
+          page={props.page}
+          onPageChange={props.onChangePage}
+          count={props.count}
+          className="w-11/12 mx-auto md:w-5/6 mb-12"
+        >
+          <thead className="text-sm lg:text-base">
+            <tr>
+              <th>Seller</th>
+              <th colSpan={2}>Card details</th>
+              <th>Available</th>
+              <th colSpan={3}>Buy</th>
+            </tr>
+          </thead>
+          <tbody className="text-sm lg:text-base">
             {props.listings.map((l) => (
               <YugiohCardMarketTableCell key={l.id} listing={l} />
             ))}

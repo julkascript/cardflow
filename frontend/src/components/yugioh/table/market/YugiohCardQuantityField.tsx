@@ -24,14 +24,14 @@ function YugiohCardQuantityField(props: YugiohCardQuantityFieldProps): JSX.Eleme
     return (
       <div
         aria-hidden={true}
-        className="p-1 w-16 h-10 text-center border rounded-sm invisible"
+        className="p-1 w-12 lg:w-16 h-7 lg:h-10 text-center border rounded-sm invisible"
       ></div>
     );
   }
 
   return (
     <input
-      className="p-1 w-16 h-10 text-center border rounded-sm"
+      className="p-1 w-12 lg:w-16 h-7 lg:h-10 text-center border rounded-sm"
       style={{ borderColor: secondary }}
       type="number"
       onChange={handleChange}
