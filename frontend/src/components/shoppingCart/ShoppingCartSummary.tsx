@@ -1,13 +1,5 @@
 import { Delete, Home, Info } from '@mui/icons-material';
-import {
-  Divider,
-  IconButton,
-  InputAdornment,
-  Link,
-  Pagination,
-  TextField,
-  Tooltip,
-} from '@mui/material';
+import { Divider, IconButton, InputAdornment, Link, TextField, Tooltip } from '@mui/material';
 import SummaryData from './SummaryData';
 import MarketTable from '../marketTable/MarketTable';
 import PageSection from '../PageSection';
@@ -25,7 +17,7 @@ type ShoppingCartSummaryProps = {
   onRemove: (id: number) => void;
   onChangeQuantity: (id: number, quantity: number) => void;
   page: number;
-  pages: number;
+  count: number;
   onChangePage: (page: number) => void;
   totalPrice: number;
 };
@@ -59,8 +51,8 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
             <SummaryData boldedData summary="Total" data={props.totalPrice + props.shipmentCost} />
           </ul>
         </section>
-        <Divider className="none lg:block" orientation="vertical" flexItem />
-        <Divider className="block lg:none" flexItem />
+        <Divider className="hidden lg:block" orientation="vertical" flexItem />
+        <Divider className="block lg:hidden" flexItem />
         <section>
           <h3 className="font-bold mb-2">
             <div className="flex items-center justify-center lg:justify-start gap-2">
@@ -94,7 +86,12 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
         </section>
       </div>
       <section className="flex mt-4 lg:justify-center w-full overflow-auto">
-        <MarketTable className="text-center w-full">
+        <MarketTable
+          page={props.page}
+          onPageChange={props.onChangePage}
+          count={props.count}
+          className="text-center w-full"
+        >
           <thead>
             <tr>
               <th colSpan={3}>Card Details</th>
@@ -143,16 +140,6 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
             ))}
           </tbody>
         </MarketTable>
-      </section>
-      <section className="flex justify-center">
-        <Pagination
-          page={props.page}
-          count={props.pages}
-          onChange={(e, p) => {
-            e.preventDefault();
-            props.onChangePage(p);
-          }}
-        />
       </section>
     </PageSection>
   );

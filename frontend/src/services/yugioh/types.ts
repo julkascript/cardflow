@@ -99,6 +99,11 @@ export type CardDetailsLoaderData = {
   cardListings: PaginatedItem<YugiohCardListing>;
 };
 
+export type EditListingLoaderData = {
+  listing: YugiohCardListing;
+  listings: PaginatedItem<YugiohCardListing>;
+};
+
 export type ListingDetailsLoaderData = {
   cardListings: PaginatedItem<YugiohCardListing>;
 };

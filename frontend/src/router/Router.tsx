@@ -15,10 +15,17 @@ import { loadSearchResults } from './loadSearchResults/loadSearchResults';
 import SellManagement from '../pages/yugioh/SellManagement';
 import Newlisting from '../pages/listing/NewListing';
 import SellListing from '../pages/listing/SellListing';
-import EditListing from '../pages/listing/EditListing';
-import { loadListingDetails } from './loadListingDetails/loadEditListingDetails';
 import { loadPublicUserInfo } from './loadPublicUserInfo/loadPublicUserInfo';
 import Cart from '../pages/Cart';
+import Changelog from '../pages/about/Changelog';
+import About from '../pages/about/About';
+import FAQ from '../pages/about/FAQ';
+import Contact from '../pages/about/Contact';
+import BestSellers from '../pages/yugioh/BestSellers';
+import Orders from '../pages/profile/Orders';
+import Sales from '../pages/profile/Sales';
+import { loadListingForEdit } from './loadListingForEdit/loadListingForEdit';
+import EditListing from '../pages/listing/EditListing';
 
 const routes = createBrowserRouter([
   {
@@ -30,6 +37,11 @@ const routes = createBrowserRouter([
         path: '/',
         index: true,
         element: <Home />,
+      },
+      {
+        path: '/yugioh',
+        index: true,
+        element: <BestSellers />,
       },
       {
         path: '/login',
@@ -62,6 +74,27 @@ const routes = createBrowserRouter([
         loader: authorizedGuard,
       },
       {
+        path: '/about',
+        children: [
+          {
+            path: '',
+            element: <About />,
+          },
+          {
+            path: 'faq',
+            element: <FAQ />,
+          },
+          {
+            path: 'contact',
+            element: <Contact />,
+          },
+          {
+            path: 'changelog',
+            element: <Changelog />,
+          },
+        ],
+      },
+      {
         path: '/user/:username',
         children: [
           {
@@ -78,6 +111,16 @@ const routes = createBrowserRouter([
             path: 'blog',
             element: <ProfilePagePlaceholder />,
           },
+          {
+            path: 'orders',
+            element: <Orders />,
+            loader: authorizedGuard,
+          },
+          {
+            path: 'sales',
+            element: <Sales />,
+            loader: authorizedGuard,
+          },
         ],
       },
       {
@@ -92,6 +135,15 @@ const routes = createBrowserRouter([
                 element: <YugiohCardDetails />,
               },
             ],
+          },
+        ],
+      },
+      {
+        path: 'buy',
+        children: [
+          {
+            path: '',
+            element: <BestSellers />,
           },
         ],
       },
@@ -114,7 +166,7 @@ const routes = createBrowserRouter([
           },
           {
             path: 'listing/:id/edit',
-            loader: loadListingDetails,
+            loader: loadListingForEdit,
             element: <EditListing />,
           },
         ],

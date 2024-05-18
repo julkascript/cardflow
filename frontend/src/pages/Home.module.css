@@ -98,9 +98,8 @@
 
 .buttonContainer {
   position: relative;
-  display: inline-block; /* Use 'inline-flex' if you're using flex properties */
-  /* No padding or margins that might create extra space around the button */
 }
+
 
 .buttonContainer::before {
   content: '';

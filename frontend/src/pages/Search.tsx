@@ -1,15 +1,15 @@
 import { useLoaderData, useNavigate, useParams } from 'react-router-dom';
 import { CardSearchLoader } from '../services/yugioh/types';
-import PageHeader from '../components/PageHeader';
 import MarketTable from '../components/marketTable/MarketTable';
 import React, { useState } from 'react';
 import SearchTableRow from '../components/search/SearchTableRow';
-import { Pagination, TextField } from '@mui/material';
+import { TextField } from '@mui/material';
 import SearchButton from '../components/navigation/desktop/buttons/SearchButton';
 import { yugiohService } from '../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
-import ListingTopBar from '../components/sellListing/ListingTopBar';
+import CardflowTabs from '../components/sellListing/CardflowTabs';
 import { errorToast } from '../util/errorToast';
+import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
 
 function Search(): JSX.Element {
   const data: CardSearchLoader = useLoaderData() as CardSearchLoader;
@@ -17,8 +17,14 @@ function Search(): JSX.Element {
   const params = useParams();
   const [cards, setCards] = useState(data.cards);
   const [page, setPage] = useState(1);
-  const pages = Math.ceil(cards.count / 10);
   const [searchQuery, setSearchQuery] = useState(params.query || '');
+
+  const breadcrumbNavigation: BreadcrumbLink[] = [
+    {
+      href: '/buy',
+      text: 'Buy',
+    },
+  ];
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
@@ -43,7 +49,7 @@ function Search(): JSX.Element {
     setPage(1);
   }
 
-  function changePage(_event: React.ChangeEvent<unknown>, page: number) {
+  function changePage(page: number) {
     yugiohService
       .searchCardsByName(searchQuery, page)
       .then((data) => {
@@ -71,8 +77,8 @@ function Search(): JSX.Element {
   }, [params.query]);
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
-      <ListingTopBar />
-      <PageHeader heading="Buy / Search" />
+      <CardflowTabs />
+      <BreadcrumbNavigation heading="Search" links={breadcrumbNavigation} />
       <div className="min-h-full mt-2 flex items-center w-full flex-col gap-4">
         <form className="w-2/3 bg-white relative z-0" onSubmit={handleSubmit}>
           <TextField
@@ -87,7 +93,12 @@ function Search(): JSX.Element {
             }}
           />
         </form>
-        <MarketTable className="text-center w-full md:w-11/12 lg:w-2/3 bg-white border">
+        <MarketTable
+          page={page}
+          onPageChange={changePage}
+          count={cards.count}
+          className="text-center w-full md:w-11/12 lg:w-2/3 bg-white border"
+        >
           <thead>
             <tr>
               <th style={{ textAlign: 'center' }} colSpan={3}>
@@ -102,12 +113,6 @@ function Search(): JSX.Element {
             ))}
           </tbody>
         </MarketTable>
-        <Pagination
-          page={page}
-          className="flex justify-center pb-8"
-          count={pages}
-          onChange={changePage}
-        />
       </div>
     </section>
   );
