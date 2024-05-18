@@ -41,11 +41,9 @@ services:
       - "80:80"
       - "443:443"
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./nginx/nginx-dev.conf:/etc/nginx/nginx.conf:ro
       - ./backend/media:/usr/share/nginx/media
       - ./backend/static_files:/usr/share/nginx/static_files/
-      - /etc/letsencrypt/live/cardflow.market/fullchain.pem:/etc/letsencrypt/live/cardflow.market/fullchain.pem
-      - /etc/letsencrypt/live/cardflow.market/privkey.pem:/etc/letsencrypt/live/cardflow.market/privkey.pem
     depends_on:
       - backend
     networks:

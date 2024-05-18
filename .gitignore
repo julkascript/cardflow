@@ -44,3 +44,4 @@ dist-ssr
 
 # Avatars
 backend/media
+backend/static_files

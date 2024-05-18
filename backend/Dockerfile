@@ -24,12 +24,11 @@ RUN sed -i 's/\r$//g' /usr/src/app/entrypoint.sh
 RUN chmod +x /usr/src/app/entrypoint.sh
 
 # Copy cron job file
-COPY crontab /etc/cron.d/crontab
-RUN sed -i 's/\r$//g' /etc/cron.d/crontab
+# COPY crontab /etc/cron.d/crontab
+# RUN sed -i 's/\r$//g' /etc/cron.d/crontab
 
 
-RUN chmod 0644 /etc/cron.d/crontab
-RUN crontab /etc/cron.d/crontab
+# RUN chmod 0644 /etc/cron.d/crontab
+# RUN crontab /etc/cron.d/crontab
 
 CMD ["sh", "entrypoint.sh"]
-# CMD ["tail", "-f", "/dev/null"]

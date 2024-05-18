@@ -19,7 +19,7 @@ try:
 except:
     DEBUG = False
 
-ALLOWED_HOSTS = ["cardflow.market"]
+ALLOWED_HOSTS = os.getenv("HOSTS").split(",")
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = False
