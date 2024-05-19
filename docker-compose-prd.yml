@@ -1,27 +1,6 @@
 version: "3"
 
 services:
-  frontend:
-    build:
-      context: ./frontend
-
-    env_file:
-      - frontend/.env
-    depends_on:
-      - postgres
-      - pgadmin4
-      - backend
-    networks:
-      - cardflow
-    volumes:
-      - ./frontend:/usr/src/app
-    tty: true
-    ports:
-      - "5173:5173"
-    expose:
-      - "5173"
-    command: sh /usr/src/app/entrypoint.sh
-
   backend:
     build:
       context: ./backend
@@ -33,7 +12,6 @@ services:
       - backend/.env
     depends_on:
       - postgres
-      - pgadmin4
     networks:
       - cardflow
     volumes:
@@ -56,18 +34,20 @@ services:
     networks:
       - cardflow
 
-  pgadmin4:
-    image: dpage/pgadmin4
-    user: "${UID}:${GID}" # to avoid permission issues
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD}
-    volumes:
-      - ./pgadmin4:/var/lib/pgadmin
+  nginx:
+    build:
+      dockerfile: Dockerfile.prd
     ports:
-      - "5433:81"
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./backend/media:/usr/share/nginx/media
+      - ./backend/static_files:/usr/share/nginx/static_files/
+      - /etc/letsencrypt/live/cardflow.market/fullchain.pem:/etc/letsencrypt/live/cardflow.market/fullchain.pem
+      - /etc/letsencrypt/live/cardflow.market/privkey.pem:/etc/letsencrypt/live/cardflow.market/privkey.pem
     depends_on:
-      - postgres
+      - backend
     networks:
       - cardflow
 
