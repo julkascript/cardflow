@@ -1,11 +1,15 @@
 #!/bin/sh
+if [ -z "$1" ]; then
+  echo "No mode specified (DEV | PRD)"
+  exit 1
+fi
+
+MODE=$1
 
 # shellcheck disable=SC1073
 if [ -f .env ]; then
   export $(dotenv)
-  fi
-
-
+fi
 
 if [ ! -d "keys" ]; then
   mkdir keys
@@ -17,7 +21,6 @@ if [ ! -f "keys/jwtRS256.key" ]; then
   echo "Generated"
 fi
 
-# Check if jwtRS256.key.pub file exists, if not, generate it
 if [ ! -f "keys/jwtRS256.key.pub" ]; then
   echo "Generating jwtRS256.key.pub..."
   ssh-keygen -e -m PEM -f keys/jwtRS256.key > keys/jwtRS256.key.pub
@@ -34,7 +37,6 @@ done
 echo "PostgreSQL started"
 
 python manage.py migrate
-
 
 exists=$(python manage.py shell -c 'import django; django.setup(); from django.contrib.auth import get_user_model; User = get_user_model(); print(User.objects.filter(username="admin").exists())' | tr -d '\n')
 
@@ -55,9 +57,14 @@ fi
 
 # python manage.py runserver 0.0.0.0:8000
 
-python manage.py collectstatic
+if ["$MODE" = "PRD"]; then
+  python manage.py collectstatic
+fi
 
 python manage.py runserver 0.0.0.0:8000
 
-gunicorn cardflow.wsgi --bind 0.0.0.0:8000 --workers 4 --threads 4
+if ["$MODE" = "PRD"]; then
+  gunicorn cardflow.wsgi --bind 0.0.0.0:8000 --workers 4 --threads 4
+fi
+
 # exec "$@"

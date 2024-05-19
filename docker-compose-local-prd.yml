@@ -3,6 +3,7 @@ version: "3"
 services:
   backend:
     build:
+      dockerfile: Dockerfile.prd
       context: ./backend
     ports:
       - "8000:8000"
