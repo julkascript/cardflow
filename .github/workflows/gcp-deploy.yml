@@ -10,18 +10,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # - name: Checkout code
-      #   uses: actions/checkout@v2
-
       - name: Login to Google Cloud
         uses: google-github-actions/auth@v0.4.0
         with:
           credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
-
-      # - name: Sync code to GCP Compute Engine
-      #   run: |
-      #     gcloud compute ssh cardflow --zone=europe-west3-c --command="sudo chown -R $USER:$USER /opt/cardflow"
-      #     gcloud compute scp --recurse * cardflow:/opt/cardflow --zone=europe-west3-c
 
       - name: Deploy to GCP Compute Engine
         run: |
@@ -30,7 +22,7 @@ jobs:
             docker compose down &&
             git fetch && 
             git checkout master &&
-            git pull &&
+            git pull origin master &&
             docker compose -f docker-compose-prd.yml up -d --build &&
             docker system prune -af
           "

@@ -9,9 +9,6 @@ RUN apt-get update && apt-get install -y netcat libpq-dev gcc openssh-client cro
 
 RUN pip install --upgrade pip
 
-
-COPY ./sample.env .env
-
 COPY ./requirements.txt .
 
 RUN pip install -r requirements.txt
