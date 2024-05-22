@@ -27,6 +27,7 @@ jobs:
 
       - name: Sync code to GCP Compute Engine
         run: |
+          gcloud compute ssh cardflow --zone=europe-west3-c --command="sudo chown -R $USER:$USER /opt/cardflow"
           gcloud compute scp --recurse * cardflow:/opt/cardflow --zone=europe-west3-c
 
       - name: Deploy to GCP Compute Engine
