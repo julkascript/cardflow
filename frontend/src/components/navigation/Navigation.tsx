@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import Authorized from '../../router/Authorized';
 import Unauthorized from '../../router/Unauthorized';
 import DesktopGuestNav from './desktop/DesktopGuestNav';
+import MobileSearchFieldButton from '../searchField/MobileSearchFieldButton';
 
 /**
  * A component for the application's navigation menu
@@ -29,12 +30,22 @@ function Navigation(): JSX.Element {
 
   return (
     <nav className="flex justify-between p-4 items-center relative z-5000">
+      <div className="block lg:hidden">
+        <IconButton onClick={openMenu} aria-label="Open navigation menu">
+          <MenuIcon />
+        </IconButton>
+        <Drawer anchor="left" open={mobileMenuIsOpen} onClose={() => setMobileMenuOpen(false)}>
+          <MobileNavigation onCloseButtonClick={closeMenu}></MobileNavigation>
+        </Drawer>
+      </div>
       <Link to="/">
         <Logo size={33} />
       </Link>
       <div className="flex flex-row gap-4 items-center">
-        <SearchField />
-        <Divider flexItem orientation="vertical" />
+        <div className="hidden lg:block">
+          <SearchField />
+        </div>
+        <Divider className="hidden lg:block" flexItem orientation="vertical" />
         <Authorized>
           <ShoppingCartButton />
           <div className="hidden lg:flex lg:flex-row lg:gap-4 lg:items-center">
@@ -47,12 +58,7 @@ function Navigation(): JSX.Element {
           </div>
         </Unauthorized>
         <div className="block lg:hidden">
-          <IconButton onClick={openMenu} aria-label="Open navigation menu">
-            <MenuIcon />
-          </IconButton>
-          <Drawer anchor="left" open={mobileMenuIsOpen} onClose={() => setMobileMenuOpen(false)}>
-            <MobileNavigation onCloseButtonClick={closeMenu}></MobileNavigation>
-          </Drawer>
+          <MobileSearchFieldButton />
         </div>
       </div>
     </nav>

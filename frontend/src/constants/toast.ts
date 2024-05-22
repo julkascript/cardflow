@@ -1,8 +1,11 @@
+import { orderState } from '../services/orders/types';
+
 export const toastMessages = {
   success: {
     login: 'Logged in successfully!',
     register: 'Successful registration!',
     logout: 'Successfully logged out!',
+    emailSent: 'Your message has been sent successfully! Expect a response on your email address',
     usernameChanged:
       'Your username was changed successfully! Please log in again to see your changes',
     emailChanged: 'Your username was changed successfully! Please log in again to see your changes',
@@ -28,6 +31,10 @@ export const toastMessages = {
     sellListingsListed: 'Listings were made public',
     sellListingListed: 'Listing was made public',
     sellListingDelisted: 'Listing was delisted',
+    orderStatusChanged: (orderId: number, status: orderState) =>
+      `Order #${orderId} was marked as "${status}" successfully!`,
+    feedbackGiven: (orderId: number | string) =>
+      `Feedback for order #${orderId} has been given successfully!`,
   },
   error: {
     serverError: 'Something went wrong, please try again later!',

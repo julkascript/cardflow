@@ -42,5 +42,5 @@ dist-ssr
 *.sln
 *.sw?
 
-# Avatars
 backend/media
+backend/static_files

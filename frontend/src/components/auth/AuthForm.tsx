@@ -1,5 +1,7 @@
-import React, { useRef } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+/* eslint-disable @typescript-eslint/quotes */
+// TO-DO: fix conflict in ESLint / Prettier rules and remove the above
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { userService } from '../../services/user/user';
 import {
   SuccessfulAuthenticationResponse,
@@ -11,6 +13,7 @@ import toast from 'react-hot-toast';
 import { toastMessages } from '../../constants/toast';
 import { errorToast } from '../../util/errorToast';
 import { HttpError } from '../../util/HttpError';
+import { Button, Link, TextField } from '@mui/material';
 
 type AuthFormProps = {
   isLogin: boolean;
@@ -24,6 +27,29 @@ type ErrorProps = {
 
 const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
   const { setUser } = useCurrentUser();
+
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
+
+  function handleUsernameChange(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+    const value = event.target.value;
+    setUsername(value);
+  }
+
+  function handlePasswordChange(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+    const value = event.target.value;
+    setPassword(value);
+  }
+
+  function handleEmailChange(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+    const value = event.target.value;
+    setEmail(value);
+  }
+
   async function authenticaticateUser(id: number, tokens: SuccessfulAuthenticationResponse) {
     localStorage.setItem('accessToken', tokens.access);
     localStorage.setItem('refreshToken', tokens.refresh);
@@ -35,22 +61,18 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
 
   function validate(isLogin: boolean) {
     const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    if (passwordRef.current === null || passwordRef.current!.value.trim() === '') {
+    if (password.trim() === '') {
       setPasswordError(true);
     } else {
       setPasswordError(false);
     }
-    if (usernameRef.current === null || usernameRef.current!.value.trim() === '') {
+    if (username.trim() === '') {
       setUsernameError(true);
     } else {
       setUsernameError(false);
     }
     if (!isLogin) {
-      if (
-        usernameRef.current === null ||
-        emailRef.current!.value.trim() === '' ||
-        !emailRegex.test(emailRef.current!.value)
-      ) {
+      if (email.trim() === '' || !emailRegex.test(email)) {
         setEmailError(true);
       } else {
         setEmailError(false);
@@ -64,16 +86,16 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     try {
       let tokens: SuccessfulAuthenticationResponse;
       const loginData: UserLogin = {
-        username: usernameRef.current!.value,
-        password: passwordRef.current!.value,
+        username,
+        password,
       };
       if (isLogin) {
         tokens = await userService.login(loginData);
       } else {
         const formData: UserRegister = {
-          email: emailRef.current!.value,
-          password: passwordRef.current!.value,
-          username: usernameRef.current!.value,
+          email,
+          password,
+          username,
         };
         tokens = await userService.register(formData);
       }
@@ -94,9 +116,6 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
   }
 
   const navigate = useNavigate();
-  const emailRef = useRef<HTMLInputElement>(null);
-  const usernameRef = useRef<HTMLInputElement>(null);
-  const passwordRef = useRef<HTMLInputElement>(null);
 
   const [passwordError, setPasswordError] = React.useState<boolean>(false);
   const [usernameError, setUsernameError] = React.useState<boolean>(false);
@@ -106,50 +125,52 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
   return (
     <form onSubmit={handleSubmitAuthForm}>
       <div className="flex justify-center items-center flex-col">
-        <h2 className="text-4xl font-bold pt-20 pb-10 text-secondary">
+        <h2 className="text-4xl text-center font-bold pt-20 pb-10 text-secondary">
           {isLogin ? 'Log in' : 'Sign up'} for Cardflow
         </h2>
-        <input
-          className={`w-96 h-8 p-4 mb-4 bg-white rounded-md border ${
-            usernameError && 'border-red-500'
-          } border-primary-border`}
-          placeholder="Username"
-          id="username"
-          ref={usernameRef}
-        />
-        {error.username && <p className="text-red-500">{error.username}</p>}
-        {!isLogin ? (
-          <input
-            className={`w-96 h-8 p-4 mb-4 bg-white rounded-md border border-primary-border ${
-              emailError && 'border-red-500'
-            }`}
-            placeholder="Email Address"
-            id="email-address"
-            ref={emailRef}
+        <div className="w-full flex justify-center mb-8 lg:mb-4">
+          <TextField
+            className="w-3/4 lg:w-96"
+            placeholder="Username"
+            size="small"
+            label={usernameError ? error.username : 'Username'}
+            id="username"
+            error={usernameError}
+            onChange={handleUsernameChange}
           />
+        </div>
+        {!isLogin ? (
+          <div className="w-full flex justify-center mb-8 lg:mb-4">
+            <TextField
+              size="small"
+              label={emailError ? error.email : 'Email Address'}
+              className="w-3/4 lg:w-96"
+              placeholder="Email Address"
+              id="email-address"
+              error={emailError}
+              onChange={handleEmailChange}
+            />
+          </div>
         ) : null}
-        {error.email && <p className="text-red-500">{error.email}</p>}
-        <input
-          className={`w-96 h-8 p-4 bg-white rounded-md border border-primary-border ${
-            passwordError && 'border-red-500'
-          }`}
+        <TextField
+          size="small"
+          label={passwordError ? error.password : 'Password'}
+          className="w-3/4 lg:w-96"
           placeholder="Password"
           type="password"
-          ref={passwordRef}
+          error={passwordError}
+          onChange={handlePasswordChange}
         />
-        {error.password && <p className="text-red-500">{error.password}</p>}
         <div className="flex items-center flex-col mt-4">
-          <button type="submit" className="bg-[#171717] text-white py-1 px-4 rounded-md">
+          <Button type="submit" color="primary" variant="contained" size="large">
             {isLogin ? 'Log in' : 'Sign up'}
-          </button>
+          </Button>
         </div>
         <div className="flex justify-center items-center flex-col py-5">
-          <p className="font-extrabold">
-            {isLogin ? 'Don’t have an account?' : 'Already have an account?'}{' '}
-            <Link
-              to={isLogin ? '/register' : '/login'}
-              className="text-[#2384F4] text-lg font-inter font-semibold underline"
-            >
+          <p className="font-extrabold text-center">
+            {/* eslint-disable-next-line quotes */}
+            {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
+            <Link href={isLogin ? '/register' : '/login'} color="#2384F4" underline="hover">
               {isLogin ? 'Sign up' : 'Log in'}
             </Link>
           </p>

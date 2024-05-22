@@ -1,15 +1,18 @@
 from django.contrib.auth import get_user_model
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets, generics, serializers, status, permissions
+from rest_framework import viewsets, generics, serializers, status, permissions, views
 from rest_framework.decorators import action
 from rest_framework.exceptions import PermissionDenied, ValidationError
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
+from django.core.mail import send_mail
 
-from accounts.serializers import RegistrationSerializer, MyTokenObtainPairSerializer, UpdateUserSerializer
+from cardflow import settings
+
+from accounts.serializers import RegistrationSerializer, MyTokenObtainPairSerializer, UpdateUserSerializer, ContactFormSerializer
 
 from accounts.filters import UserFilter
 
@@ -84,3 +87,36 @@ class UserUpdateView(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance)
         return Response(serializer.data)
+
+
+@extend_schema(tags=["Contact Form"])
+class ContactFormView(views.APIView):
+    """
+    View for handling contact form submissions and sending emails \n
+        - API endpoint: /api/contacts/
+    """
+    serializer_class = ContactFormSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer_class = ContactFormSerializer(data=request.data)
+        email = request.data.get("email")
+        message = request.data.get("message")
+
+        if not serializer_class.is_valid():
+            if not message:
+                return Response({"error": "Message is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+            if not email:
+                return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+            return Response({"error": "Please enter a valid email"}, status=status.HTTP_400_BAD_REQUEST)
+
+        send_mail(
+            subject="Contact Form Submission",
+            message=f"Email: {email}\nMessage: {message}",
+            from_email=settings.CONTACT_FORM_EMAIL,
+            recipient_list=[settings.CONTACT_FORM_EMAIL_RECIPIENT],
+            fail_silently=False,
+        )
+
+        return Response({"success": "Email sent successfully"}, status=status.HTTP_200_OK)

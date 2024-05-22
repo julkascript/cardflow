@@ -1,13 +1,14 @@
-FROM node:14-alpine
+FROM node:21-alpine3.18
 
-WORKDIR /usr/src/app
+WORKDIR /usr/src/cache
 
 COPY package.json .
 COPY sample.env .env
-COPY . .
 
 RUN npm install
 
-EXPOSE 5173
+WORKDIR /usr/src/app
 
-CMD ["npm", "run", "dev", "--host", "0.0.0.0"]
+COPY . .
+
+EXPOSE 5173
