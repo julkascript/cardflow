@@ -34,6 +34,6 @@ jobs:
         run: |
           gcloud compute ssh cardflow --zone=europe-west3-c --command="
             cd /opt/cardflow &&
-            docker-compose -f docker-compose-prd.yml up -d --build &&
+            docker compose -f docker-compose-prd.yml up -d --build &&
             docker system prune -af
           "
