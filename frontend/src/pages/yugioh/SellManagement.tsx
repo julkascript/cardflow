@@ -248,15 +248,25 @@ function SellManagement(): JSX.Element {
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <CardflowTabs />
       <PageHeader heading="Sell">
-        <Button
-          className="rounded-md"
-          startIcon={<AddIcon />}
-          href="/sell/new"
-          variant="outlined"
-          color="success"
-        >
-          New Listing
-        </Button>
+        <div className="flex gap-4">
+          <Button
+            sx={{ color: '#0B70E5', borderColor: '#0B70E5', ':hover': { borderColor: '#0B70E5' } }}
+            className="rounded-md"
+            href={`/user/${user.username}/sales`}
+            variant="outlined"
+          >
+            My sales
+          </Button>
+          <Button
+            className="rounded-md"
+            startIcon={<AddIcon />}
+            href="/sell/new"
+            variant="outlined"
+            color="success"
+          >
+            New listing
+          </Button>
+        </div>
       </PageHeader>
       <div className="flex flex-col lg:items-center overflow-auto">
         <MarketTable
