@@ -105,8 +105,6 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
       const payload = userService.extractUserFromToken(tokens.access);
       await authenticaticateUser(payload.user_id, tokens);
     } catch (error: any) {
-      // const data = await error.err.json();
-      // setError(data);
       if (error instanceof HttpError) {
         if (isLogin && error.err.status === 401) {
           errorToast(error, toastMessages.error.failedLogin);
