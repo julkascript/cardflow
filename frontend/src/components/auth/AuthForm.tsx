@@ -13,7 +13,7 @@ import toast from 'react-hot-toast';
 import { toastMessages } from '../../constants/toast';
 import { errorToast } from '../../util/errorToast';
 import { HttpError } from '../../util/HttpError';
-import { Button, Link, TextField, Typography } from '@mui/material';
+import { Button, Link, TextField } from '@mui/material';
 import { userValidator } from '../../validators/user';
 import { useDebounce } from '../../util/useDebounce';
 
@@ -36,7 +36,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
   const debouncedPasswordStatusChange = useDebounce(() => setPasswordFieldWasChanged(true));
   const debouncedEmailStatusChange = useDebounce(() => setEmailFieldWasChanged(true));
 
-  const usernameErrors = userValidator.validateUsername(username);
+  const [usernameErrors, setUsernameErrors] = useState<string[]>([]);
   const passwordErrors = userValidator.validatePassword(password);
   const emailErrors = userValidator.validateEmail(email);
 
@@ -48,12 +48,11 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
 
   const submitButtonIsDisabled = !usernameIsValid || !passwordIsValid || !emailIsValid;
 
-  const [otherErrors, setOtherErrors] = useState<string[]>([]);
-
   function handleUsernameChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     const value = event.target.value;
     setUsername(value);
+    setUsernameErrors(userValidator.validateUsername(value));
 
     debouncedUsernameStatusChange();
   }
@@ -114,7 +113,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
           } else {
             const errors = await error.err.json();
             if (errors.username && Array.isArray(errors.username)) {
-              setOtherErrors(errors.username);
+              setUsernameErrors(errors.username);
             }
           }
         }
@@ -181,11 +180,6 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
             </Link>
           </p>
         </div>
-        {otherErrors.map((e) => (
-          <Typography color="error" key={e}>
-            {e}
-          </Typography>
-        ))}
       </div>
     </form>
   );
