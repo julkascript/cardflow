@@ -13,7 +13,7 @@ import toast from 'react-hot-toast';
 import { toastMessages } from '../../constants/toast';
 import { errorToast } from '../../util/errorToast';
 import { HttpError } from '../../util/HttpError';
-import { Button, Link, TextField } from '@mui/material';
+import { Button, Link, TextField, Typography } from '@mui/material';
 import { userValidator } from '../../validators/user';
 import { useDebounce } from '../../util/useDebounce';
 
@@ -31,9 +31,10 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
   const [usernameFieldWasChanged, setUsernameFieldWasChanged] = useState(false);
   const [passwordFieldWasChanged, setPasswordFieldWasChanged] = useState(false);
   const [emailFieldWasChanged, setEmailFieldWasChanged] = useState(false);
-  const debouncedFieldStatusChange = useDebounce((callback: typeof setUsernameFieldWasChanged) => {
-    callback(true);
-  });
+
+  const debouncedUsernameStatusChange = useDebounce(() => setUsernameFieldWasChanged(true));
+  const debouncedPasswordStatusChange = useDebounce(() => setPasswordFieldWasChanged(true));
+  const debouncedEmailStatusChange = useDebounce(() => setEmailFieldWasChanged(true));
 
   const usernameErrors = userValidator.validateUsername(username);
   const passwordErrors = userValidator.validatePassword(password);
@@ -47,12 +48,14 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
 
   const submitButtonIsDisabled = !usernameIsValid || !passwordIsValid || !emailIsValid;
 
+  const [otherErrors, setOtherErrors] = useState<string[]>([]);
+
   function handleUsernameChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     const value = event.target.value;
     setUsername(value);
 
-    debouncedFieldStatusChange(setUsernameFieldWasChanged);
+    debouncedUsernameStatusChange();
   }
 
   function handlePasswordChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -60,7 +63,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     const value = event.target.value;
     setPassword(value);
 
-    debouncedFieldStatusChange(setPasswordFieldWasChanged);
+    debouncedPasswordStatusChange();
   }
 
   function handleEmailChange(event: React.ChangeEvent<HTMLInputElement>) {
@@ -68,7 +71,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     const value = event.target.value;
     setEmail(value);
 
-    debouncedFieldStatusChange(setEmailFieldWasChanged);
+    debouncedEmailStatusChange();
   }
 
   async function authenticaticateUser(id: number, tokens: SuccessfulAuthenticationResponse) {
@@ -108,7 +111,14 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
         if (isLogin && error.err.status === 401) {
           errorToast(error, toastMessages.error.failedLogin);
         } else {
-          errorToast(error, undefined, 400);
+          if (isLogin) {
+            errorToast(error, undefined, 400);
+          } else {
+            const errors = await error.err.json();
+            if (errors.username && Array.isArray(errors.username)) {
+              setOtherErrors(errors.username);
+            }
+          }
         }
       }
     }
@@ -173,6 +183,11 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
             </Link>
           </p>
         </div>
+        {otherErrors.map((e) => (
+          <Typography color="error" key={e}>
+            {e}
+          </Typography>
+        ))}
       </div>
     </form>
   );
