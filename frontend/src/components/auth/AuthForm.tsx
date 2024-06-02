@@ -121,6 +121,9 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
             if (errors.email && Array.isArray(errors.email)) {
               setEmailErrors(errors.email);
             }
+
+            // in case server is down or some other unexpected error pops up
+            errorToast(error, undefined, 400);
           }
         }
       }
