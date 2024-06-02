@@ -15,8 +15,6 @@ import { loadSearchResults } from './loadSearchResults/loadSearchResults';
 import SellManagement from '../pages/yugioh/SellManagement';
 import Newlisting from '../pages/listing/NewListing';
 import SellListing from '../pages/listing/SellListing';
-import EditListing from '../pages/listing/EditListing';
-import { loadListingDetails } from './loadListingDetails/loadEditListingDetails';
 import { loadPublicUserInfo } from './loadPublicUserInfo/loadPublicUserInfo';
 import Cart from '../pages/Cart';
 import Changelog from '../pages/about/Changelog';
@@ -24,6 +22,10 @@ import About from '../pages/about/About';
 import FAQ from '../pages/about/FAQ';
 import Contact from '../pages/about/Contact';
 import BestSellers from '../pages/yugioh/BestSellers';
+import Orders from '../pages/profile/Orders';
+import Sales from '../pages/profile/Sales';
+import { loadListingForEdit } from './loadListingForEdit/loadListingForEdit';
+import EditListing from '../pages/listing/EditListing';
 
 const routes = createBrowserRouter([
   {
@@ -109,6 +111,16 @@ const routes = createBrowserRouter([
             path: 'blog',
             element: <ProfilePagePlaceholder />,
           },
+          {
+            path: 'orders',
+            element: <Orders />,
+            loader: authorizedGuard,
+          },
+          {
+            path: 'sales',
+            element: <Sales />,
+            loader: authorizedGuard,
+          },
         ],
       },
       {
@@ -154,7 +166,7 @@ const routes = createBrowserRouter([
           },
           {
             path: 'listing/:id/edit',
-            loader: loadListingDetails,
+            loader: loadListingForEdit,
             element: <EditListing />,
           },
         ],

@@ -1,19 +1,18 @@
-import ListingTopBar from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import NewListingTopBar from '../../components/sellListing/NewListingTopBar';
 import NewListingBody from '../../components/sellListing/NewSellListingBody';
 
 function Newlisting() {
   return (
     <>
-      <ListingTopBar />
+      <CardflowTabs />
       <NewListingTopBar
-        card={0}
         quantity={0}
         price={0}
-        condition={'poor'}
         handleSubmit={(): Promise<void> => {
           throw new Error('Function not implemented.');
         }}
+        title="New listing"
       />
       <NewListingBody />
     </>

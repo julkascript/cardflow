@@ -1,0 +1,38 @@
+name: Deploy to GCP
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Login to Google Cloud
+        uses: google-github-actions/auth@v0.4.0
+        with:
+          credentials_json: ${{ secrets.GCP_SERVICE_ACCOUNT_KEY }}
+
+      - name: Stop containers
+        run: |
+          gcloud compute ssh cardflow --zone=europe-west3-c --command="
+            cd /opt/cardflow &&
+            docker compose down
+          "
+
+      - name: Sync code to GCP Compute Engine
+        run: |
+          gcloud compute scp --recurse . cardflow:/opt/cardflow --zone=europe-west3-c
+
+      - name: Deploy to GCP Compute Engine
+        run: |
+          gcloud compute ssh cardflow --zone=europe-west3-c --command="
+            cd /opt/cardflow &&
+            docker-compose -f docker-compose-prd.yml up -d --build &&
+            docker system prune -af
+          "

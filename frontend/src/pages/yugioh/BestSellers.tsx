@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import PageHeader from '../../components/PageHeader';
 import PageSection from '../../components/PageSection';
-import ListingTopBar from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import { useEffect, useState } from 'react';
 import { bestSellerService } from '../../services/bestSeller/bestSeller';
 import { BestSeller } from '../../services/bestSeller/types';
@@ -57,11 +57,13 @@ export default function BestSellers() {
 
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
-      <ListingTopBar />
+      <CardflowTabs />
       <PageHeader heading="Buy" />
       <div className="w-5/6 mx-auto my-4">
         <PageSection className="p-8 my-4">
-          <Typography variant="h4">All-time best sellers</Typography>
+          <Typography variant="h4" className="text-center lg:text-left">
+            All-time best sellers
+          </Typography>
           <hr />
           <section className="max-sm:flex-col gap-4 mt-6 flex justify-between">
             {cardSection}

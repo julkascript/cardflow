@@ -2,7 +2,7 @@ import { Button, Divider, SvgIconTypeMap, SxProps, Typography } from '@mui/mater
 import PageHeader from '../../components/PageHeader';
 import PageSection from '../../components/PageSection';
 import Logo from '../../components/logo/Logo';
-import ListingTopBar from '../../components/sellListing/ListingTopBar';
+import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import { theme } from '../../constants/theme';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import FavoriteIcon from '@mui/icons-material/Favorite';
@@ -42,7 +42,7 @@ function About(): JSX.Element {
   ];
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
-      <ListingTopBar />
+      <CardflowTabs />
       <PageHeader heading="About" />
       <div className="w-5/6 mx-auto my-4">
         <PageSection className="p-8 my-4">

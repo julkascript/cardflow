@@ -43,13 +43,13 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
   const cannotBuy = user.user_id === props.listing.user || !isAuthenticated;
   return (
     <tr>
-      <td className="text-center w-16">
+      <td className="hidden lg:table-cell text-center w-16">
         <YugiohSellerRankBadge sales={900} />
       </td>
-      <td className="text-center w-16">
+      <td className="hidden lg:table-cell text-center w-16">
         <YugiohSellerRankLabel sales={900} />
       </td>
-      <td className="text-xl">
+      <td className="text-sm lg:text-xl">
         <Link
           sx={{ color: '#0B70E5' }}
           className="font-bold"
@@ -69,8 +69,8 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
         />
         <br />
       </td>
-      <td className="text-center text-xl p-1">{props.listing.quantity}</td>
-      <td className="font-bold text-xl w-[200px]">$&nbsp;{props.listing.price}</td>
+      <td className="lg:text-center text-sm lg:text-xl p-1">{props.listing.quantity}</td>
+      <td className="font-bold text-sm lg:text-xl lg:w-[200px]">$&nbsp;{props.listing.price}</td>
       <td className="w-1">
         <YugiohCardQuantityField
           max={props.listing.quantity}

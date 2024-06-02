@@ -4,7 +4,6 @@ import YugiohCardDetailsTable from '../../components/yugioh/table/YugiohCardDeta
 import YugiohCardMarket from '../../components/yugioh/table/market/YugiohCardMarket';
 import { CardDetailsLoaderData } from '../../services/yugioh/types';
 import { useState } from 'react';
-import { Pagination } from '@mui/material';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../../util/useEffectAfterInitialLoad';
 import { errorToast } from '../../util/errorToast';
@@ -15,11 +14,10 @@ function YugiohCardDetails(): JSX.Element {
   const params = useParams();
   const { cardInSet, cardListings: cardListingsData } = data;
   const [cardListings, setCardListings] = useState(cardListingsData);
-  const pages = Math.ceil(cardListings.count / 10);
 
   const [page, setPage] = useState(1);
 
-  function changePage(_event: React.ChangeEvent<unknown>, page: number) {
+  function changePage(page: number) {
     yugiohService
       .getCardListingsByCardSetId(Number(params.id), page)
       .then((data) => {
@@ -58,12 +56,11 @@ function YugiohCardDetails(): JSX.Element {
         <YugiohCardImage src={cardInSet.yugioh_card.image} />
         <YugiohCardDetailsTable cardInSet={cardInSet} />
       </div>
-      <YugiohCardMarket listings={cardListings.results} />
-      <Pagination
+      <YugiohCardMarket
         page={page}
-        className="flex justify-center pb-8"
-        count={pages}
-        onChange={changePage}
+        onChangePage={changePage}
+        count={cardListings.count}
+        listings={cardListings.results}
       />
     </section>
   );

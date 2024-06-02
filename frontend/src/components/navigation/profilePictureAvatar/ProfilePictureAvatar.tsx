@@ -46,12 +46,12 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
       icon: SettingsIcon,
     },
     {
-      href: '/orders',
+      href: `/user/${user.username}/orders`,
       text: 'My orders',
       icon: AddShoppingCartIcon,
     },
     {
-      href: '/sales',
+      href: `/user/${user.username}/sales`,
       text: 'My sales',
       icon: CurrencyExchangeIcon,
     },
@@ -89,7 +89,12 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
         {links.map((l) => {
           const LinkIcon = l.icon;
           return (
-            <ListItemButton onClick={handleClose} sx={{ padding }} href={l.href}>
+            <ListItemButton
+              key={l.text + '-desktop'}
+              onClick={handleClose}
+              sx={{ padding }}
+              href={l.href}
+            >
               <ListItemText>
                 <Typography color="text.secondary">{l.text}</Typography>
               </ListItemText>

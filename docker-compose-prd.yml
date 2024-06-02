@@ -1,0 +1,57 @@
+version: "3"
+
+services:
+  backend:
+    build:
+      dockerfile: Dockerfile.prd
+      context: ./backend
+    ports:
+      - "8000:8000"
+    expose:
+      - "8000"
+    env_file:
+      - backend/.env
+    depends_on:
+      - postgres
+    networks:
+      - cardflow
+    volumes:
+      - ./backend:/usr/src/app
+      - ./backend/static_files:/usr/src/app/static_files
+      - ./backend/media:/usr/src/app/media
+
+  postgres:
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_DB: ${POSTGRES_DB}
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./postgresql:/var/lib/postgresql/data
+    networks:
+      - cardflow
+
+  nginx:
+    build:
+      dockerfile: Dockerfile.prd
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./backend/media:/usr/share/nginx/media
+      - ./backend/static_files:/usr/share/nginx/static_files/
+      - /etc/letsencrypt/live/cardflow.market/fullchain.pem:/etc/letsencrypt/live/cardflow.market/fullchain.pem
+      - /etc/letsencrypt/live/cardflow.market/privkey.pem:/etc/letsencrypt/live/cardflow.market/privkey.pem
+    depends_on:
+      - backend
+    networks:
+      - cardflow
+
+networks:
+  cardflow:
+    driver: bridge
