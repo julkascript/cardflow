@@ -12,5 +12,4 @@ app_name = 'yugioh'
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('api/trending/', views.TrendingCardListView.as_view(), name='trending-cards'),
 ]
