@@ -38,7 +38,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
 
   const [usernameErrors, setUsernameErrors] = useState<string[]>([]);
   const passwordErrors = userValidator.validatePassword(password);
-  const emailErrors = userValidator.validateEmail(email);
+  const [emailErrors, setEmailErrors] = useState<string[]>([]);
 
   const navigate = useNavigate();
 
@@ -69,6 +69,8 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     event.preventDefault();
     const value = event.target.value;
     setEmail(value);
+
+    setEmailErrors(userValidator.validateEmail(value));
 
     debouncedEmailStatusChange();
   }
@@ -114,6 +116,10 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
             const errors = await error.err.json();
             if (errors.username && Array.isArray(errors.username)) {
               setUsernameErrors(errors.username);
+            }
+
+            if (errors.email && Array.isArray(errors.email)) {
+              setEmailErrors(errors.email);
             }
           }
         }
