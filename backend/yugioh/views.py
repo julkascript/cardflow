@@ -1,9 +1,6 @@
-from datetime import timedelta
-
 from django.db.models import Subquery, OuterRef, Min, Sum
-from django.utils import timezone
 from django_filters.rest_framework import DjangoFilterBackend
-from drf_spectacular.utils import extend_schema, OpenApiParameter
+from drf_spectacular.utils import extend_schema
 from rest_framework import permissions
 from rest_framework import viewsets, generics
 
@@ -14,7 +11,7 @@ from .models import YugiohCard, YugiohCardInSet
 from .serializers import (
     YugiohCardInSetSerializer,
     YugiohCardSerializer,
-    BestSellerCardSerializer, TrendingCardSerializer,
+    BestSellerCardSerializer,
 )
 
 
@@ -97,4 +94,3 @@ class BestSellerCardListView(generics.ListAPIView):
             return filtered_results
 
         return filtered_results[:3]
-
