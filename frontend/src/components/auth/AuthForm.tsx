@@ -14,15 +14,11 @@ import { toastMessages } from '../../constants/toast';
 import { errorToast } from '../../util/errorToast';
 import { HttpError } from '../../util/HttpError';
 import { Button, Link, TextField } from '@mui/material';
+import { userValidator } from '../../validators/user';
+import { useDebounce } from '../../util/useDebounce';
 
 type AuthFormProps = {
   isLogin: boolean;
-};
-
-type ErrorProps = {
-  username?: string;
-  email?: string;
-  password?: string;
 };
 
 const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
@@ -32,22 +28,51 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
 
+  const [usernameFieldWasChanged, setUsernameFieldWasChanged] = useState(false);
+  const [passwordFieldWasChanged, setPasswordFieldWasChanged] = useState(false);
+  const [emailFieldWasChanged, setEmailFieldWasChanged] = useState(false);
+
+  const debouncedUsernameStatusChange = useDebounce(() => setUsernameFieldWasChanged(true));
+  const debouncedPasswordStatusChange = useDebounce(() => setPasswordFieldWasChanged(true));
+  const debouncedEmailStatusChange = useDebounce(() => setEmailFieldWasChanged(true));
+
+  const [usernameErrors, setUsernameErrors] = useState<string[]>([]);
+  const passwordErrors = userValidator.validatePassword(password);
+  const [emailErrors, setEmailErrors] = useState<string[]>([]);
+
+  const navigate = useNavigate();
+
+  const usernameIsValid = usernameErrors.length === 0 && usernameFieldWasChanged;
+  const passwordIsValid = passwordErrors.length === 0 && passwordFieldWasChanged;
+  const emailIsValid = (emailErrors.length === 0 && emailFieldWasChanged) || isLogin;
+
+  const submitButtonIsDisabled = !usernameIsValid || !passwordIsValid || !emailIsValid;
+
   function handleUsernameChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     const value = event.target.value;
     setUsername(value);
+    setUsernameErrors(userValidator.validateUsername(value));
+
+    debouncedUsernameStatusChange();
   }
 
   function handlePasswordChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     const value = event.target.value;
     setPassword(value);
+
+    debouncedPasswordStatusChange();
   }
 
   function handleEmailChange(event: React.ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     const value = event.target.value;
     setEmail(value);
+
+    setEmailErrors(userValidator.validateEmail(value));
+
+    debouncedEmailStatusChange();
   }
 
   async function authenticaticateUser(id: number, tokens: SuccessfulAuthenticationResponse) {
@@ -59,30 +84,8 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     toast.success(isLogin ? toastMessages.success.login : toastMessages.success.register);
   }
 
-  function validate(isLogin: boolean) {
-    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-    if (password.trim() === '') {
-      setPasswordError(true);
-    } else {
-      setPasswordError(false);
-    }
-    if (username.trim() === '') {
-      setUsernameError(true);
-    } else {
-      setUsernameError(false);
-    }
-    if (!isLogin) {
-      if (email.trim() === '' || !emailRegex.test(email)) {
-        setEmailError(true);
-      } else {
-        setEmailError(false);
-      }
-    }
-  }
-
   async function handleSubmitAuthForm(event: React.FormEvent) {
     event.preventDefault();
-    validate(isLogin);
     try {
       let tokens: SuccessfulAuthenticationResponse;
       const loginData: UserLogin = {
@@ -103,24 +106,29 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
       const payload = userService.extractUserFromToken(tokens.access);
       await authenticaticateUser(payload.user_id, tokens);
     } catch (error: any) {
-      const data = await error.err.json();
-      setError(data);
       if (error instanceof HttpError) {
         if (isLogin && error.err.status === 401) {
           errorToast(error, toastMessages.error.failedLogin);
         } else {
-          errorToast(error, undefined, 400);
+          if (isLogin) {
+            errorToast(error, undefined, 400);
+          } else {
+            const errors = await error.err.json();
+            if (errors.username && Array.isArray(errors.username)) {
+              setUsernameErrors(errors.username);
+            }
+
+            if (errors.email && Array.isArray(errors.email)) {
+              setEmailErrors(errors.email);
+            }
+
+            // in case server is down or some other unexpected error pops up
+            errorToast(error, undefined, 400);
+          }
         }
       }
     }
   }
-
-  const navigate = useNavigate();
-
-  const [passwordError, setPasswordError] = React.useState<boolean>(false);
-  const [usernameError, setUsernameError] = React.useState<boolean>(false);
-  const [emailError, setEmailError] = React.useState<boolean>(false);
-  const [error, setError] = React.useState<ErrorProps>({});
 
   return (
     <form onSubmit={handleSubmitAuthForm}>
@@ -133,9 +141,9 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
             className="w-3/4 lg:w-96"
             placeholder="Username"
             size="small"
-            label={usernameError ? error.username : 'Username'}
+            label={!usernameIsValid && usernameFieldWasChanged ? usernameErrors[0] : 'Username'}
             id="username"
-            error={usernameError}
+            error={!usernameIsValid && usernameFieldWasChanged}
             onChange={handleUsernameChange}
           />
         </div>
@@ -143,26 +151,32 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
           <div className="w-full flex justify-center mb-8 lg:mb-4">
             <TextField
               size="small"
-              label={emailError ? error.email : 'Email Address'}
+              label={!emailIsValid && emailFieldWasChanged ? emailErrors[0] : 'Email Address'}
               className="w-3/4 lg:w-96"
               placeholder="Email Address"
               id="email-address"
-              error={emailError}
+              error={!emailIsValid && emailFieldWasChanged}
               onChange={handleEmailChange}
             />
           </div>
         ) : null}
         <TextField
           size="small"
-          label={passwordError ? error.password : 'Password'}
+          label={!passwordIsValid && passwordFieldWasChanged ? passwordErrors[0] : 'Password'}
           className="w-3/4 lg:w-96"
           placeholder="Password"
           type="password"
-          error={passwordError}
+          error={!passwordIsValid && passwordFieldWasChanged}
           onChange={handlePasswordChange}
         />
         <div className="flex items-center flex-col mt-4">
-          <Button type="submit" color="primary" variant="contained" size="large">
+          <Button
+            disabled={submitButtonIsDisabled}
+            type="submit"
+            color="primary"
+            variant="contained"
+            size="large"
+          >
             {isLogin ? 'Log in' : 'Sign up'}
           </Button>
         </div>
