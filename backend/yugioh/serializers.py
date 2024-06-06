@@ -1,8 +1,10 @@
 from django.db.models import Min
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
-from .models import YugiohCard, YugiohCardInSet, YugiohCardSet, YugiohCardRarity
+
 from listing.models import Listing
+from .models import YugiohCard, YugiohCardInSet, YugiohCardSet, YugiohCardRarity
+from .utils import fetch_and_save_image
 
 
 class YugiohCardSetSerializer(serializers.ModelSerializer):
@@ -21,6 +23,7 @@ class YugiohCardRaritySerializer(serializers.ModelSerializer):
 
 class YugiohCardSerializer(serializers.ModelSerializer):
     card_in_sets = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = YugiohCard
@@ -55,7 +58,7 @@ class YugiohCardSerializer(serializers.ModelSerializer):
         card_in_set_id = [rarity["id"] for rarity in all_card_in_sets]
 
         for set_name, rarity_name, card_in_set_id in zip(
-            set_names, rarity_names, card_in_set_id
+                set_names, rarity_names, card_in_set_id
         ):
             card_in_sets.append(
                 {
@@ -66,6 +69,14 @@ class YugiohCardSerializer(serializers.ModelSerializer):
             )
 
         return card_in_sets
+
+    @staticmethod
+    @extend_schema_field(YugiohCardSetSerializer)
+    def get_image(obj):
+
+        local_image_url = fetch_and_save_image(obj.image)
+
+        return local_image_url
 
 
 class YugiohCardInSetCardSerializer(YugiohCardSerializer):
@@ -97,6 +108,11 @@ class YugiohCardInSetSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "rarity", "set", "yugioh_card"]
         ordering_fields = ["id"]
 
+    @staticmethod
+    @extend_schema_field(YugiohCardSetSerializer)
+    def get_image(obj):
+
+        return fetch_and_save_image(obj.image)
 
 class BestSellerCardSerializer(serializers.ModelSerializer):
     card_name = serializers.CharField(source="card.yugioh_card.card_name")
@@ -118,7 +134,7 @@ class BestSellerCardSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_card_image(obj):
-        return obj.card.yugioh_card.image
+        return fetch_and_save_image(obj.card.yugioh_card.image)
 
     @staticmethod
     def get_lowest_price(obj):
