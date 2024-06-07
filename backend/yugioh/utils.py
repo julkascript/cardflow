@@ -33,6 +33,6 @@ def fetch_and_save_image(image_url):
                     handler.write(chunk)
         else:
 
-            return external_image_url
+            return None
 
     return f"{settings.MEDIA_URL}yugioh_card_images/{local_image_name}"

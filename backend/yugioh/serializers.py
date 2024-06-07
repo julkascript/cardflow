@@ -14,6 +14,10 @@ class CacheImageMixin:
             return None
 
         image_path = fetch_and_save_image(obj.image)
+
+        if image_path is None:
+            return obj.image
+
         return request.build_absolute_uri(image_path)
 
 
