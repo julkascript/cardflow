@@ -10,7 +10,7 @@ def fetch_and_save_image(image_url):
 
     local_image_name = image_url.split('/')[-1]
 
-    media_path = os.path.join(settings.MEDIA_URL, 'yugioh_card_images')
+    media_path = os.path.join(settings.MEDIA_ROOT, 'yugioh_card_images')
 
     image_file_name = os.path.join(media_path, local_image_name)
 
@@ -35,4 +35,4 @@ def fetch_and_save_image(image_url):
 
             return external_image_url
 
-    return image_file_name
+    return f"{settings.MEDIA_URL}yugioh_card_images/{local_image_name}"

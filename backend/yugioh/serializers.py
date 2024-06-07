@@ -7,6 +7,7 @@ from .models import YugiohCard, YugiohCardInSet, YugiohCardSet, YugiohCardRarity
 from .utils import fetch_and_save_image
 
 
+
 class YugiohCardSetSerializer(serializers.ModelSerializer):
     class Meta:
         model = YugiohCardSet
@@ -70,14 +71,15 @@ class YugiohCardSerializer(serializers.ModelSerializer):
 
         return card_in_sets
 
-    @staticmethod
     @extend_schema_field(YugiohCardSetSerializer)
-    def get_image(obj):
+    def get_image(self, obj):
+        request = self.context.get('request')
+        if not request:
+            return None
 
-        local_image_url = fetch_and_save_image(obj.image)
+        image_path = fetch_and_save_image(obj.image)
 
-        return local_image_url
-
+        return request.build_absolute_uri(image_path)
 
 class YugiohCardInSetCardSerializer(YugiohCardSerializer):
     class Meta(YugiohCardSerializer.Meta):
@@ -108,11 +110,15 @@ class YugiohCardInSetSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "rarity", "set", "yugioh_card"]
         ordering_fields = ["id"]
 
-    @staticmethod
     @extend_schema_field(YugiohCardSetSerializer)
-    def get_image(obj):
+    def get_image(self, obj):
+        request = self.context.get('request')
+        if not request:
+            return None
 
-        return fetch_and_save_image(obj.image)
+        image_path = fetch_and_save_image(obj.image)
+
+        return request.build_absolute_uri(image_path)
 
 class BestSellerCardSerializer(serializers.ModelSerializer):
     card_name = serializers.CharField(source="card.yugioh_card.card_name")
@@ -132,9 +138,15 @@ class BestSellerCardSerializer(serializers.ModelSerializer):
             "card_id",
         ]
 
-    @staticmethod
-    def get_card_image(obj):
-        return fetch_and_save_image(obj.card.yugioh_card.image)
+    @extend_schema_field(YugiohCardSetSerializer)
+    def get_card_image(self, obj):
+        request = self.context.get('request')
+        if not request:
+            return None
+
+        image_path = fetch_and_save_image(obj.card.yugioh_card.image)
+
+        return request.build_absolute_uri(image_path)
 
     @staticmethod
     def get_lowest_price(obj):
