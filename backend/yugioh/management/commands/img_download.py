@@ -28,12 +28,6 @@ class Command(BaseCommand):
       python manage.py download_images onecard
     """
 
-    # API_URLS = {
-    #     'onecard': "https://images.ygoprodeck.com/images/cards/55144522.jpg",
-    #     'staple': "https://db.ygoprodeck.com/api/v7/cardinfo.php?staple=yes",
-    #     # 'all': "https://db.ygoprodeck.com/api/v7/cardinfo.php",
-    # }
-
     API_URLS = {
         'onecard': "https://db.ygoprodeck.com/api/v7/cardinfo.php?name=Dark Magician",
         'staple': "https://db.ygoprodeck.com/api/v7/cardinfo.php?staple=yes",
@@ -123,4 +117,3 @@ class Command(BaseCommand):
             if elapsed_time < 1:
                 self.stdout.write(f"Waiting: {1 - elapsed_time} before next call")
                 time.sleep(1 - elapsed_time)
-
