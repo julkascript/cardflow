@@ -8,6 +8,9 @@ from .utils import fetch_and_save_image
 
 
 class CacheImageMixin:
+    def __init__(self):
+        self.context = None
+
     def get_image(self, obj):
         request = self.context.get('request')
         if not request:
