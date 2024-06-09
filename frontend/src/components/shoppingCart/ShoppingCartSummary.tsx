@@ -106,7 +106,7 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
                 <td className="font-bold">
                   <Link
                     underline="hover"
-                    href={`/details/yugioh/${shoppingCartItem.listing.card_set_id}`}
+                    href={`/details/yugioh/${shoppingCartItem.listing.card_in_set.id}`}
                   >
                     {shoppingCartItem.listing.card_name}
                   </Link>
