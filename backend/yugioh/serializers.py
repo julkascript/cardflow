@@ -1,8 +1,9 @@
 from django.db.models import Min
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
-from .models import YugiohCard, YugiohCardInSet, YugiohCardSet, YugiohCardRarity
+
 from listing.models import Listing
+from .models import YugiohCard, YugiohCardInSet, YugiohCardSet, YugiohCardRarity
 
 
 class YugiohCardSetSerializer(serializers.ModelSerializer):
@@ -55,7 +56,7 @@ class YugiohCardSerializer(serializers.ModelSerializer):
         card_in_set_id = [rarity["id"] for rarity in all_card_in_sets]
 
         for set_name, rarity_name, card_in_set_id in zip(
-            set_names, rarity_names, card_in_set_id
+                set_names, rarity_names, card_in_set_id
         ):
             card_in_sets.append(
                 {
