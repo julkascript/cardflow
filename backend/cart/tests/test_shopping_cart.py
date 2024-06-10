@@ -91,15 +91,16 @@ class ShoppingCartItemViewSetTestCase(TestCase):
 
         actual_cart_items = ShoppingCartItem.objects.filter(cart__user=self.user2)
 
-        serializer = ShoppingCartItemSerializer(actual_cart_items, many=True)
-        actual_data = {
+        serializer = ShoppingCartItemSerializer(actual_cart_items, many=True,
+                                                context={'request': response.wsgi_request})
+        expected_data = {
             'count': actual_cart_items.count(),
             'next': None,
             'previous': None,
             'results': serializer.data,
         }
 
-        self.assertEqual(data, actual_data)
+        self.assertEqual(data, expected_data)
         self.assertEqual(response.status_code, 200)
 
     def test_checkout(self):
