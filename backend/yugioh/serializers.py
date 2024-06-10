@@ -4,7 +4,7 @@ from rest_framework import serializers
 
 from listing.models import Listing
 from .models import YugiohCard, YugiohCardInSet, YugiohCardSet, YugiohCardRarity
-from .utils import fetch_and_save_image
+from .utils import fetch_and_save_image, ImageFetchException
 
 
 class CacheImageMixin:
@@ -15,14 +15,14 @@ class CacheImageMixin:
         request = self.context.get('request')
         if not request:
             return None
+        try:
+            image_path = fetch_and_save_image(obj.image)
 
-        image_path = fetch_and_save_image(obj.image)
-
-        if image_path is None:
+        except ImageFetchException as e:
+            print(e)
             return obj.image
 
         return request.build_absolute_uri(image_path)
-
 
 
 class YugiohCardSetSerializer(serializers.ModelSerializer):

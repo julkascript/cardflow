@@ -2,6 +2,15 @@ import os
 
 import requests
 from django.conf import settings
+from django.utils.datetime_safe import datetime
+from rest_framework import status
+from rest_framework.exceptions import APIException
+
+
+class ImageFetchException(APIException):
+    status_code = status.HTTP_503_SERVICE_UNAVAILABLE
+    default_detail = 'Service Unavailable. Unable to fetch the image.'
+    default_code = 'SERVICE_UNAVAILABLE'
 
 
 def fetch_and_save_image(image_url):
@@ -26,7 +35,7 @@ def fetch_and_save_image(image_url):
                 for chunk in image_response.iter_content(chunk_size=8192):
                     handler.write(chunk)
         else:
-
-            return None
+            timestamp = datetime.now().strftime('%d/%b/%Y %H:%M:%S')
+            raise ImageFetchException(f"[{timestamp}] Failed to download external image from {external_image_url}")
 
     return f"{settings.MEDIA_URL}yugioh_card_images/{local_image_name}"
