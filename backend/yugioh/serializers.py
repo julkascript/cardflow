@@ -24,6 +24,7 @@ class CacheImageMixin:
         return request.build_absolute_uri(image_path)
 
 
+
 class YugiohCardSetSerializer(serializers.ModelSerializer):
     class Meta:
         model = YugiohCardSet
