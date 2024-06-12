@@ -21,7 +21,7 @@ function Changelog(): JSX.Element {
       <BreadcrumbNavigation links={breadcrumbNavigation} heading="Changelog" />
       <PageSection className="mt-4 lg:px-12 py-4 lg:py-20 w-11/12 lg:w-4/5 mx-auto">
         {reversedChangelogArchive.map((milestone, i) => (
-          <>
+          <div key={milestone.version}>
             <section
               className="flex items-center lg:items-start lg:w-3/5 flex-col lg:flex-row lg:justify-between"
               key={milestone.version}
@@ -54,7 +54,7 @@ function Changelog(): JSX.Element {
               </div>
             </section>
             {i < changelogArchive.length - 1 ? <Divider sx={{ marginBottom: 4 }} /> : <></>}
-          </>
+          </div>
         ))}
       </PageSection>
     </section>
