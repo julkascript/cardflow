@@ -1,18 +1,18 @@
-from django.db.models import Count, Subquery, OuterRef, Min, Sum
+from django.db.models import Subquery, OuterRef, Min, Sum
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets, generics
 from rest_framework import permissions
+from rest_framework import viewsets, generics
 
+from listing.models import Listing
+from order.models import OrderItem
+from .filters import YugiohCardFilter, YugiohCardInSetFilter
 from .models import YugiohCard, YugiohCardInSet
 from .serializers import (
     YugiohCardInSetSerializer,
     YugiohCardSerializer,
     BestSellerCardSerializer,
 )
-from .filters import YugiohCardFilter, YugiohCardInSetFilter
-from listing.models import Listing
-from order.models import OrderItem
 
 
 @extend_schema(tags=["Yu-Gi-Oh Card"])
@@ -81,7 +81,16 @@ class BestSellerCardListView(generics.ListAPIView):
                 ),
                 lowest_price=Min("price"),
             )
-            .order_by("-order_count")[:3]
+            .order_by("-order_count")
         )
 
-        return queryset
+        unique_results = set()
+        filtered_results = []
+        for obj in queryset:
+            if obj.card_id not in unique_results:
+                unique_results.add(obj.card_id)
+                filtered_results.append(obj)
+        if len(filtered_results) < 3:
+            return filtered_results
+
+        return filtered_results[:3]

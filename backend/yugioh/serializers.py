@@ -1,8 +1,28 @@
 from django.db.models import Min
 from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
-from .models import YugiohCard, YugiohCardInSet, YugiohCardSet, YugiohCardRarity
+
 from listing.models import Listing
+from .models import YugiohCard, YugiohCardInSet, YugiohCardSet, YugiohCardRarity
+from .utils import fetch_and_save_image, ImageFetchException
+
+
+class CacheImageMixin:
+    def __init__(self):
+        self.context = None
+
+    def get_image(self, obj):
+        request = self.context.get('request')
+        if not request:
+            return None
+        try:
+            image_path = fetch_and_save_image(obj.image)
+
+        except ImageFetchException as e:
+            print(e)
+            return obj.image
+
+        return request.build_absolute_uri(image_path)
 
 
 class YugiohCardSetSerializer(serializers.ModelSerializer):
@@ -19,8 +39,9 @@ class YugiohCardRaritySerializer(serializers.ModelSerializer):
         read_only_fields = ["rarity", "rarity_code"]
 
 
-class YugiohCardSerializer(serializers.ModelSerializer):
+class YugiohCardSerializer(serializers.ModelSerializer, CacheImageMixin):
     card_in_sets = serializers.SerializerMethodField()
+    image = serializers.SerializerMethodField()
 
     class Meta:
         model = YugiohCard
@@ -55,7 +76,7 @@ class YugiohCardSerializer(serializers.ModelSerializer):
         card_in_set_id = [rarity["id"] for rarity in all_card_in_sets]
 
         for set_name, rarity_name, card_in_set_id in zip(
-            set_names, rarity_names, card_in_set_id
+                set_names, rarity_names, card_in_set_id
         ):
             card_in_sets.append(
                 {
@@ -86,7 +107,7 @@ class YugiohCardInSetCardSerializer(YugiohCardSerializer):
         ]
 
 
-class YugiohCardInSetSerializer(serializers.ModelSerializer):
+class YugiohCardInSetSerializer(serializers.ModelSerializer, CacheImageMixin):
     rarity = YugiohCardRaritySerializer(read_only=True)
     set = YugiohCardSetSerializer(read_only=True)
     yugioh_card = YugiohCardInSetCardSerializer(read_only=True)
@@ -98,7 +119,7 @@ class YugiohCardInSetSerializer(serializers.ModelSerializer):
         ordering_fields = ["id"]
 
 
-class BestSellerCardSerializer(serializers.ModelSerializer):
+class BestSellerCardSerializer(serializers.ModelSerializer, CacheImageMixin):
     card_name = serializers.CharField(source="card.yugioh_card.card_name")
     set_name = serializers.CharField(source="card.set.card_set_name")
     set_code = serializers.CharField(source="card.set.set_code")
@@ -116,9 +137,9 @@ class BestSellerCardSerializer(serializers.ModelSerializer):
             "card_id",
         ]
 
-    @staticmethod
-    def get_card_image(obj):
-        return obj.card.yugioh_card.image
+    @extend_schema_field(YugiohCardSetSerializer)
+    def get_card_image(self, obj):
+        return self.get_image(obj.card.yugioh_card)
 
     @staticmethod
     def get_lowest_price(obj):

@@ -18,6 +18,13 @@ export const changelogArchive: readonly ChangelogArchive[] = Object.freeze([
     fixes: ['Inconsistent listings', 'Authentication tokens'],
     deprecated: ['Instant buy'],
   },
+  {
+    version: '1.2.0',
+    date: 'June 12, 2024',
+    features: ['Improved User Feedback', 'Improved Navigation', 'Show Image Previews'],
+    fixes: ['Best Sellers Fixes', 'Fixed Delisting Bugs'],
+    deprecated: [],
+  },
 ]);
 
 type ChangelogArchive = {
