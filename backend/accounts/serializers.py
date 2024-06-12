@@ -102,3 +102,4 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class ContactFormSerializer(serializers.Serializer):
     email = serializers.EmailField()
     message = serializers.CharField()
+
