@@ -5,6 +5,8 @@ import ChangelogList from '../../components/about/ChangelogList';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import { changelogArchive } from '../../constants/changelogArchive';
 
+const reversedChangelogArchive = [...changelogArchive].reverse();
+
 function Changelog(): JSX.Element {
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
@@ -18,7 +20,7 @@ function Changelog(): JSX.Element {
       <CardflowTabs />
       <BreadcrumbNavigation links={breadcrumbNavigation} heading="Changelog" />
       <PageSection className="mt-4 lg:px-12 py-4 lg:py-20 w-11/12 lg:w-4/5 mx-auto">
-        {changelogArchive.map((milestone, i) => (
+        {reversedChangelogArchive.map((milestone, i) => (
           <>
             <section
               className="flex items-center lg:items-start lg:w-3/5 flex-col lg:flex-row lg:justify-between"

@@ -2,8 +2,9 @@
  * This array is used to render the changelog. For each new version release,
  * you should simply update the archive and the changelog page will also be updated.
  *
- * The versions are ordered by their release dates descending, meaning
- * that the newest version should be the first element.
+ * The versions are ordered by their release dates ascending, meaning
+ * that the newest version should be the last element
+ * (the changelog page handles the sorting itself).
  *
  * If a version is missing new features, fixes, or deprecations, you
  * should simply supply an empty array for the respective category.
