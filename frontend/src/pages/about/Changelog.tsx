@@ -22,14 +22,14 @@ function Changelog(): JSX.Element {
       <PageSection className="mt-4 lg:px-12 py-4 lg:py-20 w-11/12 lg:w-4/5 mx-auto">
         {reversedChangelogArchive.map((milestone, i) => (
           <div key={milestone.version}>
-            <section className="flex items-center lg:items-start lg:w-3/5 flex-col lg:flex-row lg:justify-between">
+            <section className="lg:flex block items-start flex-row justify-between">
               <div>
                 <h2 className="text-3xl text-center lg:text-left lg:text-base font-bold">
                   v{milestone.version}
                 </h2>
                 <div className="text-center mb-8 lg:text-left">{milestone.date}</div>
               </div>
-              <div>
+              <div className="lg:w-3/5">
                 <ChangelogList
                   version={milestone.version}
                   type="feature"

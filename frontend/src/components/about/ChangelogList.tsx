@@ -23,9 +23,9 @@ function ChangelogList(props: ChangelogListProps): JSX.Element {
   }
 
   return (
-    <div className="mb-16">
-      <h3 className="font-bold text-left text-2xl mb-2">{props.heading}</h3>
-      <ul>
+    <div className="mb-16 lg:w-full w-[200px] mx-auto whitespace-nowrap">
+      <h3 className="font-bold text-2xl mb-2">{props.heading}</h3>
+      <ul className="inline-block">
         {props.items.map((item) => (
           <ChangelogListItem
             key={`changelog-list-item-${item}-${props.version}-${props.type}`}
