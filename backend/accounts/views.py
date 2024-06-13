@@ -1,6 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
-from django.db.models import OuterRef, Subquery
+from django.db.models import OuterRef, Subquery, Exists
 from django.utils.timezone import now
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
@@ -92,7 +92,7 @@ class UserUpdateView(viewsets.ModelViewSet):
             current_year = now().year
             sales_this_month_count = OrderStatusHistory.objects.filter(
                 order__sender_user=user,
-                status='completed',
+                status='ordered',
                 timestamp__year=current_year,
                 timestamp__month=current_month
             ).count()
@@ -101,9 +101,41 @@ class UserUpdateView(viewsets.ModelViewSet):
             avg_rating = UserSerializer.get_average_rating(user.id)
 
             # Calculate Rejection Rate // TODO
-            rejected_ordered_sales_count = OrderStatusHistory.objects.filter(
+            rejected_timestamp_subquery = OrderStatusHistory.objects.filter(
+                order=OuterRef('order'),
+                timestamp__gt=OuterRef('timestamp'),
+                status='rejected'
+            ).values('timestamp')[:1]
+
+            sent_between_ordered_and_rejected_exists = OrderStatusHistory.objects.filter(
+                order=OuterRef('order'),
+                timestamp__gt=OuterRef('timestamp'),
+                timestamp__lt=Subquery(rejected_timestamp_subquery),
+                status='sent'
+            )
+
+            ordered_sales_with_rejected = OrderStatusHistory.objects.filter(
                 order__sender_user=user,
-                status='ordered',
+                status='ordered'
+            ).annotate(
+                rejected_timestamp=Subquery(rejected_timestamp_subquery)
+            ).filter(
+                rejected_timestamp__isnull=False
+            )
+
+            final_rejected_ordered_sales_count = ordered_sales_with_rejected.filter(
+                ~Exists(sent_between_ordered_and_rejected_exists)
+            ).count()
+
+            if sales_count > 0:
+                rejection_rate = (final_rejected_ordered_sales_count / sales_count) * 100
+            else:
+                rejection_rate = 0
+
+            # Calculate Missed Rate // TODO
+            missed_sent_sales_count = OrderStatusHistory.objects.filter(
+                order__sender_user=user,
+                status='sent',
                 timestamp__lt=Subquery(
                     OrderStatusHistory.objects.filter(
                         order=OuterRef('order'),
@@ -114,17 +146,17 @@ class UserUpdateView(viewsets.ModelViewSet):
             ).count()
 
             if sales_count > 0:
-                rejection_rate = (rejected_ordered_sales_count / sales_count) * 100
+                miss_rate = (missed_sent_sales_count / sales_count) * 100
             else:
-                rejection_rate = 0
+                miss_rate = 0
 
             stats_data = {
                 'purchases': purchases_count,
                 'sales': sales_count,
                 'sales_this_month': sales_this_month_count,
                 'seller_rating': avg_rating,
-                'rejection_rate': rejection_rate,
-                # 'miss_rate': miss_rate,
+                'rejection_rate': round(rejection_rate, 2),
+                'miss_rate': round(miss_rate, 2)
             }
 
             return Response({
