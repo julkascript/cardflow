@@ -220,6 +220,7 @@ function ListingForm(props: ListingFormProps) {
                     placeholder="Quantity"
                     className="w-36"
                     size="small"
+                    label="Quantity"
                     InputProps={{
                       startAdornment: <TagIcon className="mr-2" />,
                     }}
@@ -257,6 +258,7 @@ function ListingForm(props: ListingFormProps) {
                       onChange={handlePriceChange}
                       placeholder="Price"
                       size="small"
+                      label="Price"
                       InputProps={{
                         startAdornment: <PaymentsIcon className="mr-2" />,
                       }}
