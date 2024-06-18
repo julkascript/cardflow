@@ -1,6 +1,7 @@
 {
   "common": {
-    "reachOutToUs": "Reach out to us"
+    "reachOutToUs": "Reach out to us",
+    "about": "About"
   },
   "main": {
     "title": "About",
@@ -29,6 +30,48 @@
       "title": "There's so much more.",
       "faq": "FAQ",
       "whatsChanged": "What's changed"
+    }
+  },
+  "faq": {
+    "title": "FAQ",
+    "questions": {
+      "title": "Frequently asked questions",
+      "cardflowFree": {
+        "question": "Is Cardflow free?",
+        "answer": "<p>Yes! Cardflow is entirely free to use. Cardflow does not charge you registration or transaction fees.</p>"
+      },
+      "createListing": {
+        "question": "How do I create a listing?",
+        "answer": "<p>To create a listing, go to the <linkToListingPage>new listing page</linkToListingPage>. Type in the name of your card in the text field and select the specific set of your card. Afterwards, select the quality of the card via the dropdown menu and use the text fields to choose the amount of cards you want to sell and the price per unit.</p><p>Please note that only registered users can create listings. If you do not have an account, you can <linkToRegister>register for free</linkToRegister>.</p>"
+      },
+      "trading": {
+        "question": "How do I trade?",
+        "answer": "<p>Trading is a planned feature that is currently unavailable. Stay tuned for updates!</p>"
+      },
+      "deleteAccount": {
+        "question": "How do I delete my account?",
+        "answer": "<p>To delete your account, navigate to your profile settings page and navigate to the bottom, where you will find a red-colored section. Afterwards, click the \"Delete Account\" button and your account will be permanently deleted.</p><p>Please note that <strong>this action is irreversible and any data associated with you will be lost!</strong> Because of this, please proceed with caution.</p>"
+      },
+      "achievements": {
+        "question": "How do the Achievements work?",
+        "answer": "<p>Achievements are a planned feature that is currently unavailable. Stay tuned for updates!</p>"
+      },
+      "notSatisfiedWithOrder": {
+        "question": "What happens if I am not satisfied with my order?",
+        "answer": "<p>A feedback system is a planned feature that is currently unavailable. Stay tuned for updates!</p>"
+      },
+      "report": {
+        "question": "How do I report a user?",
+        "answer": "<p>You can <linkToContact>contact us</linkToContact> if you believe that a user is breaking Cardflow's policies and terms of use.</p>"
+      },
+      "listingExpiration": {
+        "question": "Can a listing expire?",
+        "answer": "Placeholder answer"
+      },
+      "reportingABug": {
+        "question": "How do I report a bug?",
+        "answer": "<p>You can either <linkToContact>contact us</linkToContact> or <linkToGitHub> raise an issue on our GitHub repository</linkToGitHub>. Note that the latter option requires a GitHub account.</p><p>Please be as detailed and specific as possible when reporting a bug. This will help us address it more easily.</p>"
+      }
     }
   }
 }
