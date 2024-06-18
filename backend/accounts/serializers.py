@@ -1,10 +1,10 @@
 from django.contrib.auth import get_user_model
-from django.db.models import Avg
-from rest_framework import serializers, status
+from django.db.models import Avg, OuterRef, Subquery, Exists
+from rest_framework import serializers
 from rest_framework.exceptions import PermissionDenied
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from order.models import FeedbackAndRating
+from order.models import FeedbackAndRating, Order, OrderStatusHistory
 
 User = get_user_model()
 
@@ -23,6 +23,57 @@ class UserSerializer(serializers.ModelSerializer):
             return 0
         else:
             return round(avg_rating, 1)
+
+    def get_purchases_count(self):
+        return Order.objects.filter(receiver_user=self).count()
+
+    def get_sales_count(self):
+        return Order.objects.filter(sender_user=self).count()
+
+    def get_rejection_rate(self):
+
+        rejected_timestamp_subquery = OrderStatusHistory.objects.filter(
+            order=OuterRef('order'),
+            timestamp__gt=OuterRef('timestamp'),
+            status='rejected'
+        ).values('timestamp')[:1]
+
+        sent_between_ordered_and_rejected_exists = OrderStatusHistory.objects.filter(
+            order=OuterRef('order'),
+            timestamp__gt=OuterRef('timestamp'),
+            timestamp__lt=Subquery(rejected_timestamp_subquery),
+            status='sent'
+        )
+
+        ordered_sales_with_rejected = OrderStatusHistory.objects.filter(
+            order__sender_user=self,
+            status='ordered'
+        ).annotate(
+            rejected_timestamp=Subquery(rejected_timestamp_subquery)
+        ).filter(
+            rejected_timestamp__isnull=False
+        )
+
+        final_rejected_ordered_sales_count = ordered_sales_with_rejected.filter(
+            ~Exists(sent_between_ordered_and_rejected_exists)
+        ).count()
+
+        return final_rejected_ordered_sales_count
+
+    def get_miss_rate(self):
+        missed_sent_sales_count = OrderStatusHistory.objects.filter(
+            order__sender_user=self,
+            status='sent',
+            timestamp__lt=Subquery(
+                OrderStatusHistory.objects.filter(
+                    order=OuterRef('order'),
+                    timestamp__gt=OuterRef('timestamp'),
+                    status='not sent'
+                ).values('timestamp')[:1]
+            )
+        ).count()
+
+        return missed_sent_sales_count
 
 
 class RegistrationSerializer(serializers.ModelSerializer):
@@ -102,4 +153,3 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class ContactFormSerializer(serializers.Serializer):
     email = serializers.EmailField()
     message = serializers.CharField()
-
