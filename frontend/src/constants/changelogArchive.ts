@@ -1,3 +1,19 @@
+export const changelogArchive: readonly ChangelogArchive[] = [
+  {
+    version: '1.0.0',
+    date: new Date('February 2, 2024'),
+  },
+  {
+    version: '1.2.0',
+    date: new Date('June 12, 2024'),
+  },
+];
+
+type ChangelogArchive = {
+  version: string;
+  date: Date;
+};
+
 /**
  * This array is used to render the changelog. For each new version release,
  * you should simply update the archive and the changelog page will also be updated.

@@ -73,5 +73,21 @@
         "answer": "<p>You can either <linkToContact>contact us</linkToContact> or <linkToGitHub> raise an issue on our GitHub repository</linkToGitHub>. Note that the latter option requires a GitHub account.</p><p>Please be as detailed and specific as possible when reporting a bug. This will help us address it more easily.</p>"
       }
     }
+  },
+  "changelog": {
+    "title": "Changelog",
+    "features": "New features",
+    "fixes": "Fixes",
+    "deprecated": "Deprecated",
+    "1.0.0": {
+      "features": ["Basic listings", "Checkout", "Profile and settings"],
+      "fixes": ["Inconsistent listings", "Authentication tokens"],
+      "deprecated": ["Instant buy"]
+    },
+    "1.2.0": {
+      "features": ["Improved user feedbacks", "Improved navigation", "Show image previews"],
+      "fixes": ["Best sellers fixed", "Fixed delisting bugs"],
+      "deprecated": []
+    }
   }
 }
