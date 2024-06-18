@@ -9,8 +9,9 @@ import { Link } from '@mui/material';
  *
  * Use string answers when you have simple text. Use other data types
  * when you want to insert more complex markup (e.g. hyperlinks or formatting)
+ * @deprecated use the ``faq`` object, which contains translation keys
  */
-export const faq: readonly FAQ[] = Object.freeze([
+export const legacyFaq: readonly LegacyFAQ[] = Object.freeze([
   {
     question: 'Is Cardflow free?',
     answer:
@@ -98,7 +99,7 @@ export const faq: readonly FAQ[] = Object.freeze([
   },
 ]);
 
-type FAQ = {
+type LegacyFAQ = {
   question: string;
   answer: React.ReactNode;
 };
