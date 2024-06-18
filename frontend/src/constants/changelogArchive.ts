@@ -10,8 +10,10 @@
  * should simply supply an empty array for the respective category.
  *
  * The ``version`` should not be prepended by a "v", this will be done by the component itself.
+
+ * @deprecated use the new ``changelogArchive`` instead.
  */
-export const changelogArchive: readonly ChangelogArchive[] = Object.freeze([
+export const legacyChangelogArchive: readonly LegacyChangelogArchive[] = Object.freeze([
   {
     version: '1.0.0',
     date: 'February 2, 2024',
@@ -28,7 +30,7 @@ export const changelogArchive: readonly ChangelogArchive[] = Object.freeze([
   },
 ]);
 
-type ChangelogArchive = {
+type LegacyChangelogArchive = {
   version: string;
   date: string;
   features: string[];

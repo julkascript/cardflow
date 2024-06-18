@@ -3,9 +3,9 @@ import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/Breadcrum
 import PageSection from '../../components/PageSection';
 import ChangelogList from '../../components/about/ChangelogList';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
-import { changelogArchive } from '../../constants/changelogArchive';
+import { legacyChangelogArchive } from '../../constants/changelogArchive';
 
-const reversedChangelogArchive = [...changelogArchive].reverse();
+const reversedChangelogArchive = [...legacyChangelogArchive].reverse();
 
 function Changelog(): JSX.Element {
   const breadcrumbNavigation: BreadcrumbLink[] = [
@@ -50,7 +50,7 @@ function Changelog(): JSX.Element {
                 />
               </div>
             </section>
-            {i < changelogArchive.length - 1 ? <Divider sx={{ marginBottom: 4 }} /> : <></>}
+            {i < legacyChangelogArchive.length - 1 ? <Divider sx={{ marginBottom: 4 }} /> : <></>}
           </div>
         ))}
       </PageSection>
