@@ -1,4 +1,7 @@
 {
+  "common": {
+    "reachOutToUs": "Reach out to us"
+  },
   "main": {
     "title": "About",
     "whyCardflow": "Why Cardflow?",
@@ -6,6 +9,26 @@
       "free": "Free",
       "openSource": "Open-source",
       "userOriented": "User-oriented"
+    },
+    "firstSection": {
+      "title": "Buy, sell, and trade for free",
+      "content": "Cardflow allows you to list items, buy and exchange with others in matter of seconds, without cost.",
+      "startExploring": "Start exploring"
+    },
+    "secondSection": {
+      "title": "Join the community",
+      "content": "Become a part of the team, contribute to the growth.",
+      "contribute": "Contribute",
+      "donate": "Donate"
+    },
+    "thirdSection": {
+      "title": "Supported games",
+      "comingSoon": "Coming soon"
+    },
+    "fourthSection": {
+      "title": "There's so much more.",
+      "faq": "FAQ",
+      "whatsChanged": "What's changed"
     }
   }
 }

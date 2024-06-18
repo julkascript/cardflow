@@ -28,6 +28,7 @@ type CardflowReasons = {
 
 function About(): JSX.Element {
   const { t } = useTranslation('about');
+
   const cardflowReasons: CardflowReasons[] = [
     {
       reason: t('main.reasons.free'),
@@ -77,35 +78,36 @@ function About(): JSX.Element {
         </PageSection>
         <PageSection className="p-8 my-4 flex flex-col gap-4 lg:flex-row lg:gap-0">
           <div className="flex flex-col lg:w-5/6">
-            <h2 className="text-2xl text-center lg:text-left">Buy, sell and trade for free</h2>
+            <h2 className="text-2xl text-center lg:text-left">{t('main.firstSection.title')}</h2>
             <Typography
               className="text-center lg:text-left"
               sx={{ marginBottom: 2 }}
               component="p"
               color="text.secondary"
             >
-              Cardflow allows you to list items, buy and exchange with others in matter of seconds,
-              without cost.
+              {t('main.firstSection.content')}
             </Typography>
             <LinkButton
               href="/buy"
               className="w-44 self-center lg:self-start"
               icon={ArrowRightIcon}
             >
-              Start exploring
+              {t('main.firstSection.startExploring')}
             </LinkButton>
           </div>
           <Divider sx={{ marginTop: 2 }} className="block lg:hidden" />
           <Divider variant="inset" flexItem orientation="vertical" className="hidden lg:block" />
           <div className="flex flex-col lg:w-full">
-            <h2 className="text-2xl lg:pl-8 text-center lg:text-left">Join the community</h2>
+            <h2 className="text-2xl lg:pl-8 text-center lg:text-left">
+              {t('main.secondSection.title')}
+            </h2>
             <Typography
               className="text-center lg:text-left lg:pl-8"
               sx={{ marginBottom: 2 }}
               component="p"
               color="text.secondary"
             >
-              Become a part of the team, contribute to the growth.
+              {t('main.secondSection.content')}
             </Typography>
             <div className="flex flex-col w-36 mx-auto gap-4 lg:flex-row lg:w-full lg:pl-8 lg:pt-5">
               <LinkButton
@@ -113,16 +115,16 @@ function About(): JSX.Element {
                 target="_blank"
                 icon={GitHubIcon}
               >
-                Contribute
+                {t('main.secondSection.contribute')}
               </LinkButton>
               <LinkButton href="#" icon={FavoriteIcon}>
-                Donate
+                {t('main.secondSection.donate')}
               </LinkButton>
             </div>
           </div>
         </PageSection>
         <PageSection className="p-8 my-4">
-          <h2 className="text-2xl text-center lg:text-left">Supported games</h2>
+          <h2 className="text-2xl text-center lg:text-left">{t('main.thirdSection.title')}</h2>
           <div className="mt-4 px-12 gap-12 lg:gap-x-0 lg:gap-y-12 flex flex-col items-center lg:grid lg:grid-cols-5 lg:place-items-center">
             <SupportedGamesImage src={YugiohImage} game="Yu-Gi-Oh!" />
             <Divider orientation="vertical" className="hidden lg:block" />
@@ -158,15 +160,15 @@ function About(): JSX.Element {
           </div>
         </PageSection>
         <PageSection className="p-8 flex flex-col lg:flex-row gap-4 lg:gap-8 items-center">
-          <h2 className="text-2xl font-bold">There's so much more.</h2>
+          <h2 className="text-2xl font-bold">{t('main.fourthSection.title')}</h2>
           <LinkButton href="/about/faq" icon={HelpIcon}>
-            FAQ
+            {t('main.fourthSection.faq')}
           </LinkButton>
           <LinkButton href="/about/contact" icon={EmailIcon}>
-            Reach out to us
+            {t('common.reachOutToUs')}
           </LinkButton>
           <LinkButton href="/about/changelog" icon={CompareArrowsIcon}>
-            What's changed
+            {t('main.fourthSection.whatsChanged')}
           </LinkButton>
         </PageSection>
       </div>
