@@ -19,6 +19,7 @@ import CardfightVanguardImage from '../../../assets/games/cardfightvanguard.png'
 import React, { HTMLAttributeAnchorTarget } from 'react';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import SupportedGamesImage from '../../components/about/SupportedGamesImage';
+import { useTranslation } from 'react-i18next';
 
 type CardflowReasons = {
   logoColor: string;
@@ -26,27 +27,30 @@ type CardflowReasons = {
 };
 
 function About(): JSX.Element {
+  const { t } = useTranslation('about');
   const cardflowReasons: CardflowReasons[] = [
     {
-      reason: 'Free',
+      reason: t('main.reasons.free'),
       logoColor: theme.palette.success.main,
     },
     {
-      reason: 'Open-source',
+      reason: t('main.reasons.openSource'),
       logoColor: theme.palette.info.main,
     },
     {
-      reason: 'User-oriented',
+      reason: t('main.reasons.userOriented'),
       logoColor: theme.palette.error.light,
     },
   ];
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
       <CardflowTabs />
-      <PageHeader heading="About" />
+      <PageHeader heading={t('main.title')} />
       <div className="w-5/6 mx-auto my-4">
         <PageSection className="p-8 my-4">
-          <h2 className="text-2xl mb-12 font-bold text-center lg:text-left">Why Cardflow?</h2>
+          <h2 className="text-2xl mb-12 font-bold text-center lg:text-left">
+            {t('main.whyCardflow')}
+          </h2>
           <div className="flex gap-4 lg:gap-0 flex-col lg:flex-row lg:justify-center">
             {cardflowReasons.map((r, i) => (
               <React.Fragment key={r.reason}>

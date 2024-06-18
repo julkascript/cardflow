@@ -1,0 +1,11 @@
+{
+  "main": {
+    "title": "За нас",
+    "whyCardflow": "Защо да изберете Cardflow?",
+    "reasons": {
+      "free": "Безплатен",
+      "openSource": "С отворен код",
+      "userOriented": "Ориентиран към потребителя"
+    }
+  }
+}

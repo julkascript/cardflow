@@ -1,0 +1,11 @@
+{
+  "main": {
+    "title": "About",
+    "whyCardflow": "Why Cardflow?",
+    "reasons": {
+      "free": "Free",
+      "openSource": "Open-source",
+      "userOriented": "User-oriented"
+    }
+  }
+}
