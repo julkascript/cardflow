@@ -1,3 +1,17 @@
+/**
+ * This array provides version milestones and dates, which are used to
+ * render the Changelog page.
+ *
+ * The versions are ordered by their release dates ascending, meaning
+ * that the newest version should be the last element
+ * (the changelog page handles the sorting itself).
+ *
+ * The versions are used as translation keys, which are associated
+ * with arrays of strings (those arrays being features, fixes, and deprecates).
+ * The arrays themselves are parsed to JavaScript arrays, thus
+ * you only need to update the .json files with translations
+ * to update the page.
+ */
 export const changelogArchive: readonly ChangelogArchive[] = [
   {
     version: '1.0.0',
