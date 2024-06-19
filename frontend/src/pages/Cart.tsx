@@ -9,9 +9,9 @@ import { PaginatedItem } from '../services/yugioh/types';
 import { useShoppingCart } from '../context/shoppingCart';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 import { legacyErrorToast } from '../util/errorToast';
-import toast from 'react-hot-toast';
-import { legacyToastMessages } from '../constants/toast';
+import { toastMessages } from '../constants/toast';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
+import { useToast } from '../util/useToast';
 
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
@@ -20,6 +20,7 @@ function ShoppingCart(): JSX.Element {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(0);
+  const toast = useToast();
 
   const [shipmentAddress, setShipmentAddress] = useState('');
   const shipmentCost = shipmentAddress && shoppingCart.length ? 9.55 : 0;
@@ -31,9 +32,9 @@ function ShoppingCart(): JSX.Element {
       .then(() => {
         navigate('/');
         setShoppingCart(0);
-        toast.success(legacyToastMessages.success.checkout);
+        toast.success({ toastKey: toastMessages.checkout });
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function removeListing(id: number) {
@@ -45,13 +46,13 @@ function ShoppingCart(): JSX.Element {
           setPage(newPage);
         }
 
-        toast.success(legacyToastMessages.success.shoppingCartItemDeleted);
+        toast.success({ toastKey: toastMessages.shoppingCartItemDeleted });
         return shoppingCartService.getItems(undefined, newPage);
       })
       .then((data) => {
         loadShoppingCart(data);
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function removeAll() {
@@ -61,7 +62,7 @@ function ShoppingCart(): JSX.Element {
       setCart([]);
       setPage(1);
       setTotalPrice(0);
-      toast.success(legacyToastMessages.success.shoppingCartEmptiedOut);
+      toast.success({ toastKey: toastMessages.shoppingCartEmptiedOut });
     });
   }
 
@@ -70,7 +71,12 @@ function ShoppingCart(): JSX.Element {
       .addItem({ listing_id: id, quantity })
       .then(() => shoppingCartService.getItems(undefined, page))
       .then(loadShoppingCart)
-      .catch((err) => legacyErrorToast(err, legacyToastMessages.error.failedShoppingCartQuantityUpdate));
+      .catch((error) =>
+        toast.error({
+          error,
+          toastKey: toastMessages.failedShoppingCartQuantityUpdate,
+        }),
+      );
   }
 
   function loadShoppingCart(data: PaginatedItem<ShoppingCartItem>) {

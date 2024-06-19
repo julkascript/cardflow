@@ -8,8 +8,8 @@ import SearchButton from '../components/navigation/desktop/buttons/SearchButton'
 import { yugiohService } from '../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 import CardflowTabs from '../components/sellListing/CardflowTabs';
-import { legacyErrorToast } from '../util/errorToast';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
+import { useToast } from '../util/useToast';
 
 function Search(): JSX.Element {
   const data: CardSearchLoader = useLoaderData() as CardSearchLoader;
@@ -18,6 +18,8 @@ function Search(): JSX.Element {
   const [cards, setCards] = useState(data.cards);
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState(params.query || '');
+
+  const toast = useToast();
 
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
@@ -56,13 +58,16 @@ function Search(): JSX.Element {
         setCards(data);
         setPage(page);
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   useEffectAfterInitialLoad(() => {
     const query = params.query || '';
     if (query) {
-      yugiohService.searchCardsByName(query).then(setCards).catch(legacyErrorToast);
+      yugiohService
+        .searchCardsByName(query)
+        .then(setCards)
+        .catch((error) => toast.error({ error }));
     } else {
       setCards({
         results: [],

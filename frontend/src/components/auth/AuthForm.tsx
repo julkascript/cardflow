@@ -9,13 +9,12 @@ import {
   UserRegister,
 } from '../../services/user/types';
 import { useCurrentUser } from '../../context/user';
-import toast from 'react-hot-toast';
-import { legacyToastMessages } from '../../constants/toast';
-import { legacyErrorToast } from '../../util/errorToast';
+import { toastMessages } from '../../constants/toast';
 import { HttpError } from '../../util/HttpError';
 import { Button, Link, TextField } from '@mui/material';
 import { userValidator } from '../../validators/user';
 import { useDebounce } from '../../util/useDebounce';
+import { useToast } from '../../util/useToast';
 import { useTranslation } from 'react-i18next';
 
 type AuthFormProps = {
@@ -24,7 +23,8 @@ type AuthFormProps = {
 
 const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
   const { setUser } = useCurrentUser();
-  const { t: toastTranslate } = useTranslation('toast');
+  const toast = useToast();
+  const { t } = useTranslation('toast');
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -83,7 +83,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     const data = await userService.getUserById(id);
     setUser({ user_id: id, ...data });
     navigate('/');
-    toast.success(isLogin ? legacyToastMessages.success.login : legacyToastMessages.success.register);
+    toast.success({ toastKey: isLogin ? toastMessages.login : toastMessages.register });
   }
 
   async function handleSubmitAuthForm(event: React.FormEvent) {
@@ -110,10 +110,16 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     } catch (error: any) {
       if (error instanceof HttpError) {
         if (isLogin && error.err.status === 401) {
-          legacyErrorToast(error, legacyToastMessages.error.failedLogin);
+          toast.error({
+            error,
+            toastKey: toastMessages.failedLogin,
+          });
         } else {
           if (isLogin) {
-            legacyErrorToast(error, undefined, 400);
+            toast.error({
+              error,
+              excludedStatusCodes: [400],
+            });
           } else {
             const errors = await error.err.json();
             if (errors.username && Array.isArray(errors.username)) {
@@ -125,7 +131,10 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
             }
 
             // in case server is down or some other unexpected error pops up
-            legacyErrorToast(error, undefined, 400);
+            toast.error({
+              error,
+              excludedStatusCodes: [400],
+            });
           }
         }
       }

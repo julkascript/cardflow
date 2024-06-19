@@ -10,9 +10,8 @@ import PageHeader from '../../components/PageHeader';
 import LensIcon from '@mui/icons-material/Lens';
 import AddIcon from '@mui/icons-material/Add';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
-import { legacyErrorToast } from '../../util/errorToast';
-import toast from 'react-hot-toast';
-import { legacyToastMessages } from '../../constants/toast';
+import { toastMessages } from '../../constants/toast';
+import { useToast } from '../../util/useToast';
 
 type ListingData = {
   listing: YugiohCardListing;
@@ -57,6 +56,7 @@ function SellManagement(): JSX.Element {
   const [checkedAll, setCheckedAll] = useState(false);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
+  const toast = useToast();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -90,7 +90,7 @@ function SellManagement(): JSX.Element {
         setCheckedAll(false);
         setPage(page);
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function handleCheck(index: number) {
@@ -127,9 +127,9 @@ function SellManagement(): JSX.Element {
     Promise.all(fetchFunctions)
       .then(() => {
         retrieveListings(1);
-        toast.success(legacyToastMessages.success.sellListingsDelisted);
+        toast.success({ toastKey: toastMessages.sellListingsDelisted });
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function listAll(event: React.MouseEvent) {
@@ -142,9 +142,9 @@ function SellManagement(): JSX.Element {
       .then(() => {
         retrieveListings(page);
         setAnchorEl(null);
-        toast.success(legacyToastMessages.success.sellListingsListed);
+        toast.success({ toastKey: toastMessages.sellListingsListed });
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function deleteAll(event: React.MouseEvent) {
@@ -162,10 +162,10 @@ function SellManagement(): JSX.Element {
 
     Promise.all(fetchFunctions)
       .then(() => {
-        toast.success(legacyToastMessages.success.sellListingsDeleted);
+        toast.success({ toastKey: toastMessages.sellListingsDeleted });
         retrieveListings(newPage);
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function deleteSelectedItems(event: React.MouseEvent) {
@@ -185,11 +185,11 @@ function SellManagement(): JSX.Element {
 
     Promise.all(fetchFunctions)
       .then(() => {
-        toast.success(legacyToastMessages.success.sellListingsDeleted);
+        toast.success({ toastKey: toastMessages.sellListingsDeleted });
         retrieveListings(newPage);
         setAnchorEl(null);
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function delistSelectedItems(event: React.MouseEvent) {
@@ -204,9 +204,9 @@ function SellManagement(): JSX.Element {
       .then(() => {
         retrieveListings(page);
         setAnchorEl(null);
-        toast.success(legacyToastMessages.success.sellListingsDelisted);
+        toast.success({ toastKey: toastMessages.sellListingsDelisted });
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function listSelectedItems(event: React.MouseEvent) {
@@ -221,9 +221,9 @@ function SellManagement(): JSX.Element {
       .then(() => {
         retrieveListings(page);
         setAnchorEl(null);
-        toast.success(legacyToastMessages.success.sellListingsListed);
+        toast.success({ toastKey: toastMessages.sellListingsListed });
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function toggleListingVisibility(listing: YugiohCardListing, newStatus: boolean) {
@@ -232,12 +232,12 @@ function SellManagement(): JSX.Element {
       .then(() => {
         retrieveListings(page);
         if (newStatus) {
-          toast.success(legacyToastMessages.success.sellListingListed);
+          toast.success({ toastKey: toastMessages.sellListingListed });
         } else {
-          toast.success(legacyToastMessages.success.sellListingDelisted);
+          toast.success({ toastKey: toastMessages.sellListingDelisted });
         }
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
   useEffect(() => {
     if (isAuthenticated) {
