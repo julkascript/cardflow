@@ -17,6 +17,7 @@
     "listingVisibilityChanged_delisted": "Обявата за {{name}} {{setCode}} вече е скрита!",
     "listingDeleted": "Обявата {{name}} {{setCode}} беше успешно изтрита!",
     "listingCreated": "Успешно създадена обява за {{name}} {{setCode}}!",
+    "listingEdited": "Обявата за {{name}} {{setCode}} беше успешно актуализирана!",
     "sellListingsDelisted": "Обявите вече са скрити.",
     "sellListingsDeleted": "Обявите бяха изтрити",
     "sellListingsListed": "Обявите вече са видими",

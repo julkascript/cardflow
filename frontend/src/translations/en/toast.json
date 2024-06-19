@@ -18,6 +18,7 @@
     "listingVisibilityChanged_delisted": "Listing for {{name}} {{setCode}} was delisted!",
     "listingDeleted": "Listing for {{name}} {{setCode}} was deleted successfully",
     "listingCreated": "Listing for {{name}} {{setCode}} was created successfully!",
+    "listingEdited": "Listing for {{name}} {setCode}} was edited successfully!",
     "sellListingsDelisted": "Listings were delisted.",
     "sellListingsDeleted": "Listings were deleted",
     "sellListingsListed": "Listings were made public",

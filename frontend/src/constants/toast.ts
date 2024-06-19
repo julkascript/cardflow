@@ -19,6 +19,7 @@ export const toastMessages = {
   listingVisibilityChanged: 'listingVisibilityChanged',
   listingDeleted: 'listingDeleted',
   listingCreated: 'listingCreated',
+  listingEdited: 'listingEdited',
   sellListingsDelisted: 'sellListingsDelisted',
   sellListingsDeleted: 'sellListingsDeleted',
   sellListingsListed: 'sellListingsListed',
