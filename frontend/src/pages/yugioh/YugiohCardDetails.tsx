@@ -6,7 +6,7 @@ import { CardDetailsLoaderData } from '../../services/yugioh/types';
 import { useState } from 'react';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../../util/useEffectAfterInitialLoad';
-import { errorToast } from '../../util/errorToast';
+import { legacyErrorToast } from '../../util/errorToast';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
 
 function YugiohCardDetails(): JSX.Element {
@@ -24,14 +24,14 @@ function YugiohCardDetails(): JSX.Element {
         setCardListings(data);
         setPage(page);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   useEffectAfterInitialLoad(() => {
     yugiohService
       .getCardListingsByCardSetId(Number(params.id))
       .then(setCardListings)
-      .catch(errorToast);
+      .catch(legacyErrorToast);
     setPage(1);
   }, [params.id]);
 

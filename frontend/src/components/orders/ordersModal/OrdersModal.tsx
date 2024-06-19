@@ -21,7 +21,7 @@ import Home from '@mui/icons-material/Home';
 import { createPortal } from 'react-dom';
 import { orderStates } from '../../../constants/orders';
 import { orderService } from '../../../services/orders/orderService';
-import { errorToast } from '../../../util/errorToast';
+import { legacyErrorToast } from '../../../util/errorToast';
 import toast from 'react-hot-toast';
 import { legacyToastMessages } from '../../../constants/toast';
 import { Feedback } from '../../../services/feedback/types';
@@ -100,7 +100,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
           toast.success(legacyToastMessages.success.orderStatusChanged(order.order_id, receivedOption));
           props.onClose(true);
         })
-        .catch(errorToast);
+        .catch(legacyErrorToast);
     }
 
     if (rating && !cannotGiveFeedback) {

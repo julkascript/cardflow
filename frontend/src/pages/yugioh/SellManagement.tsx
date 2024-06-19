@@ -10,7 +10,7 @@ import PageHeader from '../../components/PageHeader';
 import LensIcon from '@mui/icons-material/Lens';
 import AddIcon from '@mui/icons-material/Add';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
-import { errorToast } from '../../util/errorToast';
+import { legacyErrorToast } from '../../util/errorToast';
 import toast from 'react-hot-toast';
 import { legacyToastMessages } from '../../constants/toast';
 
@@ -90,7 +90,7 @@ function SellManagement(): JSX.Element {
         setCheckedAll(false);
         setPage(page);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   function handleCheck(index: number) {
@@ -129,7 +129,7 @@ function SellManagement(): JSX.Element {
         retrieveListings(1);
         toast.success(legacyToastMessages.success.sellListingsDelisted);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   function listAll(event: React.MouseEvent) {
@@ -144,7 +144,7 @@ function SellManagement(): JSX.Element {
         setAnchorEl(null);
         toast.success(legacyToastMessages.success.sellListingsListed);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   function deleteAll(event: React.MouseEvent) {
@@ -165,7 +165,7 @@ function SellManagement(): JSX.Element {
         toast.success(legacyToastMessages.success.sellListingsDeleted);
         retrieveListings(newPage);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   function deleteSelectedItems(event: React.MouseEvent) {
@@ -189,7 +189,7 @@ function SellManagement(): JSX.Element {
         retrieveListings(newPage);
         setAnchorEl(null);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   function delistSelectedItems(event: React.MouseEvent) {
@@ -206,7 +206,7 @@ function SellManagement(): JSX.Element {
         setAnchorEl(null);
         toast.success(legacyToastMessages.success.sellListingsDelisted);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   function listSelectedItems(event: React.MouseEvent) {
@@ -223,7 +223,7 @@ function SellManagement(): JSX.Element {
         setAnchorEl(null);
         toast.success(legacyToastMessages.success.sellListingsListed);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   function toggleListingVisibility(listing: YugiohCardListing, newStatus: boolean) {
@@ -237,7 +237,7 @@ function SellManagement(): JSX.Element {
           toast.success(legacyToastMessages.success.sellListingDelisted);
         }
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
   useEffect(() => {
     if (isAuthenticated) {

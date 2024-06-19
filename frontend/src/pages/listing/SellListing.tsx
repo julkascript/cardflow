@@ -3,7 +3,7 @@ import ListingForm from '../../components/sellListing/ListingForm';
 import { CardDetailsLoaderData, YugiohCardSellListing } from '../../services/yugioh/types';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { legacyToastMessages } from '../../constants/toast';
-import { errorToast } from '../../util/errorToast';
+import { legacyErrorToast } from '../../util/errorToast';
 import { useLoaderData, useNavigate } from 'react-router-dom';
 
 function SellListing(): JSX.Element {
@@ -23,7 +23,7 @@ function SellListing(): JSX.Element {
           navigate('/sell/manage');
         }
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   return (

@@ -2,7 +2,7 @@ import { useLoaderData, useNavigate } from 'react-router-dom';
 import { EditListingLoaderData, YugiohCardSellListing } from '../../services/yugioh/types';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 
-import { errorToast } from '../../util/errorToast';
+import { legacyErrorToast } from '../../util/errorToast';
 import toast from 'react-hot-toast';
 import { legacyToastMessages } from '../../constants/toast';
 import ListingForm from '../../components/sellListing/ListingForm';
@@ -25,7 +25,7 @@ function EditListing(): JSX.Element {
           navigate('/sell/manage');
         }
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   return (

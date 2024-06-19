@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { PaginatedItem, YugiohCardInSet } from '../../services/yugioh/types';
 import { useDebounce } from '../useDebounce';
 import { yugiohService } from '../../services/yugioh/yugiohService';
-import { errorToast } from '../errorToast';
+import { legacyErrorToast } from '../errorToast';
 
 export const useSearch = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -14,7 +14,7 @@ export const useSearch = () => {
   });
 
   const debouncedRetrieve = useDebounce(() => {
-    yugiohService.searchCardsByName(searchQuery).then(setSearchResults).catch(errorToast);
+    yugiohService.searchCardsByName(searchQuery).then(setSearchResults).catch(legacyErrorToast);
   });
 
   function clearResults() {

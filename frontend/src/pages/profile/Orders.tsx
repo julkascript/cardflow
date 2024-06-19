@@ -4,7 +4,7 @@ import OrdersTable from '../../components/orders/OrdersTable';
 import { useCurrentUser } from '../../context/user';
 import { Order } from '../../services/orders/types';
 import { orderService } from '../../services/orders/orderService';
-import { errorToast } from '../../util/errorToast';
+import { legacyErrorToast } from '../../util/errorToast';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
 
 function Orders(): JSX.Element {
@@ -27,7 +27,7 @@ function Orders(): JSX.Element {
       .then((data) => {
         setOrders(data.results);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   useEffect(() => {
@@ -38,7 +38,7 @@ function Orders(): JSX.Element {
           setOrders(data.results);
           setCount(data.count);
         })
-        .catch(errorToast);
+        .catch(legacyErrorToast);
     }
   }, [user, page]);
 

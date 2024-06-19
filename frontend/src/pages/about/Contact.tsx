@@ -8,7 +8,7 @@ import { useDebounce } from '../../util/useDebounce';
 import { contactService } from '../../services/contact/contact';
 import toast from 'react-hot-toast';
 import { legacyToastMessages } from '../../constants/toast';
-import { errorToast } from '../../util/errorToast';
+import { legacyErrorToast } from '../../util/errorToast';
 import { useNavigate } from 'react-router-dom';
 
 function Contact(): JSX.Element {
@@ -41,7 +41,7 @@ function Contact(): JSX.Element {
         toast.success(legacyToastMessages.success.emailSent);
         navigate('/');
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   function handleEmailChange(event: React.ChangeEvent<HTMLInputElement>) {

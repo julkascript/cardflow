@@ -9,7 +9,7 @@ import {
   YugiohCardInSet,
 } from '../../services/yugioh/types';
 import { yugiohService } from '../../services/yugioh/yugiohService';
-import { errorToast } from '../../util/errorToast';
+import { legacyErrorToast } from '../../util/errorToast';
 import CardflowTabs from './CardflowTabs';
 import NewListingTopBar from './NewListingTopBar';
 import PaymentsIcon from '@mui/icons-material/Payments';
@@ -130,7 +130,7 @@ function ListingForm(props: ListingFormProps) {
       await yugiohService.deleteListingById(Number(params.id));
       navigate('/sell/manage');
     } catch (error) {
-      errorToast(error);
+      legacyErrorToast(error);
     }
   }
 
@@ -138,7 +138,7 @@ function ListingForm(props: ListingFormProps) {
     yugiohService
       .editListing({ ...formData, is_listed: !formData.is_listed })
       .then(() => setFormData((state) => ({ ...state, is_listed: !state.is_listed })))
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   async function handleSubmit(e: React.FormEvent, postAnother: boolean): Promise<void> {
@@ -163,7 +163,7 @@ function ListingForm(props: ListingFormProps) {
         setCardListings(data);
         setPage(page);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
   return (
     <section className="bg-[#F5F5F5] pb-4">

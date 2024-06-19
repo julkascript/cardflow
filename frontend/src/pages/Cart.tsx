@@ -8,7 +8,7 @@ import { shoppingCartService } from '../services/shoppingCart/shoppingCart';
 import { PaginatedItem } from '../services/yugioh/types';
 import { useShoppingCart } from '../context/shoppingCart';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
-import { errorToast } from '../util/errorToast';
+import { legacyErrorToast } from '../util/errorToast';
 import toast from 'react-hot-toast';
 import { legacyToastMessages } from '../constants/toast';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
@@ -33,7 +33,7 @@ function ShoppingCart(): JSX.Element {
         setShoppingCart(0);
         toast.success(legacyToastMessages.success.checkout);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   function removeListing(id: number) {
@@ -51,7 +51,7 @@ function ShoppingCart(): JSX.Element {
       .then((data) => {
         loadShoppingCart(data);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   function removeAll() {
@@ -70,7 +70,7 @@ function ShoppingCart(): JSX.Element {
       .addItem({ listing_id: id, quantity })
       .then(() => shoppingCartService.getItems(undefined, page))
       .then(loadShoppingCart)
-      .catch((err) => errorToast(err, legacyToastMessages.error.failedShoppingCartQuantityUpdate));
+      .catch((err) => legacyErrorToast(err, legacyToastMessages.error.failedShoppingCartQuantityUpdate));
   }
 
   function loadShoppingCart(data: PaginatedItem<ShoppingCartItem>) {
@@ -86,12 +86,12 @@ function ShoppingCart(): JSX.Element {
     }
 
     if (user.user_id) {
-      shoppingCartService.getItems(undefined, page).then(loadShoppingCart).catch(errorToast);
+      shoppingCartService.getItems(undefined, page).then(loadShoppingCart).catch(legacyErrorToast);
     }
   }, [user]);
 
   useEffectAfterInitialLoad(() => {
-    shoppingCartService.getItems(undefined, page).then(loadShoppingCart).catch(errorToast);
+    shoppingCartService.getItems(undefined, page).then(loadShoppingCart).catch(legacyErrorToast);
   }, [page]);
 
   const breadcrumbNavigation: BreadcrumbLink[] = [

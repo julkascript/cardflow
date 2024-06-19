@@ -3,7 +3,7 @@ import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/Breadcrum
 import OrdersTable from '../../components/orders/OrdersTable';
 import { useCurrentUser } from '../../context/user';
 import { Order } from '../../services/orders/types';
-import { errorToast } from '../../util/errorToast';
+import { legacyErrorToast } from '../../util/errorToast';
 import { orderService } from '../../services/orders/orderService';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
 
@@ -28,7 +28,7 @@ function Sales(): JSX.Element {
         setOrders(data.results);
         setCount(data.count);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   useEffect(() => {
@@ -39,7 +39,7 @@ function Sales(): JSX.Element {
           setOrders(data.results);
           setCount(data.count);
         })
-        .catch(errorToast);
+        .catch(legacyErrorToast);
     }
   }, [user, page]);
 

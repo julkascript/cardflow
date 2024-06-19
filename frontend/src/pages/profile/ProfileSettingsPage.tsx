@@ -11,7 +11,7 @@ import { userService } from '../../services/user/user';
 import { useLogout } from '../../util/useLogout';
 import toast from 'react-hot-toast';
 import { legacyToastMessages } from '../../constants/toast';
-import { errorToast } from '../../util/errorToast';
+import { legacyErrorToast } from '../../util/errorToast';
 
 function ProfileSettingsPage(): JSX.Element {
   const { user, setUser } = useCurrentUser();
@@ -29,7 +29,7 @@ function ProfileSettingsPage(): JSX.Element {
           toast.success(toastMessage);
         }
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   function updateAndLogout(field: 'username' | 'email', value: string) {
@@ -50,7 +50,7 @@ function ProfileSettingsPage(): JSX.Element {
         logout();
         toast.success(legacyToastMessages.success.accountDeleted);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   function updateAvatar(avatar: File) {
@@ -61,7 +61,7 @@ function ProfileSettingsPage(): JSX.Element {
         setUser({ user_id: user.user_id, ...data });
         toast.success(legacyToastMessages.success.avatarChanged);
       })
-      .catch(errorToast);
+      .catch(legacyErrorToast);
   }
 
   return (

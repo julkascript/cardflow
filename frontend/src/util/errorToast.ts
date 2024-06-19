@@ -17,8 +17,10 @@ import { legacyToastMessages } from '../constants/toast';
  * (e.g. a 403 error that prevents the display of sensitive data,
  * but renders the rest of the whole data anyways). **Note:** this option
  * is valid only if ``err`` is an instance of ``HttpError``.
+ * 
+ * @deprecated
  */
-export function errorToast(err: unknown, message?: string, ...excludedCodes: number[]) {
+export function legacyErrorToast(err: unknown, message?: string, ...excludedCodes: number[]) {
   if (!(err instanceof HttpError)) {
     libraryToast.error(message || legacyToastMessages.error.serverError);
     return;

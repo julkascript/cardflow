@@ -11,7 +11,7 @@ import {
 import { useCurrentUser } from '../../context/user';
 import toast from 'react-hot-toast';
 import { legacyToastMessages } from '../../constants/toast';
-import { errorToast } from '../../util/errorToast';
+import { legacyErrorToast } from '../../util/errorToast';
 import { HttpError } from '../../util/HttpError';
 import { Button, Link, TextField } from '@mui/material';
 import { userValidator } from '../../validators/user';
@@ -110,10 +110,10 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     } catch (error: any) {
       if (error instanceof HttpError) {
         if (isLogin && error.err.status === 401) {
-          errorToast(error, legacyToastMessages.error.failedLogin);
+          legacyErrorToast(error, legacyToastMessages.error.failedLogin);
         } else {
           if (isLogin) {
-            errorToast(error, undefined, 400);
+            legacyErrorToast(error, undefined, 400);
           } else {
             const errors = await error.err.json();
             if (errors.username && Array.isArray(errors.username)) {
@@ -125,7 +125,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
             }
 
             // in case server is down or some other unexpected error pops up
-            errorToast(error, undefined, 400);
+            legacyErrorToast(error, undefined, 400);
           }
         }
       }
