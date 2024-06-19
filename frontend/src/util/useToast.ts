@@ -8,7 +8,7 @@ type SuccessToastMessageOptions = {
   /**
    * See https://www.i18next.com/translation-function/context
    */
-  context?: object;
+  context?: string;
 
   /**
    * Used for interpolation, see https://www.i18next.com/translation-function/interpolation
@@ -40,7 +40,7 @@ type ErrorToastMessageOptions = {
   /**
    * See https://www.i18next.com/translation-function/context
    */
-  context?: object;
+  context?: string;
   /**
    * Used for interpolation, see https://www.i18next.com/translation-function/interpolation
    *
