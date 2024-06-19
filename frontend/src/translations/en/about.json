@@ -89,5 +89,21 @@
       "fixes": ["Best sellers fixed", "Fixed delisting bugs"],
       "deprecated": []
     }
+  },
+  "contact": {
+    "title": "Contact us",
+    "paragraph": "We are open to all kind of suggestions and ideas. Bug reports are also greatly appreciated.",
+    "emailField": {
+      "label": "Your email",
+      "placeholder": "Email",
+      "errorMessage": "Please provide a valid email address!"
+    },
+    "messageField": {
+      "label": "How can we help you?",
+      "placeholder": "Describe your request",
+      "errorMessage": "Please fill this field!"
+    },
+    "privacyPolicy": "By submitting this, I confirm that I have read and understood the <linkToPrivacyPolicy>Privacy Policy</linkToPrivacyPolicy>.",
+    "submitText": "Submit form"
   }
 }
