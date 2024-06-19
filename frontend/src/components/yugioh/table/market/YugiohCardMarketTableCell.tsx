@@ -9,9 +9,8 @@ import React, { useState } from 'react';
 import { useAuthenticationStatus, useCurrentUser } from '../../../../context/user';
 import { shoppingCartService } from '../../../../services/shoppingCart/shoppingCart';
 import { useShoppingCart } from '../../../../context/shoppingCart';
-import { legacyErrorToast } from '../../../../util/errorToast';
-import toast from 'react-hot-toast';
-import { legacyToastMessages } from '../../../../constants/toast';
+import { toastMessages } from '../../../../constants/toast';
+import { useToast } from '../../../../util/useToast';
 
 type YugiohCardMarketTableCellProps = {
   listing: YugiohCardListing;
@@ -22,22 +21,25 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
   const { user } = useCurrentUser();
   const { isAuthenticated } = useAuthenticationStatus();
   const { setShoppingCart } = useShoppingCart();
+  const toast = useToast();
+
   function handleAddToCart(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
 
     shoppingCartService
       .addItem({ listing_id: props.listing.id, quantity })
       .then(() => {
-        toast.success(
-          legacyToastMessages.success.shoppingCartItemAdded(
-            props.listing.card_name,
-            props.listing.card_in_set.set.set_code,
-          ),
-        );
+        toast.success({
+          toastKey: toastMessages.shoppingCartItemAdded,
+          values: {
+            name: props.listing.card_name,
+            setCode: props.listing.card_in_set.set.set_code,
+          },
+        });
         return shoppingCartService.getItems();
       })
       .then((data) => setShoppingCart(data.count))
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   const cannotBuy = user.user_id === props.listing.user || !isAuthenticated;

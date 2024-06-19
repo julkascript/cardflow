@@ -6,14 +6,14 @@ import { Link } from '@mui/material';
 import { useState } from 'react';
 import { useDebounce } from '../../util/useDebounce';
 import { contactService } from '../../services/contact/contact';
-import toast from 'react-hot-toast';
-import { legacyToastMessages } from '../../constants/toast';
-import { legacyErrorToast } from '../../util/errorToast';
+import { toastMessages } from '../../constants/toast';
 import { useNavigate } from 'react-router-dom';
+import { useToast } from '../../util/useToast';
 
 function Contact(): JSX.Element {
   const [email, setEmail] = useState('');
   const [message, setMessage] = useState('');
+  const toast = useToast();
 
   const navigate = useNavigate();
 
@@ -38,10 +38,10 @@ function Contact(): JSX.Element {
     contactService
       .sendEmail({ email, message })
       .then(() => {
-        toast.success(legacyToastMessages.success.emailSent);
+        toast.success({ toastKey: toastMessages.emailSent });
         navigate('/');
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function handleEmailChange(event: React.ChangeEvent<HTMLInputElement>) {

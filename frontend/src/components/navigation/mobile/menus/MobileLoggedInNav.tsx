@@ -17,12 +17,12 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import { useState } from 'react';
 import { useCurrentUser } from '../../../../context/user';
 import { useLogout } from '../../../../util/useLogout';
-import toast from 'react-hot-toast';
-import { legacyToastMessages } from '../../../../constants/toast';
+import { toastMessages } from '../../../../constants/toast';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
+import { useToast } from '../../../../util/useToast';
 
 type NewActionLink = {
   url: string;
@@ -50,6 +50,7 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
   const [profileExpanded, setProfileExpanded] = useState(false);
   const { user } = useCurrentUser();
   const logout = useLogout();
+  const toast = useToast();
 
   const links: ProfileLink[] = [
     {
@@ -72,7 +73,7 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
   function handleLogout() {
     logout();
     props.onClose();
-    toast.success(legacyToastMessages.success.logout);
+    toast.success({ toastKey: toastMessages.logout });
   }
 
   const actions: NewActionLink[] = [

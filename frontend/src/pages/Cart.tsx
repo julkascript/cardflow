@@ -8,7 +8,6 @@ import { shoppingCartService } from '../services/shoppingCart/shoppingCart';
 import { PaginatedItem } from '../services/yugioh/types';
 import { useShoppingCart } from '../context/shoppingCart';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
-import { legacyErrorToast } from '../util/errorToast';
 import { toastMessages } from '../constants/toast';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
 import { useToast } from '../util/useToast';
@@ -92,12 +91,18 @@ function ShoppingCart(): JSX.Element {
     }
 
     if (user.user_id) {
-      shoppingCartService.getItems(undefined, page).then(loadShoppingCart).catch(legacyErrorToast);
+      shoppingCartService
+        .getItems(undefined, page)
+        .then(loadShoppingCart)
+        .catch((error) => toast.error({ error }));
     }
   }, [user]);
 
   useEffectAfterInitialLoad(() => {
-    shoppingCartService.getItems(undefined, page).then(loadShoppingCart).catch(legacyErrorToast);
+    shoppingCartService
+      .getItems(undefined, page)
+      .then(loadShoppingCart)
+      .catch((error) => toast.error({ error }));
   }, [page]);
 
   const breadcrumbNavigation: BreadcrumbLink[] = [
