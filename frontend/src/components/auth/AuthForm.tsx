@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/quotes */
 // TO-DO: fix conflict in ESLint / Prettier rules and remove the above
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -15,7 +14,7 @@ import { Button, Link, TextField } from '@mui/material';
 import { userValidator } from '../../validators/user';
 import { useDebounce } from '../../util/useDebounce';
 import { useToast } from '../../util/useToast';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { usernameValidationRules } from '../../constants/validationRules/username';
 import { emailValidationRules } from '../../constants/validationRules/email';
 import { passwordValidationRules } from '../../constants/validationRules/password';
@@ -149,17 +148,17 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     <form onSubmit={handleSubmitAuthForm}>
       <div className="flex justify-center items-center flex-col">
         <h2 className="text-4xl text-center font-bold pt-20 pb-10 text-secondary">
-          {isLogin ? 'Log in' : 'Sign up'} for Cardflow
+          {t(isLogin ? 'login.title' : 'register.title')}
         </h2>
         <div className="w-full flex justify-center mb-8 lg:mb-4">
           <TextField
             className="w-3/4 lg:w-96"
-            placeholder="Username"
+            placeholder={t('common.usernameField.placeholder')}
             size="small"
             label={
               !usernameIsValid && usernameFieldWasChanged
                 ? validationT(usernameErrors[0], { usernameValidationRules })
-                : 'Username'
+                : t('common.usernameField.label')
             }
             id="username"
             error={!usernameIsValid && usernameFieldWasChanged}
@@ -173,10 +172,10 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
               label={
                 !emailIsValid && emailFieldWasChanged
                   ? validationT(emailErrors[0], { emailValidationRules })
-                  : 'Email Address'
+                  : t('common.emailField.label')
               }
               className="w-3/4 lg:w-96"
-              placeholder="Email Address"
+              placeholder={t('common.emailField.placeholder')}
               id="email-address"
               error={!emailIsValid && emailFieldWasChanged}
               onChange={handleEmailChange}
@@ -188,10 +187,10 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
           label={
             !passwordIsValid && passwordFieldWasChanged
               ? validationT(passwordErrors[0], { passwordValidationRules })
-              : 'Password'
+              : t('common.passwordField.label')
           }
           className="w-3/4 lg:w-96"
-          placeholder="Password"
+          placeholder={t('common.passwordField.placeholder')}
           type="password"
           error={!passwordIsValid && passwordFieldWasChanged}
           onChange={handlePasswordChange}
@@ -204,16 +203,19 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
             variant="contained"
             size="large"
           >
-            {isLogin ? 'Log in' : 'Sign up'}
+            {t(isLogin ? 'login.signInButtonText' : 'register.signUpButtonText')}
           </Button>
         </div>
         <div className="flex justify-center items-center flex-col py-5">
           <p className="font-extrabold text-center">
-            {/* eslint-disable-next-line quotes */}
-            {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
-            <Link href={isLogin ? '/register' : '/login'} color="#2384F4" underline="hover">
-              {isLogin ? 'Sign up' : 'Log in'}
-            </Link>
+            <Trans
+              i18nKey={isLogin ? 'login.linkToRegister' : 'register.linkToLogin'}
+              t={t}
+              components={{
+                linkToLogin: <Link href="/login" color="#2384F4" underline="hover" />,
+                linkToRegister: <Link href="/register" color="#2384F4" underline="hover" />,
+              }}
+            ></Trans>
           </p>
         </div>
       </div>
