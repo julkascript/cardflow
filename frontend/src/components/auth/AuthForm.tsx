@@ -16,6 +16,9 @@ import { userValidator } from '../../validators/user';
 import { useDebounce } from '../../util/useDebounce';
 import { useToast } from '../../util/useToast';
 import { useTranslation } from 'react-i18next';
+import { usernameValidationRules } from '../../constants/validationRules/username';
+import { emailValidationRules } from '../../constants/validationRules/email';
+import { passwordValidationRules } from '../../constants/validationRules/password';
 
 type AuthFormProps = {
   isLogin: boolean;
@@ -24,7 +27,8 @@ type AuthFormProps = {
 const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
   const { setUser } = useCurrentUser();
   const toast = useToast();
-  const { t } = useTranslation('toast');
+  const { t: validationT } = useTranslation('validationErrorMessages');
+  const { t } = useTranslation('auth');
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -123,11 +127,11 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
           } else {
             const errors = await error.err.json();
             if (errors.username && Array.isArray(errors.username)) {
-              setUsernameErrors(errors.username);
+              setUsernameErrors(errors.username.map((u: string) => `username.${u}`));
             }
 
             if (errors.email && Array.isArray(errors.email)) {
-              setEmailErrors(errors.email);
+              setEmailErrors(errors.email.map((e: string) => `email.${e}`));
             }
 
             // in case server is down or some other unexpected error pops up
@@ -152,7 +156,11 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
             className="w-3/4 lg:w-96"
             placeholder="Username"
             size="small"
-            label={!usernameIsValid && usernameFieldWasChanged ? usernameErrors[0] : 'Username'}
+            label={
+              !usernameIsValid && usernameFieldWasChanged
+                ? validationT(usernameErrors[0], { usernameValidationRules })
+                : 'Username'
+            }
             id="username"
             error={!usernameIsValid && usernameFieldWasChanged}
             onChange={handleUsernameChange}
@@ -162,7 +170,11 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
           <div className="w-full flex justify-center mb-8 lg:mb-4">
             <TextField
               size="small"
-              label={!emailIsValid && emailFieldWasChanged ? emailErrors[0] : 'Email Address'}
+              label={
+                !emailIsValid && emailFieldWasChanged
+                  ? validationT(emailErrors[0], { emailValidationRules })
+                  : 'Email Address'
+              }
               className="w-3/4 lg:w-96"
               placeholder="Email Address"
               id="email-address"
@@ -173,7 +185,11 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
         ) : null}
         <TextField
           size="small"
-          label={!passwordIsValid && passwordFieldWasChanged ? passwordErrors[0] : 'Password'}
+          label={
+            !passwordIsValid && passwordFieldWasChanged
+              ? validationT(passwordErrors[0], { passwordValidationRules })
+              : 'Password'
+          }
           className="w-3/4 lg:w-96"
           placeholder="Password"
           type="password"
