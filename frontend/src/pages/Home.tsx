@@ -2,33 +2,30 @@ import { Button, useTheme } from '@mui/material';
 import Logo from '../components/logo/Logo';
 import { useAuthenticationStatus } from '../context/user';
 import classes from './Home.module.css';
+import { useTranslation } from 'react-i18next';
 
 function Home(): JSX.Element {
   const { isAuthenticated } = useAuthenticationStatus();
   const theme = useTheme();
   const secondary = theme.palette.grey['200'];
+  const { t } = useTranslation('home');
 
   return (
     <div className="mt-12 lg:pt-40 pb-4 flex justify-center items-center flex-col">
       <div className="flex flex-col text-center lg:flex-row">
         <h1 className={`text-7xl font-extrabold pl-4 py-2 text-secondary ${classes.firstWordText}`}>
-          Buy.
+          {t('buy')}
         </h1>
         <h1
           className={`text-7xl font-extrabold pl-4 py-2 text-secondary ${classes.secondWordText}`}
         >
-          Sell.
+          {t('sell')}
         </h1>
         <h1 className={`text-7xl font-extrabold pl-4 py-2 text-secondary ${classes.thirdWordText}`}>
-          Trade.
+          {t('trade')}
         </h1>
       </div>
-      <p className="mt-4 text-center text-neutral-500 text-2xl font-normal">
-        Cardflow provides you with the tools and infrastructure
-      </p>
-      <p className="text-center text-neutral-500 text-2xl font-normal">
-        to move your cards from A to B.
-      </p>
+      <p className="mt-4 text-center text-neutral-500 text-2xl font-normal">{t('mission')}</p>
       <div className="flex gap-8 mt-2 pt-12 flex-col lg:flex-row items-center">
         <div className="hidden lg:block">
           <Button
@@ -43,7 +40,7 @@ function Home(): JSX.Element {
             startIcon={<Logo color="white" size={20} />}
             href="/buy"
           >
-            Start exploring
+            {t('startExploringButtonText')}
           </Button>
         </div>
         <div className="block lg:hidden">
@@ -59,7 +56,7 @@ function Home(): JSX.Element {
             startIcon={<Logo color="white" size={25} />}
             href="/buy"
           >
-            Start exploring
+            {t('startExploringButtonText')}
           </Button>
         </div>
         <div className={`hidden lg:block ${classes.buttonContainer}`}>
@@ -82,7 +79,7 @@ function Home(): JSX.Element {
               }}
               className="hover:bg-gray-200"
             >
-              Sign In
+              {t('signInButtonText')}
             </Button>
           )}
         </div>
