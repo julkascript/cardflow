@@ -4,11 +4,12 @@ import OrdersTable from '../../components/orders/OrdersTable';
 import { useCurrentUser } from '../../context/user';
 import { Order } from '../../services/orders/types';
 import { orderService } from '../../services/orders/orderService';
-import { legacyErrorToast } from '../../util/errorToast';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
+import { useToast } from '../../util/useToast';
 
 function Orders(): JSX.Element {
   const [orders, setOrders] = useState<Order[]>([]);
+  const toast = useToast();
 
   const { user } = useCurrentUser();
   const breadcrumbNavigation: BreadcrumbLink[] = [
@@ -27,7 +28,7 @@ function Orders(): JSX.Element {
       .then((data) => {
         setOrders(data.results);
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   useEffect(() => {
@@ -38,7 +39,7 @@ function Orders(): JSX.Element {
           setOrders(data.results);
           setCount(data.count);
         })
-        .catch(legacyErrorToast);
+        .catch((error) => toast.error({ error }));
     }
   }, [user, page]);
 

@@ -3,12 +3,13 @@ import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/Breadcrum
 import OrdersTable from '../../components/orders/OrdersTable';
 import { useCurrentUser } from '../../context/user';
 import { Order } from '../../services/orders/types';
-import { legacyErrorToast } from '../../util/errorToast';
 import { orderService } from '../../services/orders/orderService';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
+import { useToast } from '../../util/useToast';
 
 function Sales(): JSX.Element {
   const [orders, setOrders] = useState<Order[]>([]);
+  const toast = useToast();
 
   const { user } = useCurrentUser();
   const breadcrumbNavigation: BreadcrumbLink[] = [
@@ -28,7 +29,7 @@ function Sales(): JSX.Element {
         setOrders(data.results);
         setCount(data.count);
       })
-      .catch(legacyErrorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   useEffect(() => {
@@ -39,7 +40,7 @@ function Sales(): JSX.Element {
           setOrders(data.results);
           setCount(data.count);
         })
-        .catch(legacyErrorToast);
+        .catch((error) => toast.error({ error }));
     }
   }, [user, page]);
 

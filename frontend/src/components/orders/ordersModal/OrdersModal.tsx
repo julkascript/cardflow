@@ -21,11 +21,10 @@ import Home from '@mui/icons-material/Home';
 import { createPortal } from 'react-dom';
 import { orderStates } from '../../../constants/orders';
 import { orderService } from '../../../services/orders/orderService';
-import { legacyErrorToast } from '../../../util/errorToast';
-import toast from 'react-hot-toast';
-import { legacyToastMessages } from '../../../constants/toast';
+import { toastMessages } from '../../../constants/toast';
 import { Feedback } from '../../../services/feedback/types';
 import { feedbackService } from '../../../services/feedback/feedback';
+import { useToast } from '../../../util/useToast';
 
 const Rating = styled(BaseRating)({
   '& .MuiRating-iconFilled': {
@@ -54,6 +53,8 @@ type OrdersModalProps = {
 function OrdersModal(props: OrdersModalProps): JSX.Element {
   const order = props.order;
   const [receivedOption, setReceivedOption] = useState(props.status);
+  const toast = useToast();
+
   const totalPrice = props.order.order_items.reduce(
     (total, order) => total + order.quantity * order.listing.price,
     0,
@@ -97,10 +98,16 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
       orderService
         .changeOrderStatus(order.order_id, receivedOption)
         .then(() => {
-          toast.success(legacyToastMessages.success.orderStatusChanged(order.order_id, receivedOption));
+          toast.success({
+            toastKey: toastMessages.orderStatusChanged,
+            context: receivedOption,
+            values: {
+              orderId: order.order_id,
+            },
+          });
           props.onClose(true);
         })
-        .catch(legacyErrorToast);
+        .catch((error) => toast.error({ error }));
     }
 
     if (rating && !cannotGiveFeedback) {
@@ -113,7 +120,10 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
         .then(() => {
           setHasSubmitted(true);
           if (!hasChangedOption) {
-            toast.success(legacyToastMessages.success.feedbackGiven(order.order_id));
+            toast.success({
+              toastKey: toastMessages.feedbackGiven,
+              values: { orderId: order.order_id },
+            });
             props.onClose(true);
           }
         });
