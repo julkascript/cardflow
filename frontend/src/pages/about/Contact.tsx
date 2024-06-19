@@ -7,7 +7,7 @@ import { useState } from 'react';
 import { useDebounce } from '../../util/useDebounce';
 import { contactService } from '../../services/contact/contact';
 import toast from 'react-hot-toast';
-import { toastMessages } from '../../constants/toast';
+import { legacyToastMessages } from '../../constants/toast';
 import { errorToast } from '../../util/errorToast';
 import { useNavigate } from 'react-router-dom';
 
@@ -38,7 +38,7 @@ function Contact(): JSX.Element {
     contactService
       .sendEmail({ email, message })
       .then(() => {
-        toast.success(toastMessages.success.emailSent);
+        toast.success(legacyToastMessages.success.emailSent);
         navigate('/');
       })
       .catch(errorToast);

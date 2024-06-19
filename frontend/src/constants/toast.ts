@@ -1,6 +1,9 @@
 import { orderState } from '../services/orders/types';
 
-export const toastMessages = {
+/**
+ * @deprecated
+ */
+export const legacyToastMessages = {
   success: {
     login: 'Logged in successfully!',
     register: 'Successful registration!',

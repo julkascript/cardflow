@@ -10,12 +10,13 @@ import {
 } from '../../services/user/types';
 import { useCurrentUser } from '../../context/user';
 import toast from 'react-hot-toast';
-import { toastMessages } from '../../constants/toast';
+import { legacyToastMessages } from '../../constants/toast';
 import { errorToast } from '../../util/errorToast';
 import { HttpError } from '../../util/HttpError';
 import { Button, Link, TextField } from '@mui/material';
 import { userValidator } from '../../validators/user';
 import { useDebounce } from '../../util/useDebounce';
+import { useTranslation } from 'react-i18next';
 
 type AuthFormProps = {
   isLogin: boolean;
@@ -23,6 +24,7 @@ type AuthFormProps = {
 
 const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
   const { setUser } = useCurrentUser();
+  const { t: toastTranslate } = useTranslation('toast');
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -81,7 +83,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     const data = await userService.getUserById(id);
     setUser({ user_id: id, ...data });
     navigate('/');
-    toast.success(isLogin ? toastMessages.success.login : toastMessages.success.register);
+    toast.success(isLogin ? legacyToastMessages.success.login : legacyToastMessages.success.register);
   }
 
   async function handleSubmitAuthForm(event: React.FormEvent) {
@@ -108,7 +110,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     } catch (error: any) {
       if (error instanceof HttpError) {
         if (isLogin && error.err.status === 401) {
-          errorToast(error, toastMessages.error.failedLogin);
+          errorToast(error, legacyToastMessages.error.failedLogin);
         } else {
           if (isLogin) {
             errorToast(error, undefined, 400);

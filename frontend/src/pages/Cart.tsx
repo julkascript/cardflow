@@ -10,7 +10,7 @@ import { useShoppingCart } from '../context/shoppingCart';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 import { errorToast } from '../util/errorToast';
 import toast from 'react-hot-toast';
-import { toastMessages } from '../constants/toast';
+import { legacyToastMessages } from '../constants/toast';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
 
 function ShoppingCart(): JSX.Element {
@@ -31,7 +31,7 @@ function ShoppingCart(): JSX.Element {
       .then(() => {
         navigate('/');
         setShoppingCart(0);
-        toast.success(toastMessages.success.checkout);
+        toast.success(legacyToastMessages.success.checkout);
       })
       .catch(errorToast);
   }
@@ -45,7 +45,7 @@ function ShoppingCart(): JSX.Element {
           setPage(newPage);
         }
 
-        toast.success(toastMessages.success.shoppingCartItemDeleted);
+        toast.success(legacyToastMessages.success.shoppingCartItemDeleted);
         return shoppingCartService.getItems(undefined, newPage);
       })
       .then((data) => {
@@ -61,7 +61,7 @@ function ShoppingCart(): JSX.Element {
       setCart([]);
       setPage(1);
       setTotalPrice(0);
-      toast.success(toastMessages.success.shoppingCartEmptiedOut);
+      toast.success(legacyToastMessages.success.shoppingCartEmptiedOut);
     });
   }
 
@@ -70,7 +70,7 @@ function ShoppingCart(): JSX.Element {
       .addItem({ listing_id: id, quantity })
       .then(() => shoppingCartService.getItems(undefined, page))
       .then(loadShoppingCart)
-      .catch((err) => errorToast(err, toastMessages.error.failedShoppingCartQuantityUpdate));
+      .catch((err) => errorToast(err, legacyToastMessages.error.failedShoppingCartQuantityUpdate));
   }
 
   function loadShoppingCart(data: PaginatedItem<ShoppingCartItem>) {

@@ -4,7 +4,7 @@ import { yugiohService } from '../../services/yugioh/yugiohService';
 
 import { errorToast } from '../../util/errorToast';
 import toast from 'react-hot-toast';
-import { toastMessages } from '../../constants/toast';
+import { legacyToastMessages } from '../../constants/toast';
 import ListingForm from '../../components/sellListing/ListingForm';
 
 function EditListing(): JSX.Element {
@@ -17,7 +17,7 @@ function EditListing(): JSX.Element {
       .updateCardListing(data, listing.id)
       .then((data) => {
         toast.success(
-          toastMessages.success.listingCreated(data.card_name, data.card_in_set.set.set_code),
+          legacyToastMessages.success.listingCreated(data.card_name, data.card_in_set.set.set_code),
         );
         if (postAnother) {
           navigate('/sell/new');

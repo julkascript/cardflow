@@ -18,7 +18,7 @@ import { useState } from 'react';
 import { useCurrentUser } from '../../../../context/user';
 import { useLogout } from '../../../../util/useLogout';
 import toast from 'react-hot-toast';
-import { toastMessages } from '../../../../constants/toast';
+import { legacyToastMessages } from '../../../../constants/toast';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
@@ -72,7 +72,7 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
   function handleLogout() {
     logout();
     props.onClose();
-    toast.success(toastMessages.success.logout);
+    toast.success(legacyToastMessages.success.logout);
   }
 
   const actions: NewActionLink[] = [

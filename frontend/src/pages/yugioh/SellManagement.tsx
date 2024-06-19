@@ -12,7 +12,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import { errorToast } from '../../util/errorToast';
 import toast from 'react-hot-toast';
-import { toastMessages } from '../../constants/toast';
+import { legacyToastMessages } from '../../constants/toast';
 
 type ListingData = {
   listing: YugiohCardListing;
@@ -127,7 +127,7 @@ function SellManagement(): JSX.Element {
     Promise.all(fetchFunctions)
       .then(() => {
         retrieveListings(1);
-        toast.success(toastMessages.success.sellListingsDelisted);
+        toast.success(legacyToastMessages.success.sellListingsDelisted);
       })
       .catch(errorToast);
   }
@@ -142,7 +142,7 @@ function SellManagement(): JSX.Element {
       .then(() => {
         retrieveListings(page);
         setAnchorEl(null);
-        toast.success(toastMessages.success.sellListingsListed);
+        toast.success(legacyToastMessages.success.sellListingsListed);
       })
       .catch(errorToast);
   }
@@ -162,7 +162,7 @@ function SellManagement(): JSX.Element {
 
     Promise.all(fetchFunctions)
       .then(() => {
-        toast.success(toastMessages.success.sellListingsDeleted);
+        toast.success(legacyToastMessages.success.sellListingsDeleted);
         retrieveListings(newPage);
       })
       .catch(errorToast);
@@ -185,7 +185,7 @@ function SellManagement(): JSX.Element {
 
     Promise.all(fetchFunctions)
       .then(() => {
-        toast.success(toastMessages.success.sellListingsDeleted);
+        toast.success(legacyToastMessages.success.sellListingsDeleted);
         retrieveListings(newPage);
         setAnchorEl(null);
       })
@@ -204,7 +204,7 @@ function SellManagement(): JSX.Element {
       .then(() => {
         retrieveListings(page);
         setAnchorEl(null);
-        toast.success(toastMessages.success.sellListingsDelisted);
+        toast.success(legacyToastMessages.success.sellListingsDelisted);
       })
       .catch(errorToast);
   }
@@ -221,7 +221,7 @@ function SellManagement(): JSX.Element {
       .then(() => {
         retrieveListings(page);
         setAnchorEl(null);
-        toast.success(toastMessages.success.sellListingsListed);
+        toast.success(legacyToastMessages.success.sellListingsListed);
       })
       .catch(errorToast);
   }
@@ -232,9 +232,9 @@ function SellManagement(): JSX.Element {
       .then(() => {
         retrieveListings(page);
         if (newStatus) {
-          toast.success(toastMessages.success.sellListingListed);
+          toast.success(legacyToastMessages.success.sellListingListed);
         } else {
-          toast.success(toastMessages.success.sellListingDelisted);
+          toast.success(legacyToastMessages.success.sellListingDelisted);
         }
       })
       .catch(errorToast);

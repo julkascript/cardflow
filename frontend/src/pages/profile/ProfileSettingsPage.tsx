@@ -10,7 +10,7 @@ import { UserAccount } from '../../services/user/types';
 import { userService } from '../../services/user/user';
 import { useLogout } from '../../util/useLogout';
 import toast from 'react-hot-toast';
-import { toastMessages } from '../../constants/toast';
+import { legacyToastMessages } from '../../constants/toast';
 import { errorToast } from '../../util/errorToast';
 
 function ProfileSettingsPage(): JSX.Element {
@@ -37,8 +37,8 @@ function ProfileSettingsPage(): JSX.Element {
       logout();
       toast.success(
         field === 'username'
-          ? toastMessages.success.usernameChanged
-          : toastMessages.success.emailChanged,
+          ? legacyToastMessages.success.usernameChanged
+          : legacyToastMessages.success.emailChanged,
       );
     });
   }
@@ -48,7 +48,7 @@ function ProfileSettingsPage(): JSX.Element {
       .deleteUser(user.user_id)
       .then(() => {
         logout();
-        toast.success(toastMessages.success.accountDeleted);
+        toast.success(legacyToastMessages.success.accountDeleted);
       })
       .catch(errorToast);
   }
@@ -59,7 +59,7 @@ function ProfileSettingsPage(): JSX.Element {
       .then((data) => {
         setSelectedAvatar(false);
         setUser({ user_id: user.user_id, ...data });
-        toast.success(toastMessages.success.avatarChanged);
+        toast.success(legacyToastMessages.success.avatarChanged);
       })
       .catch(errorToast);
   }
@@ -87,7 +87,7 @@ function ProfileSettingsPage(): JSX.Element {
         <ShipmentAddressSettings
           address={user.shipping_address}
           onSubmit={(a) =>
-            updateAccount('shipping_address', a, toastMessages.success.shipmentAddressChanged)
+            updateAccount('shipping_address', a, legacyToastMessages.success.shipmentAddressChanged)
           }
           key={user.shipping_address + '3'}
         />

@@ -23,7 +23,7 @@ import { orderStates } from '../../../constants/orders';
 import { orderService } from '../../../services/orders/orderService';
 import { errorToast } from '../../../util/errorToast';
 import toast from 'react-hot-toast';
-import { toastMessages } from '../../../constants/toast';
+import { legacyToastMessages } from '../../../constants/toast';
 import { Feedback } from '../../../services/feedback/types';
 import { feedbackService } from '../../../services/feedback/feedback';
 
@@ -97,7 +97,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
       orderService
         .changeOrderStatus(order.order_id, receivedOption)
         .then(() => {
-          toast.success(toastMessages.success.orderStatusChanged(order.order_id, receivedOption));
+          toast.success(legacyToastMessages.success.orderStatusChanged(order.order_id, receivedOption));
           props.onClose(true);
         })
         .catch(errorToast);
@@ -113,7 +113,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
         .then(() => {
           setHasSubmitted(true);
           if (!hasChangedOption) {
-            toast.success(toastMessages.success.feedbackGiven(order.order_id));
+            toast.success(legacyToastMessages.success.feedbackGiven(order.order_id));
             props.onClose(true);
           }
         });

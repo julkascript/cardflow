@@ -17,7 +17,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import { useLogout } from '../../../util/useLogout';
 import toast from 'react-hot-toast';
-import { toastMessages } from '../../../constants/toast';
+import { legacyToastMessages } from '../../../constants/toast';
 import './ProfilePictureAvatar.css';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 
@@ -60,7 +60,7 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
   function handleLogout() {
     logout();
     handleClose();
-    toast.success(toastMessages.success.logout);
+    toast.success(legacyToastMessages.success.logout);
   }
 
   function handleClick(event: React.MouseEvent<HTMLButtonElement>) {

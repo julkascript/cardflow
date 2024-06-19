@@ -1,6 +1,6 @@
 import libraryToast from 'react-hot-toast';
 import { HttpError } from './HttpError';
-import { toastMessages } from '../constants/toast';
+import { legacyToastMessages } from '../constants/toast';
 
 /**
  * A utility error handler that displays an appropriate
@@ -20,14 +20,14 @@ import { toastMessages } from '../constants/toast';
  */
 export function errorToast(err: unknown, message?: string, ...excludedCodes: number[]) {
   if (!(err instanceof HttpError)) {
-    libraryToast.error(message || toastMessages.error.serverError);
+    libraryToast.error(message || legacyToastMessages.error.serverError);
     return;
   }
 
   const defaultErrorMessagesPerStatusCode: Record<number, string> = {
-    401: toastMessages.error.notLoggedIn,
-    403: toastMessages.error.noPermission,
-    404: toastMessages.error.pageDoesNotExist,
+    401: legacyToastMessages.error.notLoggedIn,
+    403: legacyToastMessages.error.noPermission,
+    404: legacyToastMessages.error.pageDoesNotExist,
   };
 
   const error = err.err;
@@ -37,7 +37,7 @@ export function errorToast(err: unknown, message?: string, ...excludedCodes: num
   }
 
   const errorMessage =
-    message || defaultErrorMessagesPerStatusCode[error.status] || toastMessages.error.serverError;
+    message || defaultErrorMessagesPerStatusCode[error.status] || legacyToastMessages.error.serverError;
 
   libraryToast.error(errorMessage);
 }
