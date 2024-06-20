@@ -7,7 +7,7 @@ export const toastMessages = {
   usernameChanged: 'usernameChanged',
   emailChanged: 'emailChanged',
   avatarChanged: 'avatarChanged',
-  shipmentAddressChanged: 'shipmentAddressChanged!',
+  shipmentAddressChanged: 'shipmentAddressChanged',
   accountDeleted: 'accountDeleted',
   shoppingCartItemDeleted: 'shoppingCartItemDeleted',
   shoppingCartEmptiedOut: 'shoppingCartEmptiedOut',
