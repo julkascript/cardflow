@@ -1,5 +1,6 @@
 import { NavLink, useParams } from 'react-router-dom';
 import { useCurrentUser } from '../../context/user';
+import { useTranslation } from 'react-i18next';
 
 type ProfileLinks = {
   href: string;
@@ -7,6 +8,8 @@ type ProfileLinks = {
 };
 
 function ProfileNavigation(): JSX.Element {
+  const { t } = useTranslation('account');
+
   function isActive({ isActive }: { isActive: boolean }) {
     return isActive ? 'font-bold hover:underline' : 'hover:underline';
   }
@@ -19,7 +22,7 @@ function ProfileNavigation(): JSX.Element {
     return (
       <li className="mb-2">
         <NavLink end to={`/user/${username}/settings`} className={isActive}>
-          Account details
+          {t('common.navigation.details')}
         </NavLink>
       </li>
     );
@@ -33,11 +36,11 @@ function ProfileNavigation(): JSX.Element {
   const links: ProfileLinks[] = [
     {
       href: `/user/${username}`,
-      text: 'Public info',
+      text: t('common.navigation.public'),
     },
     {
       href: `/user/${username}/blog`,
-      text: 'Blog',
+      text: t('common.navigation.blog'),
     },
   ];
 

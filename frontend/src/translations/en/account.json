@@ -1,0 +1,59 @@
+{
+  "common": {
+    "account": "Account",
+    "saveButtonText": "Save",
+    "navigation": {
+      "details": "Account details",
+      "blog": "Blog",
+      "public": "Public info"
+    }
+  },
+  "public": {
+    "achievements": "Achievements",
+    "joinDate": "Member since {{date}}",
+    "marketActivity": {
+      "heading": "Market activity",
+      "purchases": "Purchases",
+      "sales": "Sales",
+      "salesThisMonth": "Sales this month",
+      "saleRating": "Sale rating",
+      "missRate": "Miss rate",
+      "rejectionRate": "Rejection rate"
+    }
+  },
+  "details": {
+    "avatar": {
+      "title": "Avatar",
+      "description": "Select your avatar by clicking on the avatar circle.",
+      "hint": "An avatar is optional but strongly recommended.",
+      "ariaLabel": "Select an image to use as your avatar",
+      "validAvatar": "Your file is valid!",
+      "errors": {
+        "large": "Your image is too large (the limit is 2 megabytes)!",
+        "uploadFailed": "Image upload failed, please try again!",
+        "invalidFileException": "Please upload an image file!"
+      }
+    },
+    "username": {
+      "title": "Username",
+      "description": "This is how people will recognize you.",
+      "hint": "Please use {{usernameValidationRules.maxLength}} characters at maximum. You will be logged out after changing your username."
+    },
+    "email": {
+      "title": "Email",
+      "description": "Please enter your email address.",
+      "hint": "You will be logged out after the change."
+    },
+    "defaultShipmentAddress": {
+      "title": "Default shipment address",
+      "description": "Enter the default shipment address that will get pre-filled.",
+      "hint": "You can always change the address per purchase in the checkout section."
+    },
+    "deleteAccount": {
+      "title": "Delete your account",
+      "description": "Permanently remove your Cardflow account. Please proceed with caution, this action is irreversible.",
+      "hint": "We will definitely miss you...",
+      "deleteAccountButtonText": "Delete account"
+    }
+  }
+}
