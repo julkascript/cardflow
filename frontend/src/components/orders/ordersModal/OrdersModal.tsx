@@ -11,6 +11,7 @@ import {
   TextField,
   styled,
   Button,
+  Tooltip,
 } from '@mui/material';
 import { Order, orderState } from '../../../services/orders/types';
 import OrderStatusBadge from '../OrderStatusBadge';
@@ -66,7 +67,10 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
     props.feedback !== undefined ||
     props.userPosition === 'seller' ||
     hasSubmitted ||
-    (props.status !== 'completed' && props.status !== 'rejected');
+    (props.status !== 'completed' &&
+      props.status !== 'rejected' &&
+      props.status !== 'not_sent' &&
+      props.status !== 'not_received');
 
   const userToDisplay =
     props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
@@ -159,13 +163,23 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             ) : (
               <RadioGroup name="status" value={receivedOption} onChange={handleChange}>
                 <FormControlLabel
-                  disabled={props.status === 'completed' || props.status === 'rejected'}
+                  disabled={
+                    props.status === 'completed' ||
+                    props.status === 'rejected' ||
+                    props.status === 'not_received' ||
+                    props.status === 'not_sent'
+                  }
                   control={<Radio color="info" />}
                   label={orderStates.sent}
                   value="sent"
                 />
                 <FormControlLabel
-                  disabled={props.status === 'completed' || props.status === 'rejected'}
+                  disabled={
+                    props.status === 'completed' ||
+                    props.status === 'rejected' ||
+                    props.status === 'not_received' ||
+                    props.status === 'not_sent'
+                  }
                   control={<Radio color="info" />}
                   label={orderStates.rejected}
                   value="rejected"

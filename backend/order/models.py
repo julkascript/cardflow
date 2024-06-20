@@ -11,6 +11,8 @@ User = get_user_model()
 class Order(models.Model):
     STATUS_CHOICES = [
         ('ordered', 'Ordered'),
+        ('not_sent', 'Not Sent'),
+        ('not_received', 'Not Received'),
         ('sent', 'Sent'),
         ('completed', 'Completed'),
         ('rejected', 'Rejected'),
