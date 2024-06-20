@@ -11,7 +11,6 @@ import {
   TextField,
   styled,
   Button,
-  Tooltip,
 } from '@mui/material';
 import { Order, orderState } from '../../../services/orders/types';
 import OrderStatusBadge from '../OrderStatusBadge';
