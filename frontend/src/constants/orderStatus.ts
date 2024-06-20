@@ -5,5 +5,6 @@ export const orderStatus: Readonly<Record<orderState, string>> = Object.freeze({
   completed: 'Received',
   sent: 'Sent',
   rejected: 'Rejected',
-  'not received': 'Not received',
+  not_sent: 'Not sent',
+  not_received: 'Not received',
 });
