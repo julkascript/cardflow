@@ -1,0 +1,19 @@
+{
+  "purchaseDetails": {
+    "summary": "Обобщение",
+    "cardsTotalPrice_one": "Цена на картата",
+    "cardsTotalPrice_other": "Обща цена на картите",
+    "shipmentPrice": "Цена на пратката",
+    "totalPrice": "Крайна цена",
+    "shippingDetails": {
+      "title": "Детайли за пратката"
+    },
+    "table": {
+      "tableHeaders": {
+        "cardDetails": "Детайли за картата",
+        "quantity": "Количество",
+        "price": "Цена"
+      }
+    }
+  }
+}

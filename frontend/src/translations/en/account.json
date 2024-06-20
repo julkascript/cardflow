@@ -55,5 +55,41 @@
       "hint": "We will definitely miss you...",
       "deleteAccountButtonText": "Delete account"
     }
+  },
+  "salesAndOrders": {
+    "title_sales": "My sales",
+    "title_orders": "My orders",
+    "status": {
+      "ordered": "Ordered",
+      "sent": "Sent",
+      "completed": "Received",
+      "rejected": "Rejected",
+      "not received": "Not received"
+    },
+    "table": {
+      "tableHeaders": {
+        "order": "Order",
+        "user_buyer": "Buyer",
+        "user_seller": "Seller",
+        "quantity": "Quantity",
+        "total": "Total",
+        "state": "State",
+        "reviewOrder": "Review order"
+      }
+    },
+    "modal": {
+      "title": "Order",
+      "history": {
+        "title": "History"
+      },
+      "feedback": {
+        "title": "Feedback",
+        "rate": "Rate:",
+        "comment": "Comment:"
+      },
+      "reportButtonText": "Report",
+      "cancelButtonText": "Cancel",
+      "saveButtonText": "Save"
+    }
   }
 }

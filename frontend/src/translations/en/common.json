@@ -1,0 +1,19 @@
+{
+  "purchaseDetails": {
+    "summary": "Summary",
+    "cardsTotalPrice_one": "Card total price",
+    "cardsTotalPrice_other": "Cards total price",
+    "shipmentPrice": "Shipment price",
+    "totalPrice": "Total",
+    "shippingDetails": {
+      "title": "Shipping details"
+    },
+    "table": {
+      "tableHeaders": {
+        "cardDetails": "Card Details",
+        "quantity": "Quantity",
+        "price": "Price"
+      }
+    }
+  }
+}

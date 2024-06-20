@@ -54,5 +54,41 @@
       "hint": "Със сигурност ще ни липсваш...",
       "deleteAccountButtonText": "Изтрий профила"
     }
+  },
+  "salesAndOrders": {
+    "title_sales": "Моите продажби",
+    "title_orders": "Моите покупки",
+    "status": {
+      "ordered": "Поръчана",
+      "sent": "Изпратена",
+      "completed": "Получена",
+      "rejected": "Отхвърлена",
+      "not received": "Неполучена"
+    },
+    "table": {
+      "tableHeaders": {
+        "order": "Поръчка",
+        "user_buyer": "Купувач",
+        "user_seller": "Продавач",
+        "quantity": "Количество",
+        "total": "Обща цена",
+        "state": "Статус на поръчката",
+        "reviewOrder": "Прегледай поръчката"
+      }
+    },
+    "modal": {
+      "title": "Поръчка",
+      "history": {
+        "title": "История на поръчката"
+      },
+      "feedback": {
+        "title": "Обратна връзка",
+        "rate": "Оценка",
+        "comment": "Коментар"
+      },
+      "reportButtonText": "Докладвай за нередност",
+      "cancelButtonText": "Затвори",
+      "saveButtonText": "Запази"
+    }
   }
 }

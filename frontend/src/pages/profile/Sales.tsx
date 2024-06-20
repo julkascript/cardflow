@@ -6,15 +6,18 @@ import { Order } from '../../services/orders/types';
 import { orderService } from '../../services/orders/orderService';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import { useToast } from '../../util/useToast';
+import { useTranslation } from 'react-i18next';
 
 function Sales(): JSX.Element {
   const [orders, setOrders] = useState<Order[]>([]);
   const toast = useToast();
 
+  const { t } = useTranslation('account');
+
   const { user } = useCurrentUser();
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
-      text: 'Account',
+      text: t('common.account'),
       href: `/user/${user.username}`,
     },
   ];
@@ -47,7 +50,10 @@ function Sales(): JSX.Element {
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
       <CardflowTabs />
-      <BreadcrumbNavigation heading="My sales" links={breadcrumbNavigation} />
+      <BreadcrumbNavigation
+        heading={t('salesAndOrders.title', { context: 'sales' })}
+        links={breadcrumbNavigation}
+      />
       <div className="flex flex-col lg:items-center overflow-auto">
         <OrdersTable
           updateOrders={updateOrders}
