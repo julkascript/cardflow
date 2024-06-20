@@ -15,5 +15,29 @@
         "price": "Price"
       }
     }
+  },
+  "navigation": {
+    "title": "Navigation",
+    "home": "Home",
+    "myProfile": "My profile",
+    "myListings": "My listings",
+    "newAction": "New action",
+    "newListing": "New listing",
+    "newTrade": "New trade",
+    "accountSettings": "Account settings",
+    "myOrders": "My orders",
+    "mySales": "My sales",
+    "shoppingCart": "Shopping cart",
+    "logout": "Log out",
+    "closeMenu": "Close menu",
+    "openMenuAriaLabel": "Open navigation menu",
+    "signIn": "Sign in",
+    "signUp": "Sign up"
+  },
+  "search": {
+    "placeholder": "Type \"/\" to search",
+    "search": "Search",
+    "showAll": "Show all {{results}} results.",
+    "openSearchToolTip": "Search cards by name"
   }
 }

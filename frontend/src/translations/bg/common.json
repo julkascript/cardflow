@@ -15,5 +15,29 @@
         "price": "Цена"
       }
     }
+  },
+  "navigation": {
+    "title": "Навигация",
+    "home": "Начало",
+    "myProfile": "Моят профил",
+    "myListings": "Моите обяви",
+    "newAction": "Ново действие",
+    "newListing": "Нова обява",
+    "newTrade": "Нова размяна",
+    "accountSettings": "Профилни настройки",
+    "myOrders": "Моите поръчки",
+    "mySales": "Моите продажби",
+    "shoppingCart": "Количка",
+    "logout": "Излез от профил",
+    "closeMenu": "Затвори",
+    "openMenuAriaLabel": "Отвори навигационното меню",
+    "signIn": "Влез в профил",
+    "signUp": "Регистрация"
+  },
+  "search": {
+    "placeholder": "Натисни \"/\" за търсене",
+    "search": "Търсене",
+    "showAll": "Виж всички {{results}} резултата.",
+    "openSearchToolTip": "Търсене на карти по име"
   }
 }

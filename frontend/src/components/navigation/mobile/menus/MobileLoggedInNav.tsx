@@ -23,6 +23,7 @@ import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { useToast } from '../../../../util/useToast';
+import { useTranslation } from 'react-i18next';
 
 type NewActionLink = {
   url: string;
@@ -48,24 +49,26 @@ type MobileLoggedInNavProps = {
 function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
   const [newActionsExpanded, setNewActionsExpanded] = useState(false);
   const [profileExpanded, setProfileExpanded] = useState(false);
+
   const { user } = useCurrentUser();
   const logout = useLogout();
   const toast = useToast();
+  const { t } = useTranslation('common');
 
   const links: ProfileLink[] = [
     {
       href: `/user/${user.username}/settings`,
-      text: 'Account settings',
+      text: t('navigation.accountSettings'),
       icon: SettingsIcon,
     },
     {
       href: `/user/${user.username}/orders`,
-      text: 'My orders',
+      text: t('navigation.myOrders'),
       icon: AddShoppingCartIcon,
     },
     {
       href: `/user/${user.username}/sales`,
-      text: 'My sales',
+      text: t('navigation.mySales'),
       icon: CurrencyExchangeIcon,
     },
   ];
@@ -79,11 +82,11 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
   const actions: NewActionLink[] = [
     {
       url: '/listing/create',
-      label: 'New listing',
+      label: t('navigation.newListing'),
     },
     {
       url: '/trade/create',
-      label: 'New trade',
+      label: t('navigation.newTrade'),
     },
   ];
 
@@ -94,7 +97,7 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
           <ListItemIcon>
             <AddIcon />
           </ListItemIcon>
-          <ListItemText primary="New action" />
+          <ListItemText primary={t('navigation.newAction')} />
           {newActionsExpanded ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
       </ListItem>
@@ -115,7 +118,7 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
           <ListItemIcon>
             <NotificationsIcon />
           </ListItemIcon>
-          <ListItemText primary="My listings" />
+          <ListItemText primary={t('navigation.myListings')} />
         </ListItemButton>
       </ListItem>
       <ListItem disablePadding>
@@ -123,7 +126,7 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
           <ListItemAvatar>
             <Avatar sx={{ width: 24, height: 24 }} src={user.avatar || ''} />
           </ListItemAvatar>
-          <ListItemText primary="My profile" />
+          <ListItemText primary={t('navigation.myProfile')} />
           {profileExpanded ? <ExpandLess /> : <ExpandMore />}
         </ListItemButton>
       </ListItem>
@@ -144,7 +147,7 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
             <ListItemIcon>
               <LogoutIcon />
             </ListItemIcon>
-            <ListItemText primary="Sign Out" />
+            <ListItemText primary={t('navigation.logout')} />
           </ListItemButton>
         </List>
       </Collapse>

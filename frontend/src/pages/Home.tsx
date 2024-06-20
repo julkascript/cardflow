@@ -104,7 +104,7 @@ function Home(): JSX.Element {
               }}
               className="hover:bg-gray-200"
             >
-              Sign In
+              {t('signUpButtonText')}
             </Button>
           )}
         </div>

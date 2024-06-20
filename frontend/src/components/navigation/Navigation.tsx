@@ -11,6 +11,7 @@ import Authorized from '../../router/Authorized';
 import Unauthorized from '../../router/Unauthorized';
 import DesktopGuestNav from './desktop/DesktopGuestNav';
 import MobileSearchFieldButton from '../searchField/MobileSearchFieldButton';
+import { useTranslation } from 'react-i18next';
 
 /**
  * A component for the application's navigation menu
@@ -18,6 +19,7 @@ import MobileSearchFieldButton from '../searchField/MobileSearchFieldButton';
  */
 function Navigation(): JSX.Element {
   const [mobileMenuIsOpen, setMobileMenuOpen] = useState(false);
+  const { t } = useTranslation('common');
 
   function closeMenu(event?: React.MouseEvent) {
     event?.preventDefault();
@@ -31,7 +33,7 @@ function Navigation(): JSX.Element {
   return (
     <nav className="flex justify-between p-4 items-center relative z-5000">
       <div className="block lg:hidden">
-        <IconButton onClick={openMenu} aria-label="Open navigation menu">
+        <IconButton onClick={openMenu} aria-label={t('navigation.openMenuAriaLabel')}>
           <MenuIcon />
         </IconButton>
         <Drawer anchor="left" open={mobileMenuIsOpen} onClose={() => setMobileMenuOpen(false)}>

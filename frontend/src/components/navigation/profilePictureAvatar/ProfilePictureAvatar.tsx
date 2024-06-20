@@ -20,6 +20,7 @@ import { toastMessages } from '../../../constants/toast';
 import './ProfilePictureAvatar.css';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { useToast } from '../../../util/useToast';
+import { useTranslation } from 'react-i18next';
 
 type ProfilePictureAvatarProps = {
   imageUrl: string | null;
@@ -37,23 +38,25 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
   const { user } = useCurrentUser();
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const menuIsOpen = anchorEl !== null;
+
   const logout = useLogout();
   const toast = useToast();
+  const { t } = useTranslation('common');
 
   const links: ProfileLink[] = [
     {
       href: `/user/${user.username}/settings`,
-      text: 'Account settings',
+      text: t('navigation.accountSettings'),
       icon: SettingsIcon,
     },
     {
       href: `/user/${user.username}/orders`,
-      text: 'My orders',
+      text: t('navigation.myOrders'),
       icon: AddShoppingCartIcon,
     },
     {
       href: `/user/${user.username}/sales`,
-      text: 'My sales',
+      text: t('navigation.mySales'),
       icon: CurrencyExchangeIcon,
     },
   ];
@@ -111,7 +114,7 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
           onClick={handleLogout}
           sx={{ paddingTop: 2, paddingBottom: 2 }}
         >
-          <Typography color="text.secondary">Log out</Typography>
+          <Typography color="text.secondary">{t('navigation.logout')}</Typography>
         </ListItemButton>
       </Menu>
     </>

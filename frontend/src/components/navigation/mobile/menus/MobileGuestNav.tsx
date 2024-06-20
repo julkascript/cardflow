@@ -2,6 +2,7 @@ import { ListItem, ListItemButton, ListItemIcon, ListItemText } from '@mui/mater
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 import { useEffectAfterInitialLoad } from '../../../../util/useEffectAfterInitialLoad';
 import { useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 type MobileGuestNavProps = {
   onClose: () => void;
@@ -13,6 +14,7 @@ type MobileGuestNavProps = {
  */
 function MobileGuestNav(props: MobileGuestNavProps): JSX.Element {
   const { pathname } = useLocation();
+  const { t } = useTranslation('common');
 
   useEffectAfterInitialLoad(() => {
     props.onClose();
@@ -24,7 +26,7 @@ function MobileGuestNav(props: MobileGuestNavProps): JSX.Element {
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>
-          <ListItemText primary="Sign in" />
+          <ListItemText primary={t('navigation.signIn')} />
         </ListItemButton>
       </ListItem>
     </>

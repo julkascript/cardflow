@@ -4,5 +4,6 @@
   "trade": "Разменяй.",
   "mission": "Cardflow предоставя средствата и инфраструктурата, за да докараш картите си от А до Б",
   "startExploringButtonText": "Разгледай",
-  "signInButtonText": "Влез в профила си"
+  "signInButtonText": "Влез в профила си",
+  "signUpButtonText": "Регистрация"
 }
