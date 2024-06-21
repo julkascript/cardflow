@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+
 type condition = 'poor' | 'played' | 'good' | 'excellent';
 
 const conditionColors: Record<condition, string> = {
@@ -14,6 +16,7 @@ type YugiohCardConditionLabelProps = {
 
 function YugiohCardConditionLabel(props: YugiohCardConditionLabelProps) {
   const color = conditionColors[props.condition];
+  const { t } = useTranslation('buy');
 
   return (
     <div
@@ -22,7 +25,7 @@ function YugiohCardConditionLabel(props: YugiohCardConditionLabelProps) {
         props.className || ''
       }`}
     >
-      {props.condition}
+      {t(`common.conditions.${props.condition}`)}
     </div>
   );
 }

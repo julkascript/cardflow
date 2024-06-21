@@ -49,7 +49,6 @@ export default function BestSellers() {
   });
 
   useEffect(() => {
-    // console.log(123, theme.palette.info);
     bestSellerService.getBestSellers().then((bestSellers) => {
       setCards(bestSellers);
     });

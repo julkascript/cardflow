@@ -1,0 +1,34 @@
+{
+  "cardDetails": {
+    "dataTable": {
+      "tableHeaders": {
+        "title": "Детайли относно картата и пазара",
+        "set": "Издание",
+        "availableItems": "Обща наличност",
+        "number": "Номер",
+        "from": "Най-ниска цена",
+        "rarity": "Рядкост",
+        "thirtyDaysAveragePrice": "Средна цена за един месец"
+      }
+    }
+  },
+  "common": {
+    "marketTable": {
+      "tableHeaders": {
+        "seller": "Продавач",
+        "cardDetails": "Детайли за картата",
+        "available": "В наличност",
+        "buy": "Купи"
+      },
+      "tableBody": {
+        "addToCartAriaLabel": "Добави в количката"
+      }
+    },
+    "conditions": {
+      "poor": "Влошено",
+      "played": "Играно",
+      "good": "Добро",
+      "excellent": "Отлично"
+    }
+  }
+}

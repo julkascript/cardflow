@@ -1,0 +1,34 @@
+{
+  "cardDetails": {
+    "dataTable": {
+      "tableHeaders": {
+        "title": "Card and market details",
+        "set": "Set",
+        "availableItems": "Available items",
+        "number": "Number",
+        "from": "From",
+        "rarity": "Rarity",
+        "thirtyDaysAveragePrice": "30-days average price"
+      }
+    }
+  },
+  "common": {
+    "marketTable": {
+      "tableHeaders": {
+        "seller": "Seller",
+        "cardDetails": "Card details",
+        "available": "Available",
+        "buy": "Buy"
+      },
+      "tableBody": {
+        "addToCartAriaLabel": "Add to cart"
+      }
+    },
+    "conditions": {
+      "poor": "Poor",
+      "played": "Played",
+      "good": "Good",
+      "excellent": "Excellent"
+    }
+  }
+}
