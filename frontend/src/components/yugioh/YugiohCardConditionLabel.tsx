@@ -16,7 +16,7 @@ type YugiohCardConditionLabelProps = {
 
 function YugiohCardConditionLabel(props: YugiohCardConditionLabelProps) {
   const color = conditionColors[props.condition];
-  const { t } = useTranslation('buy');
+  const { t } = useTranslation('common');
 
   return (
     <div
@@ -25,7 +25,7 @@ function YugiohCardConditionLabel(props: YugiohCardConditionLabelProps) {
         props.className || ''
       }`}
     >
-      {t(`common.conditions.${props.condition}`)}
+      {t(`conditions.${props.condition}`)}
     </div>
   );
 }

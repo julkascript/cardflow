@@ -39,5 +39,11 @@
     "search": "Search",
     "showAll": "Show all {{results}} results.",
     "openSearchToolTip": "Search cards by name"
+  },
+  "conditions": {
+    "poor": "Poor",
+    "played": "Played",
+    "good": "Good",
+    "excellent": "Excellent"
   }
 }

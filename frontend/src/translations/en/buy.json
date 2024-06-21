@@ -54,12 +54,6 @@
       "tableBody": {
         "addToCartAriaLabel": "Add to cart"
       }
-    },
-    "conditions": {
-      "poor": "Poor",
-      "played": "Played",
-      "good": "Good",
-      "excellent": "Excellent"
     }
   }
 }

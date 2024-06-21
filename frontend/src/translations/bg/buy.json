@@ -54,12 +54,6 @@
       "tableBody": {
         "addToCartAriaLabel": "Добави в количката"
       }
-    },
-    "conditions": {
-      "poor": "Влошено",
-      "played": "Играно",
-      "good": "Добро",
-      "excellent": "Отлично"
     }
   }
 }

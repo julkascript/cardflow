@@ -39,5 +39,11 @@
     "search": "Търсене",
     "showAll": "Виж всички {{results}} резултата.",
     "openSearchToolTip": "Търсене на карти по име"
+  },
+  "conditions": {
+    "poor": "Влошено",
+    "played": "Играно",
+    "good": "Добро",
+    "excellent": "Отлично"
   }
 }
