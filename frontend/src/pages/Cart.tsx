@@ -21,7 +21,7 @@ function ShoppingCart(): JSX.Element {
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(0);
   const toast = useToast();
-  const { t } = useTranslation('cart');
+  const { t } = useTranslation('buy');
 
   const [shipmentAddress, setShipmentAddress] = useState('');
   const shipmentCost = shipmentAddress && shoppingCart.length ? 9.55 : 0;
@@ -110,13 +110,13 @@ function ShoppingCart(): JSX.Element {
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
       href: '/buy',
-      text: t('buy'),
+      text: t('cart.buy'),
     },
   ];
 
   return (
     <>
-      <BreadcrumbNavigation links={breadcrumbNavigation} heading={t('title')} />
+      <BreadcrumbNavigation links={breadcrumbNavigation} heading={t('cart.title')} />
       <div
         id="summary"
         className="flex flex-col items-center lg:flex-row lg:items-start pb-4 pt-4 justify-center gap-4 bg-[#F5F5F5]"

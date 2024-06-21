@@ -12,6 +12,34 @@
       }
     }
   },
+  "cart": {
+    "buy": "Купи",
+    "title": "Количка",
+    "emptyAllButtonTooltipText": "Изпразни количката (премахни всички обяви)",
+    "summary": {
+      "table": {
+        "tableHeaders": {
+          "actions": "Действия"
+        },
+        "tableBody": {
+          "removeListingTooltipText": "Премахни тази обява"
+        }
+      },
+      "shipment": {
+        "shipmentAddressPrefilled_true": "Детайлите относно пратката бяха попълнени автоматично от твоя профил.",
+        "shipmentAddressPrefilled_false": "Можеш да настроиш адрес на пратката по подразбиране от профилните настройки, който да се попълва автоматично.",
+        "invalidShipmentAddress": "Моля да въведеш валиден адрес!"
+      }
+    },
+    "checkout": {
+      "title": "Обща цена:",
+      "shippingCost": "Цена на пратката",
+      "itemsCost": "Цена на продуктите",
+      "amountOfSellers": "Брой продавачи",
+      "amountOfCards": "Брой карти",
+      "checkoutButtonText": "Потвърди поръчката"
+    }
+  },
   "common": {
     "marketTable": {
       "tableHeaders": {

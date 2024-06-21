@@ -25,16 +25,16 @@ type ShoppingCartSummaryProps = {
 
 function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
   const shipmentAddressIsValid = props.shipmentAddress !== '';
-  const { t } = useTranslation('cart');
+  const { t } = useTranslation('buy');
   const { t: commonT } = useTranslation('common');
 
-  const shipmentAddressTooltipText = t('summary.shipment.shipmentAddressPrefilled', {
+  const shipmentAddressTooltipText = t('cart.summary.shipment.shipmentAddressPrefilled', {
     context: (props.shipmentAddress !== '').toString(),
   });
   return (
     <PageSection className="p-8 pt-4 w-11/12 lg:w-1/2 relative">
       <section className="flex items-end justify-end absolute right-4 top-2">
-        <Tooltip title={t('emptyAllButtonTooltipText')}>
+        <Tooltip title={t('cart.emptyAllButtonTooltipText')}>
           <IconButton
             onClick={(e) => {
               e.preventDefault();
@@ -81,7 +81,9 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
           </h3>
           <TextField
             error={!shipmentAddressIsValid}
-            helperText={shipmentAddressIsValid ? '' : t('summary.shipment.invalidShipmentAddress')}
+            helperText={
+              shipmentAddressIsValid ? '' : t('cart.summary.shipment.invalidShipmentAddress')
+            }
             value={props.shipmentAddress}
             onChange={(e) => {
               e.preventDefault();
@@ -117,7 +119,7 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
                 {commonT('purchaseDetails.table.tableHeaders.price')}
               </th>
               <th style={{ textAlign: 'center', padding: 8 }}>
-                {t('summary.table.tableHeaders.actions')}
+                {t('cart.summary.table.tableHeaders.actions')}
               </th>
             </tr>
           </thead>
@@ -146,7 +148,7 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
                 </td>
                 <td className="font-bold">$&nbsp;{shoppingCartItem.listing.price.toFixed(2)}</td>
                 <td>
-                  <Tooltip title={t('summary.table.tableBody.removeListingTooltipText')}>
+                  <Tooltip title={t('cart.summary.table.tableBody.removeListingTooltipText')}>
                     <IconButton
                       onClick={(e) => {
                         e.preventDefault();

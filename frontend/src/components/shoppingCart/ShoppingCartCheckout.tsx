@@ -16,7 +16,7 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
   const shipmentAddressIsValid = props.shipmentAddress !== '';
   const quantity = props.shoppingCart.reduce((total, item) => total + item.quantity, 0);
   const sellers = props.shoppingCart.length;
-  const { t } = useTranslation('cart');
+  const { t } = useTranslation('buy');
 
   return (
     <PageSection className="p-4 w-1/2 lg:w-1/6 h-[600px] lg:sticky top-0">
@@ -27,7 +27,7 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
             color="text.secondary"
             component="h3"
           >
-            {t('checkout.title')}
+            {t('cart.checkout.title')}
           </Typography>
           <span className="font-bold text-[16pt]">
             ${(props.totalPrice + props.shipmentCost).toFixed(2)}
@@ -42,17 +42,17 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
             props.onCheckout();
           }}
         >
-          {t('checkout.checkoutButtonText')}
+          {t('cart.checkout.checkoutButtonText')}
         </Button>
         <Divider flexItem />
         <ul>
-          <CheckoutData summary={t('checkout.shippingCost')} data={props.shipmentCost} />
-          <CheckoutData summary={t('checkout.itemsCost')} data={props.totalPrice} />
+          <CheckoutData summary={t('cart.checkout.shippingCost')} data={props.shipmentCost} />
+          <CheckoutData summary={t('cart.checkout.itemsCost')} data={props.totalPrice} />
         </ul>
         <Divider />
         <ul>
-          <CheckoutData withDollar summary={t('checkout.amountOfSellers')} data={sellers} />
-          <CheckoutData withDollar summary={t('checkout.amountOfCards')} data={quantity} />
+          <CheckoutData withDollar summary={t('cart.checkout.amountOfSellers')} data={sellers} />
+          <CheckoutData withDollar summary={t('cart.checkout.amountOfCards')} data={quantity} />
         </ul>
       </div>
     </PageSection>
