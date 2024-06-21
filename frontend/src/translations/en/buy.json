@@ -1,4 +1,7 @@
 {
+  "bestSellers": {
+    "title": "All-time best sellers"
+  },
   "cardDetails": {
     "dataTable": {
       "tableHeaders": {

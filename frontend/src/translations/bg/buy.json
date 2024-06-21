@@ -1,4 +1,7 @@
 {
+  "bestSellers": {
+    "title": "Най-продавани карти за всички времена"
+  },
   "cardDetails": {
     "dataTable": {
       "tableHeaders": {

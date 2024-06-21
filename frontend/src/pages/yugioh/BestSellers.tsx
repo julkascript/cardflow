@@ -8,9 +8,11 @@ import { BestSeller } from '../../services/bestSeller/types';
 import Logo from '../../components/logo/Logo';
 import { theme } from '../../constants/theme';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 export default function BestSellers() {
   const [cards, setCards] = useState<BestSeller[]>([]);
+  const { t } = useTranslation('buy');
   const cardSection = cards.map((card) => {
     return (
       <div
@@ -61,7 +63,7 @@ export default function BestSellers() {
       <div className="w-5/6 mx-auto my-4">
         <PageSection className="p-8 my-4">
           <Typography variant="h4" className="text-center lg:text-left">
-            All-time best sellers
+            {t('bestSellers.title')}
           </Typography>
           <hr />
           <section className="max-sm:flex-col gap-4 mt-6 flex justify-between">
