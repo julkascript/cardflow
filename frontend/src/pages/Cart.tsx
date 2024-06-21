@@ -11,6 +11,7 @@ import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 import { toastMessages } from '../constants/toast';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
 import { useToast } from '../util/useToast';
+import { useTranslation } from 'react-i18next';
 
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
@@ -20,6 +21,7 @@ function ShoppingCart(): JSX.Element {
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(0);
   const toast = useToast();
+  const { t } = useTranslation('cart');
 
   const [shipmentAddress, setShipmentAddress] = useState('');
   const shipmentCost = shipmentAddress && shoppingCart.length ? 9.55 : 0;
@@ -108,13 +110,13 @@ function ShoppingCart(): JSX.Element {
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
       href: '/buy',
-      text: 'Buy',
+      text: t('buy'),
     },
   ];
 
   return (
     <>
-      <BreadcrumbNavigation links={breadcrumbNavigation} heading="Checkout" />
+      <BreadcrumbNavigation links={breadcrumbNavigation} heading={t('title')} />
       <div
         id="summary"
         className="flex flex-col items-center lg:flex-row lg:items-start pb-4 pt-4 justify-center gap-4 bg-[#F5F5F5]"
