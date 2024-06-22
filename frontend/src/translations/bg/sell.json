@@ -27,5 +27,28 @@
         }
       }
     }
+  },
+  "manage": {
+    "title": "Продай",
+    "mySalesButtonText": "Моите продажби",
+    "newListingButtonText": "Нова обява",
+    "table": {
+      "tableHeaders": {
+        "cardDetails": "Детайли за картата",
+        "available": "В наличност",
+        "price": "Цена",
+        "listed": "Видимост"
+      }
+    },
+    "actions": {
+      "selectedItems_one": "<strong>1</strong> избрана обяви",
+      "selectedItems_other": "<strong>{{count}}</strong> избрани обяви",
+      "delistAllButtonText": "Скрий всички",
+      "deleteAllButtonText": "Изтрий всички",
+      "deleteSelectedItemsButtonText": "Изтрий избраните обяви",
+      "delistSelectedItemsButtonText": "Скрий избраните обяви",
+      "listSelectedItemsButtonText": "Покажи избраните обяви",
+      "listAllButtonText": "Покажи всички обяви"
+    }
   }
 }

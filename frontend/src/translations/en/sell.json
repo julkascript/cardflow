@@ -27,5 +27,28 @@
         }
       }
     }
+  },
+  "manage": {
+    "title": "Sell",
+    "mySalesButtonText": "My sales",
+    "newListingButtonText": "New listing",
+    "table": {
+      "tableHeaders": {
+        "cardDetails": "Card details",
+        "available": "Available",
+        "price": "Price",
+        "listed": "Listed"
+      }
+    },
+    "actions": {
+      "selectedItems_one": "<strong>1</strong> item selected",
+      "selectedItems_other": "<strong>{{count}}</strong> items selected",
+      "delistAllButtonText": "Delist all",
+      "deleteAllButtonText": "Delete all",
+      "deleteSelectedItemsButtonText": "Delete selected items",
+      "delistSelectedItemsButtonText": "Delist selected items",
+      "listSelectedItemsButtonText": "List selected items",
+      "listAllButtonText": "List all"
+    }
   }
 }

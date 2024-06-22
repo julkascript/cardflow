@@ -12,6 +12,7 @@ import AddIcon from '@mui/icons-material/Add';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import { toastMessages } from '../../constants/toast';
 import { useToast } from '../../util/useToast';
+import { Trans, useTranslation } from 'react-i18next';
 
 type ListingData = {
   listing: YugiohCardListing;
@@ -57,6 +58,8 @@ function SellManagement(): JSX.Element {
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
   const toast = useToast();
+
+  const { t } = useTranslation('sell');
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -247,7 +250,7 @@ function SellManagement(): JSX.Element {
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <CardflowTabs />
-      <PageHeader heading="Sell">
+      <PageHeader heading={t('manage.title')}>
         <div className="flex gap-4">
           <Button
             sx={{ color: '#0B70E5', borderColor: '#0B70E5', ':hover': { borderColor: '#0B70E5' } }}
@@ -255,7 +258,7 @@ function SellManagement(): JSX.Element {
             href={`/user/${user.username}/sales`}
             variant="outlined"
           >
-            My sales
+            {t('manage.mySalesButtonText')}
           </Button>
           <Button
             className="rounded-md"
@@ -264,7 +267,7 @@ function SellManagement(): JSX.Element {
             variant="outlined"
             color="success"
           >
-            New listing
+            {t('manage.newListingButtonText')}
           </Button>
         </div>
       </PageHeader>
@@ -280,10 +283,10 @@ function SellManagement(): JSX.Element {
               <th>
                 <Checkbox checked={checkedAll} color="info" onChange={handleCheckAll} />
               </th>
-              <th colSpan={2}>Card details</th>
-              <th>Available</th>
-              <th>Price</th>
-              <th>Listed</th>
+              <th colSpan={2}>{t('manage.table.tableHeaders.cardDetails')}</th>
+              <th>{t('manage.table.tableHeaders.available')}</th>
+              <th>{t('manage.table.tableHeaders.price')}</th>
+              <th>{t('manage.table.tableHeaders.listed')}</th>
             </tr>
             {data.map((ld, i) => (
               <tr key={ld.listing.id}>
@@ -333,14 +336,19 @@ function SellManagement(): JSX.Element {
         </MarketTable>
         <div className="text-center bg-white self-center mb-4 mt-4 w-96 border-[#666666] border rounded-md">
           <p className="pt-4">
-            <strong>{data.filter((d) => d.selected).length}</strong> item(s) selected
+            <Trans
+              t={t}
+              i18nKey="manage.actions.selectedItems"
+              count={data.filter((d) => d.selected).length}
+              components={{ strong: <strong /> }}
+            ></Trans>
           </p>
           <div className="flex justify-between p-4">
             <Button className="rounded-md" variant="outlined" onClick={delistAll}>
-              Delist all
+              {t('manage.actions.delistAllButtonText')}
             </Button>
             <Button className="rounded-md" variant="outlined" color="error" onClick={deleteAll}>
-              Delete all
+              {t('manage.actions.deleteAllButtonText')}
             </Button>
             <Button
               className="font-bold rounded-md flex gap-1 items-center justify-center"
@@ -353,15 +361,15 @@ function SellManagement(): JSX.Element {
             </Button>
             <Menu open={open} anchorEl={anchorEl} onClose={closeMenu}>
               <MenuItem disabled={data.every((d) => !d.selected)} onClick={deleteSelectedItems}>
-                Delete selected items
+                {t('manage.actions.deleteSelectedItemsButtonText')}
               </MenuItem>
               <MenuItem disabled={data.every((d) => !d.selected)} onClick={delistSelectedItems}>
-                Delist selected items
+                {t('manage.actions.delistSelectedItemsButtonText')}
               </MenuItem>
               <MenuItem disabled={data.every((d) => !d.selected)} onClick={listSelectedItems}>
-                List selected items
+                {t('manage.actions.listSelectedItemsButtonText')}
               </MenuItem>
-              <MenuItem onClick={listAll}>List all</MenuItem>
+              <MenuItem onClick={listAll}>{t('manage.actions.listAllButtonText')}</MenuItem>
             </Menu>
           </div>
         </div>
