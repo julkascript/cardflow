@@ -10,8 +10,10 @@ import Navigation from '../components/navigation/Navigation';
 import { linkBehaviorConfiguration } from '../linkBehaviorConfiguration';
 import { useMemo } from 'react';
 import { theme } from '../constants/theme';
+import { useTranslation } from 'react-i18next';
 
 function NotFound(): JSX.Element {
+  const { t } = useTranslation('common');
   const appTheme = useMemo(
     () =>
       createTheme({
@@ -36,7 +38,7 @@ function NotFound(): JSX.Element {
                 sx={{ borderRight: 3, borderColor: 'gray' }}
                 className="hidden lg:block"
               />
-              <Typography component="p">This page could not be found</Typography>
+              <Typography component="p">{t('notFound.text')}</Typography>
             </div>
             <Button
               sx={{ width: 250, margin: '0 auto' }}
@@ -44,7 +46,7 @@ function NotFound(): JSX.Element {
               color="primary"
               href="/"
             >
-              Back to home page
+              {t('notFound.backToHomeButtonText')}
             </Button>
           </section>
         </main>

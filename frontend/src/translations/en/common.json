@@ -45,5 +45,9 @@
     "played": "Played",
     "good": "Good",
     "excellent": "Excellent"
+  },
+  "notFound": {
+    "text": "This page could not be found",
+    "backToHomeButtonText": "Back to home"
   }
 }
