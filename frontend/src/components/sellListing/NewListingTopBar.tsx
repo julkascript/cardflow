@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../BreadcrumbNavigation';
 import { Button, Checkbox, FormControlLabel } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 type NewListingTopBarProps = {
   handleSubmit: (e: React.FormEvent, postAnother: boolean) => Promise<void>;
@@ -17,6 +18,8 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
 }) => {
   const [postAnother, setPostAnother] = useState(false);
   const isButtonDisabled = !price || !quantity;
+
+  const { t } = useTranslation('sell');
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostAnother(e.target.checked);
@@ -38,14 +41,14 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
       <div className="flex items-center px-16 gap-4">
         <FormControlLabel
           control={<Checkbox checked={postAnother} onChange={handleCheckboxChange} />}
-          label="Post another"
+          label={t('newListing.postAnotherCheckboxLabel')}
         />
         <Button
           href="/sell/manage"
           variant="outlined"
           sx={{ borderRadius: 2, padding: '8px 24px' }}
         >
-          Cancel
+          {t('newListing.cancelButtonText')}
         </Button>
         <Button
           onClick={onSubmit}
@@ -54,7 +57,7 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
           variant="contained"
           sx={{ color: 'white', borderRadius: 2, padding: '8px 24px' }}
         >
-          Post
+          {t('newListing.postButtonText')}
         </Button>
       </div>
     </BreadcrumbNavigation>

@@ -5,11 +5,13 @@ import { yugiohService } from '../../services/yugioh/yugiohService';
 import { toastMessages } from '../../constants/toast';
 import ListingForm from '../../components/sellListing/ListingForm';
 import { useToast } from '../../util/useToast';
+import { useTranslation } from 'react-i18next';
 
 function EditListing(): JSX.Element {
   const data = useLoaderData() as EditListingLoaderData;
   const { listing, listings } = data;
   const toast = useToast();
+  const { t } = useTranslation('sell');
 
   const navigate = useNavigate();
   function handleSubmit(data: YugiohCardSellListing, postAnother: boolean) {
@@ -36,7 +38,7 @@ function EditListing(): JSX.Element {
       listings={listings}
       onSubmit={handleSubmit}
       editMode
-      title="Edit listing"
+      title={t('newListing.titleEdit')}
     />
   );
 }

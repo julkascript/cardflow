@@ -1,7 +1,9 @@
 import { Button, IconButton, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useTranslation } from 'react-i18next';
 
 function ClearListingButton() {
+  const { t } = useTranslation('sell');
   return (
     <>
       <div className="hidden lg:block">
@@ -12,11 +14,11 @@ function ClearListingButton() {
           variant="outlined"
           startIcon={<DeleteIcon />}
         >
-          Clear
+          {t('newListing.secondSection.clearButtonText')}
         </Button>
       </div>
       <div className="block lg:hidden mx-auto">
-        <Tooltip title="Clear (discard) listing">
+        <Tooltip title={t('newListing.secondSection.clearButtonTooltip')}>
           <IconButton color="error" size="small" href="/sell/new">
             <DeleteIcon />
           </IconButton>

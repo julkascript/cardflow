@@ -23,13 +23,7 @@ import DeleteListingButton from './buttons/DeleteListingButton';
 import ClearListingButton from './buttons/ClearListingButton';
 import ToggleVisibilityButton from './buttons/ToggleVisibilityButton';
 import { useToast } from '../../util/useToast';
-
-const selectOptions: Record<condition, string> = {
-  poor: 'Poor',
-  played: 'Played',
-  good: 'Good',
-  excellent: 'Excellent',
-};
+import { useTranslation } from 'react-i18next';
 
 type ListingFormProps = {
   editMode?: boolean;
@@ -47,6 +41,8 @@ function ListingForm(props: ListingFormProps) {
   const [cardListings, setCardListings] = useState(props.listings);
   const navigate = useNavigate();
   const toast = useToast();
+  const { t } = useTranslation('sell');
+  const { t: commonT } = useTranslation('common');
 
   const [formData, setFormData] = useState<YugiohCardListing>(
     props.listing || {
@@ -218,10 +214,10 @@ function ListingForm(props: ListingFormProps) {
                     name="quantity"
                     value={formData.quantity}
                     onChange={handleQuantityChange}
-                    placeholder="Quantity"
+                    placeholder={t('newListing.secondSection.quantity')}
                     className="w-36"
                     size="small"
-                    label="Quantity"
+                    label={t('newListing.secondSection.quantity')}
                     InputProps={{
                       startAdornment: <TagIcon className="mr-2" />,
                     }}
@@ -237,17 +233,17 @@ function ListingForm(props: ListingFormProps) {
                     renderValue={(value) => (
                       <>
                         <DiamondIcon className="mr-2" />
-                        <span>{selectOptions[value]}</span>
+                        <span>{commonT(`conditions.${value}`)}</span>
                       </>
                     )}
                   >
                     <MenuItem disabled>
-                      <i>Condition</i>
+                      <i>{t('newListing.secondSection.condition')}</i>
                     </MenuItem>
-                    <MenuItem value="poor">Poor</MenuItem>
-                    <MenuItem value="played">Played</MenuItem>
-                    <MenuItem value="good">Good</MenuItem>
-                    <MenuItem value="excellent">Excellent</MenuItem>
+                    <MenuItem value="poor">{commonT('conditions.poor')}</MenuItem>
+                    <MenuItem value="played">{commonT('conditions.played')}</MenuItem>
+                    <MenuItem value="good">{commonT('conditions.good')}</MenuItem>
+                    <MenuItem value="excellent">{commonT('conditions.excellent')}</MenuItem>
                   </Select>
                 </div>
                 <div>
@@ -257,9 +253,9 @@ function ListingForm(props: ListingFormProps) {
                       name="price"
                       value={formData.price}
                       onChange={handlePriceChange}
-                      placeholder="Price"
+                      placeholder={t('newListing.secondSection.price')}
                       size="small"
-                      label="Price"
+                      label={t('newListing.secondSection.price')}
                       InputProps={{
                         startAdornment: <PaymentsIcon className="mr-2" />,
                       }}
@@ -279,7 +275,9 @@ function ListingForm(props: ListingFormProps) {
         </div>
         <Divider />
         <div className="w-full overflow-auto">
-          <h3 className="text-lg font-semibold mb-6">Market information</h3>
+          <h3 className="text-lg font-semibold mb-6">
+            {t('newListing.secondSection.marketInformation')}
+          </h3>
           <MarketTable
             className="w-full max-md:text-sm"
             page={page}
@@ -289,12 +287,16 @@ function ListingForm(props: ListingFormProps) {
             <thead>
               <tr>
                 <th className="hidden lg:table-cell" colSpan={3}>
-                  Seller
+                  {t('newListing.secondSection.marketTable.tableHeaders.seller')}
                 </th>
-                <th className="table-cell lg:hidden">Seller</th>
-                <th colSpan={2}>Card details</th>
-                <th>Available</th>
-                <th>Price</th>
+                <th className="table-cell lg:hidden">
+                  {t('newListing.secondSection.marketTable.tableHeaders.seller')}
+                </th>
+                <th colSpan={2}>
+                  {t('newListing.secondSection.marketTable.tableHeaders.cardDetails')}
+                </th>
+                <th>{t('newListing.secondSection.marketTable.tableHeaders.available')}</th>
+                <th>{t('newListing.secondSection.marketTable.tableHeaders.price')}</th>
               </tr>
             </thead>
             <tbody>

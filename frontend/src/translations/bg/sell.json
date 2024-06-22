@@ -1,0 +1,31 @@
+{
+  "newListing": {
+    "title": "Нова обява",
+    "titleEdit": "Редактиране на обявата",
+    "postAnotherCheckboxLabel": "Върни се в миналата секция след качване",
+    "cancelButtonText": "Затвори",
+    "postButtonText": "Публикувай",
+    "secondSection": {
+      "quantity": "В наличност",
+      "price": "Цена",
+      "condition": "Състояние",
+      "clearButtonText": "Изчисти",
+      "clearButtonTooltip": "Изчисти тази обяви",
+      "marketInformation": "Информация за пазара",
+      "visibilityButtonText_false": "Покажи",
+      "visibilityButtonText_true": "Скрий",
+      "visibilityButtonTooltipText_false": "Направи тази обява видима",
+      "visibilityButtonTooltipText_true": "Направи тази обява скрита",
+      "deleteButtonText": "Изтрий",
+      "deleteButtonTooltipText": "Изтрий тази обява",
+      "marketTable": {
+        "tableHeaders": {
+          "seller": "Продавач",
+          "cardDetails": "Детайли за картата",
+          "available": "В наличност",
+          "price": "Цена"
+        }
+      }
+    }
+  }
+}

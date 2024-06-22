@@ -1,0 +1,31 @@
+{
+  "newListing": {
+    "title": "New listing",
+    "titleEdit": "Edit listing",
+    "postAnotherCheckboxLabel": "Post another",
+    "cancelButtonText": "Cancel",
+    "postButtonText": "Post",
+    "secondSection": {
+      "quantity": "Quantity",
+      "price": "Price",
+      "condition": "Condition",
+      "clearButtonText": "Clear",
+      "clearButtonTooltip": "Clear (discard) listing",
+      "marketInformation": "Market information",
+      "visibilityButtonText_false": "List",
+      "visibilityButtonText_true": "Delist",
+      "visibilityButtonTooltipText_false": "Make listing public",
+      "visibilityButtonTooltipText_true": "Delist",
+      "deleteButtonText": "Delete",
+      "deleteButtonTooltipText": "Delete this listing",
+      "marketTable": {
+        "tableHeaders": {
+          "seller": "Seller",
+          "cardDetails": "Card details",
+          "available": "Available",
+          "price": "Price"
+        }
+      }
+    }
+  }
+}
