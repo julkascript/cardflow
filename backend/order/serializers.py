@@ -47,8 +47,8 @@ class OrderSerializer(serializers.ModelSerializer):
 
         if 'status' in validated_data and len(validated_data) == 1:
 
-            if instance.status == 'rejected' or instance.status == 'completed':
-                raise serializers.ValidationError("Rejected or Completed order cannot be updated")
+            if self.order_cannot_be_updated_further(instance.status):
+                raise serializers.ValidationError("This order's status cannot be updated further")
 
             if user != sender_user and user != receiver_user:
                 raise exceptions.PermissionDenied("You don't have permission to update this order")
@@ -81,6 +81,11 @@ class OrderSerializer(serializers.ModelSerializer):
         status_order = ['ordered', 'sent', 'completed', 'rejected', 'not_sent', 'not_received']
 
         return status_order.index(status)
+
+    def order_cannot_be_updated_further(self, status):
+        final_statuses = ['completed', 'rejected', 'not_sent', 'not_received']
+
+        return status in final_statuses
 
 
 class FeedbackAndRatingSerializer(serializers.ModelSerializer):
