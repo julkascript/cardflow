@@ -49,5 +49,11 @@
   "notFound": {
     "text": "This page could not be found",
     "backToHomeButtonText": "Back to home"
+  },
+  "tabs": {
+    "buy": "Buy",
+    "sell": "Sell",
+    "trade": "Trade",
+    "about": "About"
   }
 }
