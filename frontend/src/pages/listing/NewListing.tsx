@@ -4,7 +4,7 @@ import NewListingTopBar from '../../components/sellListing/NewListingTopBar';
 import NewListingBody from '../../components/sellListing/NewSellListingBody';
 
 function Newlisting() {
-  const { t } = useTranslation('sell');
+  const { t } = useTranslation('common');
   return (
     <>
       <CardflowTabs />
@@ -14,7 +14,7 @@ function Newlisting() {
         handleSubmit={(): Promise<void> => {
           throw new Error('Function not implemented.');
         }}
-        title={t('newListing.title')}
+        title={t('breadcrumbs.sell.newListing.title')}
       />
       <NewListingBody />
     </>

@@ -55,5 +55,46 @@
     "sell": "Продай",
     "trade": "Размени",
     "about": "За нас"
+  },
+  "breadcrumbs": {
+    "about": {
+      "title": "За нас",
+      "faq": {
+        "title": "Често задавни въпроси"
+      },
+      "contact": {
+        "title": "Свържи се с нас"
+      },
+      "changelog": {
+        "title": "Последни промени"
+      }
+    },
+    "account": {
+      "title": "Профил",
+      "myOrders": {
+        "title": "Моите поръчки"
+      },
+      "mySales": {
+        "title": "Моите продажби"
+      }
+    },
+    "buy": {
+      "title": "Купи",
+      "search": {
+        "title": "Търсене"
+      },
+      "cart": {
+        "title": "Количка"
+      }
+    },
+    "sell": {
+      "title": "Продай",
+      "newListing": {
+        "title": "Нова обява"
+      },
+      "editListing": {
+        "title": "Редактиране на обява"
+      }
+    }
   }
 }

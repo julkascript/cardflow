@@ -10,10 +10,11 @@ const reversedChangelogArchive = [...changelogArchive].reverse();
 
 function Changelog(): JSX.Element {
   const { t, i18n } = useTranslation('about');
+  const { t: commonT } = useTranslation('common');
 
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
-      text: t('common.about'),
+      text: commonT('breadcrumbs.about.title'),
       href: '/about',
     },
   ];
@@ -21,7 +22,10 @@ function Changelog(): JSX.Element {
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
       <CardflowTabs />
-      <BreadcrumbNavigation links={breadcrumbNavigation} heading={t('changelog.title')} />
+      <BreadcrumbNavigation
+        links={breadcrumbNavigation}
+        heading={commonT('breadcrumbs.about.changelog.title')}
+      />
       <PageSection className="mt-4 lg:px-12 py-4 lg:py-20 w-11/12 lg:w-4/5 mx-auto">
         {reversedChangelogArchive.map((milestone, i) => {
           const features: string[] = t(`changelog.${milestone.version}.features`, {

@@ -8,16 +8,20 @@ import { useTranslation, Trans } from 'react-i18next';
 
 function FAQ(): JSX.Element {
   const { t } = useTranslation('about');
+  const { t: commonT } = useTranslation('common');
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
       href: '/about',
-      text: t('common.about'),
+      text: commonT('breadcrumbs.about.title'),
     },
   ];
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
       <CardflowTabs />
-      <BreadcrumbNavigation links={breadcrumbNavigation} heading={t('faq.title')} />
+      <BreadcrumbNavigation
+        links={breadcrumbNavigation}
+        heading={commonT('breadcrumbs.about.faq.title')}
+      />
       <PageSection className="mt-4 w-11/12 py-4 lg:w-4/5 mx-auto">
         <h2 className="text-2xl text-center lg:text-left lg:px-12 px-8 pt-4 pb-8 text-bold">
           {t('faq.title')}

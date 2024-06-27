@@ -11,7 +11,7 @@ function EditListing(): JSX.Element {
   const data = useLoaderData() as EditListingLoaderData;
   const { listing, listings } = data;
   const toast = useToast();
-  const { t } = useTranslation('sell');
+  const { t } = useTranslation('common');
 
   const navigate = useNavigate();
   function handleSubmit(data: YugiohCardSellListing, postAnother: boolean) {
@@ -38,7 +38,7 @@ function EditListing(): JSX.Element {
       listings={listings}
       onSubmit={handleSubmit}
       editMode
-      title={t('newListing.titleEdit')}
+      title={t('breadcrumbs.sell.editListing.title')}
     />
   );
 }

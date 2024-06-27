@@ -16,8 +16,6 @@
     }
   },
   "cart": {
-    "buy": "Купи",
-    "title": "Количка",
     "emptyAllButtonTooltipText": "Изпразни количката (премахни всички обяви)",
     "summary": {
       "table": {

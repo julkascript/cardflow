@@ -57,8 +57,6 @@
     }
   },
   "salesAndOrders": {
-    "title_sales": "My sales",
-    "title_orders": "My orders",
     "status": {
       "ordered": "Ordered",
       "sent": "Sent",

@@ -16,6 +16,7 @@ function Contact(): JSX.Element {
   const [message, setMessage] = useState('');
   const toast = useToast();
   const { t } = useTranslation('about');
+  const { t: commonT } = useTranslation('common');
 
   const navigate = useNavigate();
 
@@ -30,7 +31,7 @@ function Contact(): JSX.Element {
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
       href: '/about',
-      text: t('common.about'),
+      text: commonT('breadcrumbs.about.title'),
     },
   ];
 
@@ -69,7 +70,10 @@ function Contact(): JSX.Element {
   return (
     <section className="bg-[#f5f5f5] min-h-[100vh] pb-4">
       <CardflowTabs />
-      <BreadcrumbNavigation links={breadcrumbNavigation} heading={t('contact.title')} />
+      <BreadcrumbNavigation
+        links={breadcrumbNavigation}
+        heading={commonT('breadcrumbs.about.contact.title')}
+      />
       <div className="w-5/6 mx-auto mt-4 lg:flex">
         <section
           className={`flex flex-col text-center rounded-tl-lg border-[${theme.palette.secondary.main}] rounded-tr-lg border-x border-t lg:rounded-tr-none lg:border-b lg:text-left`}

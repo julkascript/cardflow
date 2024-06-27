@@ -1,6 +1,5 @@
 {
   "common": {
-    "account": "Профил",
     "saveButtonText": "Запази",
     "navigation": {
       "details": "Профилни настройки",
@@ -56,8 +55,6 @@
     }
   },
   "salesAndOrders": {
-    "title_sales": "Моите продажби",
-    "title_orders": "Моите покупки",
     "status": {
       "ordered": "Поръчана",
       "sent": "Изпратена",

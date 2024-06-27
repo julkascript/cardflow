@@ -16,8 +16,6 @@
     }
   },
   "cart": {
-    "buy": "Buy",
-    "title": "Shopping cart",
     "emptyAllButtonTooltipText": "Empty out the shopping cart (remove all listings)",
     "summary": {
       "table": {

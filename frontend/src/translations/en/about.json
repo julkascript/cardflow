@@ -33,7 +33,6 @@
     }
   },
   "faq": {
-    "title": "FAQ",
     "questions": {
       "title": "Frequently asked questions",
       "cardflowFree": {
@@ -75,7 +74,6 @@
     }
   },
   "changelog": {
-    "title": "Changelog",
     "features": "New features",
     "fixes": "Fixes",
     "deprecated": "Deprecated",
@@ -91,7 +89,6 @@
     }
   },
   "contact": {
-    "title": "Contact us",
     "paragraph": "We are open to all kind of suggestions and ideas. Bug reports are also greatly appreciated.",
     "emailField": {
       "label": "Your email",

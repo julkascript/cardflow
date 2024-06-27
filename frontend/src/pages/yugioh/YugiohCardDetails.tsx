@@ -8,13 +8,14 @@ import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../../util/useEffectAfterInitialLoad';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
 import { useToast } from '../../util/useToast';
+import { useTranslation } from 'react-i18next';
 
 function YugiohCardDetails(): JSX.Element {
   const data = useLoaderData() as CardDetailsLoaderData;
   const params = useParams();
   const { cardInSet, cardListings: cardListingsData } = data;
   const [cardListings, setCardListings] = useState(cardListingsData);
-
+  const { t } = useTranslation('common');
   const toast = useToast();
 
   const [page, setPage] = useState(1);
@@ -39,11 +40,11 @@ function YugiohCardDetails(): JSX.Element {
 
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
-      text: 'Buy',
+      text: t('breadcrumbs.buy.title'),
       href: '/buy',
     },
     {
-      text: 'Search',
+      text: t('breadcrumbs.buy.search.title'),
       href: '/search',
     },
   ];

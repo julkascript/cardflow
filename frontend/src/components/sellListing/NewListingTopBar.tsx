@@ -20,6 +20,7 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
   const isButtonDisabled = !price || !quantity;
 
   const { t } = useTranslation('sell');
+  const { t: commonT } = useTranslation('common');
 
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPostAnother(e.target.checked);
@@ -32,7 +33,7 @@ const NewListingTopBar: React.FC<NewListingTopBarProps> = ({
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
       href: '/sell/manage',
-      text: 'Sell',
+      text: commonT('breadcrumbs.sell.title'),
     },
   ];
 

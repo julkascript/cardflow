@@ -12,12 +12,12 @@ function Sales(): JSX.Element {
   const [orders, setOrders] = useState<Order[]>([]);
   const toast = useToast();
 
-  const { t } = useTranslation('account');
+  const { t } = useTranslation('common');
 
   const { user } = useCurrentUser();
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
-      text: t('common.account'),
+      text: t('breadcrumbs.account.title'),
       href: `/user/${user.username}`,
     },
   ];
@@ -51,7 +51,7 @@ function Sales(): JSX.Element {
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
       <CardflowTabs />
       <BreadcrumbNavigation
-        heading={t('salesAndOrders.title', { context: 'sales' })}
+        heading={t('breadcrumbs.account.mySales.title')}
         links={breadcrumbNavigation}
       />
       <div className="flex flex-col lg:items-center overflow-auto">

@@ -1,7 +1,5 @@
 {
   "newListing": {
-    "title": "Нова обява",
-    "titleEdit": "Редактиране на обявата",
     "postAnotherCheckboxLabel": "Върни се в миналата секция след качване",
     "cancelButtonText": "Затвори",
     "postButtonText": "Публикувай",

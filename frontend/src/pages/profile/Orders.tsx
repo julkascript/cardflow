@@ -11,12 +11,12 @@ import { useTranslation } from 'react-i18next';
 function Orders(): JSX.Element {
   const [orders, setOrders] = useState<Order[]>([]);
   const toast = useToast();
-  const { t } = useTranslation('account');
+  const { t } = useTranslation('common');
 
   const { user } = useCurrentUser();
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
-      text: t('common.account'),
+      text: t('breadcrumbs.account.title'),
       href: `/user/${user.username}`,
     },
   ];
@@ -49,7 +49,7 @@ function Orders(): JSX.Element {
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
       <CardflowTabs />
       <BreadcrumbNavigation
-        heading={t('salesAndOrders.title', { context: 'orders' })}
+        heading={t('breadcrumbs.account.myOrders.title')}
         links={breadcrumbNavigation}
       />
       <div className="flex flex-col lg:items-center overflow-auto">
