@@ -39,7 +39,7 @@
       }
     },
     "actions": {
-      "selectedItems_one": "<strong>1</strong> избрана обяви",
+      "selectedItems_one": "<strong>1</strong> избрана обява",
       "selectedItems_other": "<strong>{{count}}</strong> избрани обяви",
       "delistAllButtonText": "Скрий всички",
       "deleteAllButtonText": "Изтрий всички",
