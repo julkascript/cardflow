@@ -62,7 +62,8 @@
       "sent": "Sent",
       "completed": "Received",
       "rejected": "Rejected",
-      "not received": "Not received"
+      "not_received": "Not received",
+      "not_sent": "Not sent"
     },
     "table": {
       "tableHeaders": {

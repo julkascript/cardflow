@@ -60,7 +60,8 @@
       "sent": "Изпратена",
       "completed": "Получена",
       "rejected": "Отхвърлена",
-      "not received": "Неполучена"
+      "not_received": "Неполучена",
+      "not_sent": "Неизпратена"
     },
     "table": {
       "tableHeaders": {
