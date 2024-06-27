@@ -21,6 +21,7 @@ function Search(): JSX.Element {
   const [searchQuery, setSearchQuery] = useState(params.query || '');
 
   const { t: commonT } = useTranslation('common');
+  const { t } = useTranslation('buy');
 
   const toast = useToast();
 
@@ -113,9 +114,9 @@ function Search(): JSX.Element {
           <thead>
             <tr>
               <th style={{ textAlign: 'center' }} colSpan={3}>
-                Name
+                {t('search.table.tableHeaders.name')}
               </th>
-              <th style={{ textAlign: 'center' }}>Rarity</th>
+              <th style={{ textAlign: 'center' }}>{t('search.table.tableHeaders.rarity')}</th>
             </tr>
           </thead>
           <tbody>

@@ -53,5 +53,13 @@
         "addToCartAriaLabel": "Add to cart"
       }
     }
+  },
+  "search": {
+    "table": {
+      "tableHeaders": {
+        "name": "Name",
+        "rarity": "Rarity"
+      }
+    }
   }
 }

@@ -53,5 +53,13 @@
         "addToCartAriaLabel": "Добави в количката"
       }
     }
+  },
+  "search": {
+    "table": {
+      "tableHeaders": {
+        "name": "Име на картата",
+        "rarity": "Рядкост"
+      }
+    }
   }
 }
