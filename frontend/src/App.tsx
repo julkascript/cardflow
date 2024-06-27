@@ -13,9 +13,23 @@ import { Toaster } from 'react-hot-toast';
 import { theme } from './constants/theme';
 import { linkBehaviorConfiguration } from './linkBehaviorConfiguration';
 import { useToast } from './util/useToast';
+import * as locales from '@mui/material/locale';
+import i18next from 'i18next';
+
+const languages: { [key: string]: any } = {
+  bg: locales.bgBG,
+  en: locales.enUS,
+};
 
 function App() {
-  const appTheme = useMemo(() => createTheme({ ...theme, ...linkBehaviorConfiguration }), []);
+  const appTheme = useMemo(
+    () =>
+      createTheme(
+        { ...theme, ...linkBehaviorConfiguration },
+        languages[i18next.language] || locales.enUS,
+      ),
+    [i18next.language],
+  );
 
   const { setUser, restartUser } = useCurrentUser();
   const { setShoppingCart } = useShoppingCart();
