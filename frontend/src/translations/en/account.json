@@ -68,8 +68,8 @@
     "table": {
       "tableHeaders": {
         "order": "Order",
-        "user_buyer": "Buyer",
-        "user_seller": "Seller",
+        "user_buyer": "Seller",
+        "user_seller": "Buyer",
         "quantity": "Quantity",
         "total": "Total",
         "state": "State",

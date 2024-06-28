@@ -66,8 +66,8 @@
     "table": {
       "tableHeaders": {
         "order": "Поръчка",
-        "user_buyer": "Купувач",
-        "user_seller": "Продавач",
+        "user_buyer": "Продавач",
+        "user_seller": "Купувач",
         "quantity": "Количество",
         "total": "Обща цена",
         "state": "Статус на поръчката",

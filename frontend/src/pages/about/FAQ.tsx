@@ -24,7 +24,7 @@ function FAQ(): JSX.Element {
       />
       <PageSection className="mt-4 w-11/12 py-4 lg:w-4/5 mx-auto">
         <h2 className="text-2xl text-center lg:text-left lg:px-12 px-8 pt-4 pb-8 text-bold">
-          {t('faq.title')}
+          {t('faq.questions.title')}
         </h2>
         <div className="w-11/12 mx-auto">
           {faq.map((item) => {

@@ -169,7 +169,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
                 <FormControlLabel
                   disabled={props.status !== 'sent'}
                   control={<Radio color="info" />}
-                  label={t('salesAndOrders.status.not received')}
+                  label={t('salesAndOrders.status.not_received')}
                   value="not_received"
                 />
               </RadioGroup>
