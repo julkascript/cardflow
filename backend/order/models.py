@@ -11,6 +11,8 @@ User = get_user_model()
 class Order(models.Model):
     STATUS_CHOICES = [
         ('ordered', 'Ordered'),
+        ('not_sent', 'Not Sent'),
+        ('not_received', 'Not Received'),
         ('sent', 'Sent'),
         ('completed', 'Completed'),
         ('rejected', 'Rejected'),
@@ -58,7 +60,7 @@ class OrderItem(models.Model):
 
 class OrderStatusHistory(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='status_history')
-    status = models.CharField(max_length=10)
+    status = models.CharField(max_length=12)
     timestamp = models.DateTimeField(auto_now=True, auto_now_add=False)
 
     def __str__(self):
