@@ -11,7 +11,7 @@ function ProfilePublicInfoPage(): JSX.Element {
     <ProfilePage className="bg-[#F5F5F5]">
       <div className="flex flex-col gap-2">
         <ProfilePublicData user={user} />
-        <ProfileMarketActivity />
+        <ProfileMarketActivity user={user} />
       </div>
     </ProfilePage>
   );

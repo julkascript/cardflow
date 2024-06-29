@@ -5,7 +5,7 @@ import YugiohSellerRankBadge from '../yugioh/seller/YugiohSellerRankBadge';
 import { sellerRankData } from '../../constants/sellerRank';
 import { PublicUserInfo } from '../../services/user/types';
 
-type ProfilePublicDataProps = {
+export type ProfilePublicDataProps = {
   user: PublicUserInfo;
 };
 

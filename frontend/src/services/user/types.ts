@@ -55,4 +55,12 @@ export type UserAccountLoader = {
 export type PublicUserInfo = {
   username: string;
   avatar: string;
+  stats: {
+    purchases : number;
+    sales: number;
+    sales_this_month: number;
+    seller_rating: number;
+    rejection_rate: number;
+    miss_rate: number;
+  }
 };
