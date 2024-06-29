@@ -14,38 +14,40 @@ function DesktopLanguageMenu(): JSX.Element {
   }
 
   return (
-    <FormControl className="hidden lg:block">
-      <Select
-        sx={{
-          // ensures that the flag is centered vertically
-          '.MuiSelect-select': {
-            display: 'flex',
-            alignItems: 'center',
-          },
-          height: 33,
-        }}
-        renderValue={(value) => (
-          <div className="w-6 h-3 flex items-center">
-            <img
-              alt={languages[value as languageCode].name}
-              src={languages[value as languageCode].flag}
-            />
-          </div>
-        )}
-        value={currentLanguage}
-        autoWidth
-        onChange={changeLanguage}
-      >
-        {languagesArray.map((l) => (
-          <MenuItem key={l.code} value={l.code}>
-            <img className="w-6 h-3 mr-2" src={l.flag} alt={l.name} />
-            <span>
-              {l.name} ({l.code})
-            </span>
-          </MenuItem>
-        ))}
-      </Select>
-    </FormControl>
+    <div className="hidden lg:block">
+      <FormControl>
+        <Select
+          sx={{
+            // ensures that the flag is centered vertically
+            '.MuiSelect-select': {
+              display: 'flex',
+              alignItems: 'center',
+            },
+            height: 33,
+          }}
+          renderValue={(value) => (
+            <div className="w-6 h-3 flex items-center">
+              <img
+                alt={languages[value as languageCode].name}
+                src={languages[value as languageCode].flag}
+              />
+            </div>
+          )}
+          value={currentLanguage}
+          autoWidth
+          onChange={changeLanguage}
+        >
+          {languagesArray.map((l) => (
+            <MenuItem key={l.code} value={l.code}>
+              <img className="w-6 h-3 mr-2" src={l.flag} alt={l.name} />
+              <span>
+                {l.name} ({l.code})
+              </span>
+            </MenuItem>
+          ))}
+        </Select>
+      </FormControl>
+    </div>
   );
 }
 
