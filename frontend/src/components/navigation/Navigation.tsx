@@ -12,7 +12,7 @@ import Unauthorized from '../../router/Unauthorized';
 import DesktopGuestNav from './desktop/DesktopGuestNav';
 import MobileSearchFieldButton from '../searchField/MobileSearchFieldButton';
 import { useTranslation } from 'react-i18next';
-import DesktopLanguageMenu from './desktop/LanguageMenu';
+import LanguageMenu from './LanguageMenu';
 
 /**
  * A component for the application's navigation menu
@@ -33,10 +33,13 @@ function Navigation(): JSX.Element {
 
   return (
     <nav className="flex justify-between p-4 items-center relative z-5000">
-      <div className="block lg:hidden">
+      <div className="relative lg:hidden">
         <IconButton onClick={openMenu} aria-label={t('navigation.openMenuAriaLabel')}>
           <MenuIcon />
         </IconButton>
+        <div className="absolute top-1 left-12">
+          <LanguageMenu />
+        </div>
         <Drawer anchor="left" open={mobileMenuIsOpen} onClose={() => setMobileMenuOpen(false)}>
           <MobileNavigation onCloseButtonClick={closeMenu}></MobileNavigation>
         </Drawer>
@@ -45,7 +48,9 @@ function Navigation(): JSX.Element {
         <Link to="/">
           <Logo size={33} />
         </Link>
-        <DesktopLanguageMenu />
+        <div className="hidden lg:block">
+          <LanguageMenu />
+        </div>
       </div>
       <div className="flex flex-row gap-4 items-center">
         <div className="hidden lg:block">
