@@ -7,6 +7,14 @@ describe('loadPublicUserInfo', () => {
     vi.spyOn(userService, 'getUserByUsername').mockResolvedValueOnce({
       username: 'a',
       avatar: 'b',
+      stats: {
+        'purchases': 1,
+        'sales': 1,
+        'sales_this_month': 0,
+        'seller_rating': "4.2",
+        'rejection_rate': 0,
+        'miss_rate': 0
+      }
     });
 
     const result = await loadPublicUserInfo({

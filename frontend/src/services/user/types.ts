@@ -59,7 +59,7 @@ export type PublicUserInfo = {
     purchases : number;
     sales: number;
     sales_this_month: number;
-    seller_rating: number;
+    seller_rating: number | string;
     rejection_rate: number;
     miss_rate: number;
   }
