@@ -1,5 +1,5 @@
 import { orderState } from '../../services/orders/types';
-import { CheckCircle, DoNotDisturbAlt, Outbound /* , DoNotDisturbOn */ } from '@mui/icons-material';
+import { CheckCircle, DoNotDisturbAlt, Cancel, Outbound } from '@mui/icons-material';
 
 type OrderStatusBadgeProps = {
   orderState: orderState;
@@ -9,7 +9,8 @@ const iconsPerStatus: Record<orderState, React.ReactNode> = {
   rejected: <DoNotDisturbAlt color="error" />,
   sent: <Outbound className="-rotate-45" color="primary" />,
   ordered: <Outbound className="-rotate-45" color="primary" />,
-  // 'not received': <DoNotDisturbOn color="error" />,
+  not_sent: <Cancel color="error" />,
+  not_received: <Cancel color="error" />,
   completed: <CheckCircle color="success" />,
 };
 

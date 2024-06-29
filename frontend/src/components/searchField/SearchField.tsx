@@ -29,7 +29,7 @@ function SearchField({ isListing }: SearchFieldProps): JSX.Element {
 
   return (
     <ClickAwayListener onClickAway={clearResults}>
-      <form onSubmit={search} className="relative z-[50000]">
+      <form onSubmit={search} className="relative">
         <TextField
           placeholder={'Type "/" to search'}
           onChange={updateField}
