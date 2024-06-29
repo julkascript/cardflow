@@ -117,9 +117,9 @@ class UserUpdateView(viewsets.ModelViewSet):
                 'purchases': purchases_count,
                 'sales': sales_count,
                 'sales_this_month': sales_this_month_count,
-                'seller_rating': avg_rating,
-                'rejection_rate': round(rejection_rate, 2),
-                'miss_rate': round(miss_rate, 2)
+                'seller_rating': f"{avg_rating}",
+                'rejection_rate': round(rejection_rate),
+                'miss_rate': round(miss_rate)
             }
 
             return Response({

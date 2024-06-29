@@ -20,9 +20,11 @@ class UserSerializer(serializers.ModelSerializer):
             'average_rating']
 
         if avg_rating is None:
-            return 0
+            avg_rating = 0.0
         else:
-            return round(avg_rating, 1)
+            avg_rating = round(avg_rating, 1)
+
+        return float(f'{avg_rating:.1f}')
 
     def get_purchases_count(self):
         return Order.objects.filter(receiver_user=self).count()
