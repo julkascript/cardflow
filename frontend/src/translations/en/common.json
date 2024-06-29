@@ -96,5 +96,10 @@
         "title": "Edit listing"
       }
     }
+  },
+  "sellerRanks": {
+    "tooltip_seller": "This user has less than {{sellerRankData.renowned.minimumSales}} sales",
+    "tooltip_renowned": "This user has over {{sellerRankData.renowned.minimumSales}} sales",
+    "tooltip_pro": "This user has over {{sellerRankData.pro.minimumSales}} sales"
   }
 }

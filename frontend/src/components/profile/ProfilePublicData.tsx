@@ -12,6 +12,8 @@ type ProfilePublicDataProps = {
 
 function ProfilePublicData(props: ProfilePublicDataProps): JSX.Element {
   const { t } = useTranslation('account');
+  const { t: commonT } = useTranslation('common');
+
   return (
     <PageSection className="text-center lg:text-left mb-8">
       <div className="pt-4 pb-4 lg:pl-12 lg:pr-12 flex flex-col-reverse lg:justify-between lg:flex-row">
@@ -19,7 +21,10 @@ function ProfilePublicData(props: ProfilePublicDataProps): JSX.Element {
           <h2 className="font-bold text-2xl mb-2 flex gap-4 items-center">
             @{props.user.username}
             <Tooltip
-              title={sellerRankData.renowned.tooltipText}
+              title={commonT('sellerRanks.tooltip', {
+                context: 'renowned',
+                sellerRankData,
+              })}
               arrow
               className="flex items-center"
             >
