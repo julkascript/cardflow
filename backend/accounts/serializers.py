@@ -61,17 +61,7 @@ class UserSerializer(serializers.ModelSerializer):
         return final_rejected_ordered_sales_count
 
     def get_miss_rate(self):
-        missed_sent_sales_count = OrderStatusHistory.objects.filter(
-            order__sender_user=self,
-            status='sent',
-            timestamp__lt=Subquery(
-                OrderStatusHistory.objects.filter(
-                    order=OuterRef('order'),
-                    timestamp__gt=OuterRef('timestamp'),
-                    status='not sent'
-                ).values('timestamp')[:1]
-            )
-        ).count()
+        missed_sent_sales_count = Order.objects.filter(sender_user=self, status='not_sent').count()
 
         return missed_sent_sales_count
 
