@@ -12,6 +12,7 @@ import Unauthorized from '../../router/Unauthorized';
 import DesktopGuestNav from './desktop/DesktopGuestNav';
 import MobileSearchFieldButton from '../searchField/MobileSearchFieldButton';
 import { useTranslation } from 'react-i18next';
+import DesktopLanguageMenu from './desktop/LanguageMenu';
 
 /**
  * A component for the application's navigation menu
@@ -40,9 +41,12 @@ function Navigation(): JSX.Element {
           <MobileNavigation onCloseButtonClick={closeMenu}></MobileNavigation>
         </Drawer>
       </div>
-      <Link to="/">
-        <Logo size={33} />
-      </Link>
+      <div className="flex gap-4">
+        <Link to="/">
+          <Logo size={33} />
+        </Link>
+        <DesktopLanguageMenu />
+      </div>
       <div className="flex flex-row gap-4 items-center">
         <div className="hidden lg:block">
           <SearchField />
