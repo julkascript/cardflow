@@ -18,6 +18,7 @@ import MobileGuestNav from './menus/MobileGuestNav';
 import { useLocation } from 'react-router-dom';
 import { useEffectAfterInitialLoad } from '../../../util/useEffectAfterInitialLoad';
 import { useShoppingCart } from '../../../context/shoppingCart';
+import { useTranslation } from 'react-i18next';
 
 type MobileNavigationProps = {
   onCloseButtonClick: (event?: React.MouseEvent) => void;
@@ -33,19 +34,21 @@ function MobileNavigation(props: MobileNavigationProps) {
   const theme = useTheme();
   const infoColor = theme.palette.info.main;
 
+  const { t } = useTranslation('common');
+
   useEffectAfterInitialLoad(() => {
     props.onCloseButtonClick();
   }, [pathname]);
   return (
     <div role="presentation" className="w-56">
       <List>
-        <ListSubheader className="w-52">Navigation</ListSubheader>
+        <ListSubheader className="w-52">{t('navigation.title')}</ListSubheader>
         <ListItem disablePadding>
           <ListItemButton href="/">
             <ListItemIcon>
               <HomeIcon />
             </ListItemIcon>
-            <ListItemText primary="Home" />
+            <ListItemText primary={t('navigation.home')} />
           </ListItemButton>
         </ListItem>
         <ListItem disablePadding>
@@ -59,7 +62,7 @@ function MobileNavigation(props: MobileNavigationProps) {
                 <ShoppingCartIcon />
               )}
             </ListItemIcon>
-            <ListItemText primary="Shopping cart" />
+            <ListItemText primary={t('navigation.shoppingCart')} />
           </ListItemButton>
         </ListItem>
         <Authorized>
@@ -73,7 +76,7 @@ function MobileNavigation(props: MobileNavigationProps) {
             <ListItemIcon>
               <CloseIcon />
             </ListItemIcon>
-            <ListItemText primary="Close menu" />
+            <ListItemText primary={t('navigation.closeMenu')} />
           </ListItemButton>
         </ListItem>
       </List>

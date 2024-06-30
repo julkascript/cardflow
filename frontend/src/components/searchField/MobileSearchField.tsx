@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useSearch } from '../../util/useSearch/useSearch';
 import SearchButton from '../navigation/desktop/buttons/SearchButton';
 import MobileSearchResultsDisplay from './MobileSearchResultsDisplay';
+import { useTranslation } from 'react-i18next';
 
 type MobileSearchFieldProps = {
   open: boolean;
@@ -12,6 +13,8 @@ type MobileSearchFieldProps = {
 function MobileSearchField(props: MobileSearchFieldProps): JSX.Element {
   const navigate = useNavigate();
   const { searchQuery, searchCards, searchResults, clearResults } = useSearch();
+  const { t } = useTranslation('common');
+
   function search(event: React.FormEvent) {
     event.preventDefault();
     if (searchQuery) {
@@ -32,7 +35,7 @@ function MobileSearchField(props: MobileSearchFieldProps): JSX.Element {
         <form onSubmit={search} className="relative z-[50000]">
           <div className="p-2">
             <TextField
-              placeholder={'Search'}
+              placeholder={t('search.search')}
               onChange={updateField}
               variant="outlined"
               className="w-full"

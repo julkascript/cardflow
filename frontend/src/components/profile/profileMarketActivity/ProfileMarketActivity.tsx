@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import MarketActivityTableCell from './MarketActivityTableCell';
 import { ProfilePublicDataProps } from '../ProfilePublicData';
 
@@ -8,7 +9,7 @@ function ProfileMarketActivity(props: ProfilePublicDataProps): JSX.Element {
         <thead>
           <tr>
             <th colSpan={2} className="text-center lg:text-left p-4 lg:pl-12 lg:pr-12">
-              Market activity
+              {t('public.marketActivity.heading')}
             </th>
           </tr>
         </thead>

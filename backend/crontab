@@ -1,4 +1,4 @@
 
 * * * * * /usr/local/bin/python /usr/src/app/manage.py complete_old_orders
 
-
+* * * * * docker exec -it cardflow-backend python manage.py update_stale_orders

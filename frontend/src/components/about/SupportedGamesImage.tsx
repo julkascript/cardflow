@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { theme } from '../../constants/theme';
 
 type SupportedGamesImageProps = {
@@ -9,7 +10,10 @@ type SupportedGamesImageProps = {
 };
 
 function SupportedGamesImage(props: SupportedGamesImageProps): JSX.Element {
-  const altText = props.comingSoon ? `${props.game} (coming soon)` : props.game;
+  const { t } = useTranslation('about');
+  const altText = props.comingSoon
+    ? `${props.game} (${t('main.thirdSection.comingSoon')})`
+    : props.game;
   const blurClass = props.comingSoon ? 'blur-sm' : '';
 
   return (
@@ -26,6 +30,8 @@ function SupportedGamesImage(props: SupportedGamesImageProps): JSX.Element {
 }
 
 function ComingSoon(props: { visible?: boolean }): JSX.Element {
+  const { t } = useTranslation('about');
+
   if (!props.visible) {
     return <></>;
   }
@@ -36,7 +42,7 @@ function ComingSoon(props: { visible?: boolean }): JSX.Element {
       className="absolute select-none right-[-24px] -rotate-[20deg] text-3xl"
       style={{ color: theme.palette.error.main, bottom: 8 }}
     >
-      Coming soon
+      {t('main.thirdSection.comingSoon')}
     </p>
   );
 }

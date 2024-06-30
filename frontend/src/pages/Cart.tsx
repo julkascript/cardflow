@@ -8,10 +8,10 @@ import { shoppingCartService } from '../services/shoppingCart/shoppingCart';
 import { PaginatedItem } from '../services/yugioh/types';
 import { useShoppingCart } from '../context/shoppingCart';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
-import { errorToast } from '../util/errorToast';
-import toast from 'react-hot-toast';
 import { toastMessages } from '../constants/toast';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
+import { useToast } from '../util/useToast';
+import { useTranslation } from 'react-i18next';
 
 function ShoppingCart(): JSX.Element {
   const { user } = useCurrentUser();
@@ -20,6 +20,8 @@ function ShoppingCart(): JSX.Element {
   const navigate = useNavigate();
   const [page, setPage] = useState(1);
   const [items, setItems] = useState(0);
+  const toast = useToast();
+  const { t } = useTranslation('common');
 
   const [shipmentAddress, setShipmentAddress] = useState('');
   const shipmentCost = shipmentAddress && shoppingCart.length ? 9.55 : 0;
@@ -31,9 +33,9 @@ function ShoppingCart(): JSX.Element {
       .then(() => {
         navigate('/');
         setShoppingCart(0);
-        toast.success(toastMessages.success.checkout);
+        toast.success({ toastKey: toastMessages.checkout });
       })
-      .catch(errorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function removeListing(id: number) {
@@ -45,13 +47,13 @@ function ShoppingCart(): JSX.Element {
           setPage(newPage);
         }
 
-        toast.success(toastMessages.success.shoppingCartItemDeleted);
+        toast.success({ toastKey: toastMessages.shoppingCartItemDeleted });
         return shoppingCartService.getItems(undefined, newPage);
       })
       .then((data) => {
         loadShoppingCart(data);
       })
-      .catch(errorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function removeAll() {
@@ -61,7 +63,7 @@ function ShoppingCart(): JSX.Element {
       setCart([]);
       setPage(1);
       setTotalPrice(0);
-      toast.success(toastMessages.success.shoppingCartEmptiedOut);
+      toast.success({ toastKey: toastMessages.shoppingCartEmptiedOut });
     });
   }
 
@@ -70,7 +72,12 @@ function ShoppingCart(): JSX.Element {
       .addItem({ listing_id: id, quantity })
       .then(() => shoppingCartService.getItems(undefined, page))
       .then(loadShoppingCart)
-      .catch((err) => errorToast(err, toastMessages.error.failedShoppingCartQuantityUpdate));
+      .catch((error) =>
+        toast.error({
+          error,
+          toastKey: toastMessages.failedShoppingCartQuantityUpdate,
+        }),
+      );
   }
 
   function loadShoppingCart(data: PaginatedItem<ShoppingCartItem>) {
@@ -86,24 +93,33 @@ function ShoppingCart(): JSX.Element {
     }
 
     if (user.user_id) {
-      shoppingCartService.getItems(undefined, page).then(loadShoppingCart).catch(errorToast);
+      shoppingCartService
+        .getItems(undefined, page)
+        .then(loadShoppingCart)
+        .catch((error) => toast.error({ error }));
     }
   }, [user]);
 
   useEffectAfterInitialLoad(() => {
-    shoppingCartService.getItems(undefined, page).then(loadShoppingCart).catch(errorToast);
+    shoppingCartService
+      .getItems(undefined, page)
+      .then(loadShoppingCart)
+      .catch((error) => toast.error({ error }));
   }, [page]);
 
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
       href: '/buy',
-      text: 'Buy',
+      text: t('breadcrumbs.buy.title'),
     },
   ];
 
   return (
     <>
-      <BreadcrumbNavigation links={breadcrumbNavigation} heading="Checkout" />
+      <BreadcrumbNavigation
+        links={breadcrumbNavigation}
+        heading={t('breadcrumbs.buy.cart.title')}
+      />
       <div
         id="summary"
         className="flex flex-col items-center lg:flex-row lg:items-start pb-4 pt-4 justify-center gap-4 bg-[#F5F5F5]"

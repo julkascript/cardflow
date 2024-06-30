@@ -8,8 +8,9 @@ import SearchButton from '../components/navigation/desktop/buttons/SearchButton'
 import { yugiohService } from '../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
 import CardflowTabs from '../components/sellListing/CardflowTabs';
-import { errorToast } from '../util/errorToast';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
+import { useToast } from '../util/useToast';
+import { useTranslation } from 'react-i18next';
 
 function Search(): JSX.Element {
   const data: CardSearchLoader = useLoaderData() as CardSearchLoader;
@@ -19,10 +20,15 @@ function Search(): JSX.Element {
   const [page, setPage] = useState(1);
   const [searchQuery, setSearchQuery] = useState(params.query || '');
 
+  const { t: commonT } = useTranslation('common');
+  const { t } = useTranslation('buy');
+
+  const toast = useToast();
+
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
       href: '/buy',
-      text: 'Buy',
+      text: commonT('breadcrumbs.buy.title'),
     },
   ];
 
@@ -56,13 +62,16 @@ function Search(): JSX.Element {
         setCards(data);
         setPage(page);
       })
-      .catch(errorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   useEffectAfterInitialLoad(() => {
     const query = params.query || '';
     if (query) {
-      yugiohService.searchCardsByName(query).then(setCards).catch(errorToast);
+      yugiohService
+        .searchCardsByName(query)
+        .then(setCards)
+        .catch((error) => toast.error({ error }));
     } else {
       setCards({
         results: [],
@@ -78,7 +87,10 @@ function Search(): JSX.Element {
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <CardflowTabs />
-      <BreadcrumbNavigation heading="Search" links={breadcrumbNavigation} />
+      <BreadcrumbNavigation
+        heading={commonT('breadcrumbs.buy.search.title')}
+        links={breadcrumbNavigation}
+      />
       <div className="min-h-full mt-2 flex items-center w-full flex-col gap-4">
         <form className="w-2/3 bg-white relative z-0" onSubmit={handleSubmit}>
           <TextField
@@ -102,9 +114,9 @@ function Search(): JSX.Element {
           <thead>
             <tr>
               <th style={{ textAlign: 'center' }} colSpan={3}>
-                Name
+                {t('search.table.tableHeaders.name')}
               </th>
-              <th style={{ textAlign: 'center' }}>Rarity</th>
+              <th style={{ textAlign: 'center' }}>{t('search.table.tableHeaders.rarity')}</th>
             </tr>
           </thead>
           <tbody>

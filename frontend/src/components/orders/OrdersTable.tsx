@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { Order } from '../../services/orders/types';
 import MarketTable from '../marketTable/MarketTable';
 import OrdersTableRow from './OrdersTableRow';
@@ -15,7 +16,8 @@ type OrdersTableProps = {
 };
 
 function OrdersTable(props: OrdersTableProps): JSX.Element {
-  const userPosition = props.userPosition === 'buyer' ? 'Seller' : 'Buyer';
+  const { t } = useTranslation('account');
+
   return (
     <MarketTable
       page={props.page}
@@ -25,12 +27,12 @@ function OrdersTable(props: OrdersTableProps): JSX.Element {
     >
       <thead>
         <tr>
-          <th>Order</th>
-          <th>{userPosition}</th>
-          <th>Quantity</th>
-          <th>Total</th>
-          <th>State</th>
-          <th>Review order</th>
+          <th>{t('salesAndOrders.table.tableHeaders.order')}</th>
+          <th>{t('salesAndOrders.table.tableHeaders.user', { context: props.userPosition })}</th>
+          <th>{t('salesAndOrders.table.tableHeaders.quantity')}</th>
+          <th>{t('salesAndOrders.table.tableHeaders.total')}</th>
+          <th>{t('salesAndOrders.table.tableHeaders.state')}</th>
+          <th>{t('salesAndOrders.table.tableHeaders.reviewOrder')}</th>
         </tr>
       </thead>
       <tbody>

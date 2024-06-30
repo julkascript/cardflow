@@ -1,0 +1,65 @@
+{
+  "bestSellers": {
+    "title": "All-time best sellers"
+  },
+  "cardDetails": {
+    "dataTable": {
+      "tableHeaders": {
+        "title": "Card and market details",
+        "set": "Set",
+        "availableItems": "Available items",
+        "number": "Number",
+        "from": "From",
+        "rarity": "Rarity",
+        "thirtyDaysAveragePrice": "30-days average price"
+      }
+    }
+  },
+  "cart": {
+    "emptyAllButtonTooltipText": "Empty out the shopping cart (remove all listings)",
+    "summary": {
+      "table": {
+        "tableHeaders": {
+          "actions": "Actions"
+        },
+        "tableBody": {
+          "removeListingTooltipText": "Remove this listing"
+        }
+      },
+      "shipment": {
+        "shipmentAddressPrefilled_true": "Your details were pre-filled from your profile.",
+        "shipmentAddressPrefilled_false": "You can set a default shipment address from your profile, which will be pre-filled for future purchases.",
+        "invalidShipmentAddress": "Please enter a valid address!"
+      }
+    },
+    "checkout": {
+      "title": "Total:",
+      "shippingCost": "Shipping cost",
+      "itemsCost": "Items cost",
+      "amountOfSellers": "Amount of sellers",
+      "amountOfCards": "Amount of cards",
+      "checkoutButtonText": "Checkout"
+    }
+  },
+  "common": {
+    "marketTable": {
+      "tableHeaders": {
+        "seller": "Seller",
+        "cardDetails": "Card details",
+        "available": "Available",
+        "buy": "Buy"
+      },
+      "tableBody": {
+        "addToCartAriaLabel": "Add to cart"
+      }
+    }
+  },
+  "search": {
+    "table": {
+      "tableHeaders": {
+        "name": "Name",
+        "rarity": "Rarity"
+      }
+    }
+  }
+}

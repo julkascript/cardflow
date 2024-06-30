@@ -1,3 +1,4 @@
+import { useTranslation } from 'react-i18next';
 import { YugiohCardListing } from '../../../../services/yugioh/types';
 import MarketTable from '../../../marketTable/MarketTable';
 import YugiohCardMarketTableCell from './YugiohCardMarketTableCell';
@@ -10,6 +11,7 @@ type YugiohCardMarketProps = {
 };
 
 function YugiohCardMarket(props: YugiohCardMarketProps): JSX.Element {
+  const { t } = useTranslation('buy');
   if (props.listings.length === 0) {
     return <TableWithNoData />;
   }
@@ -25,10 +27,10 @@ function YugiohCardMarket(props: YugiohCardMarketProps): JSX.Element {
         >
           <thead className="text-sm lg:text-base">
             <tr>
-              <th colSpan={3}>Seller</th>
-              <th colSpan={2}>Card details</th>
-              <th>Available</th>
-              <th colSpan={3}>Buy</th>
+              <th colSpan={3}>{t('common.marketTable.tableHeaders.seller')}</th>
+              <th colSpan={2}>{t('common.marketTable.tableHeaders.cardDetails')}</th>
+              <th>{t('common.marketTable.tableHeaders.available')}</th>
+              <th colSpan={3}>{t('common.marketTable.tableHeaders.buy')}</th>
             </tr>
           </thead>
           <tbody className="text-sm lg:text-base">
@@ -47,10 +49,10 @@ function YugiohCardMarket(props: YugiohCardMarketProps): JSX.Element {
         >
           <thead className="text-sm lg:text-base">
             <tr>
-              <th>Seller</th>
-              <th colSpan={2}>Card details</th>
-              <th>Available</th>
-              <th colSpan={3}>Buy</th>
+              <th>{t('common.marketTable.tableHeaders.seller')}</th>
+              <th colSpan={2}>{t('common.marketTable.tableHeaders.cardDetails')}</th>
+              <th>{t('common.marketTable.tableHeaders.available')}</th>
+              <th colSpan={3}>{t('common.marketTable.tableHeaders.buy')}</th>
             </tr>
           </thead>
           <tbody className="text-sm lg:text-base">

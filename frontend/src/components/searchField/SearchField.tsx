@@ -4,6 +4,7 @@ import SearchButton from '../navigation/desktop/buttons/SearchButton';
 import SearchResultsDisplay from './SearchResultsDisplay';
 import { useNavigate } from 'react-router-dom';
 import { useSearch } from '../../util/useSearch/useSearch';
+import { useTranslation } from 'react-i18next';
 
 type SearchFieldProps = {
   isListing?: boolean;
@@ -12,6 +13,8 @@ type SearchFieldProps = {
 function SearchField({ isListing }: SearchFieldProps): JSX.Element {
   const navigate = useNavigate();
   const { searchQuery, searchCards, searchResults, clearResults } = useSearch();
+  const { t } = useTranslation('common');
+
   function search(event: FormEvent) {
     event.preventDefault();
     if (searchQuery) {
@@ -31,7 +34,7 @@ function SearchField({ isListing }: SearchFieldProps): JSX.Element {
     <ClickAwayListener onClickAway={clearResults}>
       <form onSubmit={search} className="relative">
         <TextField
-          placeholder={'Type "/" to search'}
+          placeholder={t('search.placeholder')}
           onChange={updateField}
           variant="outlined"
           size="small"

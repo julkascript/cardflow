@@ -36,9 +36,9 @@ export const handleAvatarUpload = async (file: File) =>
 const megaBytesLimit = 2;
 
 const errorMessages = {
-  fileTooLarge: `Your image is too large (the limit is ${megaBytesLimit}MB)!`,
-  uploadFailed: 'Image upload failed, please try again!',
-  invalidFileExtension: 'Please upload an image file!',
+  fileTooLarge: 'large',
+  uploadFailed: 'uploadFailed',
+  invalidFileExtension: 'invalidFileException',
 };
 
 function toMegabytes(bytes: number) {

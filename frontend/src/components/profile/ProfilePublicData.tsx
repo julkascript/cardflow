@@ -4,12 +4,16 @@ import PageSection from '../PageSection';
 import YugiohSellerRankBadge from '../yugioh/seller/YugiohSellerRankBadge';
 import { sellerRankData } from '../../constants/sellerRank';
 import { PublicUserInfo } from '../../services/user/types';
+import { useTranslation } from 'react-i18next';
 
 export type ProfilePublicDataProps = {
   user: PublicUserInfo;
 };
 
 function ProfilePublicData(props: ProfilePublicDataProps): JSX.Element {
+  const { t } = useTranslation('account');
+  const { t: commonT } = useTranslation('common');
+
   return (
     <PageSection className="text-center lg:text-left mb-8">
       <div className="pt-4 pb-4 lg:pl-12 lg:pr-12 flex flex-col-reverse lg:justify-between lg:flex-row">
@@ -17,7 +21,10 @@ function ProfilePublicData(props: ProfilePublicDataProps): JSX.Element {
           <h2 className="font-bold text-2xl mb-2 flex gap-4 items-center">
             @{props.user.username}
             <Tooltip
-              title={sellerRankData.renowned.tooltipText}
+              title={commonT('sellerRanks.tooltip', {
+                context: 'renowned',
+                sellerRankData,
+              })}
               arrow
               className="flex items-center"
             >
@@ -37,7 +44,7 @@ function ProfilePublicData(props: ProfilePublicDataProps): JSX.Element {
       </div>
       <Divider sx={{ width: '90%', margin: '0 auto' }} />
       <div className="mb-2 pt-4 pb-4 lg:p-4 lg:pl-12">
-        <h3 className="font-bold mb-4">Achievements</h3>
+        <h3 className="font-bold mb-4">{t('public.achievements')}</h3>
         <div className="flex flex-row gap-4 flex-wrap justify-center lg:justify-normal">
           <Avatar>
             <TrophyIcon />
@@ -53,7 +60,7 @@ function ProfilePublicData(props: ProfilePublicDataProps): JSX.Element {
           component="p"
           className="bg-[#F5F5F5] p-4 pl-12 rounded-lg rounded-t-none"
         >
-          Member since 02/03/2024
+          {t('public.joinDate', { date: '02/03/2024' })}
         </Typography>
       </div>
     </PageSection>
