@@ -1,10 +1,10 @@
 import { Badge, Button, Link } from '@mui/material';
 import { Order } from '../../services/orders/types';
-import { orderStates } from '../../constants/orders';
 import { useEffect, useState } from 'react';
 import OrdersModal from './ordersModal/OrdersModal';
 import { Feedback } from '../../services/feedback/types';
 import { feedbackService } from '../../services/feedback/feedback';
+import { useTranslation } from 'react-i18next';
 
 type OrdersTableRowProps = {
   order: Order;
@@ -14,6 +14,8 @@ type OrdersTableRowProps = {
 
 function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
   const [open, setOpen] = useState(false);
+  const { t } = useTranslation('account');
+
   const quantity = props.order.order_items.reduce((total, order) => total + order.quantity, 0);
   const totalPrice = props.order.order_items.reduce(
     (total, order) => total + order.quantity * order.listing.price,
@@ -62,12 +64,12 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
             badgeContent=" "
             color="error"
           >
-            <div className="pr-2">{orderStates[props.order.status]}</div>
+            <div className="pr-2">{t('salesAndOrders.status.' + props.order.status)}</div>
           </Badge>
         </td>
         <td style={{ paddingLeft: 16 }}>
           <Button variant="outlined" color="primary" onClick={() => setOpen(true)}>
-            Review order
+            {t('salesAndOrders.table.tableHeaders.reviewOrder')}
           </Button>
         </td>
       </tr>

@@ -2,6 +2,7 @@ import AddIcon from '@mui/icons-material/Add';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import { Button, ListItemIcon, ListItemText, Menu, MenuItem, useTheme } from '@mui/material';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 type MenuItem = {
@@ -17,6 +18,8 @@ function NewActionButton(): JSX.Element {
   const theme = useTheme();
   const secondaryTextColor = theme.palette.text.secondary;
 
+  const { t } = useTranslation('common');
+
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -30,11 +33,11 @@ function NewActionButton(): JSX.Element {
 
   const menuItems: MenuItem[] = [
     {
-      label: 'New listing',
+      label: t('navigation.newListing'),
       href: '/sell/new',
     },
     {
-      label: 'New trade',
+      label: t('navigation.newTrade'),
       href: '#',
     },
   ];

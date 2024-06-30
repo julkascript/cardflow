@@ -1,0 +1,105 @@
+{
+  "purchaseDetails": {
+    "summary": "Summary",
+    "cardsTotalPrice_one": "Card total price",
+    "cardsTotalPrice_other": "Cards total price",
+    "shipmentPrice": "Shipment price",
+    "totalPrice": "Total",
+    "shippingDetails": {
+      "title": "Shipping details"
+    },
+    "table": {
+      "tableHeaders": {
+        "cardDetails": "Card Details",
+        "quantity": "Quantity",
+        "price": "Price"
+      }
+    }
+  },
+  "navigation": {
+    "title": "Navigation",
+    "home": "Home",
+    "myProfile": "My profile",
+    "myListings": "My listings",
+    "newAction": "New action",
+    "newListing": "New listing",
+    "newTrade": "New trade",
+    "accountSettings": "Account settings",
+    "myOrders": "My orders",
+    "mySales": "My sales",
+    "shoppingCart": "Shopping cart",
+    "logout": "Log out",
+    "closeMenu": "Close menu",
+    "openMenuAriaLabel": "Open navigation menu",
+    "signIn": "Sign in",
+    "signUp": "Sign up"
+  },
+  "search": {
+    "placeholder": "Type \"/\" to search",
+    "search": "Search",
+    "showAll": "Show all {{results}} results.",
+    "openSearchToolTip": "Search cards by name"
+  },
+  "conditions": {
+    "poor": "Poor",
+    "played": "Played",
+    "good": "Good",
+    "excellent": "Excellent"
+  },
+  "notFound": {
+    "text": "This page could not be found",
+    "backToHomeButtonText": "Back to home"
+  },
+  "tabs": {
+    "buy": "Buy",
+    "sell": "Sell",
+    "trade": "Trade",
+    "about": "About"
+  },
+  "breadcrumbs": {
+    "about": {
+      "title": "About",
+      "faq": {
+        "title": "FAQ"
+      },
+      "contact": {
+        "title": "Contact us"
+      },
+      "changelog": {
+        "title": "Changelog"
+      }
+    },
+    "account": {
+      "title": "Account",
+      "myOrders": {
+        "title": "My orders"
+      },
+      "mySales": {
+        "title": "My sales"
+      }
+    },
+    "buy": {
+      "title": "Buy",
+      "search": {
+        "title": "Search"
+      },
+      "cart": {
+        "title": "Shopping cart"
+      }
+    },
+    "sell": {
+      "title": "Sell",
+      "newListing": {
+        "title": "New listing"
+      },
+      "editListing": {
+        "title": "Edit listing"
+      }
+    }
+  },
+  "sellerRanks": {
+    "tooltip_seller": "This user has less than {{sellerRankData.renowned.minimumSales}} sales",
+    "tooltip_renowned": "This user has over {{sellerRankData.renowned.minimumSales}} sales",
+    "tooltip_pro": "This user has over {{sellerRankData.pro.minimumSales}} sales"
+  }
+}

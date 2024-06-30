@@ -1,0 +1,52 @@
+{
+  "newListing": {
+    "postAnotherCheckboxLabel": "Върни се в миналата секция след качване",
+    "cancelButtonText": "Затвори",
+    "postButtonText": "Публикувай",
+    "secondSection": {
+      "quantity": "В наличност",
+      "price": "Цена",
+      "condition": "Състояние",
+      "clearButtonText": "Изчисти",
+      "clearButtonTooltip": "Изчисти тази обяви",
+      "marketInformation": "Информация за пазара",
+      "visibilityButtonText_false": "Покажи",
+      "visibilityButtonText_true": "Скрий",
+      "visibilityButtonTooltipText_false": "Направи тази обява видима",
+      "visibilityButtonTooltipText_true": "Направи тази обява скрита",
+      "deleteButtonText": "Изтрий",
+      "deleteButtonTooltipText": "Изтрий тази обява",
+      "marketTable": {
+        "tableHeaders": {
+          "seller": "Продавач",
+          "cardDetails": "Детайли за картата",
+          "available": "В наличност",
+          "price": "Цена"
+        }
+      }
+    }
+  },
+  "manage": {
+    "title": "Продай",
+    "mySalesButtonText": "Моите продажби",
+    "newListingButtonText": "Нова обява",
+    "table": {
+      "tableHeaders": {
+        "cardDetails": "Детайли за картата",
+        "available": "В наличност",
+        "price": "Цена",
+        "listed": "Видимост"
+      }
+    },
+    "actions": {
+      "selectedItems_one": "<strong>1</strong> избрана обява",
+      "selectedItems_other": "<strong>{{count}}</strong> избрани обяви",
+      "delistAllButtonText": "Скрий всички",
+      "deleteAllButtonText": "Изтрий всички",
+      "deleteSelectedItemsButtonText": "Изтрий избраните обяви",
+      "delistSelectedItemsButtonText": "Скрий избраните обяви",
+      "listSelectedItemsButtonText": "Покажи избраните обяви",
+      "listAllButtonText": "Покажи всички обяви"
+    }
+  }
+}

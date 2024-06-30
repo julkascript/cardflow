@@ -3,6 +3,7 @@ import PageSection from '../../../PageSection';
 import { FormEvent, useState } from 'react';
 import { handleAvatarUpload } from './handleAvatarUpload';
 import ProfileSectionFooter from '../../ProfileSectionFooter';
+import { useTranslation } from 'react-i18next';
 
 const VisuallyHiddenInput = styled('input')({
   clip: 'rect(0 0 0 0)',
@@ -30,6 +31,8 @@ function AvatarSettings(props: AvatarSettingsProps): JSX.Element {
 
   const theme = useTheme();
   const error = theme.palette.error.main;
+
+  const { t } = useTranslation('account');
 
   function changeAvatarPreview(event: React.ChangeEvent<HTMLInputElement>) {
     const files = event.target.files;
@@ -61,14 +64,14 @@ function AvatarSettings(props: AvatarSettingsProps): JSX.Element {
       <form onSubmit={handleSubmit}>
         <div className="pt-4 pb-4 lg:pl-12 lg:pr-12 flex flex-col-reverse lg:justify-between lg:flex-row">
           <div>
-            <h2 className="font-bold mb-4 text-lg">Avatar</h2>
-            <p>Select your avatar by clicking on the avatar circle.</p>
+            <h2 className="font-bold mb-4 text-lg">{t('details.avatar.title')}</h2>
+            <p>{t('details.avatar.description')}</p>
             <Typography
               component="p"
               color={error}
               className={imageError ? 'visible' : 'invisible'}
             >
-              {imageError || 'Your file is valid!'}
+              {imageError ? t(`details.avatar.errors.${imageError}`) : 'details.avatar.validAvatar'}
             </Typography>
           </div>
           <div className="relative flex flex-row mb-2 lg:mb-0 gap-4 flex-wrap justify-center lg:justify-normal">
@@ -89,7 +92,7 @@ function AvatarSettings(props: AvatarSettingsProps): JSX.Element {
           </div>
         </div>
         <ProfileSectionFooter>
-          <p>An avatar is optional but strongly recommended.</p>
+          <p>{t('details.avatar.hint')}</p>
           <Button
             disabled={!(imageError === '' && props.hasSelected)}
             color="primary"
@@ -97,7 +100,7 @@ function AvatarSettings(props: AvatarSettingsProps): JSX.Element {
             className="inline-block"
             type="submit"
           >
-            Save
+            {t('common.saveButtonText')}
           </Button>
         </ProfileSectionFooter>
       </form>

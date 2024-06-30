@@ -12,13 +12,28 @@ import { shoppingCartService } from './services/shoppingCart/shoppingCart';
 import { Toaster } from 'react-hot-toast';
 import { theme } from './constants/theme';
 import { linkBehaviorConfiguration } from './linkBehaviorConfiguration';
-import { errorToast } from './util/errorToast';
+import { useToast } from './util/useToast';
+import * as locales from '@mui/material/locale';
+import i18next from 'i18next';
+
+const languages: { [key: string]: any } = {
+  bg: locales.bgBG,
+  en: locales.enUS,
+};
 
 function App() {
-  const appTheme = useMemo(() => createTheme({ ...theme, ...linkBehaviorConfiguration }), []);
+  const appTheme = useMemo(
+    () =>
+      createTheme(
+        { ...theme, ...linkBehaviorConfiguration },
+        languages[i18next.language] || locales.enUS,
+      ),
+    [i18next.language],
+  );
 
   const { setUser, restartUser } = useCurrentUser();
   const { setShoppingCart } = useShoppingCart();
+  const toast = useToast();
 
   useEffect(() => {
     const refreshToken = localStorage.getItem('refreshToken');
@@ -42,7 +57,7 @@ function App() {
           if (res instanceof HttpError && res.err.status < 500) {
             restartUser();
           } else if (res instanceof HttpError) {
-            errorToast(res);
+            toast.error({ error: res });
           }
         });
     }

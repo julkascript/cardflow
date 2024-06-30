@@ -11,6 +11,8 @@ import Authorized from '../../router/Authorized';
 import Unauthorized from '../../router/Unauthorized';
 import DesktopGuestNav from './desktop/DesktopGuestNav';
 import MobileSearchFieldButton from '../searchField/MobileSearchFieldButton';
+import { useTranslation } from 'react-i18next';
+import LanguageMenu from './LanguageMenu';
 
 /**
  * A component for the application's navigation menu
@@ -18,6 +20,7 @@ import MobileSearchFieldButton from '../searchField/MobileSearchFieldButton';
  */
 function Navigation(): JSX.Element {
   const [mobileMenuIsOpen, setMobileMenuOpen] = useState(false);
+  const { t } = useTranslation('common');
 
   function closeMenu(event?: React.MouseEvent) {
     event?.preventDefault();
@@ -30,17 +33,25 @@ function Navigation(): JSX.Element {
 
   return (
     <nav className="flex justify-between p-4 items-center relative z-5000">
-      <div className="block lg:hidden">
-        <IconButton onClick={openMenu} aria-label="Open navigation menu">
+      <div className="relative lg:hidden">
+        <IconButton onClick={openMenu} aria-label={t('navigation.openMenuAriaLabel')}>
           <MenuIcon />
         </IconButton>
+        <div className="absolute top-1 left-12">
+          <LanguageMenu />
+        </div>
         <Drawer anchor="left" open={mobileMenuIsOpen} onClose={() => setMobileMenuOpen(false)}>
           <MobileNavigation onCloseButtonClick={closeMenu}></MobileNavigation>
         </Drawer>
       </div>
-      <Link to="/">
-        <Logo size={33} />
-      </Link>
+      <div className="flex gap-4">
+        <Link to="/">
+          <Logo size={33} />
+        </Link>
+        <div className="hidden lg:block">
+          <LanguageMenu />
+        </div>
+      </div>
       <div className="flex flex-row gap-4 items-center">
         <div className="hidden lg:block">
           <SearchField />

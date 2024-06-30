@@ -9,13 +9,13 @@ import { useCurrentUser } from '../../context/user';
 import { UserAccount } from '../../services/user/types';
 import { userService } from '../../services/user/user';
 import { useLogout } from '../../util/useLogout';
-import toast from 'react-hot-toast';
 import { toastMessages } from '../../constants/toast';
-import { errorToast } from '../../util/errorToast';
+import { useToast } from '../../util/useToast';
 
 function ProfileSettingsPage(): JSX.Element {
   const { user, setUser } = useCurrentUser();
   const logout = useLogout();
+  const toast = useToast();
 
   const [hasSelectedAnAvatar, setSelectedAvatar] = useState(false);
 
@@ -26,20 +26,18 @@ function ProfileSettingsPage(): JSX.Element {
       .then((data) => {
         setUser({ user_id: user.user_id, ...data });
         if (toastMessage) {
-          toast.success(toastMessage);
+          toast.success({ toastKey: toastMessage });
         }
       })
-      .catch(errorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function updateAndLogout(field: 'username' | 'email', value: string) {
     updateAccount(field, value).then(() => {
       logout();
-      toast.success(
-        field === 'username'
-          ? toastMessages.success.usernameChanged
-          : toastMessages.success.emailChanged,
-      );
+      toast.success({
+        toastKey: field === 'username' ? toastMessages.usernameChanged : toastMessages.emailChanged,
+      });
     });
   }
 
@@ -48,9 +46,9 @@ function ProfileSettingsPage(): JSX.Element {
       .deleteUser(user.user_id)
       .then(() => {
         logout();
-        toast.success(toastMessages.success.accountDeleted);
+        toast.success({ toastKey: toastMessages.accountDeleted });
       })
-      .catch(errorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   function updateAvatar(avatar: File) {
@@ -59,9 +57,9 @@ function ProfileSettingsPage(): JSX.Element {
       .then((data) => {
         setSelectedAvatar(false);
         setUser({ user_id: user.user_id, ...data });
-        toast.success(toastMessages.success.avatarChanged);
+        toast.success({ toastKey: toastMessages.avatarChanged });
       })
-      .catch(errorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   return (
@@ -87,7 +85,7 @@ function ProfileSettingsPage(): JSX.Element {
         <ShipmentAddressSettings
           address={user.shipping_address}
           onSubmit={(a) =>
-            updateAccount('shipping_address', a, toastMessages.success.shipmentAddressChanged)
+            updateAccount('shipping_address', a, toastMessages.shipmentAddressChanged)
           }
           key={user.shipping_address + '3'}
         />

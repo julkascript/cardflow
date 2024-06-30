@@ -6,6 +6,7 @@ import { orderService } from '../../../services/orders/orderService';
 import { orderStates } from '../../../constants/orders';
 import { Feedback } from '../../../services/feedback/types';
 import { feedbackService } from '../../../services/feedback/feedback';
+import '../../../i18next';
 
 function generateMockOrder(status: orderState): Order {
   const mockOrder: Order = {

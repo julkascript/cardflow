@@ -3,8 +3,8 @@ import PageSection from '../../../PageSection';
 import ProfileSectionFooter from '../../ProfileSectionFooter';
 import './UsernameSettings.css';
 import { ChangeEvent, FormEvent, useState } from 'react';
-
-const maxLength = 48;
+import { useTranslation } from 'react-i18next';
+import { usernameValidationRules } from '../../../../constants/validationRules/username';
 
 type UsernameSettingsProps = {
   username: string;
@@ -13,13 +13,14 @@ type UsernameSettingsProps = {
 
 function UsernameSettings(props: UsernameSettingsProps): JSX.Element {
   const [username, setUsername] = useState(props.username);
+  const { t } = useTranslation('account');
 
   function handleUsernameChange(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
     const target = event.target;
     const value = target.value;
 
-    if (value.length <= maxLength) {
+    if (value.length <= usernameValidationRules.maxLength) {
       setUsername(value);
     }
   }
@@ -34,8 +35,8 @@ function UsernameSettings(props: UsernameSettingsProps): JSX.Element {
       <form onSubmit={handleSubmit}>
         <div className="pt-4 pb-4 lg:pl-12 lg:pr-12">
           <div>
-            <h2 className="font-bold mb-4 text-lg">Username</h2>
-            <p className="mb-4">This is how people will recognize you.</p>
+            <h2 className="font-bold mb-4 text-lg">{t('details.username.title')}</h2>
+            <p className="mb-4">{t('details.username.description')}</p>
             <div>
               <TextField
                 className="user-url-field sm:w-[165px]"
@@ -49,16 +50,13 @@ function UsernameSettings(props: UsernameSettingsProps): JSX.Element {
                 size="small"
                 value={username}
                 onChange={handleUsernameChange}
-                helperText={`${username.length} / ${maxLength}`}
+                helperText={`${username.length} / ${usernameValidationRules.maxLength}`}
               />
             </div>
           </div>
         </div>
         <ProfileSectionFooter>
-          <p>
-            Please use {maxLength} characters at maximum. You will be logged out after changing your
-            username
-          </p>
+          <p>{t('details.username.hint', { usernameValidationRules })}</p>
           <Button
             disabled={username === '' || username === props.username}
             color="primary"
@@ -66,7 +64,7 @@ function UsernameSettings(props: UsernameSettingsProps): JSX.Element {
             className="inline-block"
             type="submit"
           >
-            Save
+            {t('common.saveButtonText')}
           </Button>
         </ProfileSectionFooter>
       </form>

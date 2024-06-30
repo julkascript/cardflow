@@ -1,0 +1,100 @@
+{
+  "purchaseDetails": {
+    "summary": "Обобщение",
+    "cardsTotalPrice_one": "Цена на картата",
+    "cardsTotalPrice_other": "Обща цена на картите",
+    "shipmentPrice": "Цена на пратката",
+    "totalPrice": "Крайна цена",
+    "shippingDetails": {
+      "title": "Детайли за пратката"
+    },
+    "table": {
+      "tableHeaders": {
+        "cardDetails": "Детайли за картата",
+        "quantity": "Количество",
+        "price": "Цена"
+      }
+    }
+  },
+  "navigation": {
+    "title": "Навигация",
+    "home": "Начало",
+    "myProfile": "Моят профил",
+    "myListings": "Моите обяви",
+    "newAction": "Ново действие",
+    "newListing": "Нова обява",
+    "newTrade": "Нова размяна",
+    "accountSettings": "Профилни настройки",
+    "myOrders": "Моите поръчки",
+    "mySales": "Моите продажби",
+    "shoppingCart": "Количка",
+    "logout": "Излез от профил",
+    "closeMenu": "Затвори",
+    "openMenuAriaLabel": "Отвори навигационното меню",
+    "signIn": "Влез в профил",
+    "signUp": "Регистрация"
+  },
+  "search": {
+    "placeholder": "Натисни \"/\" за търсене",
+    "search": "Търсене",
+    "showAll": "Виж всички {{results}} резултата.",
+    "openSearchToolTip": "Търсене на карти по име"
+  },
+  "conditions": {
+    "poor": "Влошено",
+    "played": "Играно",
+    "good": "Добро",
+    "excellent": "Отлично"
+  },
+  "notFound": {
+    "text": "Тази страница не беше намерена",
+    "backToHomeButtonText": "Обратно в началната страница"
+  },
+  "tabs": {
+    "buy": "Купи",
+    "sell": "Продай",
+    "trade": "Размени",
+    "about": "За нас"
+  },
+  "breadcrumbs": {
+    "about": {
+      "title": "За нас",
+      "faq": {
+        "title": "Често задавни въпроси"
+      },
+      "contact": {
+        "title": "Свържи се с нас"
+      },
+      "changelog": {
+        "title": "Последни промени"
+      }
+    },
+    "account": {
+      "title": "Профил",
+      "myOrders": {
+        "title": "Моите поръчки"
+      },
+      "mySales": {
+        "title": "Моите продажби"
+      }
+    },
+    "buy": {
+      "title": "Купи",
+      "search": {
+        "title": "Търсене"
+      },
+      "cart": {
+        "title": "Количка"
+      }
+    },
+    "sell": {
+      "title": "Продай",
+      "newListing": {
+        "title": "Нова обява"
+      },
+      "editListing": {
+        "title": "Редактиране на обява"
+      }
+    }
+  }
+}

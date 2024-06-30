@@ -6,6 +6,7 @@ import PageSection from '../PageSection';
 import { CurrentUser } from '../../services/user/types';
 import YugiohCardQuantityField from '../yugioh/table/market/YugiohCardQuantityField';
 import { ShoppingCartItem } from '../../services/shoppingCart/types';
+import { useTranslation } from 'react-i18next';
 
 type ShoppingCartSummaryProps = {
   user: CurrentUser;
@@ -24,14 +25,16 @@ type ShoppingCartSummaryProps = {
 
 function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
   const shipmentAddressIsValid = props.shipmentAddress !== '';
+  const { t } = useTranslation('buy');
+  const { t: commonT } = useTranslation('common');
 
-  const shipmentAddressTooltipText = props.shipmentAddress
-    ? 'Your details were pre-filled from your profile.'
-    : 'You can set a default shipment address from your profile, which will be pre-filled for future purchases.';
+  const shipmentAddressTooltipText = t('cart.summary.shipment.shipmentAddressPrefilled', {
+    context: (props.shipmentAddress !== '').toString(),
+  });
   return (
     <PageSection className="p-8 pt-4 w-11/12 lg:w-1/2 relative">
       <section className="flex items-end justify-end absolute right-4 top-2">
-        <Tooltip title="Empty out the shopping cart (remove all listings)">
+        <Tooltip title={t('cart.emptyAllButtonTooltipText')}>
           <IconButton
             onClick={(e) => {
               e.preventDefault();
@@ -44,11 +47,23 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
       </section>
       <div className="flex flex-wrap flex-col items-center lg:items-start text-center lg:text-left lg:flex-row gap-4 pt-4 pb-4">
         <section className="w-2/5">
-          <h3 className="font-bold mb-4">Summary</h3>
+          <h3 className="font-bold mb-4">{commonT('purchaseDetails.summary')}</h3>
           <ul className="mr-4">
-            <SummaryData summary="Card(s) total price" data={props.totalPrice} />
-            <SummaryData summary="Shipment price" data={props.shipmentCost} />
-            <SummaryData boldedData summary="Total" data={props.totalPrice + props.shipmentCost} />
+            <SummaryData
+              summary={commonT('purchaseDetails.cardsTotalPrice', {
+                count: props.shoppingCart.reduce((total, item) => total + item.quantity, 0),
+              })}
+              data={props.totalPrice}
+            />
+            <SummaryData
+              summary={commonT('purchaseDetails.shipmentPrice')}
+              data={props.shipmentCost}
+            />
+            <SummaryData
+              boldedData
+              summary={commonT('purchaseDetails.totalPrice')}
+              data={props.totalPrice + props.shipmentCost}
+            />
           </ul>
         </section>
         <Divider className="hidden lg:block" orientation="vertical" flexItem />
@@ -56,7 +71,7 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
         <section>
           <h3 className="font-bold mb-2">
             <div className="flex items-center justify-center lg:justify-start gap-2">
-              <span>Shipping details</span>
+              <span>{commonT('purchaseDetails.shippingDetails.title')}</span>
               <Tooltip title={shipmentAddressTooltipText} placement="top">
                 <IconButton>
                   <Info />
@@ -66,7 +81,9 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
           </h3>
           <TextField
             error={!shipmentAddressIsValid}
-            helperText={shipmentAddressIsValid ? '' : 'Please enter a valid address!'}
+            helperText={
+              shipmentAddressIsValid ? '' : t('cart.summary.shipment.invalidShipmentAddress')
+            }
             value={props.shipmentAddress}
             onChange={(e) => {
               e.preventDefault();
@@ -94,10 +111,16 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
         >
           <thead>
             <tr>
-              <th colSpan={3}>Card Details</th>
-              <th style={{ textAlign: 'center', padding: 8 }}>Quantity</th>
-              <th style={{ textAlign: 'center', padding: 8 }}>Price</th>
-              <th style={{ textAlign: 'center', padding: 8 }}>Actions</th>
+              <th colSpan={3}>{commonT('purchaseDetails.table.tableHeaders.cardDetails')}</th>
+              <th style={{ textAlign: 'center', padding: 8 }}>
+                {commonT('purchaseDetails.table.tableHeaders.quantity')}
+              </th>
+              <th style={{ textAlign: 'center', padding: 8 }}>
+                {commonT('purchaseDetails.table.tableHeaders.price')}
+              </th>
+              <th style={{ textAlign: 'center', padding: 8 }}>
+                {t('cart.summary.table.tableHeaders.actions')}
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -125,7 +148,7 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
                 </td>
                 <td className="font-bold">$&nbsp;{shoppingCartItem.listing.price.toFixed(2)}</td>
                 <td>
-                  <Tooltip title="Remove this listing">
+                  <Tooltip title={t('cart.summary.table.tableBody.removeListingTooltipText')}>
                     <IconButton
                       onClick={(e) => {
                         e.preventDefault();
