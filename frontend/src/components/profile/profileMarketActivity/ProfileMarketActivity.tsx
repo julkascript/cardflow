@@ -9,7 +9,7 @@ function ProfileMarketActivity(props: ProfilePublicDataProps): JSX.Element {
         <thead>
           <tr>
             <th colSpan={2} className="text-center lg:text-left p-4 lg:pl-12 lg:pr-12">
-              {t('public.marketActivity.heading')}
+              {('public.marketActivity.heading')}
             </th>
           </tr>
         </thead>
