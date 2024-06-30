@@ -56,11 +56,11 @@ export type PublicUserInfo = {
   username: string;
   avatar: string;
   stats: {
-    purchases : number;
+    purchases: number;
     sales: number;
     sales_this_month: number;
     seller_rating: number | string;
     rejection_rate: number;
     miss_rate: number;
-  }
+  };
 };
