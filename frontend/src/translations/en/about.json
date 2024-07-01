@@ -5,6 +5,9 @@
   },
   "main": {
     "title": "About",
+    "betaWarningFirstPart": "The app is still in beta! If you find any bugs, don't hesitate to",
+    "betaWarningSecondPart": "them.",
+    "report": "report",
     "whyCardflow": "Why Cardflow?",
     "reasons": {
       "free": "Free",
