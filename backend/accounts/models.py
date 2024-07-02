@@ -12,3 +12,8 @@ class User(AbstractUser):
     city = models.CharField(max_length=100, blank=True, null=True)
     shipping_address = models.TextField(blank=True, null=True)
     avatar = models.ImageField(upload_to=user_directory_avatars_path, blank=True, null=True)
+    currency_preference = models.CharField(
+        max_length=3,
+        choices=[('BGN', 'BGN'), ('EUR', 'EUR')],
+        default='BGN'
+    )

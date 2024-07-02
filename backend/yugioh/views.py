@@ -6,6 +6,8 @@ from rest_framework import viewsets, generics
 
 from listing.models import Listing
 from order.models import OrderItem
+from rest_framework_simplejwt.authentication import JWTAuthentication
+
 from .filters import YugiohCardFilter, YugiohCardInSetFilter
 from .models import YugiohCard, YugiohCardInSet
 from .serializers import (
@@ -54,8 +56,8 @@ class BestSellerCardListView(generics.ListAPIView):
     """
 
     serializer_class = BestSellerCardSerializer
-    authentication_classes = []
-    permission_classes = []
+    authentication_classes = [JWTAuthentication]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     pagination_class = None
 
     def get_queryset(self):
@@ -94,3 +96,8 @@ class BestSellerCardListView(generics.ListAPIView):
             return filtered_results
 
         return filtered_results[:3]
+
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context

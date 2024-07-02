@@ -89,7 +89,7 @@ class UpdateUserSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'id', 'username', 'password', 'email', 'first_name', 'last_name',
-            'phone_number', 'city', 'shipping_address', 'avatar'
+            'phone_number', 'city', 'shipping_address', 'avatar', 'currency_preference'
         )
         read_only_fields = ('id',)
         extra_kwargs = {
