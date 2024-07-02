@@ -1,4 +1,4 @@
-import { Button, Divider, SvgIconTypeMap, SxProps, Typography } from '@mui/material';
+import { Alert, Button, Link, Divider, SvgIconTypeMap, SxProps, Typography } from '@mui/material';
 import PageHeader from '../../components/PageHeader';
 import PageSection from '../../components/PageSection';
 import Logo from '../../components/logo/Logo';
@@ -16,10 +16,11 @@ import PokemonImage from '../../../assets/games/pokemon.png';
 import WoWImage from '../../../assets/games/worldofwarcraft.png';
 import OnePieceImage from '../../../assets/games/onepiece.png';
 import CardfightVanguardImage from '../../../assets/games/cardfightvanguard.png';
-import React, { HTMLAttributeAnchorTarget } from 'react';
+import React, { HTMLAttributeAnchorTarget, useState } from 'react';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import SupportedGamesImage from '../../components/about/SupportedGamesImage';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
+import CloseIcon from '@mui/icons-material/Close';
 
 type CardflowReasons = {
   logoColor: string;
@@ -27,6 +28,7 @@ type CardflowReasons = {
 };
 
 function About(): JSX.Element {
+  const [alertVisible, setAlertVisible] = useState<boolean>(true);
   const { t } = useTranslation('about');
 
   const cardflowReasons: CardflowReasons[] = [
@@ -43,10 +45,50 @@ function About(): JSX.Element {
       logoColor: theme.palette.error.light,
     },
   ];
+
+  const handleClose = () => {
+    setAlertVisible(false);
+  };
+
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
       <CardflowTabs />
-      <PageHeader heading={t('main.title')} />
+      <PageHeader heading={t('main.title')} />{' '}
+      {alertVisible && (
+        <Alert
+          id="closable-alert"
+          severity="info"
+          action={
+            <Button
+              aria-label="close"
+              sx={{ borderRadius: '8px', minWidth: '24px' }}
+              onClick={handleClose}
+            >
+              <CloseIcon sx={{ fontSize: '16px' }} />
+            </Button>
+          }
+          sx={{
+            fontSize: '18px',
+            width: '83.33%',
+            margin: '16px auto',
+            bgcolor: '#E5F6FD',
+            display: 'flex',
+            color: '#000',
+            fontWeight: '300',
+            border: '1px solid #666',
+            borderRadius: '8px',
+            alignItems: 'center',
+            '.MuiAlert-icon': {
+              fontSize: 30,
+            },
+          }}
+        >
+          <Trans i18nKey="betaWarning">
+            {t('main.betaWarning')}
+            <Link href="/about/contact" />
+          </Trans>
+        </Alert>
+      )}
       <div className="w-5/6 mx-auto my-4">
         <PageSection className="p-8 my-4">
           <h2 className="text-2xl mb-12 font-bold text-center lg:text-left">
