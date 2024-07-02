@@ -6,6 +6,10 @@ from listing.models import Listing
 from .models import YugiohCard, YugiohCardInSet, YugiohCardSet, YugiohCardRarity
 from .utils import fetch_and_save_image, ImageFetchException
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 class CacheImageMixin:
     def __init__(self):
@@ -141,9 +145,14 @@ class BestSellerCardSerializer(serializers.ModelSerializer, CacheImageMixin):
     def get_card_image(self, obj):
         return self.get_image(obj.card.yugioh_card)
 
-    @staticmethod
-    def get_lowest_price(obj):
-        lowest_price = Listing.objects.filter(card=obj.card).aggregate(Min("price"))[
-            "price__min"
-        ]
+    def get_lowest_price(self, obj):
+        request = self.context.get('request')
+        lowest_price = Listing.objects.filter(card=obj.card).aggregate(Min("price"))["price__min"]
+
+        if lowest_price is not None and request:
+            user = request.user
+
+            if user.is_authenticated and getattr(user, 'currency_preference', 'BGN') == 'EUR':
+                lowest_price = round(lowest_price * 0.51, 2)
+
         return lowest_price
