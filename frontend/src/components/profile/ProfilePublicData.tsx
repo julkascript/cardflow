@@ -6,7 +6,7 @@ import { sellerRankData } from '../../constants/sellerRank';
 import { PublicUserInfo } from '../../services/user/types';
 import { useTranslation } from 'react-i18next';
 
-type ProfilePublicDataProps = {
+export type ProfilePublicDataProps = {
   user: PublicUserInfo;
 };
 

@@ -1,7 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import MarketActivityTableCell from './MarketActivityTableCell';
+import { ProfilePublicDataProps } from '../ProfilePublicData';
 
-function ProfileMarketActivity(): JSX.Element {
+function ProfileMarketActivity(props: ProfilePublicDataProps): JSX.Element {
   const { t } = useTranslation('account');
 
   return (
@@ -16,16 +17,16 @@ function ProfileMarketActivity(): JSX.Element {
         </thead>
         <tbody>
           <tr>
-            <MarketActivityTableCell heading={t('public.marketActivity.purchases')} data={144} />
-            <MarketActivityTableCell heading={t('public.marketActivity.sales')} data={10_143} />
+            <MarketActivityTableCell heading={t('public.marketActivity.purchases')} data={props.user.stats.purchases} />
+            <MarketActivityTableCell heading={t('public.marketActivity.sales')} data={props.user.stats.sales} />
           </tr>
           <tr>
-            <MarketActivityTableCell heading={t('public.marketActivity.salesThisMonth')} data={0} />
-            <MarketActivityTableCell heading={t('public.marketActivity.saleRating')} data="3.9/5" />
+            <MarketActivityTableCell heading={t('public.marketActivity.salesThisMonth')} data={props.user.stats.sales_this_month} />
+            <MarketActivityTableCell heading={t('public.marketActivity.saleRating')} data={`${props.user.stats.seller_rating}/5`} />
           </tr>
           <tr>
-            <MarketActivityTableCell heading={t('public.marketActivity.rejectionRate')} data={45} />
-            <MarketActivityTableCell heading={t('public.marketActivity.missRate')} data={123_456} />
+            <MarketActivityTableCell heading={t('public.marketActivity.rejectionRate')} data={`${props.user.stats.rejection_rate}%`} />
+            <MarketActivityTableCell heading={t('public.marketActivity.missRate')} data={`${props.user.stats.miss_rate}%`} />
           </tr>
         </tbody>
       </table>
