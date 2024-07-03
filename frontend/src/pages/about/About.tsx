@@ -51,7 +51,7 @@ function About(): JSX.Element {
       <Alert
         id="closable-alert"
         severity="info"
-        className="text-black text-lg w-5/6 mx-auto my-4 bg-[#E5F6FD] flex font-light border rounded-lg items-center"
+        className="w-5/6 mx-auto my-4 flex border rounded-lg"
       >
         <Trans i18nKey="betaWarning">
           {t('main.betaWarning')}
