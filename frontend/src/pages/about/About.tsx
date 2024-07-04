@@ -47,7 +47,7 @@ function About(): JSX.Element {
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
       <CardflowTabs />
-      <PageHeader heading={t('main.title')} />{' '}
+      <PageHeader heading={t('main.title')} />
       <Alert
         id="closable-alert"
         severity="info"
