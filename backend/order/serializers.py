@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from django.contrib.auth import get_user_model
 from rest_framework import serializers, exceptions
 
@@ -65,6 +67,21 @@ class OrderSerializer(serializers.ModelSerializer):
 
             if validated_data['status'] == 'rejected':
 
+                for order_item in instance.orderitem_set.all():
+                    order_listing = order_item.listing
+                    order_listing.quantity += order_item.quantity
+                    order_item.is_listed = True
+                    order_listing.is_sold = False
+                    order_listing.save()
+
+            if validated_data['status'] == 'not_received':
+                # Check if 10 days have passed since the order was placed
+                if instance.status_history.exists():
+                    order_placed_date = instance.status_history.last().timestamp.date()
+                    if datetime.now().date() < order_placed_date + timedelta(days=10):
+                        raise serializers.ValidationError(
+                            'Order can be marked as "Not Received" only after 10 days from the order placement date.')
+                
                 for order_item in instance.orderitem_set.all():
                     order_listing = order_item.listing
                     order_listing.quantity += order_item.quantity
