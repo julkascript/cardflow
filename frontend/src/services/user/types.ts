@@ -1,3 +1,5 @@
+import { currency } from '../../constants/currencies';
+
 export type CurrentUser = {
   user_id: number;
   username: string;
@@ -8,6 +10,7 @@ export type CurrentUser = {
   phone_number: string | null;
   city: string | null;
   avatar: string | null;
+  currency_preference: currency;
 };
 
 export type JwtPayload = {

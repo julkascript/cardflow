@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { CurrentUser } from '../services/user/types';
+import { defaultCurrency } from '../constants/currencies';
 
 type CurrentUserContext = {
   user: CurrentUser;
@@ -18,6 +19,7 @@ const UserContext = React.createContext<CurrentUserContext>({
     phone_number: null,
     city: null,
     avatar: null,
+    currency_preference: defaultCurrency,
   },
   setUser(user) {
     this.user = user;
@@ -33,6 +35,7 @@ const UserContext = React.createContext<CurrentUserContext>({
       phone_number: null,
       city: null,
       avatar: null,
+      currency_preference: defaultCurrency,
     };
   },
 });
@@ -48,6 +51,7 @@ export function UserContextProvider({ children }: { children: React.ReactNode })
     phone_number: null,
     city: null,
     avatar: null,
+    currency_preference: defaultCurrency,
   });
 
   function restartUser() {
@@ -61,6 +65,7 @@ export function UserContextProvider({ children }: { children: React.ReactNode })
       phone_number: null,
       city: null,
       avatar: null,
+      currency_preference: defaultCurrency,
     });
   }
 
