@@ -78,10 +78,11 @@ class OrderSerializer(serializers.ModelSerializer):
                 # Check if 10 days have passed since the order was placed
                 if instance.status_history.exists():
                     order_placed_date = instance.status_history.last().timestamp.date()
+                    print(order_placed_date)
                     if datetime.now().date() < order_placed_date + timedelta(days=10):
                         raise serializers.ValidationError(
-                            'Order can be marked as "Not Received" only after 10 days from the order placement date.')
-                
+                            "Order can be marked as 'Not Received' only after 10 days from the order placement date.")
+
                 for order_item in instance.orderitem_set.all():
                     order_listing = order_item.listing
                     order_listing.quantity += order_item.quantity
