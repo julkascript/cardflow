@@ -49,6 +49,10 @@
       "description": "Enter the default shipment address that will get pre-filled.",
       "hint": "You can always change the address per purchase in the checkout section."
     },
+    "defaultCurrency": {
+      "title": "Default currency",
+      "hint": "Changing the currency does not affect the price. The new rates will be applied. You will be logged out after changing your default currency."
+    },
     "deleteAccount": {
       "title": "Delete your account",
       "description": "Permanently remove your Cardflow account. Please proceed with caution, this action is irreversible.",
