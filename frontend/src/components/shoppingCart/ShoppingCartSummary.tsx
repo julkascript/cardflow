@@ -7,6 +7,7 @@ import { CurrentUser } from '../../services/user/types';
 import YugiohCardQuantityField from '../yugioh/table/market/YugiohCardQuantityField';
 import { ShoppingCartItem } from '../../services/shoppingCart/types';
 import { useTranslation } from 'react-i18next';
+import { useCurrentUser } from '../../context/user';
 
 type ShoppingCartSummaryProps = {
   user: CurrentUser;
@@ -27,6 +28,8 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
   const shipmentAddressIsValid = props.shipmentAddress !== '';
   const { t } = useTranslation('buy');
   const { t: commonT } = useTranslation('common');
+
+  const { user } = useCurrentUser();
 
   const shipmentAddressTooltipText = t('cart.summary.shipment.shipmentAddressPrefilled', {
     context: (props.shipmentAddress !== '').toString(),
@@ -146,7 +149,9 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
                     max={shoppingCartItem.listing.quantity}
                   />
                 </td>
-                <td className="font-bold">$&nbsp;{shoppingCartItem.listing.price.toFixed(2)}</td>
+                <td className="font-bold">
+                  {shoppingCartItem.listing.price} {user.currency_preference}
+                </td>
                 <td>
                   <Tooltip title={t('cart.summary.table.tableBody.removeListingTooltipText')}>
                     <IconButton

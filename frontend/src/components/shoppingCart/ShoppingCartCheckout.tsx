@@ -3,6 +3,7 @@ import PageSection from '../PageSection';
 import CheckoutData from './CheckoutData';
 import { ShoppingCartItem } from '../../services/shoppingCart/types';
 import { useTranslation } from 'react-i18next';
+import { useCurrency } from '../../util/useCurrency';
 
 type ShoppingCartCheckoutProps = {
   shoppingCart: ShoppingCartItem[];
@@ -17,6 +18,7 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
   const quantity = props.shoppingCart.reduce((total, item) => total + item.quantity, 0);
   const sellers = props.shoppingCart.length;
   const { t } = useTranslation('buy');
+  const price = useCurrency(props.totalPrice);
 
   return (
     <PageSection className="p-4 w-1/2 lg:w-1/6 h-[600px] lg:sticky top-0">
@@ -29,9 +31,7 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
           >
             {t('cart.checkout.title')}
           </Typography>
-          <span className="font-bold text-[16pt]">
-            ${(props.totalPrice + props.shipmentCost).toFixed(2)}
-          </span>
+          <span className="font-bold text-[16pt]">{price}</span>
         </div>
         <Button
           disabled={!shipmentAddressIsValid || props.shoppingCart.length === 0}
@@ -46,13 +46,17 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
         </Button>
         <Divider flexItem />
         <ul>
-          <CheckoutData summary={t('cart.checkout.shippingCost')} data={props.shipmentCost} />
-          <CheckoutData summary={t('cart.checkout.itemsCost')} data={props.totalPrice} />
+          <CheckoutData
+            withDollar
+            summary={t('cart.checkout.shippingCost')}
+            data={props.shipmentCost}
+          />
+          <CheckoutData withDollar summary={t('cart.checkout.itemsCost')} data={props.totalPrice} />
         </ul>
         <Divider />
         <ul>
-          <CheckoutData withDollar summary={t('cart.checkout.amountOfSellers')} data={sellers} />
-          <CheckoutData withDollar summary={t('cart.checkout.amountOfCards')} data={quantity} />
+          <CheckoutData summary={t('cart.checkout.amountOfSellers')} data={sellers} />
+          <CheckoutData summary={t('cart.checkout.amountOfCards')} data={quantity} />
         </ul>
       </div>
     </PageSection>

@@ -5,6 +5,7 @@ import OrdersModal from './ordersModal/OrdersModal';
 import { Feedback } from '../../services/feedback/types';
 import { feedbackService } from '../../services/feedback/feedback';
 import { useTranslation } from 'react-i18next';
+import { useCurrency } from '../../util/useCurrency';
 
 type OrdersTableRowProps = {
   order: Order;
@@ -21,6 +22,8 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
     (total, order) => total + order.quantity * order.listing.price,
     0,
   );
+
+  const convertedPrice = useCurrency(totalPrice);
 
   const [feedback, setFeedback] = useState<Feedback>();
 
@@ -57,7 +60,7 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
           </Link>
         </td>
         <td style={{ paddingLeft: 16 }}>{quantity}</td>
-        <td style={{ paddingLeft: 16 }}>${totalPrice}</td>
+        <td style={{ paddingLeft: 16 }}>{convertedPrice}</td>
         <td style={{ paddingLeft: 16 }}>
           <Badge
             invisible={!(props.userPosition === 'seller' && props.order.status === 'ordered')}

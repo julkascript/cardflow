@@ -11,6 +11,7 @@ import { shoppingCartService } from '../../../../services/shoppingCart/shoppingC
 import { useShoppingCart } from '../../../../context/shoppingCart';
 import { toastMessages } from '../../../../constants/toast';
 import { useToast } from '../../../../util/useToast';
+import { useCurrency } from '../../../../util/useCurrency';
 
 type YugiohCardMarketTableCellProps = {
   listing: YugiohCardListing;
@@ -22,6 +23,8 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
   const { isAuthenticated } = useAuthenticationStatus();
   const { setShoppingCart } = useShoppingCart();
   const toast = useToast();
+
+  const listingPrice = useCurrency(props.listing.price);
 
   function handleAddToCart(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
@@ -72,7 +75,7 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
         <br />
       </td>
       <td className="lg:text-center text-sm lg:text-xl p-1">{props.listing.quantity}</td>
-      <td className="font-bold text-sm lg:text-xl lg:w-[200px]">$&nbsp;{props.listing.price}</td>
+      <td className="font-bold text-sm lg:text-xl lg:w-[200px]">{listingPrice}</td>
       <td className="w-1">
         <YugiohCardQuantityField
           max={props.listing.quantity}

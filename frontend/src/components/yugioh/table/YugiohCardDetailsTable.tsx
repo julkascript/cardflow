@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { YugiohCardInSet } from '../../../services/yugioh/types';
 import YugiohCardDetailsCell from './YugiohCardDetailsCell';
+import { useCurrency } from '../../../util/useCurrency';
 
 type YugiohCardDetailsTableProps = {
   cardInSet: YugiohCardInSet;
@@ -8,6 +9,8 @@ type YugiohCardDetailsTableProps = {
 
 function YugiohCardDetailsTable(props: YugiohCardDetailsTableProps): JSX.Element {
   const { t } = useTranslation('buy');
+
+  const thirtyDaysAveragePrice = useCurrency(5.14);
 
   return (
     <table className="bg-white border-spacing-0 border-separate rounded-lg border-2 w-11/12 lg:w-1/2 h-[300px]">
@@ -43,7 +46,7 @@ function YugiohCardDetailsTable(props: YugiohCardDetailsTableProps): JSX.Element
           />
           <YugiohCardDetailsCell
             heading={t('cardDetails.dataTable.tableHeaders.thirtyDaysAveragePrice')}
-            data={<>$&nbsp;5.14</>}
+            data={thirtyDaysAveragePrice}
           />
         </tr>
       </tbody>
