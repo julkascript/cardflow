@@ -48,6 +48,7 @@ type OrdersModalProps = {
   status: orderState;
   userPosition: 'seller' | 'buyer';
   feedback: Feedback | undefined;
+  today: Date;
 };
 
 function OrdersModal(props: OrdersModalProps): JSX.Element {
@@ -56,6 +57,14 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
   const toast = useToast();
   const { t } = useTranslation('account');
   const { t: commonT } = useTranslation('common');
+
+  const orderDate = new Date(
+    props.order.status_history[props.order.status_history.length - 1].timestamp,
+  );
+
+  const timeDifference = props.today.getTime() - orderDate.getTime();
+
+  const tenDaysHavePassed = timeDifference / (1000 * 60 * 60 * 24) > 10;
 
   const totalPrice = props.order.order_items.reduce(
     (total, order) => total + order.quantity * order.listing.price,
@@ -167,7 +176,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
                   value="completed"
                 />
                 <FormControlLabel
-                  disabled={props.status !== 'sent'}
+                  disabled={props.status !== 'sent' || !tenDaysHavePassed}
                   control={<Radio color="info" />}
                   label={t('salesAndOrders.status.not_received')}
                   value="not_received"

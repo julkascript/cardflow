@@ -8,7 +8,7 @@ import { Feedback } from '../../../services/feedback/types';
 import { feedbackService } from '../../../services/feedback/feedback';
 import '../../../i18next';
 
-function generateMockOrder(status: orderState): Order {
+function generateMockOrder(status: orderState, date?: Date): Order {
   const mockOrder: Order = {
     order_id: 1,
     sender_user: {
@@ -24,7 +24,12 @@ function generateMockOrder(status: orderState): Order {
     order_items: [],
     status,
     delivery_address: 'Mountain View',
-    status_history: [],
+    status_history: [
+      {
+        status: 'ordered',
+        timestamp: date ? date.toDateString() : new Date('January 17, 2024').toDateString(),
+      },
+    ],
   };
 
   return mockOrder;
@@ -50,6 +55,7 @@ describe('OrdersModal component tests', () => {
           status={'ordered'}
           userPosition={'seller'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -66,6 +72,7 @@ describe('OrdersModal component tests', () => {
           status={'ordered'}
           userPosition={'buyer'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -82,6 +89,7 @@ describe('OrdersModal component tests', () => {
           status={'ordered'}
           userPosition={'seller'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -101,6 +109,7 @@ describe('OrdersModal component tests', () => {
           status={'sent'}
           userPosition={'buyer'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -120,6 +129,7 @@ describe('OrdersModal component tests', () => {
           status={'sent'}
           userPosition={'seller'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -158,6 +168,7 @@ describe('OrdersModal component tests', () => {
           status={'ordered'}
           userPosition={'seller'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -192,6 +203,7 @@ describe('OrdersModal component tests', () => {
           status={'sent'}
           userPosition={'buyer'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -226,6 +238,7 @@ describe('OrdersModal component tests', () => {
           status={'completed'}
           userPosition={'buyer'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -250,6 +263,7 @@ describe('OrdersModal component tests', () => {
           status={'completed'}
           userPosition={'buyer'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -269,6 +283,7 @@ describe('OrdersModal component tests', () => {
           status={'rejected'}
           userPosition={'buyer'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -288,6 +303,7 @@ describe('OrdersModal component tests', () => {
           status={'completed'}
           userPosition={'seller'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -304,6 +320,7 @@ describe('OrdersModal component tests', () => {
           status={'sent'}
           userPosition={'seller'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -323,6 +340,7 @@ describe('OrdersModal component tests', () => {
           status={'completed'}
           userPosition={'buyer'}
           feedback={generateMockFeedback()}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -339,6 +357,7 @@ describe('OrdersModal component tests', () => {
           status={'rejected'}
           userPosition={'buyer'}
           feedback={generateMockFeedback()}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -353,10 +372,11 @@ describe('OrdersModal component tests', () => {
         <OrdersModal
           open={true}
           onClose={() => {}}
-          order={generateMockOrder('completed')}
+          order={generateMockOrder('completed', new Date('January 5, 2024'))}
           status={'completed'}
           userPosition={'buyer'}
           feedback={generateMockFeedback()}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -374,10 +394,11 @@ describe('OrdersModal component tests', () => {
         <OrdersModal
           open={true}
           onClose={() => {}}
-          order={generateMockOrder('rejected')}
+          order={generateMockOrder('rejected', new Date('January 5, 2024'))}
           status={'rejected'}
           userPosition={'buyer'}
           feedback={generateMockFeedback()}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -399,6 +420,7 @@ describe('OrdersModal component tests', () => {
           status={'completed'}
           userPosition={'seller'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -420,6 +442,7 @@ describe('OrdersModal component tests', () => {
           status={'rejected'}
           userPosition={'seller'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -432,15 +455,16 @@ describe('OrdersModal component tests', () => {
       expect(disabledRadios).toHaveLength(2);
     });
 
-    it('Are disabled when the order is ordered for the buyer', async () => {
+    it('Are disabled when the order is ordered for the buyer and ten days have passed', async () => {
       render(
         <OrdersModal
           open={true}
           onClose={() => {}}
-          order={generateMockOrder('ordered')}
+          order={generateMockOrder('ordered', new Date('January 1, 2024'))}
           status={'ordered'}
           userPosition={'buyer'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -453,15 +477,16 @@ describe('OrdersModal component tests', () => {
       expect(disabledRadios).toHaveLength(2);
     });
 
-    it('Are enabled when the order is sent for the buyer', async () => {
+    it('Are enabled when the order is sent for the buyer and 10 days have passed', async () => {
       render(
         <OrdersModal
           open={true}
           onClose={() => {}}
-          order={generateMockOrder('sent')}
+          order={generateMockOrder('sent', new Date('January 5, 2024'))}
           status={'sent'}
           userPosition={'buyer'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -483,6 +508,7 @@ describe('OrdersModal component tests', () => {
           status={'ordered'}
           userPosition={'seller'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -504,6 +530,7 @@ describe('OrdersModal component tests', () => {
           status={'sent'}
           userPosition={'seller'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -514,6 +541,29 @@ describe('OrdersModal component tests', () => {
       const enabledRadios = Array.from(radioButtons).filter((r) => !r.disabled);
 
       expect(enabledRadios).toHaveLength(2);
+    });
+
+    it('Not received is disabled when 10 days have not passed and the order is sent', async () => {
+      render(
+        <OrdersModal
+          open={true}
+          onClose={() => {}}
+          order={generateMockOrder('sent')}
+          status={'sent'}
+          userPosition={'buyer'}
+          feedback={undefined}
+          today={new Date('January 16, 2024')}
+        />,
+      );
+
+      const radioButtons = document.querySelectorAll(
+        '[role="radiogroup"] input',
+      ) as NodeListOf<HTMLInputElement>;
+
+      const radios = Array.from(radioButtons);
+
+      expect(radios[1].disabled).toBe(true);
+      expect(radios[0].disabled).toBe(false);
     });
   });
 
@@ -531,6 +581,7 @@ describe('OrdersModal component tests', () => {
           status={'completed'}
           userPosition={'buyer'}
           feedback={generateMockFeedback()}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -547,6 +598,7 @@ describe('OrdersModal component tests', () => {
           status={'completed'}
           userPosition={'buyer'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -563,6 +615,7 @@ describe('OrdersModal component tests', () => {
           status={'completed'}
           userPosition={'seller'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -581,6 +634,7 @@ describe('OrdersModal component tests', () => {
           status={'completed'}
           userPosition={'buyer'}
           feedback={generateMockFeedback()}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -597,6 +651,7 @@ describe('OrdersModal component tests', () => {
           status={'completed'}
           userPosition={'buyer'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 
@@ -613,6 +668,7 @@ describe('OrdersModal component tests', () => {
           status={'completed'}
           userPosition={'seller'}
           feedback={undefined}
+          today={new Date('January 17, 2024')}
         />,
       );
 

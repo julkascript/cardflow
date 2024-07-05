@@ -16,6 +16,8 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
   const [open, setOpen] = useState(false);
   const { t } = useTranslation('account');
 
+  const today = new Date();
+
   const quantity = props.order.order_items.reduce((total, order) => total + order.quantity, 0);
   const totalPrice = props.order.order_items.reduce(
     (total, order) => total + order.quantity * order.listing.price,
@@ -80,6 +82,7 @@ function OrdersTableRow(props: OrdersTableRowProps): JSX.Element {
         order={props.order}
         status={props.order.status}
         feedback={feedback}
+        today={today}
       />
     </>
   );
