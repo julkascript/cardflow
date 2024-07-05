@@ -49,6 +49,7 @@ export type UserAccount = {
   city: string | null;
   shipping_address: string | null;
   avatar: string | null;
+  currency_preference: currency;
 };
 
 export type UserAccountLoader = {

@@ -11,6 +11,7 @@ import { userService } from '../../services/user/user';
 import { useLogout } from '../../util/useLogout';
 import { toastMessages } from '../../constants/toast';
 import { useToast } from '../../util/useToast';
+import DefaultCurrencySettings from '../../components/profile/profileSettings/DefaultCurrencySettings';
 
 function ProfileSettingsPage(): JSX.Element {
   const { user, setUser } = useCurrentUser();
@@ -24,19 +25,27 @@ function ProfileSettingsPage(): JSX.Element {
     return userService
       .updateUser(user.user_id, payload)
       .then((data) => {
-        setUser({ user_id: user.user_id, ...data });
+        setUser({
+          user_id: user.user_id,
+          ...data,
+        });
         if (toastMessage) {
-          toast.success({ toastKey: toastMessage });
+          toast.success({ toastKey: toastMessage, values: { currency: data.currency_preference } });
         }
       })
       .catch((error) => toast.error({ error }));
   }
 
   function updateAndLogout(field: 'username' | 'email', value: string) {
+    const messages: Record<typeof field, string> = {
+      username: toastMessages.usernameChanged,
+      email: toastMessages.emailChanged,
+    };
+
     updateAccount(field, value).then(() => {
       logout();
       toast.success({
-        toastKey: field === 'username' ? toastMessages.usernameChanged : toastMessages.emailChanged,
+        toastKey: messages[field],
       });
     });
   }
@@ -88,6 +97,11 @@ function ProfileSettingsPage(): JSX.Element {
             updateAccount('shipping_address', a, toastMessages.shipmentAddressChanged)
           }
           key={user.shipping_address + '3'}
+        />
+        <DefaultCurrencySettings
+          currency={user.currency_preference}
+          onSubmit={(c) => updateAccount('currency_preference', c, toastMessages.currencyChanged)}
+          key={user.currency_preference + '4'}
         />
         <DeleteAccount onDelete={deleteAccount} />
       </div>
