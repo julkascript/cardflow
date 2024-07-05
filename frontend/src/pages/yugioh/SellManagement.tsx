@@ -53,6 +53,7 @@ function selectReducer(
 function SellManagement(): JSX.Element {
   const [data, dispatch] = useReducer(selectReducer, [] as ListingData[]);
   const { user } = useCurrentUser();
+  const currency = user.currency_preference;
   const { isAuthenticated } = useAuthenticationStatus();
   const [checkedAll, setCheckedAll] = useState(false);
   const [page, setPage] = useState(1);
@@ -321,7 +322,9 @@ function SellManagement(): JSX.Element {
                   />
                 </td>
                 <td className="w-48 text-center">{ld.listing.quantity}</td>
-                <td className="w-48 font-bold text-center">$&nbsp;{ld.listing.price}</td>
+                <td className="w-48 font-bold text-center">
+                  {ld.listing.price.toFixed(2)} {currency}
+                </td>
                 <td className="text-center w-4">
                   <IconButton
                     onClick={() => toggleListingVisibility(ld.listing, !ld.listing.is_listed)}

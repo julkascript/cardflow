@@ -24,6 +24,8 @@ import ClearListingButton from './buttons/ClearListingButton';
 import ToggleVisibilityButton from './buttons/ToggleVisibilityButton';
 import { useToast } from '../../util/useToast';
 import { useTranslation } from 'react-i18next';
+import { useCurrentUser } from '../../context/user';
+import { currencies } from '../../constants/currencies';
 
 type ListingFormProps = {
   editMode?: boolean;
@@ -43,6 +45,7 @@ function ListingForm(props: ListingFormProps) {
   const toast = useToast();
   const { t } = useTranslation('sell');
   const { t: commonT } = useTranslation('common');
+  const { user } = useCurrentUser();
 
   const [formData, setFormData] = useState<YugiohCardListing>(
     props.listing || {
@@ -258,6 +261,14 @@ function ListingForm(props: ListingFormProps) {
                       label={t('newListing.secondSection.price')}
                       InputProps={{
                         startAdornment: <PaymentsIcon className="mr-2" />,
+                        endAdornment: (
+                          <span className="pl-2">
+                            {
+                              currencies.find((c) => c.code === user.currency_preference)
+                                ?.displayCurrency
+                            }
+                          </span>
+                        ),
                       }}
                     />
                   </div>
@@ -329,7 +340,9 @@ function ListingForm(props: ListingFormProps) {
                     <br />
                   </td>
                   <td className="text-center text-xl p-1">{l.quantity}</td>
-                  <td className="font-bold text-xl w-[200px]">$&nbsp;{l.price}</td>
+                  <td className="font-bold text-xl w-[200px]">
+                    {l.price} {user.currency_preference}
+                  </td>
                 </tr>
               ))}
             </tbody>

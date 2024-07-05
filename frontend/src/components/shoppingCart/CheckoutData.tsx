@@ -1,4 +1,5 @@
 import { Typography } from '@mui/material';
+import { useCurrency } from '../../util/useCurrency';
 
 type CheckoutDataProps = {
   data: number;
@@ -7,7 +8,8 @@ type CheckoutDataProps = {
 };
 
 function CheckoutData(props: CheckoutDataProps): JSX.Element {
-  if (props.withDollar) {
+  const price = useCurrency(props.data);
+  if (!props.withDollar) {
     return (
       <li className="flex justify-between gap-4">
         <Typography color="text.secondary" component="span">
@@ -25,7 +27,7 @@ function CheckoutData(props: CheckoutDataProps): JSX.Element {
         {props.summary}
       </Typography>
       <Typography color="text.secondary" component="span">
-        ${props.data.toFixed(2)}
+        {price}
       </Typography>
     </li>
   );

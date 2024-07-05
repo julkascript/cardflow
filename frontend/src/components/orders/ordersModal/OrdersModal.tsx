@@ -61,8 +61,8 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
     (total, order) => total + order.quantity * order.listing.price,
     0,
   );
-  const shipmentPrice = 9.85;
 
+  const shipmentPrice = 9.85;
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const cannotGiveFeedback =
