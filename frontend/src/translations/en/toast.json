@@ -8,7 +8,7 @@
     "emailChanged": "Your username was changed successfully! Please log in again to see your changes",
     "avatarChanged": "Your avatar was updated successfully!",
     "shipmentAddressChanged": "Your default shipment address was updated successfully!",
-    "currencyChanged": "Your preferred currency has been successfully changed! Please log in again to see your changes",
+    "currencyChanged": "Your preferred currency has been changed to {{currency}}!",
     "accountDeleted": "Your account was deleted successfully! Please remember that you cannot undo this action!",
     "shoppingCartItemDeleted": "Listing removed from the shopping cart",
     "shoppingCartEmptiedOut": "You have emptied your shopping cart out",
