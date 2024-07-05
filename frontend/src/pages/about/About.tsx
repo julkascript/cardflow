@@ -1,4 +1,4 @@
-import { Button, Divider, SvgIconTypeMap, SxProps, Typography } from '@mui/material';
+import { Alert, Button, Link, Divider, SvgIconTypeMap, SxProps, Typography } from '@mui/material';
 import PageHeader from '../../components/PageHeader';
 import PageSection from '../../components/PageSection';
 import Logo from '../../components/logo/Logo';
@@ -19,7 +19,7 @@ import CardfightVanguardImage from '../../../assets/games/cardfightvanguard.png'
 import React, { HTMLAttributeAnchorTarget } from 'react';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import SupportedGamesImage from '../../components/about/SupportedGamesImage';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 type CardflowReasons = {
   logoColor: string;
@@ -43,10 +43,21 @@ function About(): JSX.Element {
       logoColor: theme.palette.error.light,
     },
   ];
+
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh] pb-4">
       <CardflowTabs />
       <PageHeader heading={t('main.title')} />
+      <Alert
+        id="closable-alert"
+        severity="info"
+        className="w-5/6 mx-auto my-4 flex border border-black !rounded-lg"
+      >
+        <Trans i18nKey="betaWarning">
+          {t('main.betaWarning')}
+          <Link href="/about/contact" />
+        </Trans>
+      </Alert>
       <div className="w-5/6 mx-auto my-4">
         <PageSection className="p-8 my-4">
           <h2 className="text-2xl mb-12 font-bold text-center lg:text-left">
