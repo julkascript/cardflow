@@ -23,7 +23,7 @@ class ListingSerializer(serializers.ModelSerializer):
         if request:
             user = request.user
             if user.is_authenticated and user.currency_preference == 'EUR':
-                representation['price'] = round(instance.price * 0.51, 2)
+                representation['price'] = round(instance.price * 0.511292, 2)
         return representation
 
     def create(self, validated_data):
@@ -31,7 +31,7 @@ class ListingSerializer(serializers.ModelSerializer):
         if request:
             user = request.user
             if user.is_authenticated and user.currency_preference == 'EUR':
-                validated_data['price'] = round(validated_data['price'] * 1.96, 2)
+                validated_data['price'] = round(validated_data['price'] * 1.95583, 2)
         return super().create(validated_data)
 
     def update(self, instance, validated_data):
@@ -39,7 +39,7 @@ class ListingSerializer(serializers.ModelSerializer):
         if request:
             user = request.user
             if user.is_authenticated and user.currency_preference == 'EUR':
-                validated_data['price'] = round(validated_data['price'] * 1.96, 2)
+                validated_data['price'] = round(validated_data['price'] * 1.95583, 2)
         return super().update(instance, validated_data)
 
 

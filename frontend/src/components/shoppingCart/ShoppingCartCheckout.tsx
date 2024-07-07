@@ -46,11 +46,11 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
         </Button>
         <Divider flexItem />
         <ul>
-          <CheckoutData
+          {/* <CheckoutData
             withDollar
             summary={t('cart.checkout.shippingCost')}
             data={props.shipmentCost}
-          />
+          /> */}
           <CheckoutData withDollar summary={t('cart.checkout.itemsCost')} data={props.totalPrice} />
         </ul>
         <Divider />

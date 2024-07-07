@@ -58,10 +58,10 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
               })}
               data={props.totalPrice}
             />
-            <SummaryData
+            {/* <SummaryData
               summary={commonT('purchaseDetails.shipmentPrice')}
               data={props.shipmentCost}
-            />
+            /> */}
             <SummaryData
               boldedData
               summary={commonT('purchaseDetails.totalPrice')}
