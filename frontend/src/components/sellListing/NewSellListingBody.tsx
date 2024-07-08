@@ -72,8 +72,10 @@ const NewListingBody: React.FC = () => {
                       <CameraAltIcon />
                     </ListItemIcon>
                   </Tooltip>
-                  <span>{option.setCode}</span>
-                  <span>{option.name}</span>
+                  <div className="flex items-center text-sm md:text-base">
+                    <div className="w-20">{option.setCode}</div>
+                    <div>{option.name}</div>
+                  </div>
                 </MenuItem>
               </Link>
             )}
