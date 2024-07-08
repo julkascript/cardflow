@@ -153,6 +153,6 @@ class BestSellerCardSerializer(serializers.ModelSerializer, CacheImageMixin):
             user = request.user
 
             if user.is_authenticated and getattr(user, 'currency_preference', 'BGN') == 'EUR':
-                lowest_price = round(lowest_price * 0.51, 2)
+                lowest_price = round(lowest_price * 0.511292, 2)
 
         return lowest_price
