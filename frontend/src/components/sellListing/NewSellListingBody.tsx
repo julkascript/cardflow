@@ -4,7 +4,7 @@ import { YugiohCardInSet } from '../../services/yugioh/types';
 import { useDebounce } from '../../util/useDebounce';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useToast } from '../../util/useToast';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 
 type SearchResults = {
@@ -61,13 +61,12 @@ const NewListingBody: React.FC = () => {
               <TextField key={params.id} onChange={handleChange} {...params} />
             )}
             options={searchResults}
-            renderOption={(props, option) => {
-              const newProps = {
-                ...props,
-                key: option.id + option.name + option.rarity + 'new-listing',
-              };
-              return (
-                <MenuItem {...newProps} className="flex gap-6 w-full">
+            renderOption={(props, option) => (
+              <Link
+                to={`/sell/new/${option.id}`}
+                key={option.id + option.name + option.rarity + 'new-listing'}
+              >
+                <MenuItem {...props} className="flex gap-6 w-full">
                   <Tooltip title={<TooltipImage imageUrl={option.image} />} placement="left-start">
                     <ListItemIcon sx={{ color: 'black' }}>
                       <CameraAltIcon />
@@ -76,8 +75,8 @@ const NewListingBody: React.FC = () => {
                   <span>{option.setCode}</span>
                   <span>{option.name}</span>
                 </MenuItem>
-              );
-            }}
+              </Link>
+            )}
           />
         </div>
       </div>
