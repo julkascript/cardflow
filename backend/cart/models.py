@@ -27,6 +27,8 @@ class ShoppingCartItem(models.Model):
 
     @property
     def total_price(self) -> float:
+        if self.cart.user.is_authenticated and self.cart.user.currency_preference == 'EUR':
+            return self.quantity * round(self.listing.price * 0.511292, 2)
         return self.quantity * self.listing.price
 
     def __str__(self):

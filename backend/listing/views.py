@@ -49,6 +49,11 @@ class ListingViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
 
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
+
 
 @extend_schema(tags=['Buy Listing'])
 class BuyListingViewSet(viewsets.ModelViewSet):

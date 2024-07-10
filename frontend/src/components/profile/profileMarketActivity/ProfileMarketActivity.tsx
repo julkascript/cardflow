@@ -1,28 +1,32 @@
+import { useTranslation } from 'react-i18next';
 import MarketActivityTableCell from './MarketActivityTableCell';
+import { ProfilePublicDataProps } from '../ProfilePublicData';
 
-function ProfileMarketActivity(): JSX.Element {
+function ProfileMarketActivity(props: ProfilePublicDataProps): JSX.Element {
+  const { t } = useTranslation('account');
+
   return (
     <section>
       <table className="border-stone-300 bg-white border-spacing-0 border-separate rounded-lg border-2 w-full">
         <thead>
           <tr>
             <th colSpan={2} className="text-center lg:text-left p-4 lg:pl-12 lg:pr-12">
-              Market activity
+              {t('public.marketActivity.heading')}
             </th>
           </tr>
         </thead>
         <tbody>
           <tr>
-            <MarketActivityTableCell heading="Purchases" data={144} />
-            <MarketActivityTableCell heading="Sales" data={10_143} />
+            <MarketActivityTableCell heading={t('public.marketActivity.purchases')} data={props.user.stats.purchases} />
+            <MarketActivityTableCell heading={t('public.marketActivity.sales')} data={props.user.stats.sales} />
           </tr>
           <tr>
-            <MarketActivityTableCell heading="Lorem ipsum dolor" data={0} />
-            <MarketActivityTableCell heading="Sale rating" data="3.9/5" />
+            <MarketActivityTableCell heading={t('public.marketActivity.salesThisMonth')} data={props.user.stats.sales_this_month} />
+            <MarketActivityTableCell heading={t('public.marketActivity.saleRating')} data={`${props.user.stats.seller_rating}/5`} />
           </tr>
           <tr>
-            <MarketActivityTableCell heading="Lorem ipsum" data={45} />
-            <MarketActivityTableCell heading="Lorem ipsum dolor sit amet" data={123_456} />
+            <MarketActivityTableCell heading={t('public.marketActivity.rejectionRate')} data={`${props.user.stats.rejection_rate}%`} />
+            <MarketActivityTableCell heading={t('public.marketActivity.missRate')} data={`${props.user.stats.miss_rate}%`} />
           </tr>
         </tbody>
       </table>

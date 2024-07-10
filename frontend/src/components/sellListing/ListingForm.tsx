@@ -9,7 +9,6 @@ import {
   YugiohCardInSet,
 } from '../../services/yugioh/types';
 import { yugiohService } from '../../services/yugioh/yugiohService';
-import { errorToast } from '../../util/errorToast';
 import CardflowTabs from './CardflowTabs';
 import NewListingTopBar from './NewListingTopBar';
 import PaymentsIcon from '@mui/icons-material/Payments';
@@ -23,13 +22,10 @@ import YugiohCardConditionLabel from '../yugioh/YugiohCardConditionLabel';
 import DeleteListingButton from './buttons/DeleteListingButton';
 import ClearListingButton from './buttons/ClearListingButton';
 import ToggleVisibilityButton from './buttons/ToggleVisibilityButton';
-
-const selectOptions: Record<condition, string> = {
-  poor: 'Poor',
-  played: 'Played',
-  good: 'Good',
-  excellent: 'Excellent',
-};
+import { useToast } from '../../util/useToast';
+import { useTranslation } from 'react-i18next';
+import { useCurrentUser } from '../../context/user';
+import { currencies } from '../../constants/currencies';
 
 type ListingFormProps = {
   editMode?: boolean;
@@ -46,6 +42,10 @@ function ListingForm(props: ListingFormProps) {
   const id = Number(params.id);
   const [cardListings, setCardListings] = useState(props.listings);
   const navigate = useNavigate();
+  const toast = useToast();
+  const { t } = useTranslation('sell');
+  const { t: commonT } = useTranslation('common');
+  const { user } = useCurrentUser();
 
   const [formData, setFormData] = useState<YugiohCardListing>(
     props.listing || {
@@ -130,7 +130,7 @@ function ListingForm(props: ListingFormProps) {
       await yugiohService.deleteListingById(Number(params.id));
       navigate('/sell/manage');
     } catch (error) {
-      errorToast(error);
+      toast.error({ error });
     }
   }
 
@@ -138,7 +138,7 @@ function ListingForm(props: ListingFormProps) {
     yugiohService
       .editListing({ ...formData, is_listed: !formData.is_listed })
       .then(() => setFormData((state) => ({ ...state, is_listed: !state.is_listed })))
-      .catch(errorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   async function handleSubmit(e: React.FormEvent, postAnother: boolean): Promise<void> {
@@ -163,7 +163,7 @@ function ListingForm(props: ListingFormProps) {
         setCardListings(data);
         setPage(page);
       })
-      .catch(errorToast);
+      .catch((error) => toast.error({ error }));
   }
   return (
     <section className="bg-[#F5F5F5] pb-4">
@@ -217,9 +217,10 @@ function ListingForm(props: ListingFormProps) {
                     name="quantity"
                     value={formData.quantity}
                     onChange={handleQuantityChange}
-                    placeholder="Quantity"
+                    placeholder={t('newListing.secondSection.quantity')}
                     className="w-36"
                     size="small"
+                    label={t('newListing.secondSection.quantity')}
                     InputProps={{
                       startAdornment: <TagIcon className="mr-2" />,
                     }}
@@ -235,17 +236,17 @@ function ListingForm(props: ListingFormProps) {
                     renderValue={(value) => (
                       <>
                         <DiamondIcon className="mr-2" />
-                        <span>{selectOptions[value]}</span>
+                        <span>{commonT(`conditions.${value}`)}</span>
                       </>
                     )}
                   >
                     <MenuItem disabled>
-                      <i>Condition</i>
+                      <i>{t('newListing.secondSection.condition')}</i>
                     </MenuItem>
-                    <MenuItem value="poor">Poor</MenuItem>
-                    <MenuItem value="played">Played</MenuItem>
-                    <MenuItem value="good">Good</MenuItem>
-                    <MenuItem value="excellent">Excellent</MenuItem>
+                    <MenuItem value="poor">{commonT('conditions.poor')}</MenuItem>
+                    <MenuItem value="played">{commonT('conditions.played')}</MenuItem>
+                    <MenuItem value="good">{commonT('conditions.good')}</MenuItem>
+                    <MenuItem value="excellent">{commonT('conditions.excellent')}</MenuItem>
                   </Select>
                 </div>
                 <div>
@@ -255,10 +256,19 @@ function ListingForm(props: ListingFormProps) {
                       name="price"
                       value={formData.price}
                       onChange={handlePriceChange}
-                      placeholder="Price"
+                      placeholder={t('newListing.secondSection.price')}
                       size="small"
+                      label={t('newListing.secondSection.price')}
                       InputProps={{
                         startAdornment: <PaymentsIcon className="mr-2" />,
+                        endAdornment: (
+                          <span className="pl-2">
+                            {
+                              currencies.find((c) => c.code === user.currency_preference)
+                                ?.displayCurrency
+                            }
+                          </span>
+                        ),
                       }}
                     />
                   </div>
@@ -276,7 +286,9 @@ function ListingForm(props: ListingFormProps) {
         </div>
         <Divider />
         <div className="w-full overflow-auto">
-          <h3 className="text-lg font-semibold mb-6">Market information</h3>
+          <h3 className="text-lg font-semibold mb-6">
+            {t('newListing.secondSection.marketInformation')}
+          </h3>
           <MarketTable
             className="w-full max-md:text-sm"
             page={page}
@@ -286,12 +298,16 @@ function ListingForm(props: ListingFormProps) {
             <thead>
               <tr>
                 <th className="hidden lg:table-cell" colSpan={3}>
-                  Seller
+                  {t('newListing.secondSection.marketTable.tableHeaders.seller')}
                 </th>
-                <th className="table-cell lg:hidden">Seller</th>
-                <th colSpan={2}>Card details</th>
-                <th>Available</th>
-                <th>Price</th>
+                <th className="table-cell lg:hidden">
+                  {t('newListing.secondSection.marketTable.tableHeaders.seller')}
+                </th>
+                <th colSpan={2}>
+                  {t('newListing.secondSection.marketTable.tableHeaders.cardDetails')}
+                </th>
+                <th>{t('newListing.secondSection.marketTable.tableHeaders.available')}</th>
+                <th>{t('newListing.secondSection.marketTable.tableHeaders.price')}</th>
               </tr>
             </thead>
             <tbody>
@@ -324,7 +340,9 @@ function ListingForm(props: ListingFormProps) {
                     <br />
                   </td>
                   <td className="text-center text-xl p-1">{l.quantity}</td>
-                  <td className="font-bold text-xl w-[200px]">$&nbsp;{l.price}</td>
+                  <td className="font-bold text-xl w-[200px]">
+                    {l.price} {user.currency_preference}
+                  </td>
                 </tr>
               ))}
             </tbody>

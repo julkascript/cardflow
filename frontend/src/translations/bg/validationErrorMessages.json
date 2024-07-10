@@ -1,0 +1,18 @@
+{
+  "username": {
+    "maxLength": "Потребителското име превишава {{usernameValidationRules.maxLength}} символа",
+    "minLength": "Потребителското име е задължително",
+    "pattern": "Потребителското име съдържа невалидни символи",
+    "A user with that username already exists.": "Потребителското име вече е заето"
+  },
+  "password": {
+    "minLength": "Паролата е задължителна",
+    "maxLength": "Паролата надвишава {{usernameValidationRules.maxLength}} символа"
+  },
+  "email": {
+    "minLength": "Имейл адресът е задължителен",
+    "maxLength": "Имейл адресът надвишава {{emailValidationRules.maxLength}} символа",
+    "pattern": "Невалиден имейл адрес",
+    "Enter a valid email address.": "Невалиден имейл адрес"
+  }
+}

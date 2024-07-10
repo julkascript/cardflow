@@ -9,9 +9,9 @@ import React, { useState } from 'react';
 import { useAuthenticationStatus, useCurrentUser } from '../../../../context/user';
 import { shoppingCartService } from '../../../../services/shoppingCart/shoppingCart';
 import { useShoppingCart } from '../../../../context/shoppingCart';
-import { errorToast } from '../../../../util/errorToast';
-import toast from 'react-hot-toast';
 import { toastMessages } from '../../../../constants/toast';
+import { useToast } from '../../../../util/useToast';
+import { useCurrency } from '../../../../util/useCurrency';
 
 type YugiohCardMarketTableCellProps = {
   listing: YugiohCardListing;
@@ -22,22 +22,27 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
   const { user } = useCurrentUser();
   const { isAuthenticated } = useAuthenticationStatus();
   const { setShoppingCart } = useShoppingCart();
+  const toast = useToast();
+
+  const listingPrice = useCurrency(props.listing.price);
+
   function handleAddToCart(event: React.MouseEvent<HTMLButtonElement>) {
     event.preventDefault();
 
     shoppingCartService
       .addItem({ listing_id: props.listing.id, quantity })
       .then(() => {
-        toast.success(
-          toastMessages.success.shoppingCartItemAdded(
-            props.listing.card_name,
-            props.listing.card_in_set.set.set_code,
-          ),
-        );
+        toast.success({
+          toastKey: toastMessages.shoppingCartItemAdded,
+          values: {
+            name: props.listing.card_name,
+            setCode: props.listing.card_in_set.set.set_code,
+          },
+        });
         return shoppingCartService.getItems();
       })
       .then((data) => setShoppingCart(data.count))
-      .catch(errorToast);
+      .catch((error) => toast.error({ error }));
   }
 
   const cannotBuy = user.user_id === props.listing.user || !isAuthenticated;
@@ -70,7 +75,7 @@ function YugiohCardMarketTableCell(props: YugiohCardMarketTableCellProps): JSX.E
         <br />
       </td>
       <td className="lg:text-center text-sm lg:text-xl p-1">{props.listing.quantity}</td>
-      <td className="font-bold text-sm lg:text-xl lg:w-[200px]">$&nbsp;{props.listing.price}</td>
+      <td className="font-bold text-sm lg:text-xl lg:w-[200px]">{listingPrice}</td>
       <td className="w-1">
         <YugiohCardQuantityField
           max={props.listing.quantity}

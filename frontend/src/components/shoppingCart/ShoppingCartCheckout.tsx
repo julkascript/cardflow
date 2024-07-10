@@ -2,6 +2,8 @@ import { Button, Divider, Typography } from '@mui/material';
 import PageSection from '../PageSection';
 import CheckoutData from './CheckoutData';
 import { ShoppingCartItem } from '../../services/shoppingCart/types';
+import { useTranslation } from 'react-i18next';
+import { useCurrency } from '../../util/useCurrency';
 
 type ShoppingCartCheckoutProps = {
   shoppingCart: ShoppingCartItem[];
@@ -15,6 +17,9 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
   const shipmentAddressIsValid = props.shipmentAddress !== '';
   const quantity = props.shoppingCart.reduce((total, item) => total + item.quantity, 0);
   const sellers = props.shoppingCart.length;
+  const { t } = useTranslation('buy');
+  const price = useCurrency(props.totalPrice);
+
   return (
     <PageSection className="p-4 w-1/2 lg:w-1/6 h-[600px] lg:sticky top-0">
       <div id="checkout" className="flex justify-center flex-col gap-4">
@@ -24,11 +29,9 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
             color="text.secondary"
             component="h3"
           >
-            Total:
+            {t('cart.checkout.title')}
           </Typography>
-          <span className="font-bold text-[16pt]">
-            ${(props.totalPrice + props.shipmentCost).toFixed(2)}
-          </span>
+          <span className="font-bold text-[16pt]">{price}</span>
         </div>
         <Button
           disabled={!shipmentAddressIsValid || props.shoppingCart.length === 0}
@@ -39,17 +42,21 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
             props.onCheckout();
           }}
         >
-          Checkout
+          {t('cart.checkout.checkoutButtonText')}
         </Button>
         <Divider flexItem />
         <ul>
-          <CheckoutData summary="Shipping cost" data={props.shipmentCost} />
-          <CheckoutData summary="Items cost" data={props.totalPrice} />
+          {/* <CheckoutData
+            withDollar
+            summary={t('cart.checkout.shippingCost')}
+            data={props.shipmentCost}
+          /> */}
+          <CheckoutData withDollar summary={t('cart.checkout.itemsCost')} data={props.totalPrice} />
         </ul>
         <Divider />
         <ul>
-          <CheckoutData withDollar summary="Amount of sellers" data={sellers} />
-          <CheckoutData withDollar summary="Amount of cards" data={quantity} />
+          <CheckoutData summary={t('cart.checkout.amountOfSellers')} data={sellers} />
+          <CheckoutData summary={t('cart.checkout.amountOfCards')} data={quantity} />
         </ul>
       </div>
     </PageSection>

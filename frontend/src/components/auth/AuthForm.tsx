@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/quotes */
 // TO-DO: fix conflict in ESLint / Prettier rules and remove the above
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -9,13 +8,16 @@ import {
   UserRegister,
 } from '../../services/user/types';
 import { useCurrentUser } from '../../context/user';
-import toast from 'react-hot-toast';
 import { toastMessages } from '../../constants/toast';
-import { errorToast } from '../../util/errorToast';
 import { HttpError } from '../../util/HttpError';
 import { Button, Link, TextField } from '@mui/material';
 import { userValidator } from '../../validators/user';
 import { useDebounce } from '../../util/useDebounce';
+import { useToast } from '../../util/useToast';
+import { Trans, useTranslation } from 'react-i18next';
+import { usernameValidationRules } from '../../constants/validationRules/username';
+import { emailValidationRules } from '../../constants/validationRules/email';
+import { passwordValidationRules } from '../../constants/validationRules/password';
 
 type AuthFormProps = {
   isLogin: boolean;
@@ -23,6 +25,9 @@ type AuthFormProps = {
 
 const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
   const { setUser } = useCurrentUser();
+  const toast = useToast();
+  const { t: validationT } = useTranslation('validationErrorMessages');
+  const { t } = useTranslation('auth');
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -81,7 +86,7 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     const data = await userService.getUserById(id);
     setUser({ user_id: id, ...data });
     navigate('/');
-    toast.success(isLogin ? toastMessages.success.login : toastMessages.success.register);
+    toast.success({ toastKey: isLogin ? toastMessages.login : toastMessages.register });
   }
 
   async function handleSubmitAuthForm(event: React.FormEvent) {
@@ -108,22 +113,31 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     } catch (error: any) {
       if (error instanceof HttpError) {
         if (isLogin && error.err.status === 401) {
-          errorToast(error, toastMessages.error.failedLogin);
+          toast.error({
+            error,
+            toastKey: toastMessages.failedLogin,
+          });
         } else {
           if (isLogin) {
-            errorToast(error, undefined, 400);
+            toast.error({
+              error,
+              excludedStatusCodes: [400],
+            });
           } else {
             const errors = await error.err.json();
             if (errors.username && Array.isArray(errors.username)) {
-              setUsernameErrors(errors.username);
+              setUsernameErrors(errors.username.map((u: string) => `username.${u}`));
             }
 
             if (errors.email && Array.isArray(errors.email)) {
-              setEmailErrors(errors.email);
+              setEmailErrors(errors.email.map((e: string) => `email.${e}`));
             }
 
             // in case server is down or some other unexpected error pops up
-            errorToast(error, undefined, 400);
+            toast.error({
+              error,
+              excludedStatusCodes: [400],
+            });
           }
         }
       }
@@ -134,14 +148,18 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
     <form onSubmit={handleSubmitAuthForm}>
       <div className="flex justify-center items-center flex-col">
         <h2 className="text-4xl text-center font-bold pt-20 pb-10 text-secondary">
-          {isLogin ? 'Log in' : 'Sign up'} for Cardflow
+          {t(isLogin ? 'login.title' : 'register.title')}
         </h2>
         <div className="w-full flex justify-center mb-8 lg:mb-4">
           <TextField
             className="w-3/4 lg:w-96"
-            placeholder="Username"
+            placeholder={t('common.usernameField.placeholder')}
             size="small"
-            label={!usernameIsValid && usernameFieldWasChanged ? usernameErrors[0] : 'Username'}
+            label={
+              !usernameIsValid && usernameFieldWasChanged
+                ? validationT(usernameErrors[0], { usernameValidationRules })
+                : t('common.usernameField.label')
+            }
             id="username"
             error={!usernameIsValid && usernameFieldWasChanged}
             onChange={handleUsernameChange}
@@ -151,9 +169,13 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
           <div className="w-full flex justify-center mb-8 lg:mb-4">
             <TextField
               size="small"
-              label={!emailIsValid && emailFieldWasChanged ? emailErrors[0] : 'Email Address'}
+              label={
+                !emailIsValid && emailFieldWasChanged
+                  ? validationT(emailErrors[0], { emailValidationRules })
+                  : t('common.emailField.label')
+              }
               className="w-3/4 lg:w-96"
-              placeholder="Email Address"
+              placeholder={t('common.emailField.placeholder')}
               id="email-address"
               error={!emailIsValid && emailFieldWasChanged}
               onChange={handleEmailChange}
@@ -162,9 +184,13 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
         ) : null}
         <TextField
           size="small"
-          label={!passwordIsValid && passwordFieldWasChanged ? passwordErrors[0] : 'Password'}
+          label={
+            !passwordIsValid && passwordFieldWasChanged
+              ? validationT(passwordErrors[0], { passwordValidationRules })
+              : t('common.passwordField.label')
+          }
           className="w-3/4 lg:w-96"
-          placeholder="Password"
+          placeholder={t('common.passwordField.placeholder')}
           type="password"
           error={!passwordIsValid && passwordFieldWasChanged}
           onChange={handlePasswordChange}
@@ -177,16 +203,19 @@ const SignUpPage: React.FC<AuthFormProps> = ({ isLogin }) => {
             variant="contained"
             size="large"
           >
-            {isLogin ? 'Log in' : 'Sign up'}
+            {t(isLogin ? 'login.signInButtonText' : 'register.signUpButtonText')}
           </Button>
         </div>
         <div className="flex justify-center items-center flex-col py-5">
           <p className="font-extrabold text-center">
-            {/* eslint-disable-next-line quotes */}
-            {isLogin ? "Don't have an account?" : 'Already have an account?'}{' '}
-            <Link href={isLogin ? '/register' : '/login'} color="#2384F4" underline="hover">
-              {isLogin ? 'Sign up' : 'Log in'}
-            </Link>
+            <Trans
+              i18nKey={isLogin ? 'login.linkToRegister' : 'register.linkToLogin'}
+              t={t}
+              components={{
+                linkToLogin: <Link href="/login" color="#2384F4" underline="hover" />,
+                linkToRegister: <Link href="/register" color="#2384F4" underline="hover" />,
+              }}
+            ></Trans>
           </p>
         </div>
       </div>

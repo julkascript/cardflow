@@ -1,22 +1,20 @@
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.utils.timezone import now
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets, generics, serializers, status, permissions, views
-from rest_framework.decorators import action
-from rest_framework.exceptions import PermissionDenied, ValidationError
+from rest_framework import viewsets, status, views
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
-from django.core.mail import send_mail
-
-from cardflow import settings
-
-from accounts.serializers import RegistrationSerializer, MyTokenObtainPairSerializer, UpdateUserSerializer, ContactFormSerializer
 
 from accounts.filters import UserFilter
-
 from accounts.permissions import IsOwnerOfObject
+from accounts.serializers import RegistrationSerializer, MyTokenObtainPairSerializer, UpdateUserSerializer, \
+    ContactFormSerializer, UserSerializer
+from cardflow import settings
+from order.models import OrderStatusHistory
 
 User = get_user_model()
 
@@ -79,14 +77,64 @@ class UserUpdateView(viewsets.ModelViewSet):
         serializer = self.get_serializer(queryset, many=True)
 
         try:
-            return Response({'username': serializer.data[0]['username'], 'avatar': serializer.data[0]['avatar']})
+            user_data = serializer.data[0]
+            user = queryset[0]
+
+            # Calculate Purchases
+            purchases_count = UserSerializer.get_purchases_count(user.id)
+
+            # Calculate Sales
+            sales_count = UserSerializer.get_sales_count(user.id)
+
+            # Calculate Sales This Month
+            current_month = now().month
+            current_year = now().year
+            sales_this_month_count = OrderStatusHistory.objects.filter(
+                order__sender_user=user,
+                status='ordered',
+                timestamp__year=current_year,
+                timestamp__month=current_month
+            ).count()
+
+            # Calculate Seller Rating
+            avg_rating = UserSerializer.get_average_rating(user.id)
+
+            # Calculate Rejection Rate
+
+            final_rejected_ordered_sales_count = UserSerializer.get_rejection_rate(user)
+
+            # Calculate Missed Rate
+            missed_sent_sales_count = UserSerializer.get_miss_rate(user)
+
+            if sales_count > 0:
+                rejection_rate = (final_rejected_ordered_sales_count / sales_count) * 100
+                miss_rate = (missed_sent_sales_count / sales_count) * 100
+            else:
+                rejection_rate = 0
+                miss_rate = 0
+
+            stats_data = {
+                'purchases': purchases_count,
+                'sales': sales_count,
+                'sales_this_month': sales_this_month_count,
+                'seller_rating': f"{avg_rating}",
+                'rejection_rate': round(rejection_rate),
+                'miss_rate': round(miss_rate)
+            }
+
+            return Response({
+                'username': user_data['username'],
+                'avatar': user_data['avatar'],
+                'stats': stats_data
+            })
         except IndexError:
             return Response('User not found', status=status.HTTP_404_NOT_FOUND)
 
-    def retrieve(self, request, *args, **kwargs):
-        instance = self.get_object()
-        serializer = self.get_serializer(instance)
-        return Response(serializer.data)
+
+def retrieve(self, request, *args, **kwargs):
+    instance = self.get_object()
+    serializer = self.get_serializer(instance)
+    return Response(serializer.data)
 
 
 @extend_schema(tags=["Contact Form"])

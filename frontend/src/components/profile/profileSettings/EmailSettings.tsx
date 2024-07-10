@@ -2,6 +2,7 @@ import { Button, TextField } from '@mui/material';
 import PageSection from '../../PageSection';
 import ProfileSectionFooter from '../ProfileSectionFooter';
 import { ChangeEvent, FormEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type EmailSettingsProps = {
   email: string;
@@ -11,6 +12,8 @@ type EmailSettingsProps = {
 function EmailSettings(props: EmailSettingsProps): JSX.Element {
   const [email, setEmail] = useState(props.email);
   const emailPattern = /^.+@.+$/gim;
+
+  const { t } = useTranslation('account');
 
   const isInvalid = !emailPattern.test(email) || email === props.email;
 
@@ -29,12 +32,12 @@ function EmailSettings(props: EmailSettingsProps): JSX.Element {
     <PageSection>
       <form onSubmit={handleSubmit}>
         <div className="pt-4 pb-4 lg:pl-12 lg:pr-12">
-          <h2 className="font-bold mb-4 text-lg">Email</h2>
-          <p className="mb-4">Please enter your email address.</p>
+          <h2 className="font-bold mb-4 text-lg">{t('details.email.title')}</h2>
+          <p className="mb-4">{t('details.email.description')}</p>
           <TextField value={email} onChange={handleEmailChange} size="small" />
         </div>
         <ProfileSectionFooter>
-          <p>You will be logged out after the change.</p>
+          <p>{t('details.email.hint')}</p>
           <Button
             type="submit"
             disabled={isInvalid}
@@ -42,7 +45,7 @@ function EmailSettings(props: EmailSettingsProps): JSX.Element {
             variant="contained"
             className="inline-block"
           >
-            Save
+            {t('common.saveButtonText')}
           </Button>
         </ProfileSectionFooter>
       </form>

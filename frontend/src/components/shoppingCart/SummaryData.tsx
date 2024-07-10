@@ -1,3 +1,5 @@
+import { useCurrency } from '../../util/useCurrency';
+
 type SummaryDataProps = {
   data: number;
   summary: string;
@@ -5,11 +7,13 @@ type SummaryDataProps = {
 };
 
 function SummaryData(props: SummaryDataProps): JSX.Element {
+  const data = useCurrency(props.data);
+
   return (
     <li className="mb-2">
       <div className="flex justify-between">
         <span>{props.summary}</span>
-        <span className={props.boldedData ? 'font-bold' : ''}>${props.data.toFixed(2)}</span>
+        <span className={props.boldedData ? 'font-bold' : ''}>{data}</span>
       </div>
     </li>
   );

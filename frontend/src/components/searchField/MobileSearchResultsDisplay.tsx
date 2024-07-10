@@ -9,6 +9,7 @@ import {
 import { PaginatedItem, YugiohCardInSet } from '../../services/yugioh/types';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { searchRules } from '../../constants/searchRules';
+import { useTranslation } from 'react-i18next';
 
 type SearchResultsDisplayProps = {
   results: PaginatedItem<YugiohCardInSet>;
@@ -29,6 +30,7 @@ type MobileTooltipImageProps = {
 
 function MobileSearchResultsDisplay(props: SearchResultsDisplayProps): JSX.Element {
   const { results } = props.results;
+
   if (results.length === 0) {
     return <></>;
   }
@@ -91,6 +93,8 @@ function MobileSearchResultItem(props: MobileSearchResultItemProps): JSX.Element
 function MobileBottomDisplayText(props: SearchResultsDisplayProps) {
   const { results } = props;
   const { count } = results;
+  const { t } = useTranslation('common');
+
   if (count <= searchRules.maxSearchFieldDisplayResults) {
     return <></>;
   }
@@ -103,7 +107,7 @@ function MobileBottomDisplayText(props: SearchResultsDisplayProps) {
       onClick={props.onClose}
     >
       <Typography fontSize={14} className="text-center w-full" color="text.secondary">
-        Show all ({count} results)
+        {t('search.showAll', { results: count })}
       </Typography>
     </ListItemButton>
   );

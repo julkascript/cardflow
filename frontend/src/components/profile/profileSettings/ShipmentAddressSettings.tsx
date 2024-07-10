@@ -2,6 +2,7 @@ import { ChangeEvent, FormEvent, useState } from 'react';
 import PageSection from '../../PageSection';
 import ProfileSectionFooter from '../ProfileSectionFooter';
 import { Button, TextField } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 type ShipmentAddressSettingsProps = {
   address: string | null;
@@ -10,6 +11,7 @@ type ShipmentAddressSettingsProps = {
 
 function ShipmentAddressSettings(props: ShipmentAddressSettingsProps): JSX.Element {
   const [address, setAddress] = useState(props.address || '');
+  const { t } = useTranslation('account');
 
   function handleAddressChange(event: ChangeEvent<HTMLInputElement>) {
     event.preventDefault();
@@ -26,12 +28,12 @@ function ShipmentAddressSettings(props: ShipmentAddressSettingsProps): JSX.Eleme
     <PageSection>
       <form onSubmit={handleSubmit}>
         <div className="pt-4 pb-4 lg:pl-12 lg:pr-12">
-          <h2 className="font-bold mb-4 text-lg">Default shipment address</h2>
-          <p className="mb-4">Enter the default shipment address that will get pre-filled.</p>
+          <h2 className="font-bold mb-4 text-lg">{t('details.defaultShipmentAddress.title')}</h2>
+          <p className="mb-4">{t('details.defaultShipmentAddress.description')}</p>
           <TextField value={address} onChange={handleAddressChange} size="small" />
         </div>
         <ProfileSectionFooter>
-          <p>You can always change the address per purchase in the checkout section.</p>
+          <p>{t('details.defaultShipmentAddress.hint')}</p>
           <Button
             disabled={address === '' || address === props.address}
             color="primary"
@@ -39,7 +41,7 @@ function ShipmentAddressSettings(props: ShipmentAddressSettingsProps): JSX.Eleme
             className="inline-block"
             type="submit"
           >
-            Save
+            {t('common.saveButtonText')}
           </Button>
         </ProfileSectionFooter>
       </form>

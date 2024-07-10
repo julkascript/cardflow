@@ -1,5 +1,6 @@
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import { Button, IconButton, Tooltip } from '@mui/material';
+import { useTranslation } from 'react-i18next';
 
 type ToggleVisibilityButtonProps = {
   public: boolean;
@@ -7,6 +8,7 @@ type ToggleVisibilityButtonProps = {
 };
 
 function ToggleVisibilityButton(props: ToggleVisibilityButtonProps): JSX.Element {
+  const { t } = useTranslation('sell');
   return (
     <>
       <div className="hidden lg:block">
@@ -17,11 +19,18 @@ function ToggleVisibilityButton(props: ToggleVisibilityButtonProps): JSX.Element
           onClick={props.onClick}
           className="w-full"
         >
-          {props.public ? 'List' : 'Delist'}
+          {t('newListing.secondSection.visibilityButtonText', {
+            context: props.public.toString(),
+          })}
         </Button>
       </div>
       <div className="block lg:hidden mx-auto">
-        <Tooltip title={props.public ? 'Delist' : 'Make listing public'} onClick={props.onClick}>
+        <Tooltip
+          title={t('newListing.secondSection.visibilityButtonTooltipText', {
+            context: props.public.toString(),
+          })}
+          onClick={props.onClick}
+        >
           <IconButton size="small" color={props.public ? 'info' : 'secondary'}>
             <VisibilityIcon />
           </IconButton>

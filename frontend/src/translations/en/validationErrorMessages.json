@@ -1,0 +1,18 @@
+{
+  "username": {
+    "maxLength": "Username must be no longer than {{usernameValidationRules.maxLength}} characters long",
+    "minLength": "Username is required",
+    "pattern": "The username contains an invalid character",
+    "A user with that username already exists.": "A user with that username already exists."
+  },
+  "password": {
+    "minLength": "Password is required",
+    "maxLength": "Password must be no longer than {{passwordValidationRules.maxLength}} characters long"
+  },
+  "email": {
+    "minLength": "Email is required",
+    "maxLength": "Email must be no longer than {{emailValidationRules.maxLength}} characters long",
+    "pattern": "Invalid email",
+    "Enter a valid email address.": "Invalid email"
+  }
+}

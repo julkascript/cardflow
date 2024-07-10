@@ -9,6 +9,7 @@ import {
 import { PaginatedItem, YugiohCardInSet } from '../../services/yugioh/types';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { searchRules } from '../../constants/searchRules';
+import { useTranslation } from 'react-i18next';
 
 type SearchResultsDisplayProps = {
   results: PaginatedItem<YugiohCardInSet>;
@@ -57,7 +58,7 @@ function SearchResultsDisplay(props: SearchResultsDisplayProps): JSX.Element {
 }
 
 function TooltipImage(props: TooltipImageProps) {
-  return <img src={props.imageUrl} className="w-64" alt="card image" />;
+  return <img src={props.imageUrl} className="w-64" alt="" />;
 }
 
 function SearchResultItem(props: SearchResultItemProps): JSX.Element {
@@ -88,6 +89,7 @@ function SearchResultItem(props: SearchResultItemProps): JSX.Element {
 }
 
 function BottomDisplayText(props: SearchResultsDisplayProps) {
+  const { t } = useTranslation('common');
   const { results } = props;
   const { count } = results;
   if (count <= searchRules.maxSearchFieldDisplayResults) {
@@ -103,7 +105,7 @@ function BottomDisplayText(props: SearchResultsDisplayProps) {
       onClick={props.onClose}
     >
       <Typography fontSize={10} className="text-center w-full" color="text.secondary">
-        Show all ({count} results)
+        {t('search.showAll', { results: count })}
       </Typography>
     </ListItemButton>
   );

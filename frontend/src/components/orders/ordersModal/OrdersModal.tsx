@@ -19,13 +19,12 @@ import MarketTable from '../../marketTable/MarketTable';
 import SummaryData from '../../shoppingCart/SummaryData';
 import Home from '@mui/icons-material/Home';
 import { createPortal } from 'react-dom';
-import { orderStates } from '../../../constants/orders';
 import { orderService } from '../../../services/orders/orderService';
-import { errorToast } from '../../../util/errorToast';
-import toast from 'react-hot-toast';
 import { toastMessages } from '../../../constants/toast';
 import { Feedback } from '../../../services/feedback/types';
 import { feedbackService } from '../../../services/feedback/feedback';
+import { useToast } from '../../../util/useToast';
+import { useTranslation } from 'react-i18next';
 
 const Rating = styled(BaseRating)({
   '& .MuiRating-iconFilled': {
@@ -54,19 +53,26 @@ type OrdersModalProps = {
 function OrdersModal(props: OrdersModalProps): JSX.Element {
   const order = props.order;
   const [receivedOption, setReceivedOption] = useState(props.status);
+  const toast = useToast();
+  const { t } = useTranslation('account');
+  const { t: commonT } = useTranslation('common');
+
   const totalPrice = props.order.order_items.reduce(
     (total, order) => total + order.quantity * order.listing.price,
     0,
   );
-  const shipmentPrice = 9.85;
 
+  const shipmentPrice = 9.85;
   const [hasSubmitted, setHasSubmitted] = useState(false);
 
   const cannotGiveFeedback =
     props.feedback !== undefined ||
     props.userPosition === 'seller' ||
     hasSubmitted ||
-    (props.status !== 'completed' && props.status !== 'rejected');
+    (props.status !== 'completed' &&
+      props.status !== 'rejected' &&
+      props.status !== 'not_sent' &&
+      props.status !== 'not_received');
 
   const userToDisplay =
     props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
@@ -97,10 +103,16 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
       orderService
         .changeOrderStatus(order.order_id, receivedOption)
         .then(() => {
-          toast.success(toastMessages.success.orderStatusChanged(order.order_id, receivedOption));
+          toast.success({
+            toastKey: toastMessages.orderStatusChanged,
+            context: receivedOption,
+            values: {
+              orderId: order.order_id,
+            },
+          });
           props.onClose(true);
         })
-        .catch(errorToast);
+        .catch((error) => toast.error({ error }));
     }
 
     if (rating && !cannotGiveFeedback) {
@@ -113,7 +125,10 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
         .then(() => {
           setHasSubmitted(true);
           if (!hasChangedOption) {
-            toast.success(toastMessages.success.feedbackGiven(order.order_id));
+            toast.success({
+              toastKey: toastMessages.feedbackGiven,
+              values: { orderId: order.order_id },
+            });
             props.onClose(true);
           }
         });
@@ -136,7 +151,9 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
     >
       <div className="p-16">
         <section className="flex gap-4 items-center mb-6 justify-center lg:justify-start">
-          <h2 className="font-bold text-4xl">Order #{order.order_id}</h2>
+          <h2 className="font-bold text-4xl">
+            {t('salesAndOrders.modal.title')} #{order.order_id}
+          </h2>
           <OrderStatusBadge orderState={order.status} />
         </section>
         <div className="mb-4 justify-center flex lg:block">
@@ -146,28 +163,38 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
                 <FormControlLabel
                   disabled={props.status !== 'sent'}
                   control={<Radio color="info" />}
-                  label={orderStates.completed}
+                  label={t('salesAndOrders.status.completed')}
                   value="completed"
                 />
                 <FormControlLabel
                   disabled={props.status !== 'sent'}
                   control={<Radio color="info" />}
-                  label="Not received"
-                  value="rejected"
+                  label={t('salesAndOrders.status.not_received')}
+                  value="not_received"
                 />
               </RadioGroup>
             ) : (
               <RadioGroup name="status" value={receivedOption} onChange={handleChange}>
                 <FormControlLabel
-                  disabled={props.status === 'completed' || props.status === 'rejected'}
+                  disabled={
+                    props.status === 'completed' ||
+                    props.status === 'rejected' ||
+                    props.status === 'not_received' ||
+                    props.status === 'not_sent'
+                  }
                   control={<Radio color="info" />}
-                  label={orderStates.sent}
+                  label={t('salesAndOrders.status.sent')}
                   value="sent"
                 />
                 <FormControlLabel
-                  disabled={props.status === 'completed' || props.status === 'rejected'}
+                  disabled={
+                    props.status === 'completed' ||
+                    props.status === 'rejected' ||
+                    props.status === 'not_received' ||
+                    props.status === 'not_sent'
+                  }
                   control={<Radio color="info" />}
-                  label={orderStates.rejected}
+                  label={t('salesAndOrders.status.rejected')}
                   value="rejected"
                 />
               </RadioGroup>
@@ -187,17 +214,29 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
         <Divider />
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left lg:flex-row gap-4 py-4">
           <section className="w-2/5">
-            <h3 className="font-bold mb-4">Summary</h3>
+            <h3 className="font-bold mb-4">{commonT('purchaseDetails.summary')}</h3>
             <ul className="mr-4">
-              <SummaryData summary="Card(s) total price" data={totalPrice} />
-              <SummaryData summary="Shipment price" data={shipmentPrice} />
-              <SummaryData boldedData summary="Total" data={totalPrice + shipmentPrice} />
+              <SummaryData
+                summary={commonT('purchaseDetails.cardsTotalPrice', {
+                  count: props.order.order_items.reduce((total, o) => total + o.quantity, 0),
+                })}
+                data={totalPrice}
+              />
+              <SummaryData
+                summary={commonT('purchaseDetails.shipmentPrice')}
+                data={shipmentPrice}
+              />
+              <SummaryData
+                boldedData
+                summary={commonT('purchaseDetails.totalPrice')}
+                data={totalPrice + shipmentPrice}
+              />
             </ul>
           </section>
           <Divider className="hidden lg:block" orientation="vertical" flexItem />
           <Divider className="block lg:hidden" flexItem />
           <div>
-            <h3 className="font-bold mb-4">Shipping details</h3>
+            <h3 className="font-bold mb-4">{commonT('purchaseDetails.shippingDetails.title')}</h3>
             <TextField
               size="small"
               InputProps={{
@@ -217,9 +256,9 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
           <MarketTable className="text-center w-full">
             <thead>
               <tr>
-                <th colSpan={2}>Card Details</th>
-                <th>Quantity</th>
-                <th>Price</th>
+                <th colSpan={2}>{commonT('purchaseDetails.table.tableHeaders.cardDetails')}</th>
+                <th>{commonT('purchaseDetails.table.tableHeaders.quantity')}</th>
+                <th>{commonT('purchaseDetails.table.tableHeaders.price')}</th>
               </tr>
             </thead>
             <tbody>
@@ -236,11 +275,13 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
         </div>
         <div className="flex flex-col items-center gap-4 lg:gap-0 lg:items-start lg:flex-row w-full">
           <section>
-            <h3 className="font-bold mb-2 lg:mb-4 text-center lg:text-left">History</h3>
+            <h3 className="font-bold mb-2 lg:mb-4 text-center lg:text-left">
+              {t('salesAndOrders.modal.history.title')}
+            </h3>
             <ul className="flex flex-col gap-2">
               {props.order.status_history.map((s) => (
                 <li key={s.timestamp + s.status}>
-                  {orderStates[s.status]} - {formatTimestamp(s.timestamp)}
+                  {t('salesAndOrders.status.' + s.status)} - {formatTimestamp(s.timestamp)}
                 </li>
               ))}
             </ul>
@@ -248,14 +289,16 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
           <Divider className="hidden lg:block lg:px-[81px]" orientation="vertical" flexItem />
           <Divider className="block lg:hidden" flexItem />
           <section className="w-full flex flex-col items-center lg:w-auto lg:block lg:mx-auto">
-            <h3 className="font-bold mb-4 lg:mb-2 text-center lg:text-left">Feedback</h3>
+            <h3 className="font-bold mb-4 lg:mb-2 text-center lg:text-left">
+              {t('salesAndOrders.modal.feedback.title')}
+            </h3>
             <form className="flex flex-col w-full items-center lg:w-auto lg:items-start">
               <label
                 id="rating"
                 data-disabled={cannotGiveFeedback}
                 className="flex items-center gap-2 mb-2"
               >
-                <span>Rate:</span>{' '}
+                <span>{t('salesAndOrders.modal.feedback.rate')}</span>{' '}
                 <Rating
                   onChange={changeRating}
                   disabled={cannotGiveFeedback}
@@ -264,7 +307,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
                 />
               </label>
               <label className="block w-full">
-                <div>Comment:</div>
+                <div>{t('salesAndOrders.modal.feedback.comment')}</div>
                 <TextField
                   value={props.feedback ? props.feedback.comment : comment}
                   fullWidth
@@ -281,11 +324,11 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
         </div>
         <div className="flex justify-between mt-8">
           <Button className="" href="/about/contact" color="error" variant="outlined">
-            Report
+            {t('salesAndOrders.modal.reportButtonText')}
           </Button>
           <div className="flex gap-4">
             <Button variant="outlined" onClick={() => props.onClose()}>
-              Cancel
+              {t('salesAndOrders.modal.cancelButtonText')}
             </Button>
             <Button
               disabled={saveButtonIsDisabled}
@@ -293,7 +336,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               color="success"
               onClick={save}
             >
-              Save
+              {t('salesAndOrders.modal.saveButtonText')}
             </Button>
           </div>
         </div>
