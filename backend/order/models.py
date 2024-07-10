@@ -68,6 +68,7 @@ class OrderStatusHistory(models.Model):
 
     class Meta:
         ordering = ['-timestamp']
+        verbose_name_plural = 'Order Status History'
 
 
 class FeedbackAndRating(models.Model):
