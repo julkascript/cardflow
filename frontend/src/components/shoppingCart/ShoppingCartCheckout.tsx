@@ -37,6 +37,7 @@ function ShoppingCartCheckout(props: ShoppingCartCheckoutProps) {
           disabled={!shipmentAddressIsValid || props.shoppingCart.length === 0}
           variant="contained"
           color="success"
+          className="!text-white hover:!text-black"
           onClick={(e) => {
             e.preventDefault();
             props.onCheckout();
