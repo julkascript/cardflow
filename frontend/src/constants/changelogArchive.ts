@@ -21,6 +21,10 @@ export const changelogArchive: readonly ChangelogArchive[] = [
     version: '1.2.0',
     date: new Date('June 12, 2024'),
   },
+  {
+    version: '1.3.0',
+    date: new Date('July 10, 2024'),
+  },
 ];
 
 type ChangelogArchive = {

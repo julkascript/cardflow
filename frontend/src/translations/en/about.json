@@ -87,6 +87,11 @@
       "features": ["Improved user feedbacks", "Improved navigation", "Show image previews"],
       "fixes": ["Best sellers fixed", "Fixed delisting bugs"],
       "deprecated": []
+    },
+    "1.3.0": {
+      "features": ["Internalization", "Improved statuses", "Auto-completing orders", "Dynamic currencies"],
+      "fixes": ["Order issues", "Visual glitches"],
+      "deprecated": []
     }
   },
   "contact": {
