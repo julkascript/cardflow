@@ -159,11 +159,16 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
       maxWidth="md"
     >
       <div className="p-16">
-        <section className="flex gap-4 items-center mb-6 justify-center lg:justify-start">
-          <h2 className="font-bold text-4xl">
-            {t('salesAndOrders.modal.title')} #{order.order_id}
-          </h2>
-          <OrderStatusBadge orderState={order.status} />
+        <section className="flex items-center mb-6 justify-between">
+          <div className="flex items-center gap-4 justify-center lg:justify-start">
+            <h2 className="font-bold text-4xl">
+              {t('salesAndOrders.modal.title')} #{order.order_id}
+            </h2>
+            <OrderStatusBadge orderState={order.status} />
+          </div>
+          <Link href="/about/faq" className="!text-gray-500" target="_blank">
+            {t('salesAndOrders.modal.supportButtonText')}
+          </Link>
         </section>
         <div className="mb-4 justify-center flex lg:block">
           <FormControl>

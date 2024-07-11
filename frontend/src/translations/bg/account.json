@@ -90,7 +90,8 @@
       },
       "reportButtonText": "Докладвай за нередност",
       "cancelButtonText": "Затвори",
-      "saveButtonText": "Запази"
+      "saveButtonText": "Запази",
+      "supportButtonText": "Помощ"
     }
   }
 }

@@ -92,7 +92,8 @@
       },
       "reportButtonText": "Report",
       "cancelButtonText": "Cancel",
-      "saveButtonText": "Save"
+      "saveButtonText": "Save",
+      "supportButtonText": "Support"
     }
   }
 }
