@@ -88,7 +88,9 @@ const NewListingBody: React.FC = () => {
                * Spreading the key into the MenuItem causes React to complain
                *
                * props is typed as ``any`` because TypeScript doesn't recognize
-               * ``key`` as a valid property (despite it actually existing)
+               * ``key`` as a valid property (despite it actually existing).
+               * This is apparently a typing issue fixed in a later version, might
+               * be worth upgrading to remove casting
                */
               delete (props as any).key;
 
