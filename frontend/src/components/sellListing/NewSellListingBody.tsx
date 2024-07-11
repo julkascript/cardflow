@@ -1,11 +1,19 @@
 import React, { useMemo, useState } from 'react';
-import { Autocomplete, ListItemIcon, MenuItem, TextField, Tooltip } from '@mui/material';
+import {
+  Autocomplete,
+  InputAdornment,
+  ListItemIcon,
+  MenuItem,
+  TextField,
+  Tooltip,
+} from '@mui/material';
 import { YugiohCardInSet } from '../../services/yugioh/types';
 import { useDebounce } from '../../util/useDebounce';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useToast } from '../../util/useToast';
 import { Link, useNavigate } from 'react-router-dom';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
+import { Search } from '@mui/icons-material';
 
 type SearchResults = {
   id: number;
@@ -58,7 +66,21 @@ const NewListingBody: React.FC = () => {
             selectOnFocus
             onChange={handleSelect}
             renderInput={(params) => (
-              <TextField key={params.id} onChange={handleChange} {...params} />
+              <TextField
+                onChange={handleChange}
+                {...params}
+                InputProps={{
+                  ...params.InputProps,
+                  startAdornment: (
+                    <>
+                      <InputAdornment position="start">
+                        <Search />
+                      </InputAdornment>
+                      {params.InputProps.startAdornment}
+                    </>
+                  ),
+                }}
+              />
             )}
             options={searchResults}
             renderOption={(props, option) => (
