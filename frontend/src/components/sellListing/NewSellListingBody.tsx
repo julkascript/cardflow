@@ -83,24 +83,37 @@ const NewListingBody: React.FC = () => {
               />
             )}
             options={searchResults}
-            renderOption={(props, option) => (
-              <Link
-                to={`/sell/new/${option.id}`}
-                key={option.id + option.name + option.rarity + 'new-listing'}
-              >
-                <MenuItem {...props} className="flex gap-6 w-full">
-                  <Tooltip title={<TooltipImage imageUrl={option.image} />} placement="left-start">
-                    <ListItemIcon sx={{ color: 'black' }}>
-                      <CameraAltIcon />
-                    </ListItemIcon>
-                  </Tooltip>
-                  <div className="flex items-center text-sm md:text-base">
-                    <div className="w-20">{option.setCode}</div>
-                    <div>{option.name}</div>
-                  </div>
-                </MenuItem>
-              </Link>
-            )}
+            renderOption={(props, option) => {
+              /**
+               * Spreading the key into the MenuItem causes React to complain
+               *
+               * props is typed as ``any`` because TypeScript doesn't recognize
+               * ``key`` as a valid property (despite it actually existing)
+               */
+              delete (props as any).key;
+
+              return (
+                <Link
+                  to={`/sell/new/${option.id}`}
+                  key={option.id + option.name + option.rarity + 'new-listing'}
+                >
+                  <MenuItem {...props} className="flex gap-6 w-full">
+                    <Tooltip
+                      title={<TooltipImage imageUrl={option.image} />}
+                      placement="left-start"
+                    >
+                      <ListItemIcon sx={{ color: 'black' }}>
+                        <CameraAltIcon />
+                      </ListItemIcon>
+                    </Tooltip>
+                    <div className="flex items-center text-sm md:text-base">
+                      <div className="w-20">{option.setCode}</div>
+                      <div>{option.name}</div>
+                    </div>
+                  </MenuItem>
+                </Link>
+              );
+            }}
           />
         </div>
       </div>
