@@ -92,14 +92,16 @@ const NewListingBody: React.FC = () => {
                * This is apparently a typing issue fixed in a later version, might
                * be worth upgrading to remove casting
                */
-              delete (props as any).key;
+
+              // eslint-disable-next-line @typescript-eslint/no-unused-vars
+              const { key: _key, ...propsWithoutKey } = props as any;
 
               return (
                 <Link
                   to={`/sell/new/${option.id}`}
                   key={option.id + option.name + option.rarity + 'new-listing'}
                 >
-                  <MenuItem {...props} className="flex gap-6 w-full">
+                  <MenuItem {...propsWithoutKey} className="flex gap-6 w-full">
                     <Tooltip
                       title={<TooltipImage imageUrl={option.image} />}
                       placement="left-start"
