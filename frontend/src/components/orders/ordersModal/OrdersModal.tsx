@@ -208,7 +208,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
         <div className="grid grid-cols-[2fr,1fr,3fr] gap-y-16">
           <section>
             <h3 className="font-bold mb-4">{commonT('purchaseDetails.summary')}</h3>
-            <ul className="mr-4">
+            <ul>
               <SummaryData
                 summary={commonT('purchaseDetails.cardsTotalPrice', {
                   count: props.order.order_items.reduce((total, o) => total + o.quantity, 0),
@@ -258,7 +258,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
           </section>
           <Divider className="hidden lg:block place-self-center" orientation="vertical" flexItem />
           <Divider className="block lg:hidden" flexItem />
-          <section className="w-full flex flex-col items-center lg:block lg:mx-auto">
+          <section className="flex flex-col mx-auto">
             <h3 className="font-bold mb-4 lg:mb-2 text-center lg:text-left">
               {t('salesAndOrders.modal.feedback.title')}
             </h3>
