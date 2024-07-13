@@ -217,8 +217,8 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             {userToDisplay.username}
           </Link>
         </div>
-        <div className="flex flex-col items-center lg:items-start text-center lg:text-left lg:flex-row gap-4 py-4">
-          <section className="w-2/5">
+        <div className="grid grid-cols-[2fr,1fr,3fr] gap-y-16">
+          <section>
             <h3 className="font-bold mb-4">{commonT('purchaseDetails.summary')}</h3>
             <ul className="mr-4">
               <SummaryData
@@ -238,9 +238,9 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               />
             </ul>
           </section>
-          <Divider className="hidden lg:block" orientation="vertical" flexItem />
+          <Divider className="hidden lg:block place-self-center" orientation="vertical" flexItem />
           <Divider className="block lg:hidden" flexItem />
-          <div>
+          <div className="">
             <h3 className="font-bold mb-4">{commonT('purchaseDetails.shippingDetails.title')}</h3>
             <TextField
               size="small"
@@ -256,8 +256,6 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               className="w-full"
             />
           </div>
-        </div>
-        <div className="flex flex-col items-center gap-4 lg:gap-0 lg:items-start lg:flex-row w-full">
           <section>
             <h3 className="font-bold mb-2 lg:mb-4 text-center lg:text-left">
               {t('salesAndOrders.modal.history.title')}
@@ -270,9 +268,9 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               ))}
             </ul>
           </section>
-          <Divider className="hidden lg:block" orientation="vertical" flexItem />
+          <Divider className="hidden lg:block place-self-center" orientation="vertical" flexItem />
           <Divider className="block lg:hidden" flexItem />
-          <section className="w-full flex flex-col items-center lg:w-auto lg:block lg:mx-auto">
+          <section className="w-full flex flex-col items-center lg:block lg:mx-auto">
             <h3 className="font-bold mb-4 lg:mb-2 text-center lg:text-left">
               {t('salesAndOrders.modal.feedback.title')}
             </h3>
