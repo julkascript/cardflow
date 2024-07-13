@@ -228,7 +228,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
           </section>
           <Divider className="hidden lg:block place-self-center" orientation="vertical" flexItem />
           <Divider className="block lg:hidden" flexItem />
-          <div className="">
+          <div>
             <h3 className="font-bold mb-4">{commonT('purchaseDetails.shippingDetails.title')}</h3>
             <TextField
               size="small"
@@ -268,7 +268,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
                 data-disabled={cannotGiveFeedback}
                 className="flex items-center gap-2 mb-2"
               >
-                <span>{t('salesAndOrders.modal.feedback.rate')}</span>{' '}
+                <span>{t('salesAndOrders.modal.feedback.rate')}</span>
                 <Rating
                   onChange={changeRating}
                   disabled={cannotGiveFeedback}
