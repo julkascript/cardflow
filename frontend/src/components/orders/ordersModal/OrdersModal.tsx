@@ -205,7 +205,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
         <Divider />
         <OrdersModalPurchases order={order} />
         <OrdersModalUsernameLink order={order} userPosition={props.userPosition} />
-        <div className="grid grid-cols-[2fr,1fr,3fr] gap-y-16">
+        <div className="grid grid-cols-[2fr,0.5fr,3fr] gap-y-16">
           <section>
             <h3 className="font-bold mb-4">{commonT('purchaseDetails.summary')}</h3>
             <ul>
