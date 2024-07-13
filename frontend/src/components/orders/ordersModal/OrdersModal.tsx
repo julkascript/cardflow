@@ -215,6 +215,28 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             )}
           </FormControl>
         </div>
+        <Divider />
+        <div className="flex mt-4 mb-8 lg:justify-center w-full overflow-auto">
+          <MarketTable className="text-center w-full">
+            <thead>
+              <tr>
+                <th colSpan={2}>{commonT('purchaseDetails.table.tableHeaders.cardDetails')}</th>
+                <th>{commonT('purchaseDetails.table.tableHeaders.quantity')}</th>
+                <th>{commonT('purchaseDetails.table.tableHeaders.price')}</th>
+              </tr>
+            </thead>
+            <tbody>
+              {order.order_items.map((o) => (
+                <tr key={o.listing.id}>
+                  <td className="font-bold">{o.listing.card_name}</td>
+                  <td>{o.listing.card_in_set.set.set_code}</td>
+                  <td>{o.quantity}</td>
+                  <td className="font-bold">$&nbsp;{o.listing.price * o.quantity}</td>
+                </tr>
+              ))}
+            </tbody>
+          </MarketTable>
+        </div>
         <div className="lg:text-left text-center">
           <Link
             href={`/user/${userToDisplay.username}`}
@@ -225,7 +247,6 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             {userToDisplay.username}
           </Link>
         </div>
-        <Divider />
         <div className="flex flex-col items-center lg:items-start text-center lg:text-left lg:flex-row gap-4 py-4">
           <section className="w-2/5">
             <h3 className="font-bold mb-4">{commonT('purchaseDetails.summary')}</h3>
@@ -266,27 +287,6 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             />
           </div>
         </div>
-        <div className="flex mt-4 mb-8 lg:justify-center w-full overflow-auto">
-          <MarketTable className="text-center w-full">
-            <thead>
-              <tr>
-                <th colSpan={2}>{commonT('purchaseDetails.table.tableHeaders.cardDetails')}</th>
-                <th>{commonT('purchaseDetails.table.tableHeaders.quantity')}</th>
-                <th>{commonT('purchaseDetails.table.tableHeaders.price')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.order_items.map((o) => (
-                <tr key={o.listing.id}>
-                  <td className="font-bold">{o.listing.card_name}</td>
-                  <td>{o.listing.card_in_set.set.set_code}</td>
-                  <td>{o.quantity}</td>
-                  <td className="font-bold">$&nbsp;{o.listing.price * o.quantity}</td>
-                </tr>
-              ))}
-            </tbody>
-          </MarketTable>
-        </div>
         <div className="flex flex-col items-center gap-4 lg:gap-0 lg:items-start lg:flex-row w-full">
           <section>
             <h3 className="font-bold mb-2 lg:mb-4 text-center lg:text-left">
@@ -300,7 +300,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               ))}
             </ul>
           </section>
-          <Divider className="hidden lg:block lg:px-[81px]" orientation="vertical" flexItem />
+          <Divider className="hidden lg:block" orientation="vertical" flexItem />
           <Divider className="block lg:hidden" flexItem />
           <section className="w-full flex flex-col items-center lg:w-auto lg:block lg:mx-auto">
             <h3 className="font-bold mb-4 lg:mb-2 text-center lg:text-left">
