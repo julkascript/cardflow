@@ -4,7 +4,6 @@ import {
   FormControl,
   FormControlLabel,
   InputAdornment,
-  Link,
   Radio,
   RadioGroup,
   Rating as BaseRating,
@@ -25,6 +24,7 @@ import { useToast } from '../../../util/useToast';
 import { useTranslation } from 'react-i18next';
 import OrdersModalHeader from './layout/OrdersModalHeader';
 import OrdersModalPurchases from './layout/OrderModalPurchases';
+import OrdersModalUsernameLink from './layout/OrdersModalUsernameLink';
 
 const Rating = styled(BaseRating)({
   '& .MuiRating-iconFilled': {
@@ -82,9 +82,6 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
       props.status !== 'rejected' &&
       props.status !== 'not_sent' &&
       props.status !== 'not_received');
-
-  const userToDisplay =
-    props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
 
   const [rating, setRating] = useState(props.feedback?.rating || 0);
   const saveButtonIsDisabled =
@@ -207,16 +204,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
         </div>
         <Divider />
         <OrdersModalPurchases order={order} />
-        <div className="lg:text-left text-center">
-          <Link
-            href={`/user/${userToDisplay.username}`}
-            sx={{ color: '#0B70E5', fontSize: 20 }}
-            underline="hover"
-            className="font-bold"
-          >
-            {userToDisplay.username}
-          </Link>
-        </div>
+        <OrdersModalUsernameLink order={order} userPosition={props.userPosition} />
         <div className="grid grid-cols-[2fr,1fr,3fr] gap-y-16">
           <section>
             <h3 className="font-bold mb-4">{commonT('purchaseDetails.summary')}</h3>
