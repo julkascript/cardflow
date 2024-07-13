@@ -13,9 +13,7 @@ import {
   Button,
 } from '@mui/material';
 import { Order, orderState } from '../../../services/orders/types';
-import OrderStatusBadge from '../OrderStatusBadge';
 import { useEffect, useState } from 'react';
-import MarketTable from '../../marketTable/MarketTable';
 import SummaryData from '../../shoppingCart/SummaryData';
 import Home from '@mui/icons-material/Home';
 import { createPortal } from 'react-dom';
@@ -25,6 +23,8 @@ import { Feedback } from '../../../services/feedback/types';
 import { feedbackService } from '../../../services/feedback/feedback';
 import { useToast } from '../../../util/useToast';
 import { useTranslation } from 'react-i18next';
+import OrdersModalHeader from './layout/OrdersModalHeader';
+import OrdersModalPurchases from './layout/OrderModalPurchases';
 
 const Rating = styled(BaseRating)({
   '& .MuiRating-iconFilled': {
@@ -159,17 +159,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
       maxWidth="md"
     >
       <div className="p-16">
-        <section className="flex items-center mb-6 justify-between">
-          <div className="flex items-center gap-4 justify-center lg:justify-start">
-            <h2 className="font-bold text-4xl">
-              {t('salesAndOrders.modal.title')} #{order.order_id}
-            </h2>
-            <OrderStatusBadge orderState={order.status} />
-          </div>
-          <Link href="/about/faq" className="!text-gray-500" target="_blank">
-            {t('salesAndOrders.modal.supportButtonText')}
-          </Link>
-        </section>
+        <OrdersModalHeader order={order} />
         <div className="mb-4 justify-center flex lg:block">
           <FormControl>
             {props.userPosition === 'buyer' ? (
@@ -216,27 +206,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
           </FormControl>
         </div>
         <Divider />
-        <div className="flex mt-4 mb-8 lg:justify-center w-full overflow-auto">
-          <MarketTable className="text-center w-full">
-            <thead>
-              <tr>
-                <th colSpan={2}>{commonT('purchaseDetails.table.tableHeaders.cardDetails')}</th>
-                <th>{commonT('purchaseDetails.table.tableHeaders.quantity')}</th>
-                <th>{commonT('purchaseDetails.table.tableHeaders.price')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.order_items.map((o) => (
-                <tr key={o.listing.id}>
-                  <td className="font-bold">{o.listing.card_name}</td>
-                  <td>{o.listing.card_in_set.set.set_code}</td>
-                  <td>{o.quantity}</td>
-                  <td className="font-bold">$&nbsp;{o.listing.price * o.quantity}</td>
-                </tr>
-              ))}
-            </tbody>
-          </MarketTable>
-        </div>
+        <OrdersModalPurchases order={order} />
         <div className="lg:text-left text-center">
           <Link
             href={`/user/${userToDisplay.username}`}
