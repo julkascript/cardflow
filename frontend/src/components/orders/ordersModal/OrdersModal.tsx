@@ -205,8 +205,8 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
         <Divider />
         <OrdersModalPurchases order={order} />
         <OrdersModalUsernameLink order={order} userPosition={props.userPosition} />
-        <div className="grid grid-cols-[2fr,0.5fr,3fr] gap-y-16">
-          <section>
+        <div className="flex flex-col text-center gap-y-4 lg:text-left lg:grid lg:grid-cols-[2fr,0.5fr,3fr] lg:gap-y-16">
+          <section className="w-3/5 mx-auto lg:w-full">
             <h3 className="font-bold mb-4">{commonT('purchaseDetails.summary')}</h3>
             <ul>
               <SummaryData
@@ -241,14 +241,14 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               }}
               value={order.delivery_address}
               disabled={true}
-              className="w-full"
+              className="lg:w-full"
             />
           </div>
-          <section>
+          <section className="my-4 lg:my-0">
             <h3 className="font-bold mb-2 lg:mb-4 text-center lg:text-left">
               {t('salesAndOrders.modal.history.title')}
             </h3>
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col gap-4 lg:gap-2">
               {props.order.status_history.map((s) => (
                 <li key={s.timestamp + s.status}>
                   {t('salesAndOrders.status.' + s.status)} - {formatTimestamp(s.timestamp)}
@@ -262,7 +262,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             <h3 className="font-bold mb-4 lg:mb-2 text-center lg:text-left">
               {t('salesAndOrders.modal.feedback.title')}
             </h3>
-            <form className="flex flex-col w-full items-center lg:w-auto lg:items-start">
+            <form className="flex flex-col w-full items-center gap-y-4 lg:gap-y-0 lg:w-auto lg:items-start">
               <label
                 id="rating"
                 data-disabled={cannotGiveFeedback}
