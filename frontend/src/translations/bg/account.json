@@ -85,8 +85,8 @@
       },
       "feedback": {
         "title": "Обратна връзка",
-        "rate": "Оценка",
-        "comment": "Коментар"
+        "rate": "Оценка:",
+        "comment": "Коментар:"
       },
       "reportButtonText": "Докладвай за нередност",
       "cancelButtonText": "Затвори",
