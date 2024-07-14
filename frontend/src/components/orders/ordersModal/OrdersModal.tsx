@@ -4,7 +4,6 @@ import {
   FormControl,
   FormControlLabel,
   InputAdornment,
-  Link,
   Radio,
   RadioGroup,
   Rating as BaseRating,
@@ -13,9 +12,7 @@ import {
   Button,
 } from '@mui/material';
 import { Order, orderState } from '../../../services/orders/types';
-import OrderStatusBadge from '../OrderStatusBadge';
 import { useEffect, useState } from 'react';
-import MarketTable from '../../marketTable/MarketTable';
 import SummaryData from '../../shoppingCart/SummaryData';
 import Home from '@mui/icons-material/Home';
 import { createPortal } from 'react-dom';
@@ -25,6 +22,9 @@ import { Feedback } from '../../../services/feedback/types';
 import { feedbackService } from '../../../services/feedback/feedback';
 import { useToast } from '../../../util/useToast';
 import { useTranslation } from 'react-i18next';
+import OrdersModalHeader from './layout/OrdersModalHeader';
+import OrdersModalPurchases from './layout/OrderModalPurchases';
+import OrdersModalUsernameLink from './layout/OrdersModalUsernameLink';
 
 const Rating = styled(BaseRating)({
   '& .MuiRating-iconFilled': {
@@ -82,9 +82,6 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
       props.status !== 'rejected' &&
       props.status !== 'not_sent' &&
       props.status !== 'not_received');
-
-  const userToDisplay =
-    props.userPosition === 'seller' ? props.order.receiver_user : props.order.sender_user;
 
   const [rating, setRating] = useState(props.feedback?.rating || 0);
   const saveButtonIsDisabled =
@@ -159,17 +156,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
       maxWidth="md"
     >
       <div className="p-16">
-        <section className="flex items-center mb-6 justify-between">
-          <div className="flex items-center gap-4 justify-center lg:justify-start">
-            <h2 className="font-bold text-4xl">
-              {t('salesAndOrders.modal.title')} #{order.order_id}
-            </h2>
-            <OrderStatusBadge orderState={order.status} />
-          </div>
-          <Link href="/about/faq" className="!text-gray-500" target="_blank">
-            {t('salesAndOrders.modal.supportButtonText')}
-          </Link>
-        </section>
+        <OrdersModalHeader order={order} />
         <div className="mb-4 justify-center flex lg:block">
           <FormControl>
             {props.userPosition === 'buyer' ? (
@@ -215,21 +202,13 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
             )}
           </FormControl>
         </div>
-        <div className="lg:text-left text-center">
-          <Link
-            href={`/user/${userToDisplay.username}`}
-            sx={{ color: '#0B70E5', fontSize: 20 }}
-            underline="hover"
-            className="font-bold"
-          >
-            {userToDisplay.username}
-          </Link>
-        </div>
         <Divider />
-        <div className="flex flex-col items-center lg:items-start text-center lg:text-left lg:flex-row gap-4 py-4">
-          <section className="w-2/5">
+        <OrdersModalPurchases order={order} />
+        <OrdersModalUsernameLink order={order} userPosition={props.userPosition} />
+        <div className="flex flex-col text-center gap-y-4 lg:text-left lg:grid lg:grid-cols-[2fr,0.5fr,3fr] lg:gap-y-16">
+          <section className="w-3/5 mx-auto lg:w-full">
             <h3 className="font-bold mb-4">{commonT('purchaseDetails.summary')}</h3>
-            <ul className="mr-4">
+            <ul>
               <SummaryData
                 summary={commonT('purchaseDetails.cardsTotalPrice', {
                   count: props.order.order_items.reduce((total, o) => total + o.quantity, 0),
@@ -247,7 +226,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               />
             </ul>
           </section>
-          <Divider className="hidden lg:block" orientation="vertical" flexItem />
+          <Divider className="hidden lg:block place-self-center" orientation="vertical" flexItem />
           <Divider className="block lg:hidden" flexItem />
           <div>
             <h3 className="font-bold mb-4">{commonT('purchaseDetails.shippingDetails.title')}</h3>
@@ -262,37 +241,15 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               }}
               value={order.delivery_address}
               disabled={true}
-              className="w-full"
+              className="lg:w-full"
             />
           </div>
-        </div>
-        <div className="flex mt-4 mb-8 lg:justify-center w-full overflow-auto">
-          <MarketTable className="text-center w-full">
-            <thead>
-              <tr>
-                <th colSpan={2}>{commonT('purchaseDetails.table.tableHeaders.cardDetails')}</th>
-                <th>{commonT('purchaseDetails.table.tableHeaders.quantity')}</th>
-                <th>{commonT('purchaseDetails.table.tableHeaders.price')}</th>
-              </tr>
-            </thead>
-            <tbody>
-              {order.order_items.map((o) => (
-                <tr key={o.listing.id}>
-                  <td className="font-bold">{o.listing.card_name}</td>
-                  <td>{o.listing.card_in_set.set.set_code}</td>
-                  <td>{o.quantity}</td>
-                  <td className="font-bold">$&nbsp;{o.listing.price * o.quantity}</td>
-                </tr>
-              ))}
-            </tbody>
-          </MarketTable>
-        </div>
-        <div className="flex flex-col items-center gap-4 lg:gap-0 lg:items-start lg:flex-row w-full">
-          <section>
+          <Divider className="block lg:hidden" flexItem />
+          <section className="lg:my-0">
             <h3 className="font-bold mb-2 lg:mb-4 text-center lg:text-left">
               {t('salesAndOrders.modal.history.title')}
             </h3>
-            <ul className="flex flex-col gap-2">
+            <ul className="flex flex-col gap-4 lg:gap-2">
               {props.order.status_history.map((s) => (
                 <li key={s.timestamp + s.status}>
                   {t('salesAndOrders.status.' + s.status)} - {formatTimestamp(s.timestamp)}
@@ -300,19 +257,19 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               ))}
             </ul>
           </section>
-          <Divider className="hidden lg:block lg:px-[81px]" orientation="vertical" flexItem />
+          <Divider className="hidden lg:block place-self-center" orientation="vertical" flexItem />
           <Divider className="block lg:hidden" flexItem />
-          <section className="w-full flex flex-col items-center lg:w-auto lg:block lg:mx-auto">
+          <section className="flex flex-col">
             <h3 className="font-bold mb-4 lg:mb-2 text-center lg:text-left">
               {t('salesAndOrders.modal.feedback.title')}
             </h3>
-            <form className="flex flex-col w-full items-center lg:w-auto lg:items-start">
+            <form className="flex flex-col w-full items-center gap-y-4 lg:gap-y-0 lg:w-auto lg:items-start">
               <label
                 id="rating"
                 data-disabled={cannotGiveFeedback}
                 className="flex items-center gap-2 mb-2"
               >
-                <span>{t('salesAndOrders.modal.feedback.rate')}</span>{' '}
+                <span>{t('salesAndOrders.modal.feedback.rate')}</span>
                 <Rating
                   onChange={changeRating}
                   disabled={cannotGiveFeedback}
