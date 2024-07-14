@@ -259,7 +259,7 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
           </section>
           <Divider className="hidden lg:block place-self-center" orientation="vertical" flexItem />
           <Divider className="block lg:hidden" flexItem />
-          <section className="flex flex-col mx-auto">
+          <section className="flex flex-col">
             <h3 className="font-bold mb-4 lg:mb-2 text-center lg:text-left">
               {t('salesAndOrders.modal.feedback.title')}
             </h3>
