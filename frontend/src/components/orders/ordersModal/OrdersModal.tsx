@@ -244,7 +244,8 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
               className="lg:w-full"
             />
           </div>
-          <section className="my-4 lg:my-0">
+          <Divider className="block lg:hidden" flexItem />
+          <section className="lg:my-0">
             <h3 className="font-bold mb-2 lg:mb-4 text-center lg:text-left">
               {t('salesAndOrders.modal.history.title')}
             </h3>
