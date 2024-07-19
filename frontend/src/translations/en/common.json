@@ -35,7 +35,7 @@
     "signUp": "Sign up"
   },
   "search": {
-    "placeholder": "Type \"/\" to search",
+    "placeholder": "Search",
     "search": "Search",
     "showAll": "Show all {{results}} results.",
     "openSearchToolTip": "Search cards by name"
