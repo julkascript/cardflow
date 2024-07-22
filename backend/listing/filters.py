@@ -16,6 +16,12 @@ class ListingFilter(filters.FilterSet):
         label='Search by is_sold (true or false)'
     )
 
+    is_tradable = filters.BooleanFilter(
+        field_name='is_tradable',
+        lookup_expr='exact',
+        label='Search by is_tradable (true or false)'
+    )
+
     card_in_set_id = filters.NumberFilter(
 
         field_name='card',

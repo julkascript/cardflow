@@ -51,5 +51,9 @@ class Listing(models.Model):
         default=False
     )
 
+    is_tradable = models.BooleanField(
+        default=False,
+    )
+
     def __str__(self):
         return f'{self.card.yugioh_card.card_name} {self.card.set} {self.card.rarity}'
