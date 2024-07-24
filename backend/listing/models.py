@@ -51,7 +51,7 @@ class Listing(models.Model):
         default=False
     )
 
-    is_tradable = models.BooleanField(
+    is_trade_considered = models.BooleanField(
         default=False,
     )
 
