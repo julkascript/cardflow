@@ -16,6 +16,12 @@ class ListingFilter(filters.FilterSet):
         label='Search by is_sold (true or false)'
     )
 
+    is_trade_considered = filters.BooleanFilter(
+        field_name='is_trade_considered',
+        lookup_expr='exact',
+        label='Search by is_trade_considered (true or false)'
+    )
+
     card_in_set_id = filters.NumberFilter(
 
         field_name='card',

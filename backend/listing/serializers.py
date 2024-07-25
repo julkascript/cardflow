@@ -13,7 +13,7 @@ class ListingSerializer(serializers.ModelSerializer):
     class Meta:
         model = Listing
         fields = ['id', 'card', 'card_name', 'card_set_id', 'card_in_set', 'user', 'user_name',
-                  'price', 'condition', 'quantity', 'is_listed', 'is_sold']
+                  'price', 'condition', 'quantity', 'is_listed', 'is_sold', 'is_trade_considered']
         read_only_fields = ['id', 'user']
         ordering_fields = ['id']
 
@@ -45,19 +45,9 @@ class ListingSerializer(serializers.ModelSerializer):
 
 class ListingSearchSerializer(serializers.ModelSerializer):
 
-    # price = serializers.SerializerMethodField()
-
     class Meta:
         model = Listing
         fields = ['id', 'card', 'card_name', 'card_set_id', 'user', 'user_name', 'price', 'condition', 'quantity',
-                  'is_listed', 'is_sold']
+                  'is_listed', 'is_sold', 'is_trade_considered']
         read_only_fields = ['id', 'user']
         ordering_fields = ['id']
-
-    # def get_price(self, obj):
-    #     request = self.context.get('request')
-    #     if request:
-    #         user = request.user
-    #         if user.is_authenticated and user.currency_preference == 'EUR':
-    #             return round(obj.price * 0.51, 2)
-    #     return obj.price
