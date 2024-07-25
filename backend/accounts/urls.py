@@ -4,6 +4,8 @@ from rest_framework_simplejwt.views import TokenRefreshView
 
 from accounts.views import RegistrationView, MyTokenObtainPairView, UserUpdateView
 
+from accounts.views import UserSearchView
+
 router = DefaultRouter()
 
 app_name = 'accounts'
@@ -19,4 +21,5 @@ urlpatterns = [
     path('user/<int:pk>/',
          UserUpdateView.as_view({'get': 'retrieve', 'put': 'update', 'patch': 'partial_update', 'delete': 'destroy'}),
          name='user_update'),
+    path('users/search/', UserSearchView.as_view(), name='user-search'),
 ]
