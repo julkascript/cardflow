@@ -111,6 +111,7 @@ describe('yugiohService', () => {
       };
 
       const sampleListing: YugiohCardListing = {
+        is_trade_considered: false,
         id: 1,
         card: 3,
         card_name: 'test',
