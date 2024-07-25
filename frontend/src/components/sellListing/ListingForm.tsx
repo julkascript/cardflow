@@ -1,4 +1,14 @@
-import { SelectChangeEvent, TextField, Select, MenuItem, Chip, Divider, Link } from '@mui/material';
+import {
+  SelectChangeEvent,
+  TextField,
+  Select,
+  MenuItem,
+  Chip,
+  Divider,
+  Link,
+  FormControlLabel,
+  Checkbox,
+} from '@mui/material';
 import { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import {
@@ -87,6 +97,7 @@ function ListingForm(props: ListingFormProps) {
           rarity_code: '',
         },
       },
+      is_trade_considered: false,
     },
   );
 
@@ -113,6 +124,11 @@ function ListingForm(props: ListingFormProps) {
         price,
       }));
     }
+  };
+
+  const handleTradeCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setFormData((prevFormData) => ({ ...prevFormData, is_trade_considered: checked }));
   };
 
   const handleConditionChange = (e: SelectChangeEvent<condition>) => {
@@ -151,6 +167,7 @@ function ListingForm(props: ListingFormProps) {
       is_sold: false,
       is_listed: formData.is_listed,
       card: props.cardInSet.id,
+      is_trade_considered: formData.is_trade_considered,
     };
 
     props.onSubmit(newData, postAnother);
@@ -210,68 +227,84 @@ function ListingForm(props: ListingFormProps) {
                   label={props.cardInSet.rarity.rarity_code}
                 />
               </div>
-              <div className="flex flex-col mt-10 lg:mt-20 gap-4">
-                <div className="flex flex-col lg:flex-row gap-4">
-                  <TextField
-                    type="number"
-                    name="quantity"
-                    value={formData.quantity}
-                    onChange={handleQuantityChange}
-                    placeholder={t('newListing.secondSection.quantity')}
-                    className="w-36"
-                    size="small"
-                    label={t('newListing.secondSection.quantity')}
-                    InputProps={{
-                      startAdornment: <TagIcon className="mr-2" />,
-                    }}
-                  />
-                  <Select
-                    id="condition"
-                    name="condition"
-                    size="small"
-                    placeholder="Condition"
-                    value={formData.condition}
-                    onChange={handleConditionChange}
-                    className="w-36"
-                    renderValue={(value) => (
-                      <>
-                        <DiamondIcon className="mr-2" />
-                        <span>{commonT(`conditions.${value}`)}</span>
-                      </>
-                    )}
-                  >
-                    <MenuItem disabled>
-                      <i>{t('newListing.secondSection.condition')}</i>
-                    </MenuItem>
-                    <MenuItem value="poor">{commonT('conditions.poor')}</MenuItem>
-                    <MenuItem value="played">{commonT('conditions.played')}</MenuItem>
-                    <MenuItem value="good">{commonT('conditions.good')}</MenuItem>
-                    <MenuItem value="excellent">{commonT('conditions.excellent')}</MenuItem>
-                  </Select>
-                </div>
-                <div>
-                  <div className="w-36">
+              <div className="flex flex-col lg:flex-row gap-4 lg:items-center">
+                <div className="flex flex-col mt-10 lg:mt-20 gap-4">
+                  <div className="flex flex-col lg:flex-row gap-4">
                     <TextField
                       type="number"
-                      name="price"
-                      value={formData.price}
-                      onChange={handlePriceChange}
-                      placeholder={t('newListing.secondSection.price')}
+                      name="quantity"
+                      value={formData.quantity}
+                      onChange={handleQuantityChange}
+                      placeholder={t('newListing.secondSection.quantity')}
+                      className="w-36"
                       size="small"
-                      label={t('newListing.secondSection.price')}
+                      label={t('newListing.secondSection.quantity')}
                       InputProps={{
-                        startAdornment: <PaymentsIcon className="mr-2" />,
-                        endAdornment: (
-                          <span className="pl-2">
-                            {
-                              currencies.find((c) => c.code === user.currency_preference)
-                                ?.displayCurrency
-                            }
-                          </span>
-                        ),
+                        startAdornment: <TagIcon className="mr-2" />,
                       }}
                     />
+                    <Select
+                      id="condition"
+                      name="condition"
+                      size="small"
+                      placeholder="Condition"
+                      value={formData.condition}
+                      onChange={handleConditionChange}
+                      className="w-36"
+                      renderValue={(value) => (
+                        <>
+                          <DiamondIcon className="mr-2" />
+                          <span>{commonT(`conditions.${value}`)}</span>
+                        </>
+                      )}
+                    >
+                      <MenuItem disabled>
+                        <i>{t('newListing.secondSection.condition')}</i>
+                      </MenuItem>
+                      <MenuItem value="poor">{commonT('conditions.poor')}</MenuItem>
+                      <MenuItem value="played">{commonT('conditions.played')}</MenuItem>
+                      <MenuItem value="good">{commonT('conditions.good')}</MenuItem>
+                      <MenuItem value="excellent">{commonT('conditions.excellent')}</MenuItem>
+                    </Select>
                   </div>
+                  <div>
+                    <div className="w-36">
+                      <TextField
+                        type="number"
+                        name="price"
+                        value={formData.price}
+                        onChange={handlePriceChange}
+                        placeholder={t('newListing.secondSection.price')}
+                        size="small"
+                        label={t('newListing.secondSection.price')}
+                        InputProps={{
+                          startAdornment: <PaymentsIcon className="mr-2" />,
+                          endAdornment: (
+                            <span className="pl-2">
+                              {
+                                currencies.find((c) => c.code === user.currency_preference)
+                                  ?.displayCurrency
+                              }
+                            </span>
+                          ),
+                        }}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <Divider className="block lg:hidden" flexItem />
+                {/* <Divider> is difficult to position vertically */}
+                <div className="hidden lg:block border-l-2 h-[120px] self-end"></div>
+                <div>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={formData.is_trade_considered}
+                        onChange={handleTradeCheckboxChange}
+                      />
+                    }
+                    label={t('newListing.secondSection.tradeCheckbox')}
+                  />
                 </div>
               </div>
             </div>

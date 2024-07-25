@@ -16,6 +16,7 @@
       "visibilityButtonTooltipText_true": "Направи тази обява скрита",
       "deleteButtonText": "Изтрий",
       "deleteButtonTooltipText": "Изтрий тази обява",
+      "tradeCheckbox": "Бих обмислил оферти за размяна на тази обява",
       "marketTable": {
         "tableHeaders": {
           "seller": "Продавач",
