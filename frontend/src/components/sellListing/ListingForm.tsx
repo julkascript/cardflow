@@ -87,6 +87,7 @@ function ListingForm(props: ListingFormProps) {
           rarity_code: '',
         },
       },
+      is_trade_considered: false,
     },
   );
 
@@ -151,6 +152,7 @@ function ListingForm(props: ListingFormProps) {
       is_sold: false,
       is_listed: formData.is_listed,
       card: props.cardInSet.id,
+      is_trade_considered: formData.is_trade_considered,
     };
 
     props.onSubmit(newData, postAnother);
