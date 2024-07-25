@@ -16,6 +16,7 @@
       "visibilityButtonTooltipText_true": "Delist",
       "deleteButtonText": "Delete",
       "deleteButtonTooltipText": "Delete this listing",
+      "tradeCheckbox": "I would consider trade offers for this listing",
       "marketTable": {
         "tableHeaders": {
           "seller": "Seller",
