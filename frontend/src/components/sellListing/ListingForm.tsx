@@ -126,6 +126,11 @@ function ListingForm(props: ListingFormProps) {
     }
   };
 
+  const handleTradeCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    setFormData((prevFormData) => ({ ...prevFormData, is_trade_considered: checked }));
+  };
+
   const handleConditionChange = (e: SelectChangeEvent<condition>) => {
     const condition = e.target.value as condition;
     if (condition) {
@@ -292,7 +297,12 @@ function ListingForm(props: ListingFormProps) {
                 <div className="hidden lg:block border-l-2 h-[120px] self-end"></div>
                 <div>
                   <FormControlLabel
-                    control={<Checkbox />}
+                    control={
+                      <Checkbox
+                        checked={formData.is_trade_considered}
+                        onChange={handleTradeCheckboxChange}
+                      />
+                    }
                     label={t('newListing.secondSection.tradeCheckbox')}
                   />
                 </div>
