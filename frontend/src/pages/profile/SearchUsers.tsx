@@ -3,22 +3,24 @@ import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/Breadcrum
 import { useCurrentUser } from '../../context/user';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import MarketTable from '../../components/marketTable/MarketTable';
-import { useEffectAfterInitialLoad } from '../../util/useEffectAfterInitialLoad';
 import { useToast } from '../../util/useToast';
-import { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { TextField } from '@mui/material';
 import SearchButton from '../../components/navigation/desktop/buttons/SearchButton';
 import { UserSearchResult } from '../../services/user/types';
 import { PaginatedItem } from '../../services/yugioh/types';
 import { userService } from '../../services/user/user';
 import UserSearchResultRow from '../../components/profile/userSearch/UserSearchResultRow';
+import { HttpError } from '../../util/HttpError';
 
 function SearchUsers(): JSX.Element {
   const { t } = useTranslation('account');
   const { t: commonT } = useTranslation('common');
 
   const { user } = useCurrentUser();
+
+  const [isError, setIsError] = useState(false);
 
   const breadcrumbNavigation: BreadcrumbLink[] = [
     {
@@ -27,56 +29,65 @@ function SearchUsers(): JSX.Element {
     },
   ];
 
-  const navigate = useNavigate();
-  const params = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
+
+  const page = Number(searchParams.get('page')) || 1;
+  const username = searchParams.get('username');
+
   const [users, setUsers] = useState<PaginatedItem<UserSearchResult>>({
     results: [],
     next: null,
     previous: null,
     count: 0,
   });
-  const [page, setPage] = useState(1);
-  const [searchQuery, setSearchQuery] = useState(params.query || '');
 
   const toast = useToast();
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    setSearchQuery(event.target.value);
-  }
+    const formData = new FormData(event.target as HTMLFormElement);
 
-  function handleSubmit(event: React.FormEvent) {
-    event.preventDefault();
-    if (searchQuery) {
-      userService.searchUsersByUsername(searchQuery).then(setUsers).catch(toast.error);
-      navigate('/accounts/search/' + searchQuery);
+    const username = String(formData.get('username'));
+    if (!username) {
+      searchParams.delete('username');
     } else {
-      setUsers({
-        results: [],
-        next: null,
-        previous: null,
-        count: 0,
-      });
-      navigate('/accounts/search');
+      searchParams.set('username', username);
     }
 
-    setPage(1);
+    setSearchParams(searchParams);
   }
 
   function changePage(page: number) {
-    userService
-      .searchUsersByUsername(searchQuery)
-      .then((res) => {
-        setUsers(res);
-        setPage(page);
-      })
-      .catch(toast.error);
+    searchParams.set('page', page.toString());
+    setSearchParams(searchParams);
   }
 
-  useEffectAfterInitialLoad(() => {
-    const query = params.query || '';
-    if (query) {
-      userService.searchUsersByUsername(searchQuery).then(setUsers).catch(toast.error);
+  const emptyMessageTranslationKey = emptyMessageKey(isError, users.count);
+
+  useEffect(() => {
+    if (username) {
+      userService
+        .searchUsersByUsername(username, page)
+        .then((users) => {
+          setUsers(users);
+          setIsError(false);
+        })
+        .catch((err) => {
+          if (err instanceof HttpError && err.err.status === 404) {
+            setIsError(true);
+            setUsers({
+              results: [],
+              next: null,
+              previous: null,
+              count: 0,
+            });
+          } else {
+            toast.error({
+              excludedStatusCodes: [404],
+              error: err,
+            });
+          }
+        });
     } else {
       setUsers({
         results: [],
@@ -84,11 +95,10 @@ function SearchUsers(): JSX.Element {
         previous: null,
         count: 0,
       });
-    }
 
-    setPage(1);
-    setSearchQuery(query);
-  }, [params.query]);
+      setIsError(false);
+    }
+  }, [page, username]);
 
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
@@ -103,8 +113,7 @@ function SearchUsers(): JSX.Element {
             size="small"
             className="w-full"
             sx={{ position: 'static' }}
-            value={searchQuery}
-            onChange={handleChange}
+            name="username"
             variant="outlined"
             InputProps={{
               startAdornment: <SearchButton />,
@@ -112,7 +121,7 @@ function SearchUsers(): JSX.Element {
           />
         </form>
         <MarketTable
-          page={page}
+          page={Number(searchParams.get('page')) || 1}
           onPageChange={changePage}
           count={users.count}
           className="text-center w-full md:w-11/12 lg:w-2/3 bg-white border"
@@ -125,9 +134,13 @@ function SearchUsers(): JSX.Element {
             </tr>
           </thead>
           <tbody>
-            {users.results.map((user) => (
-              <UserSearchResultRow user={user} />
-            ))}
+            {!emptyMessageTranslationKey ? (
+              users.results.map((user) => <UserSearchResultRow key={user.username} user={user} />)
+            ) : (
+              <tr>
+                <td colSpan={5}>{t(`search.${emptyMessageTranslationKey}`)}</td>
+              </tr>
+            )}
           </tbody>
         </MarketTable>
       </div>
@@ -136,3 +149,15 @@ function SearchUsers(): JSX.Element {
 }
 
 export default SearchUsers;
+
+function emptyMessageKey(isError: boolean, count: number): string {
+  if (count > 0) {
+    return '';
+  }
+
+  if (isError) {
+    return 'noUsersFound';
+  }
+
+  return 'hasNotSearched';
+}

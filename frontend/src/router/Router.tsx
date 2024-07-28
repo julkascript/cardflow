@@ -103,10 +103,6 @@ const routes = createBrowserRouter([
             path: 'search',
             element: <SearchUsers />,
           },
-          {
-            path: 'search/:query',
-            element: <SearchUsers />,
-          },
         ],
       },
       {
