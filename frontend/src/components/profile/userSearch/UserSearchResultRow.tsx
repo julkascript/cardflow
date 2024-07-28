@@ -10,11 +10,13 @@ type UserSearchResultRowProps = {
 function UserSearchResultRow(props: UserSearchResultRowProps) {
   return (
     <tr>
-      <td>
+      <td className="w-[50px]">
         <YugiohSellerRankBadge sales={408} />
       </td>
-      <td>408</td>
-      <td>
+      <td className="w-[75px]">
+        <div className="border rounded-sm">408</div>
+      </td>
+      <td className="text-left">
         <Link
           sx={{ color: '#0B70E5' }}
           className="font-bold"
@@ -24,8 +26,8 @@ function UserSearchResultRow(props: UserSearchResultRowProps) {
           {props.user.username}
         </Link>
       </td>
-      <td>{props.user.listed_listings_count}</td>
-      <td>
+      <td className="w-[300px]">{props.user.listed_listings_count}</td>
+      <td className="w-[150px]">
         <Button
           color="success"
           variant="contained"
