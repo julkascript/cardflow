@@ -93,5 +93,14 @@
       "saveButtonText": "Запази",
       "supportButtonText": "Помощ"
     }
+  },
+  "search": {
+    "table": {
+      "tableHeaders": {
+        "user": "User",
+        "visibleListings": "Visible listings",
+        "trade": "Trade"
+      }
+    }
   }
 }

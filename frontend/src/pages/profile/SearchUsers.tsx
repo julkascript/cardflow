@@ -12,6 +12,7 @@ import SearchButton from '../../components/navigation/desktop/buttons/SearchButt
 import { UserSearchResult } from '../../services/user/types';
 import { PaginatedItem } from '../../services/yugioh/types';
 import { userService } from '../../services/user/user';
+import UserSearchResultRow from '../../components/profile/userSearch/UserSearchResultRow';
 
 function SearchUsers(): JSX.Element {
   const { t } = useTranslation('account');
@@ -47,10 +48,7 @@ function SearchUsers(): JSX.Element {
   function handleSubmit(event: React.FormEvent) {
     event.preventDefault();
     if (searchQuery) {
-      userService
-        .searchUsersByUsername(searchQuery)
-        .then(setUsers)
-        .catch((err) => toast.error(err));
+      userService.searchUsersByUsername(searchQuery).then(setUsers).catch(toast.error);
       navigate('/accounts/search/' + searchQuery);
     } else {
       setUsers({
@@ -72,16 +70,13 @@ function SearchUsers(): JSX.Element {
         setUsers(res);
         setPage(page);
       })
-      .catch((err) => toast.error(err));
+      .catch(toast.error);
   }
 
   useEffectAfterInitialLoad(() => {
     const query = params.query || '';
     if (query) {
-      userService
-        .searchUsersByUsername(searchQuery)
-        .then(setUsers)
-        .catch((err) => toast.error(err));
+      userService.searchUsersByUsername(searchQuery).then(setUsers).catch(toast.error);
     } else {
       setUsers({
         results: [],
@@ -124,15 +119,14 @@ function SearchUsers(): JSX.Element {
         >
           <thead>
             <tr>
-              <th style={{ textAlign: 'center' }} colSpan={3}>
-                {t('search.table.tableHeaders.name')}
-              </th>
-              <th style={{ textAlign: 'center' }}>{t('search.table.tableHeaders.rarity')}</th>
+              <th colSpan={3}>{t('search.table.tableHeaders.user')}</th>
+              <th>{t('search.table.tableHeaders.visibleListings')}</th>
+              <th>{t('search.table.tableHeaders.trade')}</th>
             </tr>
           </thead>
           <tbody>
             {users.results.map((user) => (
-              <p>{user.username}</p>
+              <UserSearchResultRow user={user} />
             ))}
           </tbody>
         </MarketTable>

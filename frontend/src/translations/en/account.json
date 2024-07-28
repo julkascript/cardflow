@@ -95,5 +95,14 @@
       "saveButtonText": "Save",
       "supportButtonText": "Support"
     }
+  },
+  "search": {
+    "table": {
+      "tableHeaders": {
+        "user": "User",
+        "visibleListings": "Visible listings",
+        "trade": "Trade"
+      }
+    }
   }
 }
