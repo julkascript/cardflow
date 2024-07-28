@@ -97,9 +97,9 @@
   "search": {
     "table": {
       "tableHeaders": {
-        "user": "User",
-        "visibleListings": "Visible listings",
-        "trade": "Trade"
+        "user": "Потребител",
+        "visibleListings": "Видими обяви",
+        "trade": "Размени"
       }
     },
     "noUsersFound": "Не са намерени потребители, проверете правописа на потребителското име",
