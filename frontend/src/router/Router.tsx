@@ -26,6 +26,7 @@ import Orders from '../pages/profile/Orders';
 import Sales from '../pages/profile/Sales';
 import { loadListingForEdit } from './loadListingForEdit/loadListingForEdit';
 import EditListing from '../pages/listing/EditListing';
+import SearchUsers from '../pages/profile/SearchUsers';
 
 const routes = createBrowserRouter([
   {
@@ -91,6 +92,20 @@ const routes = createBrowserRouter([
           {
             path: 'changelog',
             element: <Changelog />,
+          },
+        ],
+      },
+      {
+        path: 'accounts',
+        loader: authorizedGuard,
+        children: [
+          {
+            path: 'search',
+            element: <SearchUsers />,
+          },
+          {
+            path: 'search/:query',
+            element: <SearchUsers />,
           },
         ],
       },
