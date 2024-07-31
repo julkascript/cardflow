@@ -32,30 +32,19 @@ class Trade(models.Model):
     recipient_listing = models.ManyToManyField(Listing, related_name='received_trades')
     initiator_cash = models.FloatField(default=0.0)
     recipient_cash = models.FloatField(default=0.0)
-    trade_status = models.CharField(max_length=STATUS_CHOICES_MAX_LENGTH, choices=STATUS_CHOICES, default=INITIATION)
+    trade_status = models.CharField(max_length=STATUS_CHOICES_MAX_LENGTH, choices=STATUS_CHOICES, default='negotiate')
     initiator_decision = models.CharField(max_length=20, choices=RESULT_CHOICES, default=PENDING)
     recipient_decision = models.CharField(max_length=20, choices=RESULT_CHOICES, default=PENDING)
 
     def __str__(self):
         return f'Trade {self.pk} from {self.initiator} to {self.recipient}'
 
-    def update_decisions(self):
-        if self.initiator_decision == self.ACCEPTED and self.recipient_decision == self.ACCEPTED:
-            self.trade_status = self.ACCEPTED
-        elif self.initiator_decision == self.REJECTED or self.recipient_decision == self.REJECTED:
-            self.trade_status = self.REJECTED
-        else:
-            self.trade_status = self.PENDING
-
-        self.save()
-
     def update_trade_status(self):
-
         if self.initiator_decision == self.ACCEPTED and self.recipient_decision == self.ACCEPTED:
-            self.trade_status = self.ACCEPTED
+            self.trade_status = 'accept'
         elif self.initiator_decision == self.REJECTED or self.recipient_decision == self.REJECTED:
-            self.trade_status = self.REJECTED
+            self.trade_status = 'reject'
         else:
-            self.trade_status = self.PENDING
+            self.trade_status = 'negotiate'
 
         self.save()

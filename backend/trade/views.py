@@ -32,10 +32,11 @@ class TradeListingViewSet(viewsets.ModelViewSet):
                             status=status.HTTP_403_FORBIDDEN)
 
         if request.user == trade.initiator:
-            trade.initiator_decision = request.data.get('initiator_decision')
+            trade.initiator_decision = request.data.get('initiator_decision', trade.initiator_decision)
         elif request.user == trade.recipient:
-            trade.recipient_decision = request.data.get('recipient_decision')
+            trade.recipient_decision = request.data.get('recipient_decision', trade.recipient_decision)
 
+        trade.update_trade_status()
         trade.save()
         return Response({'status': 'negotiation started'})
 
@@ -46,6 +47,7 @@ class TradeListingViewSet(viewsets.ModelViewSet):
             trade.initiator_decision = 'accepted'
         elif request.user == trade.recipient:
             trade.recipient_decision = 'accepted'
+        trade.update_trade_status()
         trade.save()
         return Response({'status': trade.trade_status})
 
@@ -56,6 +58,7 @@ class TradeListingViewSet(viewsets.ModelViewSet):
             trade.initiator_decision = 'rejected'
         elif request.user == trade.recipient:
             trade.recipient_decision = 'rejected'
+        trade.update_trade_status()
         trade.save()
         return Response({'status': trade.trade_status})
 
@@ -69,9 +72,9 @@ class TradeListingViewSet(viewsets.ModelViewSet):
         data = request.data.copy()
         data['initiator'] = trade.recipient.id
         data['recipient'] = trade.initiator.id
-        data['initiator_decision'] = trade.recipient_decision
         serializer = TradeSerializer(data=data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+

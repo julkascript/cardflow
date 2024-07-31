@@ -22,18 +22,14 @@ class TradeSerializer(serializers.ModelSerializer):
             'initiator_decision',
             'recipient_decision',
         ]
-        read_only_fields = ['trade_status', 'initiator', 'recipient', 'recipient_decision']
+        read_only_fields = ['trade_status', 'initiator', 'recipient']
 
     def create(self, validated_data):
-        print('validated_data', validated_data)
-
         initiator_listing = validated_data.pop('initiator_listing')
         recipient_listing = validated_data.pop('recipient_listing')
-        initiator = validated_data.pop('initiator')
-        print(initiator)
 
+        initiator = self.context['request'].user
         recipient = recipient_listing[0].user
-        print(recipient)
 
         trade = Trade.objects.create(
             initiator=initiator,
@@ -46,20 +42,14 @@ class TradeSerializer(serializers.ModelSerializer):
         return trade
 
     def update(self, instance, validated_data):
-        instance = super().update(instance, validated_data)
+        user = self.context['request'].user
+        if user == instance.initiator:
+            instance.initiator_decision = validated_data.get('initiator_decision', instance.initiator_decision)
+        elif user == instance.recipient:
+            instance.recipient_decision = validated_data.get('recipient_decision', instance.recipient_decision)
 
-        if instance.initiator_decision == 'accepted' and instance.recipient_decision == 'accepted':
-            instance.trade_status = 'accept'
-        elif instance.initiator_decision == 'rejected' or instance.recipient_decision == 'reject':
-            instance.trade_status = 'rejected'
-        else:
-            instance.trade_status = 'negotiate'
-
-        if instance.recipient == self.context['request'].user:
-            instance.recipient_decision = validated_data.get('initiator_decision')
-
-        instance.update_decisions()
+        instance.initiator_cash = validated_data.get('initiator_cash', instance.initiator_cash)
+        instance.recipient_cash = validated_data.get('recipient_cash', instance.recipient_cash)
         instance.update_trade_status()
-
         instance.save()
         return instance
