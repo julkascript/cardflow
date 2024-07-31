@@ -27,8 +27,8 @@ class TradeSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         initiator_listing = validated_data.pop('initiator_listing')
         recipient_listing = validated_data.pop('recipient_listing')
+        initiator = validated_data.pop('initiator')
 
-        initiator = self.context['request'].user
         recipient = recipient_listing[0].user
 
         trade = Trade.objects.create(
@@ -36,20 +36,32 @@ class TradeSerializer(serializers.ModelSerializer):
             recipient=recipient,
             **validated_data
         )
+
         trade.initiator_listing.set(initiator_listing)
         trade.recipient_listing.set(recipient_listing)
+
         trade.save()
+
         return trade
 
     def update(self, instance, validated_data):
-        user = self.context['request'].user
-        if user == instance.initiator:
-            instance.initiator_decision = validated_data.get('initiator_decision', instance.initiator_decision)
-        elif user == instance.recipient:
-            instance.recipient_decision = validated_data.get('recipient_decision', instance.recipient_decision)
+        instance = super().update(instance, validated_data)
 
-        instance.initiator_cash = validated_data.get('initiator_cash', instance.initiator_cash)
-        instance.recipient_cash = validated_data.get('recipient_cash', instance.recipient_cash)
+        if instance.trade_status in [Trade.ACCEPTED, Trade.REJECTED]:
+            raise serializers.ValidationError("Cannot change decisions after trade is accepted or rejected.")
+
         instance.update_trade_status()
         instance.save()
         return instance
+
+    def validate(self, data):
+        user = self.context['request'].user
+
+        if self.instance:
+            if 'initiator_decision' in data and user != self.instance.initiator:
+                raise serializers.ValidationError("Recipient cannot change initiator's decision.")
+
+            if 'recipient_decision' in data and user != self.instance.recipient:
+                raise serializers.ValidationError("Initiator cannot change recipient's decision.")
+
+        return data
