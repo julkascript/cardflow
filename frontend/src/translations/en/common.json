@@ -32,7 +32,8 @@
     "closeMenu": "Close menu",
     "openMenuAriaLabel": "Open navigation menu",
     "signIn": "Sign in",
-    "signUp": "Sign up"
+    "signUp": "Sign up",
+    "search": "Search users"
   },
   "search": {
     "placeholder": "Search",
@@ -76,6 +77,9 @@
       },
       "mySales": {
         "title": "My sales"
+      },
+      "userSearch": {
+        "title": "User search"
       }
     },
     "buy": {

@@ -14,6 +14,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from '@mui/icons-material/Logout';
+import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
 import { useCurrentUser } from '../../../../context/user';
 import { useLogout } from '../../../../util/useLogout';
@@ -70,6 +71,11 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
       href: `/user/${user.username}/sales`,
       text: t('navigation.mySales'),
       icon: CurrencyExchangeIcon,
+    },
+    {
+      href: '/accounts/search',
+      text: t('navigation.search'),
+      icon: SearchIcon,
     },
   ];
 

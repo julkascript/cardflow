@@ -17,6 +17,7 @@ export const api = Object.freeze({
     login: `${accounts}/login/`,
     user: `${accounts}/user/`,
     userById: (id: string | number) => `${accounts}/user/${id}/`,
+    searchByUsername: `${accounts}/users/search`,
   },
   contacts: {
     root: `${contacts}/`,

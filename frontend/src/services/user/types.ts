@@ -68,3 +68,9 @@ export type PublicUserInfo = {
     miss_rate: number;
   };
 };
+
+export type UserSearchResult = {
+  id: number;
+  username: string;
+  listed_listings_count: number;
+};
