@@ -48,9 +48,18 @@ class Trade(models.Model):
     def update_trade_status(self):
         if self.initiator_decision == self.ACCEPT and self.recipient_decision == self.ACCEPT:
             self.trade_status = self.ACCEPTED
+            self._update_listing_quantities()
         elif self.initiator_decision == self.REJECT or self.recipient_decision == self.REJECT:
             self.trade_status = self.REJECTED
         else:
             self.trade_status = self.NEGOTIATE
 
         self.save()
+
+    def _update_listing_quantities(self):
+        for listing in self.initiator_listing.all():
+            listing.quantity -= 1
+            listing.save()
+        for listing in self.recipient_listing.all():
+            listing.quantity -= 1
+            listing.save()

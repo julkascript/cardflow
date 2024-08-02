@@ -42,6 +42,7 @@ class TradeSerializer(serializers.ModelSerializer):
 
         trade.initiator_listing.set(initiator_listing)
         trade.recipient_listing.set(recipient_listing)
+        trade.initiator_decision = 'accept'
 
         trade.save()
 
@@ -56,9 +57,35 @@ class TradeSerializer(serializers.ModelSerializer):
         if instance.trade_status in [Trade.REJECTED]:
             raise serializers.ValidationError("Cannot change decisions after trade is rejected.")
 
+        user = self.context['request'].user
+
+        if user == instance.initiator:
+            instance.initiator_decision = validated_data.get('initiator_decision', instance.initiator_decision)
+        elif user == instance.recipient:
+            instance.recipient_decision = validated_data.get('recipient_decision', instance.recipient_decision)
+
+        instance.initiator_cash = validated_data.get('initiator_cash', instance.initiator_cash)
+        instance.recipient_cash = validated_data.get('recipient_cash', instance.recipient_cash)
+
         instance.update_trade_status()
         instance.save()
         return instance
+
+    def validate_initiator_listing(self, value):
+        user = self.context['request'].user
+
+        for listing in value:
+            if listing.user != user and listing.is_listed:
+                raise serializers.ValidationError("You can not trade with initiator's listings.")
+        return value
+
+    def validate_recipient_listing(self, value):
+        user = self.context['request'].user
+
+        for listing in value:
+            if listing.user == user and listing.is_listed:
+                raise serializers.ValidationError("You can not trade with recipient's listings.")
+        return value
 
     def validate(self, data):
         user = self.context['request'].user
