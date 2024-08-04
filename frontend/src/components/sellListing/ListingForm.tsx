@@ -210,7 +210,7 @@ function ListingForm(props: ListingFormProps) {
                   size="small"
                   color="secondary"
                   variant="outlined"
-                  label={props.cardInSet.rarity.rarity_code}
+                  label={props.cardInSet.rarity.rarity}
                 />
               </div>
               <div className="flex lg:hidden gap-2">
@@ -224,7 +224,7 @@ function ListingForm(props: ListingFormProps) {
                   color="secondary"
                   size="small"
                   variant="outlined"
-                  label={props.cardInSet.rarity.rarity_code}
+                  label={props.cardInSet.rarity.rarity}
                 />
               </div>
               <div className="flex flex-col lg:flex-row gap-4 lg:items-center">
