@@ -76,15 +76,17 @@ class TradeSerializer(serializers.ModelSerializer):
 
         for listing in value:
             if listing.user != user and listing.is_listed:
-                raise serializers.ValidationError("You can not trade with initiator's listings.")
+                raise serializers.ValidationError(
+                    f"You can not trade with initiator's listing ids: {[listing.id for listing in value]}.")
         return value
 
     def validate_recipient_listing(self, value):
         user = self.context['request'].user
 
         for listing in value:
-            if listing.user == user and listing.is_listed:
-                raise serializers.ValidationError("You can not trade with recipient's listings.")
+            if listing.user != user and listing.is_listed:
+                raise serializers.ValidationError(
+                    f"You can not trade with recipient's listing ids: {[listing.id for listing in value]}.")
         return value
 
     def validate(self, data):
