@@ -9,7 +9,9 @@ import {
   UserAccount,
   JwtPayload,
   PublicUserInfo,
+  UserSearchResult,
 } from './types';
+import { PaginatedItem } from '../yugioh/types';
 
 export const userService = {
   /**
@@ -106,5 +108,20 @@ export const userService = {
 
   deleteUser(id: number): Promise<void> {
     return httpService.del(api.accounts.userById(id));
+  },
+
+  async searchUsersByUsername(
+    username: string,
+    page?: number,
+  ): Promise<PaginatedItem<UserSearchResult>> {
+    const result = await httpService.get<PaginatedItem<UserSearchResult>>(
+      api.accounts.searchByUsername,
+      {
+        username,
+        page: page || 1,
+      },
+    );
+
+    return result!;
   },
 };

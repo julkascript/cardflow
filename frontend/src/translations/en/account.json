@@ -95,5 +95,16 @@
       "saveButtonText": "Save",
       "supportButtonText": "Support"
     }
+  },
+  "search": {
+    "table": {
+      "tableHeaders": {
+        "user": "User",
+        "visibleListings": "Visible listings",
+        "trade": "Trade"
+      }
+    },
+    "noUsersFound": "There are no such users. Did you enter the name correctly?",
+    "hasNotSearched": "Search users by typing their usernames (or part of them) in the search above"
   }
 }
