@@ -36,6 +36,7 @@ urlpatterns = [
     path("api/listing/", include("listing.urls")),
     path("api/order/", include("order.urls")),
     path("api/cart/", include("cart.urls")),
+    path('api/trade/', include('trade.urls')),
     path("api/contacts/", ContactFormView.as_view(), name="contact_form"),
     path(
         "api/feedback/",
