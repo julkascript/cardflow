@@ -4,6 +4,9 @@ from .models import Trade
 from listing.models import Listing
 
 from accounts.serializers import UserSerializer
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class TradeSerializer(serializers.ModelSerializer):
@@ -11,6 +14,7 @@ class TradeSerializer(serializers.ModelSerializer):
     recipient = UserSerializer(read_only=True)
     initiator_listing = serializers.PrimaryKeyRelatedField(many=True, queryset=Listing.objects.all())
     recipient_listing = serializers.PrimaryKeyRelatedField(many=True, queryset=Listing.objects.all())
+    recipient_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='recipient', write_only=True)
 
     class Meta:
         model = Trade
@@ -25,6 +29,7 @@ class TradeSerializer(serializers.ModelSerializer):
             'trade_status',
             'initiator_decision',
             'recipient_decision',
+            'recipient_id',
         ]
         read_only_fields = ['id', 'trade_status', 'initiator', 'recipient']
 
@@ -33,7 +38,7 @@ class TradeSerializer(serializers.ModelSerializer):
         recipient_listing = validated_data.pop('recipient_listing')
         initiator = validated_data.pop('initiator')
 
-        recipient = recipient_listing[0].user
+        recipient = validated_data.pop('recipient')
 
         if initiator == recipient:
             raise serializers.ValidationError("Cannot trade with yourself.")
@@ -79,16 +84,23 @@ class TradeSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
 
         for listing in value:
-            if listing.user != user and listing.is_listed:
+            if listing.user != user or not listing.is_listed:
                 raise serializers.ValidationError(
                     f"You can not trade with initiator's listing ids: {[listing.id for listing in value]}.")
         return value
 
     def validate_recipient_listing(self, value):
-        user = self.context['request'].user
+        recipient_id = self.initial_data.get('recipient_id')
+
+        if not recipient_id:
+            raise serializers.ValidationError("Recipient ID is required.")
+
+        recipient = User.objects.get(id=recipient_id)
 
         for listing in value:
-            if listing.user == user and listing.is_listed:
+            print(listing.user)
+
+            if listing.user != recipient or not listing.is_listed:
                 raise serializers.ValidationError(
                     f"You can not trade with recipient's listing ids: {[listing.id for listing in value]}.")
         return value
