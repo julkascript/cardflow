@@ -33,6 +33,7 @@ class TradeSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'trade_status', 'initiator', 'recipient']
 
+
     def create(self, validated_data):
         initiator_listing = validated_data.pop('initiator_listing')
         recipient_listing = validated_data.pop('recipient_listing')
@@ -59,14 +60,21 @@ class TradeSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance = super().update(instance, validated_data)
+        user = self.context['request'].user
+
+        if user == instance.initiator:
+            if 'recipient_listing' in validated_data or 'recipient_decision' in validated_data:
+                raise serializers.ValidationError("Initiator cannot change recipient's listing or decision.")
+
+        if user == instance.recipient:
+            if 'initiator_listing' in validated_data or 'initiator_decision' in validated_data:
+                raise serializers.ValidationError("Recipient cannot change initiator's listing or decision.")
 
         if instance.trade_status in [Trade.ACCEPTED]:
             raise serializers.ValidationError("Cannot change decisions after trade is accepted.")
 
         if instance.trade_status in [Trade.REJECTED]:
             raise serializers.ValidationError("Cannot change decisions after trade is rejected.")
-
-        user = self.context['request'].user
 
         if user == instance.initiator:
             instance.initiator_decision = validated_data.get('initiator_decision', instance.initiator_decision)
