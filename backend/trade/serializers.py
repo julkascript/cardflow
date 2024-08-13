@@ -88,7 +88,7 @@ class TradeSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
 
         for listing in value:
-            if listing.user != user and listing.is_listed:
+            if listing.user == user and listing.is_listed:
                 raise serializers.ValidationError(
                     f"You can not trade with recipient's listing ids: {[listing.id for listing in value]}.")
         return value
