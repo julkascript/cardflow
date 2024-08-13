@@ -3,8 +3,12 @@ from rest_framework import serializers
 from .models import Trade
 from listing.models import Listing
 
+from accounts.serializers import UserSerializer
+
 
 class TradeSerializer(serializers.ModelSerializer):
+    initiator = UserSerializer(read_only=True)
+    recipient = UserSerializer(read_only=True)
     initiator_listing = serializers.PrimaryKeyRelatedField(many=True, queryset=Listing.objects.all())
     recipient_listing = serializers.PrimaryKeyRelatedField(many=True, queryset=Listing.objects.all())
 
