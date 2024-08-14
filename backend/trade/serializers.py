@@ -3,10 +3,18 @@ from rest_framework import serializers
 from .models import Trade
 from listing.models import Listing
 
+from accounts.serializers import UserSerializer
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 
 class TradeSerializer(serializers.ModelSerializer):
+    initiator = UserSerializer(read_only=True)
+    recipient = UserSerializer(read_only=True)
     initiator_listing = serializers.PrimaryKeyRelatedField(many=True, queryset=Listing.objects.all())
     recipient_listing = serializers.PrimaryKeyRelatedField(many=True, queryset=Listing.objects.all())
+    recipient_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='recipient', write_only=True)
 
     class Meta:
         model = Trade
@@ -21,15 +29,17 @@ class TradeSerializer(serializers.ModelSerializer):
             'trade_status',
             'initiator_decision',
             'recipient_decision',
+            'recipient_id',
         ]
         read_only_fields = ['id', 'trade_status', 'initiator', 'recipient']
+
 
     def create(self, validated_data):
         initiator_listing = validated_data.pop('initiator_listing')
         recipient_listing = validated_data.pop('recipient_listing')
         initiator = validated_data.pop('initiator')
 
-        recipient = recipient_listing[0].user
+        recipient = validated_data.pop('recipient')
 
         if initiator == recipient:
             raise serializers.ValidationError("Cannot trade with yourself.")
@@ -50,14 +60,21 @@ class TradeSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         instance = super().update(instance, validated_data)
+        user = self.context['request'].user
+
+        if user == instance.initiator:
+            if 'recipient_listing' in validated_data or 'recipient_decision' in validated_data:
+                raise serializers.ValidationError("Initiator cannot change recipient's listing or decision.")
+
+        if user == instance.recipient:
+            if 'initiator_listing' in validated_data or 'initiator_decision' in validated_data:
+                raise serializers.ValidationError("Recipient cannot change initiator's listing or decision.")
 
         if instance.trade_status in [Trade.ACCEPTED]:
             raise serializers.ValidationError("Cannot change decisions after trade is accepted.")
 
         if instance.trade_status in [Trade.REJECTED]:
             raise serializers.ValidationError("Cannot change decisions after trade is rejected.")
-
-        user = self.context['request'].user
 
         if user == instance.initiator:
             instance.initiator_decision = validated_data.get('initiator_decision', instance.initiator_decision)
@@ -75,16 +92,23 @@ class TradeSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
 
         for listing in value:
-            if listing.user != user and listing.is_listed:
+            if listing.user != user or not listing.is_listed:
                 raise serializers.ValidationError(
                     f"You can not trade with initiator's listing ids: {[listing.id for listing in value]}.")
         return value
 
     def validate_recipient_listing(self, value):
-        user = self.context['request'].user
+        recipient_id = self.initial_data.get('recipient_id')
+
+        if not recipient_id:
+            raise serializers.ValidationError("Recipient ID is required.")
+
+        recipient = User.objects.get(id=recipient_id)
 
         for listing in value:
-            if listing.user != user and listing.is_listed:
+            print(listing.user)
+
+            if listing.user != recipient or not listing.is_listed:
                 raise serializers.ValidationError(
                     f"You can not trade with recipient's listing ids: {[listing.id for listing in value]}.")
         return value

@@ -1,3 +1,4 @@
+from django.db import models
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework import viewsets
@@ -8,7 +9,6 @@ from rest_framework.permissions import IsAuthenticated
 
 from .models import Trade
 from .serializers import TradeSerializer
-from listing.models import Listing
 
 
 @extend_schema(tags=['Trade'])
@@ -20,7 +20,8 @@ class TradeListingViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return Trade.objects.filter(initiator=user) | Trade.objects.filter(recipient=user)
+        return Trade.objects.filter(models.Q(initiator=user) | models.Q(recipient=user)
+                                    ).select_related('initiator', 'recipient')
 
     def perform_create(self, serializer):
         serializer.save(initiator=self.request.user, trade_status=Trade.NEGOTIATE)
