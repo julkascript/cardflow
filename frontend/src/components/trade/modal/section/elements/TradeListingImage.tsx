@@ -9,10 +9,10 @@ type TradeListingImageProps = {
 };
 
 function TradeListingImage(props: TradeListingImageProps): JSX.Element {
-  const { removeInitiatorListingOrCash, removeRecipientListingOrCash } = useTrade();
+  const { trade, removeInitiatorListingOrCash, removeRecipientListingOrCash } = useTrade();
 
   const remove =
-    props.listing.user === props.user.id
+    trade.recipient.id === props.user.id
       ? removeRecipientListingOrCash
       : removeInitiatorListingOrCash;
 

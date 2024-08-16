@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import { TradeContext } from '../../context/trade';
+import { useEffect, useState } from 'react';
+import { useTrade } from '../../context/trade';
 import TradeModal from '../../components/trade/modal/TradeModal';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { tradeService } from '../../services/trade/trade';
@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 
 function TradeDetails(): JSX.Element {
   const [open, setOpen] = useState(false);
-  const { populate } = useContext(TradeContext);
+  const { populate } = useTrade();
   const params = useParams();
   const id = Number(params.id);
 
@@ -19,7 +19,6 @@ function TradeDetails(): JSX.Element {
       Promise.all([...recipientRequests, ...initiatorRequests]).then((listings) => {
         const initiatorListings = listings.filter((l) => l.user === data.initiator.id);
         const recipientListings = listings.filter((l) => l.user === data.recipient.id);
-
         populate({
           ...data,
           initiator_listing: initiatorListings,

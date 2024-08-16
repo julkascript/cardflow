@@ -11,6 +11,7 @@ function TradeModalSection(props: TradeModalSectionProps): JSX.Element {
   const { trade } = useTrade();
   const listings =
     trade.initiator.id === props.user.id ? trade.initiator_listing : trade.recipient_listing;
+
   const cash = trade.initiator.id === props.user.id ? trade.initiator_cash : trade.recipient_cash;
   return (
     <section className="flex gap-24 items-center">
