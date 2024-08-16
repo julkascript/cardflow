@@ -9,6 +9,7 @@ const shoppingCart = `${base}/cart`;
 const bestSeller = `${base}/bestseller`;
 const feedback = `${base}/feedback`;
 const orders = `${base}/order`;
+const trade = `${base}/trade`;
 
 export const api = Object.freeze({
   accounts: {
@@ -53,5 +54,9 @@ export const api = Object.freeze({
   orders: {
     root: orders + '/',
     id: (id: number | string) => `${orders}/${id}/`,
+  },
+  trade: {
+    root: trade + '/',
+    id: (id: number | string) => `${trade}/${id}/`,
   },
 });

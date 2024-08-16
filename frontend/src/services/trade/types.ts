@@ -22,8 +22,8 @@ export type Trade = {
   recipient: TradeParticipant;
   initiator_listing: number[];
   recipient_listing: number[];
-  initiator_cash?: number;
-  recipient_cash?: number;
+  initiator_cash: number | null;
+  recipient_cash: number | null;
   trade_status: tradeStatusStage;
   initiator_decision: tradeStatusResult;
   recipient_decision: tradeStatusResult;
