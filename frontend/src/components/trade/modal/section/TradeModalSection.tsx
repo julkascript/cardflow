@@ -22,7 +22,7 @@ function TradeModalSection(props: TradeModalSectionProps): JSX.Element {
           <TradeModalBox user={props.user} key={l.id} listing={l} />
         ))}
         {cash ? <TradeModalBox user={props.user} cash={cash} /> : null}
-        {listings.length === 0 ? <TradeModalBox user={props.user} /> : null}
+        {listings.length === 0 && !cash ? <TradeModalBox user={props.user} /> : null}
       </div>
     </section>
   );

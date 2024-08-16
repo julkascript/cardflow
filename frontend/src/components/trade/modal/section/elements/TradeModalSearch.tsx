@@ -15,6 +15,7 @@ import { Search } from '@mui/icons-material';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { useTrade } from '../../../../../context/trade';
 import { TradeParticipant } from '../../../../../services/trade/types';
+import PaidIcon from '@mui/icons-material/Paid';
 
 type SearchResults = {
   id: number;
@@ -33,6 +34,19 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
   const [results, setResults] = useState<YugiohCardListing[]>([]);
   const { trade, addInitiatorListingOrCash, addRecipientListingOrCash } = useTrade();
 
+  let updateCash: typeof addInitiatorListingOrCash | typeof addRecipientListingOrCash;
+  let defaultCashValue: number;
+
+  if (props.user.id === trade.initiator.id) {
+    updateCash = addInitiatorListingOrCash;
+    defaultCashValue = trade.initiator_cash || 0;
+  } else {
+    updateCash = addRecipientListingOrCash;
+    defaultCashValue = trade.recipient_cash || 0;
+  }
+
+  const [cash, setCash] = useState(defaultCashValue);
+
   const searchResults = useMemo<SearchResults[]>(
     () =>
       results.map((r) => ({
@@ -46,6 +60,16 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
     [results],
   );
   const { error } = useToast();
+
+  const changeCash = useDebounce((value: number) => {
+    updateCash(value);
+  }, 500);
+
+  function handleCashChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const value = Number(event.target.value);
+    setCash(value);
+    changeCash(value);
+  }
 
   const handleChange = useDebounce((event: React.ChangeEvent<HTMLInputElement>) => {
     yugiohService
@@ -126,6 +150,19 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
           );
         }}
       ></Autocomplete>
+      <TextField
+        type="number"
+        className="w-full"
+        value={cash}
+        onChange={handleCashChange}
+        InputProps={{
+          startAdornment: (
+            <InputAdornment position="start">
+              <PaidIcon />
+            </InputAdornment>
+          ),
+        }}
+      />
     </div>
   );
 }
