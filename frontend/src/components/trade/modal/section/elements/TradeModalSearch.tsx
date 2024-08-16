@@ -100,7 +100,7 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
   }
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-4 items-center mb-4">
         <Avatar sx={{ width: 33, height: 33 }} src={user.avatar || undefined} />
         <h3>{props.user.username}</h3>
       </div>
@@ -114,6 +114,7 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
           <TextField
             onChange={handleChange}
             {...params}
+            size="small"
             InputProps={{
               ...params.InputProps,
               startAdornment: (
@@ -160,6 +161,7 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
         }}
       ></Autocomplete>
       <TextField
+        size="small"
         type="number"
         className="w-full"
         value={cash}
