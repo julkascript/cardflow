@@ -14,11 +14,11 @@ function TradeModalSection(props: TradeModalSectionProps): JSX.Element {
 
   const cash = trade.initiator.id === props.user.id ? trade.initiator_cash : trade.recipient_cash;
   return (
-    <section className="flex gap-24 items-center">
+    <section className="flex gap-24 items-center my-16">
       <div className="w-[400px]">
         <TradeModalSearch user={props.user} />
       </div>
-      <div className="flex gap-8 flex-1 overflow-x-auto">
+      <div className="flex gap-16 flex-1 overflow-x-auto">
         {listings.map((l) => (
           <TradeModalBox user={props.user} key={l.id} listing={l} />
         ))}

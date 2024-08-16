@@ -17,15 +17,25 @@ function TradeListingImage(props: TradeListingImageProps): JSX.Element {
       : removeInitiatorListingOrCash;
 
   return (
-    <div className="w-[245px] flex-shrink-0 flex-grow-0 basis-[245px]">
+    <div className="w-[245px] flex flex-col gap-4 flex-shrink-0 flex-grow-0 basis-[245px]">
       <img className="min-w-full h-[356px]" src={props.listing.card_in_set.yugioh_card.image} />
-      <h4 className="font-bold">{props.listing.card_name}</h4>
-      <div>
-        <div>
-          <Chip label={props.listing.card_in_set.set.set_code} />
-          <Chip label={props.listing.card_in_set.rarity.rarity} />
+      <h4 className="font-bold text-center">{props.listing.card_name}</h4>
+      <div className="flex justify-between items-center">
+        <div className="flex gap-2">
+          <Chip
+            color="secondary"
+            variant="outlined"
+            size="small"
+            label={props.listing.card_in_set.set.set_code}
+          />
+          <Chip
+            color="secondary"
+            variant="outlined"
+            size="small"
+            label={props.listing.card_in_set.rarity.rarity}
+          />
         </div>
-        <Button color="error" variant="outlined" onClick={() => remove(props.listing)}>
+        <Button size="small" color="error" variant="outlined" onClick={() => remove(props.listing)}>
           Remove
         </Button>
       </div>

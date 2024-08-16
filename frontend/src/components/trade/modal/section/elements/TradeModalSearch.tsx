@@ -93,7 +93,7 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
     }
   }
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       <h3>{props.user.username}</h3>
       <Autocomplete
         freeSolo
