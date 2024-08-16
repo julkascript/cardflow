@@ -13,7 +13,8 @@ export type TradeRequest = {
 export type TradeParticipant = {
   id: number;
   username: string;
-  email?: string;
+  email: string | null;
+  avatar: string | null;
 };
 
 export type Trade = {

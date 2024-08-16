@@ -3,15 +3,15 @@ from rest_framework import serializers
 from .models import Trade
 from listing.models import Listing
 
-from accounts.serializers import UserSerializer
+from accounts.serializers import UserSerializer, UserTradeParticipant
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
 
 class TradeSerializer(serializers.ModelSerializer):
-    initiator = UserSerializer(read_only=True)
-    recipient = UserSerializer(read_only=True)
+    initiator = UserTradeParticipant(read_only=True)
+    recipient = UserTradeParticipant(read_only=True)
     initiator_listing = serializers.PrimaryKeyRelatedField(many=True, queryset=Listing.objects.all())
     recipient_listing = serializers.PrimaryKeyRelatedField(many=True, queryset=Listing.objects.all())
     recipient_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='recipient', write_only=True)
