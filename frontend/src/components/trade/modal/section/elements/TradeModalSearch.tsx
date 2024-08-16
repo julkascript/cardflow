@@ -67,8 +67,10 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
 
   function handleCashChange(event: React.ChangeEvent<HTMLInputElement>) {
     const value = Number(event.target.value);
-    setCash(value);
-    changeCash(value);
+    if (value >= 0) {
+      setCash(value);
+      changeCash(value);
+    }
   }
 
   const handleChange = useDebounce((event: React.ChangeEvent<HTMLInputElement>) => {
