@@ -34,7 +34,7 @@ function TradeDetails(): JSX.Element {
   /* TO-DO: update with chat PR */
   return (
     <main>
-      <TradeModal open={open} onClose={() => setOpen(false)} />
+      <TradeModal id={id} open={open} onClose={() => setOpen(false)} />
       <h1>Details</h1>
     </main>
   );
