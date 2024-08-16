@@ -1,5 +1,6 @@
 import {
   Autocomplete,
+  Avatar,
   InputAdornment,
   ListItemIcon,
   MenuItem,
@@ -36,11 +37,14 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
 
   let updateCash: typeof addInitiatorListingOrCash | typeof addRecipientListingOrCash;
   let defaultCashValue: number;
+  let user: TradeParticipant;
 
   if (props.user.id === trade.initiator.id) {
+    user = trade.initiator;
     updateCash = addInitiatorListingOrCash;
     defaultCashValue = trade.initiator_cash || 0;
   } else {
+    user = trade.recipient;
     updateCash = addRecipientListingOrCash;
     defaultCashValue = trade.recipient_cash || 0;
   }
@@ -96,7 +100,10 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
   }
   return (
     <div className="flex flex-col gap-2">
-      <h3>{props.user.username}</h3>
+      <div className="flex gap-4 items-center">
+        <Avatar sx={{ width: 33, height: 33 }} src={user.avatar || undefined} />
+        <h3>{props.user.username}</h3>
+      </div>
       <Autocomplete
         freeSolo
         handleHomeEndKeys
