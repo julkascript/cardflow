@@ -17,8 +17,9 @@ function TradeListingImage(props: TradeListingImageProps): JSX.Element {
       : removeInitiatorListingOrCash;
 
   return (
-    <div>
-      <img src={props.listing.card_in_set.yugioh_card.image} />
+    <div className="w-[245px] flex-shrink-0 flex-grow-0 basis-[245px]">
+      <img className="min-w-full h-[356px]" src={props.listing.card_in_set.yugioh_card.image} />
+      <h4 className="font-bold">{props.listing.card_name}</h4>
       <div>
         <div>
           <Chip label={props.listing.card_in_set.set.set_code} />

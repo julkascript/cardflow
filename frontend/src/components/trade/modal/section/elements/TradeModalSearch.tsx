@@ -69,61 +69,64 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
     }
   }
   return (
-    <Autocomplete
-      freeSolo
-      handleHomeEndKeys
-      selectOnFocus
-      options={searchResults}
-      onChange={handleSelect}
-      renderInput={(params) => (
-        <TextField
-          onChange={handleChange}
-          {...params}
-          InputProps={{
-            ...params.InputProps,
-            startAdornment: (
-              <>
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-                {params.InputProps.startAdornment}
-              </>
-            ),
-          }}
-        />
-      )}
-      renderOption={(props, option) => {
-        /**
-         * Spreading the key into the MenuItem causes React to complain
-         *
-         * props is typed as ``any`` because TypeScript doesn't recognize
-         * ``key`` as a valid property (despite it actually existing).
-         * This is apparently a typing issue fixed in a later version, might
-         * be worth upgrading to remove casting
-         */
+    <div>
+      <h3>{props.user.username}</h3>
+      <Autocomplete
+        freeSolo
+        handleHomeEndKeys
+        selectOnFocus
+        options={searchResults}
+        onChange={handleSelect}
+        renderInput={(params) => (
+          <TextField
+            onChange={handleChange}
+            {...params}
+            InputProps={{
+              ...params.InputProps,
+              startAdornment: (
+                <>
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                  {params.InputProps.startAdornment}
+                </>
+              ),
+            }}
+          />
+        )}
+        renderOption={(props, option) => {
+          /**
+           * Spreading the key into the MenuItem causes React to complain
+           *
+           * props is typed as ``any`` because TypeScript doesn't recognize
+           * ``key`` as a valid property (despite it actually existing).
+           * This is apparently a typing issue fixed in a later version, might
+           * be worth upgrading to remove casting
+           */
 
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { key: _key, ...propsWithoutKey } = props as any;
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { key: _key, ...propsWithoutKey } = props as any;
 
-        return (
-          <MenuItem
-            key={option.id + option.name + option.rarity + 'listing'}
-            {...propsWithoutKey}
-            className="flex gap-6 w-full"
-          >
-            <Tooltip title={<TooltipImage imageUrl={option.image} />} placement="left-start">
-              <ListItemIcon sx={{ color: 'black' }}>
-                <CameraAltIcon />
-              </ListItemIcon>
-            </Tooltip>
-            <div className="flex items-center text-sm md:text-base">
-              <div className="w-20">{option.setCode}</div>
-              <div>{option.name}</div>
-            </div>
-          </MenuItem>
-        );
-      }}
-    ></Autocomplete>
+          return (
+            <MenuItem
+              key={option.id + option.name + option.rarity + 'listing'}
+              {...propsWithoutKey}
+              className="flex gap-6 w-full"
+            >
+              <Tooltip title={<TooltipImage imageUrl={option.image} />} placement="left-start">
+                <ListItemIcon sx={{ color: 'black' }}>
+                  <CameraAltIcon />
+                </ListItemIcon>
+              </Tooltip>
+              <div className="flex items-center text-sm md:text-base">
+                <div className="w-20">{option.setCode}</div>
+                <div>{option.name}</div>
+              </div>
+            </MenuItem>
+          );
+        }}
+      ></Autocomplete>
+    </div>
   );
 }
 
