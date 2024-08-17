@@ -7,6 +7,7 @@ type TradeItemOption = YugiohCardListing | number;
 type TradeOffer = Omit<Trade, 'recipient_listing' | 'initiator_listing'> & {
   recipient_listing: YugiohCardListing[];
   initiator_listing: YugiohCardListing[];
+  offerHasChanged: boolean;
 };
 
 type TradeContextType = {
@@ -20,6 +21,7 @@ type TradeContextType = {
 
 const initialState: TradeOffer = {
   id: 0,
+  offerHasChanged: false,
   trade_status: 'negotiate',
   initiator_decision: 'accept',
   recipient_decision: 'pending',
@@ -55,38 +57,48 @@ export function TradeContextProvider({ children }: { children: React.ReactNode }
 
   function addRecipientListingOrCash(item: TradeItemOption) {
     if (typeof item === 'number') {
-      setTrade((t) => ({ ...t, recipient_cash: item }));
+      setTrade((t) => ({ ...t, recipient_cash: item, offerHasChanged: true }));
     } else {
-      setTrade((t) => ({ ...t, recipient_listing: [...t.recipient_listing, item] }));
+      setTrade((t) => ({
+        ...t,
+        recipient_listing: [...t.recipient_listing, item],
+        offerHasChanged: true,
+      }));
     }
   }
 
   function addInitiatorListingOrCash(item: TradeItemOption) {
     if (typeof item === 'number') {
-      setTrade((t) => ({ ...t, initiator_cash: item }));
+      setTrade((t) => ({ ...t, initiator_cash: item, offerHasChanged: true }));
     } else {
-      setTrade((t) => ({ ...t, initiator_listing: [...t.initiator_listing, item] }));
+      setTrade((t) => ({
+        ...t,
+        initiator_listing: [...t.initiator_listing, item],
+        offerHasChanged: true,
+      }));
     }
   }
 
   function removeInitiatorListingOrCash(item: TradeItemOption) {
     if (typeof item === 'number') {
-      setTrade((t) => ({ ...t, initiator_cash: null }));
+      setTrade((t) => ({ ...t, initiator_cash: null, offerHasChanged: true }));
     } else {
       setTrade((t) => ({
         ...t,
         initiator_listing: t.initiator_listing.filter((l) => l.id !== item.id),
+        offerHasChanged: true,
       }));
     }
   }
 
   function removeRecipientListingOrCash(item: TradeItemOption) {
     if (typeof item === 'number') {
-      setTrade((t) => ({ ...t, recipient_cash_cash: null }));
+      setTrade((t) => ({ ...t, recipient_cash_cash: null, offerHasChanged: true }));
     } else {
       setTrade((t) => ({
         ...t,
         recipient_listing: t.recipient_listing.filter((l) => l.id !== item.id),
+        offerHasChanged: true,
       }));
     }
   }
