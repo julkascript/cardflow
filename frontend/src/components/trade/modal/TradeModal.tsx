@@ -3,6 +3,7 @@ import TradeModalSection from './section/TradeModalSection';
 import { useTrade } from '../../../context/trade';
 import TradeStatusBadge from './section/elements/TradeStatusBadge';
 import RequestButton from './section/elements/buttons/RequestButton';
+import DeclineButton from './section/elements/buttons/DeclineButton';
 
 type TradeModalProps = {
   open: boolean;
@@ -29,6 +30,7 @@ function TradeModal(props: TradeModalProps): JSX.Element {
             Close
           </Button>
           <RequestButton onClick={() => {}} />
+          <DeclineButton onClick={() => {}} />
         </DialogActions>
       </div>
     </Dialog>

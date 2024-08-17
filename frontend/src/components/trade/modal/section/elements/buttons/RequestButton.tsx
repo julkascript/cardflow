@@ -1,12 +1,13 @@
 import { Button } from '@mui/material';
 import { useTrade } from '../../../../../../context/trade';
+import { type TradeModalButtonProps } from './ButtonProps';
 
-type RequestButtonProps = {
-  onClick: () => void;
-};
-
-function RequestButton(props: RequestButtonProps): JSX.Element {
+function RequestButton(props: TradeModalButtonProps): JSX.Element {
   const { trade } = useTrade();
+
+  if (trade.trade_status !== 'negotiate') {
+    return <></>;
+  }
 
   const disabled =
     (!trade.initiator_cash && trade.initiator_listing.length === 0) ||
