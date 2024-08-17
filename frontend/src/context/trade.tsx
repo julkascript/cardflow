@@ -30,10 +30,14 @@ const initialState: TradeOffer = {
   recipient: {
     id: 0,
     username: '',
+    email: null,
+    avatar: null,
   },
   initiator: {
     id: 0,
     username: '',
+    email: null,
+    avatar: null,
   },
 };
 
@@ -82,7 +86,7 @@ export function TradeContextProvider({ children }: { children: React.ReactNode }
     } else {
       setTrade((t) => ({
         ...t,
-        initiator_listing: t.recipient_listing.filter((l) => l.id !== item.id),
+        recipient_listing: t.recipient_listing.filter((l) => l.id !== item.id),
       }));
     }
   }
