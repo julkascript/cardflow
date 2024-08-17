@@ -23,6 +23,7 @@ function TradeDetails(): JSX.Element {
           ...data,
           initiator_listing: initiatorListings,
           recipient_listing: recipientListings,
+          offerHasChanged: false,
         });
 
         setOpen(true);
