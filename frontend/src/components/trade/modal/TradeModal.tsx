@@ -18,7 +18,7 @@ function TradeModal(props: TradeModalProps): JSX.Element {
     <Dialog fullWidth maxWidth="lg" open={props.open} onClose={props.onClose}>
       <div className="p-8">
         <DialogTitle className="flex gap-2 items-center">
-          {props.id ? <h2 className="font-bold text-3xl">Offer #TR-{props.id}</h2> : ''}
+          {props.id ? <span className="font-bold text-3xl">Offer #TR-{props.id}</span> : ''}
           <TradeStatusBadge />
         </DialogTitle>
         <DialogContent>
