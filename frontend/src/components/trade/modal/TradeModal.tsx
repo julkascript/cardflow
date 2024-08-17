@@ -2,6 +2,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider } fr
 import TradeModalSection from './section/TradeModalSection';
 import { useTrade } from '../../../context/trade';
 import TradeStatusBadge from './section/elements/TradeStatusBadge';
+import RequestButton from './section/elements/buttons/RequestButton';
 
 type TradeModalProps = {
   open: boolean;
@@ -27,6 +28,7 @@ function TradeModal(props: TradeModalProps): JSX.Element {
           <Button variant="outlined" onClick={props.onClose}>
             Close
           </Button>
+          <RequestButton onClick={() => {}} />
         </DialogActions>
       </div>
     </Dialog>
