@@ -4,14 +4,14 @@ import { Trade } from '../services/trade/types';
 
 type TradeItemOption = YugiohCardListing | number;
 
-type TradeOffer = Omit<Trade, 'recipient_listing' | 'initiator_listing'> & {
+export type TradeOffer = Omit<Trade, 'recipient_listing' | 'initiator_listing'> & {
   recipient_listing: YugiohCardListing[];
   initiator_listing: YugiohCardListing[];
-  offerHasChanged: boolean;
 };
 
 type TradeContextType = {
   trade: TradeOffer;
+  initialTradeOffer: TradeOffer;
   addRecipientListingOrCash: (listing: TradeItemOption) => void;
   addInitiatorListingOrCash: (listing: TradeItemOption) => void;
   removeRecipientListingOrCash: (listing: TradeItemOption) => void;
@@ -21,7 +21,6 @@ type TradeContextType = {
 
 const initialState: TradeOffer = {
   id: 0,
-  offerHasChanged: false,
   trade_status: 'negotiate',
   initiator_decision: 'accept',
   recipient_decision: 'pending',
@@ -45,6 +44,7 @@ const initialState: TradeOffer = {
 
 export const TradeContext = createContext<TradeContextType>({
   trade: initialState,
+  initialTradeOffer: initialState,
   addInitiatorListingOrCash: () => {},
   addRecipientListingOrCash: () => {},
   removeRecipientListingOrCash: () => {},
@@ -54,6 +54,7 @@ export const TradeContext = createContext<TradeContextType>({
 
 export function TradeContextProvider({ children }: { children: React.ReactNode }): JSX.Element {
   const [trade, setTrade] = useState<TradeOffer>(initialState);
+  const [initialTradeOffer, setInitialTradeOffer] = useState<TradeOffer>(initialState);
 
   function addRecipientListingOrCash(item: TradeItemOption) {
     if (typeof item === 'number') {
@@ -62,7 +63,6 @@ export function TradeContextProvider({ children }: { children: React.ReactNode }
       setTrade((t) => ({
         ...t,
         recipient_listing: [...t.recipient_listing, item],
-        offerHasChanged: true,
       }));
     }
   }
@@ -74,7 +74,6 @@ export function TradeContextProvider({ children }: { children: React.ReactNode }
       setTrade((t) => ({
         ...t,
         initiator_listing: [...t.initiator_listing, item],
-        offerHasChanged: true,
       }));
     }
   }
@@ -86,7 +85,6 @@ export function TradeContextProvider({ children }: { children: React.ReactNode }
       setTrade((t) => ({
         ...t,
         initiator_listing: t.initiator_listing.filter((l) => l.id !== item.id),
-        offerHasChanged: true,
       }));
     }
   }
@@ -98,19 +96,20 @@ export function TradeContextProvider({ children }: { children: React.ReactNode }
       setTrade((t) => ({
         ...t,
         recipient_listing: t.recipient_listing.filter((l) => l.id !== item.id),
-        offerHasChanged: true,
       }));
     }
   }
 
   function populate(data: TradeOffer) {
     setTrade(data);
+    setInitialTradeOffer(data);
   }
 
   return (
     <TradeContext.Provider
       value={{
         trade,
+        initialTradeOffer,
         addInitiatorListingOrCash,
         addRecipientListingOrCash,
         removeInitiatorListingOrCash,

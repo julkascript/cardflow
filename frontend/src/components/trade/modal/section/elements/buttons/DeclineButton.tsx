@@ -1,10 +1,11 @@
 import { Button, ButtonProps } from '@mui/material';
 import { useTrade } from '../../../../../../context/trade';
+import { offersAreTheSame } from '../../../../../../util/offersAreTheSame';
 
 function DeclineButton(props: ButtonProps): JSX.Element {
-  const { trade } = useTrade();
+  const { trade, initialTradeOffer } = useTrade();
 
-  if (trade.offerHasChanged) {
+  if (!offersAreTheSame(trade, initialTradeOffer)) {
     return <></>;
   }
 
