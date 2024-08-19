@@ -5,6 +5,7 @@ import TradeStatusBadge from './section/elements/TradeStatusBadge';
 import RequestButton from './section/elements/buttons/RequestButton';
 import DeclineButton from './section/elements/buttons/DeclineButton';
 import AcceptButton from './section/elements/buttons/AcceptButton';
+import { useCurrentUser } from '../../../context/user';
 
 type TradeModalProps = {
   open: boolean;
@@ -14,6 +15,11 @@ type TradeModalProps = {
 
 function TradeModal(props: TradeModalProps): JSX.Element {
   const { trade } = useTrade();
+  const { user } = useCurrentUser();
+
+  const otherUserDecision =
+    user.user_id !== trade.initiator.id ? trade.initiator_decision : trade.recipient_decision;
+
   return (
     <Dialog fullWidth maxWidth="lg" open={props.open} onClose={props.onClose}>
       <div className="p-8">
@@ -30,9 +36,9 @@ function TradeModal(props: TradeModalProps): JSX.Element {
           <Button variant="outlined" onClick={props.onClose}>
             Close
           </Button>
-          <RequestButton onClick={() => {}} />
-          <DeclineButton onClick={() => {}} />
-          <AcceptButton onClick={() => {}} />
+          <RequestButton otherUserDecision={otherUserDecision} onClick={() => {}} />
+          <DeclineButton otherUserDecision={otherUserDecision} onClick={() => {}} />
+          <AcceptButton otherUserDecision={otherUserDecision} onClick={() => {}} />
         </DialogActions>
       </div>
     </Dialog>

@@ -6,9 +6,13 @@ import { offersAreTheSame } from '../../../../../../util/offersAreTheSame';
 function RequestButton(props: TradeModalButtonProps): JSX.Element {
   const { trade, initialTradeOffer } = useTrade();
 
-  if (offersAreTheSame(trade, initialTradeOffer)) {
+  if (offersAreTheSame(trade, initialTradeOffer) || trade.trade_status !== 'negotiate') {
     return <></>;
   }
+
+  const disabled =
+    (trade.initiator_listing.length === 0 && !trade.initiator_cash) ||
+    (trade.recipient_listing.length === 0 && !trade.recipient_cash);
 
   return (
     <Button
@@ -16,6 +20,7 @@ function RequestButton(props: TradeModalButtonProps): JSX.Element {
       variant="contained"
       color="success"
       onClick={props.onClick}
+      disabled={disabled}
     >
       Request
     </Button>

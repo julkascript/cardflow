@@ -6,7 +6,7 @@ import { offersAreTheSame } from '../../../../../../util/offersAreTheSame';
 function AcceptButton(props: TradeModalButtonProps): JSX.Element {
   const { trade, initialTradeOffer } = useTrade();
 
-  if (!offersAreTheSame(trade, initialTradeOffer)) {
+  if (!offersAreTheSame(trade, initialTradeOffer) || trade.trade_status !== 'negotiate') {
     return <></>;
   }
 
@@ -16,6 +16,7 @@ function AcceptButton(props: TradeModalButtonProps): JSX.Element {
       variant="contained"
       color="success"
       onClick={props.onClick}
+      disabled={props.otherUserDecision === 'pending'}
     >
       Accept
     </Button>
