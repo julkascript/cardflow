@@ -39,15 +39,18 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
   let updateCash: typeof addInitiatorListingOrCash | typeof addRecipientListingOrCash;
   let defaultCashValue: number;
   let user: TradeParticipant;
+  let userListings: YugiohCardListing[];
 
   if (props.user.id === trade.initiator.id) {
     user = trade.initiator;
     updateCash = addInitiatorListingOrCash;
     defaultCashValue = trade.initiator_cash || 0;
+    userListings = trade.initiator_listing;
   } else {
     user = trade.recipient;
     updateCash = addRecipientListingOrCash;
     defaultCashValue = trade.recipient_cash || 0;
+    userListings = trade.recipient_listing;
   }
 
   const [cash, setCash] = useState(defaultCashValue);
@@ -82,7 +85,9 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
     yugiohService
       .searchYugiohListingsByCardNameAndUserId(event.target.value, props.user.id)
       .then((data) => {
-        setResults(data.results);
+        setResults(
+          data.results.filter((listing) => !userListings.find((l) => l.id === listing.id)),
+        );
         setHasSearched(true);
       })
       .catch((err) => error({ error: err }));
@@ -100,7 +105,10 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
           }
         })
         .catch(error)
-        .finally(() => setHasSearched(false));
+        .finally(() => {
+          setHasSearched(false);
+          setResults([]);
+        });
     }
   }
   return (
