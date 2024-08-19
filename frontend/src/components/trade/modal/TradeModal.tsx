@@ -23,7 +23,7 @@ function TradeModal(props: TradeModalProps): JSX.Element {
   return (
     <Dialog fullWidth maxWidth="lg" open={props.open} onClose={props.onClose}>
       <div className="p-8">
-        <DialogTitle className="flex gap-2 items-center">
+        <DialogTitle className="flex gap-2 items-center justify-center lg:justify-start">
           {props.id ? <span className="font-bold text-3xl">Offer #TR-{props.id}</span> : ''}
           <TradeStatusBadge />
         </DialogTitle>

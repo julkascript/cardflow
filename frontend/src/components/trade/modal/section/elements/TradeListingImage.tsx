@@ -17,7 +17,7 @@ function TradeListingImage(props: TradeListingImageProps): JSX.Element {
       : removeInitiatorListingOrCash;
 
   return (
-    <div className="w-[245px] flex flex-col gap-4 flex-shrink-0 flex-grow-0 basis-[245px]">
+    <div className="w-[245px] flex flex-col gap-4 lg:flex-shrink-0 lg:flex-grow-0 lg:basis-[245px]">
       <img className="min-w-full h-[356px]" src={props.listing.card_in_set.yugioh_card.image} />
       <h4 className="font-bold text-center">{props.listing.card_name}</h4>
       <div className="flex justify-between items-center">
