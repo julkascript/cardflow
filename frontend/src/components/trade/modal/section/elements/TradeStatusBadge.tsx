@@ -5,7 +5,7 @@ import { useTrade } from '../../../../../context/trade';
 const iconsPerStatus: Record<tradeStatusStage, React.ReactNode> = {
   rejected: <DoNotDisturbAlt color="error" />,
   accepted: <CheckCircle color="success" />,
-  negotiate: <CheckCircle color="success" />,
+  negotiate: null,
 };
 
 function TradeStatusBadge(): JSX.Element {
