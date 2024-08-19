@@ -34,6 +34,7 @@ type TradeModalSearchProps = {
 function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
   const [results, setResults] = useState<YugiohCardListing[]>([]);
   const { trade, addInitiatorListingOrCash, addRecipientListingOrCash } = useTrade();
+  const [hasSearched, setHasSearched] = useState(false);
 
   let updateCash: typeof addInitiatorListingOrCash | typeof addRecipientListingOrCash;
   let defaultCashValue: number;
@@ -80,7 +81,10 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
   const handleChange = useDebounce((event: React.ChangeEvent<HTMLInputElement>) => {
     yugiohService
       .searchYugiohListingsByCardNameAndUserId(event.target.value, props.user.id)
-      .then((data) => setResults(data.results))
+      .then((data) => {
+        setResults(data.results);
+        setHasSearched(true);
+      })
       .catch((err) => error({ error: err }));
   }, 500);
 
@@ -95,14 +99,22 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
             addInitiatorListingOrCash(listing);
           }
         })
-        .catch(error);
+        .catch(error)
+        .finally(() => setHasSearched(false));
     }
   }
   return (
     <div className="flex flex-col gap-2">
-      <div className="flex gap-4 items-center mb-4 justify-center lg:justify-start">
-        <Avatar sx={{ width: 33, height: 33 }} src={user.avatar || undefined} />
-        <h3>{props.user.username}</h3>
+      <div className="flex flex-col">
+        <div className="flex gap-4 items-center mb-4 justify-center lg:justify-start">
+          <Avatar sx={{ width: 33, height: 33 }} src={user.avatar || undefined} />
+          <h3>{props.user.username}</h3>
+        </div>
+        {results.length || !hasSearched ? null : (
+          <p className="text-center lg:text-left">
+            The user does not have listings with that name.
+          </p>
+        )}
       </div>
       <Autocomplete
         freeSolo
