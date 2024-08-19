@@ -104,6 +104,7 @@ export const yugiohService = {
       {
         user_id: userId,
         card_name: cardName,
+        is_listed: true,
       },
     );
 
