@@ -1,0 +1,13 @@
+{
+  "modal": {
+    "title": "Offer #TR-{{id}}",
+    "noResults": "The user does not have listings with that name.",
+    "buttons": {
+      "remove": "Remove",
+      "accept": "Accept",
+      "decline": "Decline",
+      "close": "Close",
+      "request": "Request"
+    }
+  }
+}

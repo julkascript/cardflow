@@ -17,6 +17,7 @@ import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import { useTrade } from '../../../../../context/trade';
 import { TradeParticipant } from '../../../../../services/trade/types';
 import PaidIcon from '@mui/icons-material/Paid';
+import { useTranslation } from 'react-i18next';
 
 type SearchResults = {
   id: number;
@@ -35,6 +36,7 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
   const [results, setResults] = useState<YugiohCardListing[]>([]);
   const { trade, addInitiatorListingOrCash, addRecipientListingOrCash } = useTrade();
   const [hasSearched, setHasSearched] = useState(false);
+  const { t } = useTranslation('trade');
 
   let updateCash: typeof addInitiatorListingOrCash | typeof addRecipientListingOrCash;
   let defaultCashValue: number;
@@ -119,9 +121,7 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
           <h3>{props.user.username}</h3>
         </div>
         {results.length || !hasSearched ? null : (
-          <p className="text-center lg:text-left">
-            The user does not have listings with that name.
-          </p>
+          <p className="text-center lg:text-left">{t('modal.noResults')}</p>
         )}
       </div>
       <Autocomplete
