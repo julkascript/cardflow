@@ -8,7 +8,7 @@ function AcceptButton(props: TradeModalButtonProps): JSX.Element {
   const { trade, initialTradeOffer } = useTrade();
   const { t } = useTranslation('trade');
 
-  if (!offersAreTheSame(trade, initialTradeOffer) || trade.trade_status !== 'negotiate') {
+  if (!offersAreTheSame(trade, initialTradeOffer)) {
     return <></>;
   }
 
@@ -18,7 +18,6 @@ function AcceptButton(props: TradeModalButtonProps): JSX.Element {
       variant="contained"
       color="success"
       onClick={props.onClick}
-      disabled={props.otherUserDecision === 'pending'}
     >
       {t('modal.buttons.accept')}
     </Button>

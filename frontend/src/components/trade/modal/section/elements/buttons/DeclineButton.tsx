@@ -8,17 +8,12 @@ function DeclineButton(props: TradeModalButtonProps): JSX.Element {
   const { trade, initialTradeOffer } = useTrade();
   const { t } = useTranslation('trade');
 
-  if (!offersAreTheSame(trade, initialTradeOffer) || trade.trade_status !== 'negotiate') {
+  if (!offersAreTheSame(trade, initialTradeOffer)) {
     return <></>;
   }
 
   return (
-    <Button
-      disabled={props.otherUserDecision === 'pending'}
-      color="error"
-      variant="outlined"
-      onClick={props.onClick}
-    >
+    <Button color="error" variant="outlined" onClick={props.onClick}>
       {t('modal.buttons.decline')}
     </Button>
   );
