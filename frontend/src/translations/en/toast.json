@@ -36,5 +36,8 @@
     "noPermission": "You do not have permissions to perform this action!",
     "pageDoesNotExist": "The page you are looking for does not exist",
     "failedLogin": "Wrong username or password!",
-    "failedShoppingCartQuantityUpdate": "Could not update quantity, please try again!"
+    "failedShoppingCartQuantityUpdate": "Could not update quantity, please try again!",
+    "tradeHasBeenAccepted": "Trade TR-#{{id}} has been accepted! Check the chat for the next steps",
+    "tradeHasBeenRejected": "Trade TR-#{{id}} has been rejected and is no longer active",
+    "tradeHasBeenNegotiated": "You sent a new offer for Trade TR-#{{id}}! Please wait for the other user to respond!"
 }

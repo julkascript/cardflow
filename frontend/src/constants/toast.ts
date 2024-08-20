@@ -26,6 +26,9 @@ export const toastMessages = {
   sellListingDelisted: 'sellListingDelisted',
   orderStatusChanged: 'orderStatusChanged',
   feedbackGiven: 'feedbackGiven',
+  tradeHasBeenAccepted: 'tradeHasBeenAccepted',
+  tradeHasBeenRejected: 'tradeHasBeenRejected',
+  tradeHasBeenNegotiated: 'tradeHasBeenNegotiated',
 
   // error
   serverError: 'serverError',
