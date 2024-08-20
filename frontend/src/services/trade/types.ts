@@ -29,3 +29,7 @@ export type Trade = {
   initiator_decision: tradeStatusResult;
   recipient_decision: tradeStatusResult;
 };
+
+export type TradeStatusUpdateResponse = {
+  status: tradeStatusStage;
+};
