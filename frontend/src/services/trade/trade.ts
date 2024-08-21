@@ -8,6 +8,21 @@ export const tradeService = {
     return trade!;
   },
 
+  async initiate(currentUserId: number, userId: number): Promise<Trade> {
+    const trade: Partial<TradeRequest> = {
+      initiator_listing: [],
+      recipient_listing: [],
+      initiator_cash: 0,
+      recipient_cash: 0,
+      recipient_id: userId,
+      initiator_id: currentUserId,
+    };
+
+    const data = await httpService.post<Trade>(api.trade.root, trade);
+
+    return data!;
+  },
+
   async negotiate(tradeId: number, trade: Partial<TradeRequest>): Promise<Trade> {
     const data = await httpService.post<Trade>(api.trade.negotiate(tradeId), trade);
     return data!;

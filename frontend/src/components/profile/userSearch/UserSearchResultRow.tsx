@@ -1,7 +1,7 @@
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { UserSearchResult } from '../../../services/user/types';
-import { Button, Link } from '@mui/material';
+import { Link } from '@mui/material';
 import YugiohSellerRankBadge from '../../yugioh/seller/YugiohSellerRankBadge';
+import UserSearchTradeButton from './UserSearchTradeButton';
 
 type UserSearchResultRowProps = {
   user: UserSearchResult;
@@ -28,13 +28,7 @@ function UserSearchResultRow(props: UserSearchResultRowProps) {
       </td>
       <td className="w-[300px]">{props.user.listed_listings_count}</td>
       <td className="w-[150px]">
-        <Button
-          color="success"
-          variant="contained"
-          sx={{ color: 'white', ':hover': { color: 'black' } }}
-        >
-          <SwapHorizIcon />
-        </Button>
+        <UserSearchTradeButton user={props.user} />
       </td>
     </tr>
   );
