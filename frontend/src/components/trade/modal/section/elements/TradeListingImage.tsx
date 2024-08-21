@@ -35,9 +35,16 @@ function TradeListingImage(props: TradeListingImageProps): JSX.Element {
             label={props.listing.card_in_set.rarity.rarity}
           />
         </div>
-        <Button size="small" color="error" variant="outlined" onClick={() => remove(props.listing)}>
-          Remove
-        </Button>
+        {trade.trade_status === 'negotiate' ? (
+          <Button
+            size="small"
+            color="error"
+            variant="outlined"
+            onClick={() => remove(props.listing)}
+          >
+            Remove
+          </Button>
+        ) : null}
       </div>
     </div>
   );

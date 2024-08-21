@@ -129,6 +129,7 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
         handleHomeEndKeys
         selectOnFocus
         options={searchResults}
+        disabled={trade.trade_status !== 'negotiate'}
         onChange={handleSelect}
         renderInput={(params) => (
           <TextField
@@ -185,6 +186,7 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
         type="number"
         className="w-full"
         value={cash}
+        disabled={trade.trade_status !== 'negotiate'}
         onChange={handleCashChange}
         InputProps={{
           startAdornment: (
