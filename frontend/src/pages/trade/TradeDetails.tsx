@@ -3,10 +3,11 @@ import { useTrade } from '../../context/trade';
 import TradeModal from '../../components/trade/modal/TradeModal';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { tradeService } from '../../services/trade/trade';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useToast } from '../../util/useToast';
 import { toastMessages } from '../../constants/toast';
 import { Trade, TradeRequest } from '../../services/trade/types';
+import { HttpError } from '../../util/HttpError';
 
 function TradeDetails(): JSX.Element {
   const [open, setOpen] = useState(false);
@@ -14,6 +15,7 @@ function TradeDetails(): JSX.Element {
   const toast = useToast();
   const params = useParams();
   const id = Number(params.id);
+  const navigate = useNavigate();
 
   function accept() {
     tradeService
@@ -96,7 +98,13 @@ function TradeDetails(): JSX.Element {
         populate(data);
         setOpen(true);
       })
-      .catch(toast.error);
+      .catch((err) => {
+        if (err instanceof HttpError && err.err.status === 404) {
+          navigate('/not-found');
+        } else {
+          toast.error(err);
+        }
+      });
   }, []);
 
   /* TO-DO: update with chat PR */
