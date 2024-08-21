@@ -186,6 +186,7 @@ const routes = createBrowserRouter([
       },
       {
         path: 'trade',
+        loader: authorizedGuard,
         children: [
           {
             path: ':id',
