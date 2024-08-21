@@ -8,7 +8,12 @@ function AcceptButton(props: TradeModalButtonProps): JSX.Element {
   const { trade, initialTradeOffer } = useTrade();
   const { t } = useTranslation('trade');
 
-  if (!offersAreTheSame(trade, initialTradeOffer)) {
+  if (
+    !offersAreTheSame(trade, initialTradeOffer) ||
+    trade.trade_status !== 'negotiate' ||
+    (trade.recipient_listing.length === 0 && !trade.initiator_cash) ||
+    (trade.initiator_listing.length === 0 && !trade.recipient_cash)
+  ) {
     return <></>;
   }
 
