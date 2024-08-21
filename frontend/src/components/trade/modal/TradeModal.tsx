@@ -12,6 +12,9 @@ type TradeModalProps = {
   open: boolean;
   onClose: () => void;
   id?: number;
+  onAccept: () => void;
+  onReject: () => void;
+  onNegotiate: () => void;
 };
 
 function TradeModal(props: TradeModalProps): JSX.Element {
@@ -43,9 +46,9 @@ function TradeModal(props: TradeModalProps): JSX.Element {
           <Button variant="outlined" onClick={props.onClose}>
             {t('modal.buttons.close')}
           </Button>
-          <RequestButton otherUserDecision={otherUserDecision} onClick={() => {}} />
-          <DeclineButton otherUserDecision={otherUserDecision} onClick={() => {}} />
-          <AcceptButton otherUserDecision={otherUserDecision} onClick={() => {}} />
+          <RequestButton otherUserDecision={otherUserDecision} onClick={props.onNegotiate} />
+          <DeclineButton otherUserDecision={otherUserDecision} onClick={props.onReject} />
+          <AcceptButton otherUserDecision={otherUserDecision} onClick={props.onAccept} />
         </DialogActions>
       </div>
     </Dialog>
