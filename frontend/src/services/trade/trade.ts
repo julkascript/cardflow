@@ -9,7 +9,12 @@ export const tradeService = {
   },
 
   async negotiate(tradeId: number, trade: Partial<TradeRequest>): Promise<Trade> {
-    const data = await httpService.put<Trade>(api.trade.negotiate(tradeId), trade);
+    const data = await httpService.post<Trade>(api.trade.negotiate(tradeId), trade);
+    return data!;
+  },
+
+  async counterOffer(tradeId: number, trade: Partial<TradeRequest>): Promise<Trade> {
+    const data = await httpService.post<Trade>(api.trade.counterOffer(tradeId), trade);
     return data!;
   },
 

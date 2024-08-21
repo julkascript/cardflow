@@ -8,6 +8,7 @@ export type TradeRequest = {
   initiator_decision: tradeStatusResult;
   recipient_decision: tradeStatusResult;
   recipient_id: number;
+  initiator_id: number;
 };
 
 export type TradeParticipant = {
