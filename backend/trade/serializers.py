@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Trade
 from listing.models import Listing
 
-from accounts.serializers import UserSerializer, UserTradeParticipant
+from accounts.serializers import UserTradeParticipant
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -15,6 +15,7 @@ class TradeSerializer(serializers.ModelSerializer):
     initiator_listing = serializers.PrimaryKeyRelatedField(many=True, queryset=Listing.objects.all())
     recipient_listing = serializers.PrimaryKeyRelatedField(many=True, queryset=Listing.objects.all())
     recipient_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='recipient', write_only=True)
+    initiator_id = serializers.PrimaryKeyRelatedField(queryset=User.objects.all(), source='initiator', write_only=True)
 
     class Meta:
         model = Trade
@@ -30,9 +31,9 @@ class TradeSerializer(serializers.ModelSerializer):
             'initiator_decision',
             'recipient_decision',
             'recipient_id',
+            'initiator_id'
         ]
         read_only_fields = ['id', 'trade_status', 'initiator', 'recipient']
-
 
     def create(self, validated_data):
         initiator_listing = validated_data.pop('initiator_listing')
@@ -89,10 +90,13 @@ class TradeSerializer(serializers.ModelSerializer):
         return instance
 
     def validate_initiator_listing(self, value):
-        user = self.context['request'].user
+        initiator_id = self.initial_data.get('initiator_id')
+
+        if not initiator_id:
+            raise serializers.ValidationError("Initiator ID is required.")
 
         for listing in value:
-            if listing.user != user or not listing.is_listed:
+            if listing.user_id != initiator_id or not listing.is_listed:
                 raise serializers.ValidationError(
                     f"You can not trade with initiator's listing ids: {[listing.id for listing in value]}.")
         return value
