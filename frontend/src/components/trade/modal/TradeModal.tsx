@@ -11,7 +11,7 @@ import { useTranslation } from 'react-i18next';
 type TradeModalProps = {
   open: boolean;
   onClose: () => void;
-  id?: number;
+  id: number;
   onAccept: () => void;
   onReject: () => void;
   onNegotiate: () => void;
