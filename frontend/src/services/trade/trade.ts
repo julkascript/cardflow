@@ -8,6 +8,11 @@ export const tradeService = {
     return trade!;
   },
 
+  async getTrades(): Promise<Trade[]> {
+    const trades = await httpService.get<Trade[]>(api.trade.root);
+    return trades!;
+  },
+
   async initiate(currentUserId: number, userId: number): Promise<Trade> {
     const trade: Partial<TradeRequest> = {
       initiator_listing: [],

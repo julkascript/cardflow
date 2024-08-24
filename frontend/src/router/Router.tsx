@@ -29,6 +29,7 @@ import EditListing from '../pages/listing/EditListing';
 import SearchUsers from '../pages/profile/SearchUsers';
 import TradeDetails from '../pages/trade/TradeDetails';
 import { TradeContextProvider } from '../context/trade';
+import MyTrades from '../pages/profile/MyTrades';
 
 const routes = createBrowserRouter([
   {
@@ -188,6 +189,10 @@ const routes = createBrowserRouter([
         path: 'trade',
         loader: authorizedGuard,
         children: [
+          {
+            path: '',
+            element: <MyTrades />,
+          },
           {
             path: ':id',
             element: (

@@ -289,6 +289,8 @@ function SellManagement(): JSX.Element {
               <th>{t('manage.table.tableHeaders.price')}</th>
               <th>{t('manage.table.tableHeaders.listed')}</th>
             </tr>
+          </thead>
+          <tbody>
             {data.map((ld, i) => (
               <tr key={ld.listing.id}>
                 <td className="w-2" style={{ paddingLeft: 16, paddingRight: 16 }}>
@@ -335,7 +337,7 @@ function SellManagement(): JSX.Element {
                 </td>
               </tr>
             ))}
-          </thead>
+          </tbody>
         </MarketTable>
         <div className="text-center bg-white self-center mb-4 mt-4 w-96 border-[#666666] border rounded-md">
           <p className="pt-4">
