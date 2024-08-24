@@ -1,7 +1,7 @@
 import { Button, Checkbox, IconButton, Link, Menu, MenuItem } from '@mui/material';
 import MarketTable from '../../components/marketTable/MarketTable';
 import { YugiohCardListing } from '../../services/yugioh/types';
-import React, { Reducer, useEffect, useReducer, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useAuthenticationStatus, useCurrentUser } from '../../context/user';
 import YugiohCardConditionLabel from '../../components/yugioh/YugiohCardConditionLabel';
@@ -13,49 +13,14 @@ import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import { toastMessages } from '../../constants/toast';
 import { useToast } from '../../util/useToast';
 import { Trans, useTranslation } from 'react-i18next';
-
-type ListingData = {
-  listing: YugiohCardListing;
-  selected: boolean;
-};
-
-type selectReducerAction = {
-  type: 'select' | 'deselect' | 'set' | 'selectAll' | 'deselectAll';
-  index?: number;
-  checked?: boolean;
-  newListings?: ListingData[];
-};
-
-function selectReducer(
-  state: ListingData[],
-  action: selectReducerAction,
-): React.ReducerState<Reducer<typeof state, typeof action>> {
-  switch (action.type) {
-    case 'select':
-      const listingsForSelect = [...state];
-      listingsForSelect[action.index || 0].selected = true;
-      return listingsForSelect;
-    case 'deselect':
-      const listingsForDeselect = [...state];
-      listingsForDeselect[action.index || 0].selected = false;
-      return listingsForDeselect;
-    case 'set':
-      return action.newListings || [];
-    case 'selectAll':
-      return state.map((ld) => ({ ...ld, selected: true }));
-    case 'deselectAll':
-      return state.map((ld) => ({ ...ld, selected: false }));
-    default:
-      throw new Error('Unknown action');
-  }
-}
+import { useSelect } from '../../util/useSelect/useSelect';
 
 function SellManagement(): JSX.Element {
-  const [data, dispatch] = useReducer(selectReducer, [] as ListingData[]);
+  const { data, handleCheck, handleCheckAll, set, checkedAll, restartCheckedAll } =
+    useSelect<YugiohCardListing>();
   const { user } = useCurrentUser();
   const currency = user.currency_preference;
   const { isAuthenticated } = useAuthenticationStatus();
-  const [checkedAll, setCheckedAll] = useState(false);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
   const toast = useToast();
@@ -79,53 +44,21 @@ function SellManagement(): JSX.Element {
     yugiohService
       .getCardListingsByUserId(user.user_id, page)
       .then((listings) => {
-        const data: ListingData[] = listings.results.map((l) => ({
-          listing: l,
-          selected: false,
-        }));
-
         setCount(listings.count);
 
-        dispatch({
-          type: 'set',
-          newListings: data,
-        });
+        set(listings.results);
 
-        setCheckedAll(false);
+        restartCheckedAll();
         setPage(page);
       })
       .catch((error) => toast.error({ error }));
   }
 
-  function handleCheck(index: number) {
-    if (data[index].selected) {
-      setCheckedAll(false);
-    }
-
-    dispatch({
-      type: data[index].selected ? 'deselect' : 'select',
-      index,
-    });
-  }
-
-  function handleCheckAll() {
-    if (checkedAll) {
-      if (data.some((d) => !d.selected)) {
-        dispatch({ type: 'selectAll' });
-      } else {
-        dispatch({ type: 'deselectAll' });
-        setCheckedAll(false);
-      }
-    } else {
-      dispatch({ type: 'selectAll' });
-      setCheckedAll(true);
-    }
-  }
-
   function delistAll(event: React.MouseEvent) {
     event.preventDefault();
     const fetchFunctions = data.map((d) => {
-      return yugiohService.editListing({ ...d.listing, is_listed: false });
+      const listing = d.item;
+      return yugiohService.editListing({ ...listing, is_listed: false });
     });
 
     Promise.all(fetchFunctions)
@@ -139,7 +72,7 @@ function SellManagement(): JSX.Element {
   function listAll(event: React.MouseEvent) {
     event.preventDefault();
     const fetchFunctions = data.map((d) => {
-      return yugiohService.editListing({ ...d.listing, is_listed: true });
+      return yugiohService.editListing({ ...d.item, is_listed: true });
     });
 
     Promise.all(fetchFunctions)
@@ -154,7 +87,7 @@ function SellManagement(): JSX.Element {
   function deleteAll(event: React.MouseEvent) {
     event.preventDefault();
     const fetchFunctions = data.map((d) => {
-      return yugiohService.deleteListingById(d.listing.id);
+      return yugiohService.deleteListingById(d.item.id);
     });
 
     let newPage: number;
@@ -177,7 +110,7 @@ function SellManagement(): JSX.Element {
     const fetchFunctions = data
       .filter((d) => d.selected)
       .map((d) => {
-        return yugiohService.deleteListingById(d.listing.id);
+        return yugiohService.deleteListingById(d.item.id);
       });
 
     let newPage: number;
@@ -201,7 +134,7 @@ function SellManagement(): JSX.Element {
     const fetchFunctions = data
       .filter((d) => d.selected)
       .map((d) => {
-        return yugiohService.editListing({ ...d.listing, is_listed: false });
+        return yugiohService.editListing({ ...d.item, is_listed: false });
       });
 
     Promise.all(fetchFunctions)
@@ -218,7 +151,7 @@ function SellManagement(): JSX.Element {
     const fetchFunctions = data
       .filter((d) => d.selected)
       .map((d) => {
-        return yugiohService.editListing({ ...d.listing, is_listed: true });
+        return yugiohService.editListing({ ...d.item, is_listed: true });
       });
 
     Promise.all(fetchFunctions)
@@ -292,7 +225,7 @@ function SellManagement(): JSX.Element {
           </thead>
           <tbody>
             {data.map((ld, i) => (
-              <tr key={ld.listing.id}>
+              <tr key={ld.item.id}>
                 <td className="w-2" style={{ paddingLeft: 16, paddingRight: 16 }}>
                   <Checkbox
                     onChange={() => {
@@ -304,7 +237,7 @@ function SellManagement(): JSX.Element {
                 </td>
                 <td className="text-center w-[110px]">
                   <Link
-                    href={`/sell/listing/${ld.listing.id}/edit`}
+                    href={`/sell/listing/${ld.item.id}/edit`}
                     sx={{
                       color: '#0B70E5',
                       textDecorationColor: '#0B70E5',
@@ -314,23 +247,20 @@ function SellManagement(): JSX.Element {
                       },
                     }}
                   >
-                    {ld.listing.card_name}
+                    {ld.item.card_name}
                   </Link>
                 </td>
                 <td className="w-[110px]">
-                  <YugiohCardConditionLabel
-                    className="w-[110px]"
-                    condition={ld.listing.condition}
-                  />
+                  <YugiohCardConditionLabel className="w-[110px]" condition={ld.item.condition} />
                 </td>
-                <td className="w-48 text-center">{ld.listing.quantity}</td>
+                <td className="w-48 text-center">{ld.item.quantity}</td>
                 <td className="w-48 font-bold text-center">
-                  {ld.listing.price.toFixed(2)} {currency}
+                  {ld.item.price.toFixed(2)} {currency}
                 </td>
                 <td className="text-center w-4">
                   <IconButton
-                    onClick={() => toggleListingVisibility(ld.listing, !ld.listing.is_listed)}
-                    sx={{ color: ld.listing.is_listed ? 'blue' : 'inherit' }}
+                    onClick={() => toggleListingVisibility(ld.item, !ld.item.is_listed)}
+                    sx={{ color: ld.item.is_listed ? 'blue' : 'inherit' }}
                   >
                     <VisibilityIcon />
                   </IconButton>
