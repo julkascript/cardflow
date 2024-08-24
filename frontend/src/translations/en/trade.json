@@ -9,5 +9,30 @@
       "close": "Close",
       "request": "Request"
     }
+  },
+  "trades": {
+    "title": "Trade",
+    "newTradeButtonText": "New trade",
+    "table": {
+      "tableHeaders": {
+        "tradeNumber": "Trade #",
+        "user": "User",
+        "status": "Status"
+      }
+    },
+    "actions": {
+      "selectedItems_one": "<strong>1</strong> item selected",
+      "selectedItems_other": "<strong>{{count}}</strong> items selected",
+      "rejectAllButtonText": "Reject all",
+      "acceptAllButtonText": "Accept all",
+      "rejectSelectedItems": "Reject selected items",
+      "acceptSelectedItems": "Accept selected items"
+    },
+    "status": {
+      "accept": "Accepted",
+      "reject": "Rejected",
+      "pending_current": "Awaiting your response",
+      "pending_other": "Awaiting their response"
+    }
   }
 }
