@@ -27,6 +27,8 @@ import Sales from '../pages/profile/Sales';
 import { loadListingForEdit } from './loadListingForEdit/loadListingForEdit';
 import EditListing from '../pages/listing/EditListing';
 import SearchUsers from '../pages/profile/SearchUsers';
+import TradeDetails from '../pages/trade/TradeDetails';
+import { TradeContextProvider } from '../context/trade';
 
 const routes = createBrowserRouter([
   {
@@ -179,6 +181,20 @@ const routes = createBrowserRouter([
             path: 'listing/:id/edit',
             loader: loadListingForEdit,
             element: <EditListing />,
+          },
+        ],
+      },
+      {
+        path: 'trade',
+        loader: authorizedGuard,
+        children: [
+          {
+            path: ':id',
+            element: (
+              <TradeContextProvider>
+                <TradeDetails />
+              </TradeContextProvider>
+            ),
           },
         ],
       },

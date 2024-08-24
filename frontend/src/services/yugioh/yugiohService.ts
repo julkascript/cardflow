@@ -94,4 +94,20 @@ export const yugiohService = {
   async deleteListingById(id: number): Promise<void> {
     await httpService.del(api.yugioh.listing.id(id));
   },
+
+  async searchYugiohListingsByCardNameAndUserId(
+    cardName: string,
+    userId: number,
+  ): Promise<PaginatedItem<YugiohCardListing>> {
+    const listings = await httpService.get<PaginatedItem<YugiohCardListing>>(
+      api.yugioh.listing.root,
+      {
+        user_id: userId,
+        card_name: cardName,
+        is_listed: true,
+      },
+    );
+
+    return listings!;
+  },
 };

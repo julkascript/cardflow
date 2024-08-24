@@ -23,10 +23,15 @@ class ListingFilter(filters.FilterSet):
     )
 
     card_in_set_id = filters.NumberFilter(
-
         field_name='card',
         lookup_expr='exact',
         label='Search by card_set_id'
+    )
+
+    card_name = filters.Filter(
+        field_name='card__yugioh_card__card_name',
+        lookup_expr='icontains',
+        label='Search by card name'
     )
 
     class Meta:

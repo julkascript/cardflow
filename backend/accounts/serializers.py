@@ -153,3 +153,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class ContactFormSerializer(serializers.Serializer):
     email = serializers.EmailField()
     message = serializers.CharField()
+
+
+class UserTradeParticipant(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'avatar')
