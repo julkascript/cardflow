@@ -1,19 +1,19 @@
-import { Button, Checkbox, IconButton, Link, Menu, MenuItem } from '@mui/material';
+import { Button, Checkbox, IconButton, Link } from '@mui/material';
 import MarketTable from '../../components/marketTable/MarketTable';
 import { YugiohCardListing } from '../../services/yugioh/types';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useAuthenticationStatus, useCurrentUser } from '../../context/user';
 import YugiohCardConditionLabel from '../../components/yugioh/YugiohCardConditionLabel';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import PageHeader from '../../components/PageHeader';
-import LensIcon from '@mui/icons-material/Lens';
 import AddIcon from '@mui/icons-material/Add';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import { toastMessages } from '../../constants/toast';
 import { useToast } from '../../util/useToast';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useSelect } from '../../util/useSelect/useSelect';
+import TableActionsMenu, { TableActions } from '../../components/tableActionsMenu/TableActionsMenu';
 
 function SellManagement(): JSX.Element {
   const { data, handleCheck, handleCheckAll, set, checkedAll, restartCheckedAll } =
@@ -25,20 +25,40 @@ function SellManagement(): JSX.Element {
   const [count, setCount] = useState(0);
   const toast = useToast();
 
+  const everythingIsUnselected = useMemo(() => data.every((d) => !d.selected), data);
+
   const { t } = useTranslation('sell');
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  function openMenu(event: React.MouseEvent<HTMLElement>) {
-    event.preventDefault();
-    setAnchorEl(event.currentTarget);
-  }
-
-  function closeMenu(event: React.MouseEvent) {
-    event.preventDefault();
-    setAnchorEl(null);
-  }
+  const actions: TableActions = [
+    {
+      text: t('manage.actions.delistAllButtonText'),
+      onClick: delistAll,
+    },
+    {
+      text: t('manage.actions.deleteAllButtonText'),
+      onClick: deleteAll,
+      color: 'error',
+    },
+    {
+      text: t('manage.actions.deleteSelectedItemsButtonText'),
+      onClick: deleteSelectedItems,
+      disabled: everythingIsUnselected,
+    },
+    {
+      text: t('manage.actions.delistSelectedItemsButtonText'),
+      onClick: delistSelectedItems,
+      disabled: everythingIsUnselected,
+    },
+    {
+      text: t('manage.actions.listSelectedItemsButtonText'),
+      onClick: listSelectedItems,
+      disabled: everythingIsUnselected,
+    },
+    {
+      text: t('manage.actions.listAllButtonText'),
+      onClick: listAll,
+    },
+  ];
 
   function retrieveListings(page: number) {
     yugiohService
@@ -54,8 +74,7 @@ function SellManagement(): JSX.Element {
       .catch((error) => toast.error({ error }));
   }
 
-  function delistAll(event: React.MouseEvent) {
-    event.preventDefault();
+  function delistAll() {
     const fetchFunctions = data.map((d) => {
       const listing = d.item;
       return yugiohService.editListing({ ...listing, is_listed: false });
@@ -69,8 +88,7 @@ function SellManagement(): JSX.Element {
       .catch((error) => toast.error({ error }));
   }
 
-  function listAll(event: React.MouseEvent) {
-    event.preventDefault();
+  function listAll() {
     const fetchFunctions = data.map((d) => {
       return yugiohService.editListing({ ...d.item, is_listed: true });
     });
@@ -78,14 +96,12 @@ function SellManagement(): JSX.Element {
     Promise.all(fetchFunctions)
       .then(() => {
         retrieveListings(page);
-        setAnchorEl(null);
         toast.success({ toastKey: toastMessages.sellListingsListed });
       })
       .catch((error) => toast.error({ error }));
   }
 
-  function deleteAll(event: React.MouseEvent) {
-    event.preventDefault();
+  function deleteAll() {
     const fetchFunctions = data.map((d) => {
       return yugiohService.deleteListingById(d.item.id);
     });
@@ -105,8 +121,7 @@ function SellManagement(): JSX.Element {
       .catch((error) => toast.error({ error }));
   }
 
-  function deleteSelectedItems(event: React.MouseEvent) {
-    event.preventDefault();
+  function deleteSelectedItems() {
     const fetchFunctions = data
       .filter((d) => d.selected)
       .map((d) => {
@@ -124,13 +139,11 @@ function SellManagement(): JSX.Element {
       .then(() => {
         toast.success({ toastKey: toastMessages.sellListingsDeleted });
         retrieveListings(newPage);
-        setAnchorEl(null);
       })
       .catch((error) => toast.error({ error }));
   }
 
-  function delistSelectedItems(event: React.MouseEvent) {
-    event.preventDefault();
+  function delistSelectedItems() {
     const fetchFunctions = data
       .filter((d) => d.selected)
       .map((d) => {
@@ -140,14 +153,12 @@ function SellManagement(): JSX.Element {
     Promise.all(fetchFunctions)
       .then(() => {
         retrieveListings(page);
-        setAnchorEl(null);
         toast.success({ toastKey: toastMessages.sellListingsDelisted });
       })
       .catch((error) => toast.error({ error }));
   }
 
-  function listSelectedItems(event: React.MouseEvent) {
-    event.preventDefault();
+  function listSelectedItems() {
     const fetchFunctions = data
       .filter((d) => d.selected)
       .map((d) => {
@@ -157,7 +168,6 @@ function SellManagement(): JSX.Element {
     Promise.all(fetchFunctions)
       .then(() => {
         retrieveListings(page);
-        setAnchorEl(null);
         toast.success({ toastKey: toastMessages.sellListingsListed });
       })
       .catch((error) => toast.error({ error }));
@@ -269,45 +279,12 @@ function SellManagement(): JSX.Element {
             ))}
           </tbody>
         </MarketTable>
-        <div className="text-center bg-white self-center mb-4 mt-4 w-96 border-[#666666] border rounded-md">
-          <p className="pt-4">
-            <Trans
-              t={t}
-              i18nKey="manage.actions.selectedItems"
-              count={data.filter((d) => d.selected).length}
-              components={{ strong: <strong /> }}
-            ></Trans>
-          </p>
-          <div className="flex justify-between p-4">
-            <Button className="rounded-md" variant="outlined" onClick={delistAll}>
-              {t('manage.actions.delistAllButtonText')}
-            </Button>
-            <Button className="rounded-md" variant="outlined" color="error" onClick={deleteAll}>
-              {t('manage.actions.deleteAllButtonText')}
-            </Button>
-            <Button
-              className="font-bold rounded-md flex gap-1 items-center justify-center"
-              variant="outlined"
-              onClick={openMenu}
-            >
-              <LensIcon sx={{ fontSize: 6 }} color="secondary" />
-              <LensIcon sx={{ fontSize: 6 }} color="secondary" />
-              <LensIcon sx={{ fontSize: 6 }} color="secondary" />
-            </Button>
-            <Menu open={open} anchorEl={anchorEl} onClose={closeMenu}>
-              <MenuItem disabled={data.every((d) => !d.selected)} onClick={deleteSelectedItems}>
-                {t('manage.actions.deleteSelectedItemsButtonText')}
-              </MenuItem>
-              <MenuItem disabled={data.every((d) => !d.selected)} onClick={delistSelectedItems}>
-                {t('manage.actions.delistSelectedItemsButtonText')}
-              </MenuItem>
-              <MenuItem disabled={data.every((d) => !d.selected)} onClick={listSelectedItems}>
-                {t('manage.actions.listSelectedItemsButtonText')}
-              </MenuItem>
-              <MenuItem onClick={listAll}>{t('manage.actions.listAllButtonText')}</MenuItem>
-            </Menu>
-          </div>
-        </div>
+        <TableActionsMenu
+          selectedItemsCount={data.filter((d) => d.selected).length}
+          itemsCountNamespace="sell"
+          itemsCountTranslationKey="manage.actions.selectedItems"
+          actions={actions}
+        />
       </div>
     </section>
   );
