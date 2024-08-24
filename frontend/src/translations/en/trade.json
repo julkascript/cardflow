@@ -29,10 +29,10 @@
       "acceptSelectedItems": "Accept selected items"
     },
     "status": {
-      "accept": "Accepted",
-      "reject": "Rejected",
-      "pending_current": "Awaiting your response",
-      "pending_other": "Awaiting their response"
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "negotiate_current": "Awaiting your response",
+      "negotiate_other": "Awaiting their response"
     }
   }
 }
