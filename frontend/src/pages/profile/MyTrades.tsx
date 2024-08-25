@@ -1,66 +1,218 @@
-import { Button, Checkbox, Menu, MenuItem } from '@mui/material';
+import { Checkbox, Link } from '@mui/material';
 import MarketTable from '../../components/marketTable/MarketTable';
 import PageHeader from '../../components/PageHeader';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
-import LensIcon from '@mui/icons-material/Lens';
+import { useSelect } from '../../util/useSelect/useSelect';
+import { useAuthenticationStatus, useCurrentUser } from '../../context/user';
+import { useEffect, useMemo, useState } from 'react';
+import { useToast } from '../../util/useToast';
+import { useTranslation } from 'react-i18next';
+import { tradeService } from '../../services/trade/trade';
+import { Trade, TradeParticipant } from '../../services/trade/types';
+import TableActionsMenu, { TableActions } from '../../components/tableActionsMenu/TableActionsMenu';
 
 function MyTrades(): JSX.Element {
+  const {
+    data: trades,
+    handleCheck,
+    handleCheckAll,
+    set,
+    checkedAll,
+    restartCheckedAll,
+  } = useSelect<Trade>();
+
+  const { isAuthenticated } = useAuthenticationStatus();
+  const { user } = useCurrentUser();
+
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(0);
+  const toast = useToast();
+
+  const everythingIsUnselected = useMemo(() => trades.every((t) => !t.selected), trades);
+  const { t } = useTranslation('trade');
+
+  function retrieveTrades(page: number) {
+    tradeService
+      .getTrades(page)
+      .then((trades) => {
+        setCount(trades.count);
+        set(trades.results);
+
+        restartCheckedAll();
+        setPage(page);
+      })
+      .catch(toast.error);
+  }
+
+  function rejectAll() {
+    const rejectMethods = trades.map((t) => tradeService.reject(t.item.id));
+
+    Promise.all(rejectMethods)
+      .then(() => {
+        retrieveTrades(1);
+      })
+      .catch(toast.error);
+  }
+
+  function rejectSelectedItems() {
+    const rejectMethods = trades
+      .filter((t) => t.selected)
+      .map((t) => tradeService.reject(t.item.id));
+
+    let newPage: number;
+    if (trades.length > rejectMethods.length) {
+      newPage = page;
+    } else {
+      newPage = page === Math.ceil(count / 10) && page !== 1 ? page - 1 : page;
+    }
+
+    Promise.all(rejectMethods)
+      .then(() => {
+        retrieveTrades(newPage);
+      })
+      .catch(toast.error);
+  }
+
+  function acceptAll() {
+    const acceptMethods = trades.map((t) => tradeService.accept(t.item.id));
+
+    Promise.all(acceptMethods)
+      .then(() => {
+        retrieveTrades(1);
+      })
+      .catch(toast.error);
+  }
+
+  function acceptSelectedItems() {
+    const acceptMethods = trades
+      .filter((t) => t.selected)
+      .map((t) => tradeService.accept(t.item.id));
+
+    let newPage: number;
+    if (trades.length > acceptMethods.length) {
+      newPage = page;
+    } else {
+      newPage = page === Math.ceil(count / 10) && page !== 1 ? page - 1 : page;
+    }
+
+    Promise.all(acceptMethods)
+      .then(() => {
+        retrieveTrades(newPage);
+      })
+      .catch(toast.error);
+  }
+
+  const actions: TableActions = [
+    {
+      text: t('trades.actions.acceptAllButtonText'),
+      onClick: acceptAll,
+    },
+    {
+      text: t('trades.actions.rejectAllButtonText'),
+      onClick: rejectAll,
+      color: 'error',
+    },
+    {
+      text: t('trades.actions.rejectSelectedItems'),
+      onClick: rejectSelectedItems,
+      disabled: everythingIsUnselected,
+    },
+    {
+      text: t('trades.actions.acceptSelectedItems'),
+      onClick: acceptSelectedItems,
+      disabled: everythingIsUnselected,
+    },
+  ];
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      retrieveTrades(1);
+    }
+  }, [user.user_id, isAuthenticated]);
+
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <CardflowTabs />
       <PageHeader heading="My trades" />
       <div className="flex flex-col lg:items-center overflow-auto">
         <MarketTable
-          page={1}
-          onPageChange={() => {}}
-          count={0}
+          page={page}
+          onPageChange={retrieveTrades}
+          count={count}
           className="w-full rounded-md mt-4 lg:w-10/12 text-left"
         >
           <thead>
             <tr className="text-center">
               <th>
-                <Checkbox color="info" />
+                <Checkbox checked={checkedAll} onChange={handleCheckAll} color="info" />
               </th>
-              <th>Trade #</th>
-              <th>User</th>
-              <th>Status</th>
+              <th>{t('trades.table.tableHeaders.tradeNumber')}</th>
+              <th>{t('trades.table.tableHeaders.user')}</th>
+              <th>{t('trades.table.tableHeaders.status')}</th>
             </tr>
           </thead>
+          <tbody>
+            {trades.map((trade, i) => (
+              <tr key={trade.item.id}>
+                <td>
+                  <Checkbox
+                    onChange={() => {
+                      handleCheck(i);
+                    }}
+                    checked={trades[i].selected}
+                    color="info"
+                  />
+                </td>
+                <td className="text-center">
+                  <Link
+                    href={`/trade/${trade.item.id}`}
+                    sx={{
+                      color: '#0B70E5',
+                      textDecorationColor: '#0B70E5',
+                    }}
+                    underline="hover"
+                  >
+                    TR-{trade.item.id}
+                  </Link>
+                </td>
+                <td>{determineOtherUser(trade.item, user.user_id).username}</td>
+                <td>
+                  {t(`trades.status.${trade.item.trade_status}`, {
+                    context: determineCurrentUserDecision(trade.item, user.user_id),
+                  })}
+                </td>
+              </tr>
+            ))}
+          </tbody>
         </MarketTable>
-        <div className="text-center bg-white self-center mb-4 mt-4 w-96 border-[#666666] border rounded-md">
-          <p className="pt-4">
-            {/* <Trans
-              t={t}
-              i18nKey="manage.actions.selectedItems"
-              count={data.filter((d) => d.selected).length}
-              components={{ strong: <strong /> }}
-            ></Trans> */}
-            0 items selected
-          </p>
-          <div className="flex justify-between p-4">
-            <Button className="rounded-md" variant="outlined">
-              Accept all
-            </Button>
-            <Button className="rounded-md" variant="outlined" color="error">
-              Reject all
-            </Button>
-            <Button
-              className="font-bold rounded-md flex gap-1 items-center justify-center"
-              variant="outlined"
-            >
-              <LensIcon sx={{ fontSize: 6 }} color="secondary" />
-              <LensIcon sx={{ fontSize: 6 }} color="secondary" />
-              <LensIcon sx={{ fontSize: 6 }} color="secondary" />
-            </Button>
-            {/* <Menu open={true}>
-              <MenuItem>Accept selected</MenuItem>
-              <MenuItem>Reject selected</MenuItem>
-            </Menu> */}
-          </div>
-        </div>
+        <TableActionsMenu
+          actions={actions}
+          selectedItemsCount={trades.filter((t) => t.selected).length}
+          itemsCountTranslationKey="trades.actions.selectedItems"
+          itemsCountNamespace="trade"
+        />
       </div>
     </section>
   );
+}
+
+function determineCurrentUserDecision(trade: Trade, userId: number): 'current' | 'other' {
+  const currentUserDecision =
+    trade.initiator.id === userId ? trade.initiator_decision : trade.recipient_decision;
+
+  if (currentUserDecision === 'pending') {
+    return 'current';
+  }
+
+  return 'other';
+}
+
+function determineOtherUser(trade: Trade, userId: number): TradeParticipant {
+  if (trade.initiator.id === userId) {
+    return trade.recipient;
+  }
+
+  return trade.initiator;
 }
 
 export default MyTrades;

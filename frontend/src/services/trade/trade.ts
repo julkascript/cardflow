@@ -1,5 +1,6 @@
 import { api } from '../../constants/api';
 import { httpService } from '../http/http';
+import { PaginatedItem } from '../yugioh/types';
 import { Trade, TradeRequest, TradeStatusUpdateResponse } from './types';
 
 export const tradeService = {
@@ -8,8 +9,8 @@ export const tradeService = {
     return trade!;
   },
 
-  async getTrades(): Promise<Trade[]> {
-    const trades = await httpService.get<Trade[]>(api.trade.root);
+  async getTrades(page = 1): Promise<PaginatedItem<Trade>> {
+    const trades = await httpService.get<PaginatedItem<Trade>>(api.trade.root, { page });
     return trades!;
   },
 
