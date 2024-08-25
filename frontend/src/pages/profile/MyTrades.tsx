@@ -13,7 +13,6 @@ import { Trade, TradeParticipant } from '../../services/trade/types';
 import TableActionsMenu, { TableActions } from '../../components/tableActionsMenu/TableActionsMenu';
 import { toastMessages } from '../../constants/toast';
 
-// TO-DO: add toasts
 function MyTrades(): JSX.Element {
   const {
     data: trades,
