@@ -29,7 +29,9 @@ function MyTrades(): JSX.Element {
   const [count, setCount] = useState(0);
   const toast = useToast();
 
-  const everythingIsUnselected = trades.every((t) => !t.selected);
+  const everythingIsUnselected = trades
+    .filter((t) => t.item.trade_status === 'negotiate')
+    .every((t) => !t.selected);
   const { t } = useTranslation('trade');
 
   function retrieveTrades(page: number) {
@@ -46,7 +48,9 @@ function MyTrades(): JSX.Element {
   }
 
   function rejectAll() {
-    const rejectMethods = trades.map((t) => tradeService.reject(t.item.id));
+    const rejectMethods = trades
+      .filter((t) => t.item.trade_status === 'negotiate')
+      .map((t) => tradeService.reject(t.item.id));
 
     Promise.all(rejectMethods)
       .then(() => {
@@ -57,7 +61,7 @@ function MyTrades(): JSX.Element {
 
   function rejectSelectedItems() {
     const rejectMethods = trades
-      .filter((t) => t.selected)
+      .filter((t) => t.selected && t.item.trade_status === 'negotiate')
       .map((t) => tradeService.reject(t.item.id));
 
     let newPage: number;
@@ -75,7 +79,9 @@ function MyTrades(): JSX.Element {
   }
 
   function acceptAll() {
-    const acceptMethods = trades.map((t) => tradeService.accept(t.item.id));
+    const acceptMethods = trades
+      .filter((t) => t.item.trade_status === 'negotiate')
+      .map((t) => tradeService.accept(t.item.id));
 
     Promise.all(acceptMethods)
       .then(() => {
@@ -86,7 +92,7 @@ function MyTrades(): JSX.Element {
 
   function acceptSelectedItems() {
     const acceptMethods = trades
-      .filter((t) => t.selected)
+      .filter((t) => t.selected && t.item.trade_status === 'negotiate')
       .map((t) => tradeService.accept(t.item.id));
 
     let newPage: number;
@@ -164,8 +170,9 @@ function MyTrades(): JSX.Element {
                     onChange={() => {
                       handleCheck(i);
                     }}
-                    checked={trades[i].selected}
+                    checked={trades[i].selected && trades[i].item.trade_status === 'negotiate'}
                     color="info"
+                    disabled={trades[i].item.trade_status !== 'negotiate'}
                   />
                 </td>
                 <td>
@@ -192,7 +199,9 @@ function MyTrades(): JSX.Element {
         </MarketTable>
         <TableActionsMenu
           actions={actions}
-          selectedItemsCount={trades.filter((t) => t.selected).length}
+          selectedItemsCount={
+            trades.filter((t) => t.selected && t.item.trade_status === 'negotiate').length
+          }
           itemsCountTranslationKey="trades.actions.selectedItems"
           itemsCountNamespace="trade"
         />
