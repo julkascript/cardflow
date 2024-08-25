@@ -159,7 +159,7 @@ function MyTrades(): JSX.Element {
           <tbody>
             {trades.map((trade, i) => (
               <tr key={trade.item.id}>
-                <td>
+                <td className="w-[100px]">
                   <Checkbox
                     onChange={() => {
                       handleCheck(i);
@@ -168,7 +168,7 @@ function MyTrades(): JSX.Element {
                     color="info"
                   />
                 </td>
-                <td className="text-center">
+                <td>
                   <Link
                     href={`/trade/${trade.item.id}`}
                     sx={{
