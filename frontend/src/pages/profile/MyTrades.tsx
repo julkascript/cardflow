@@ -170,7 +170,7 @@ function MyTrades(): JSX.Element {
           <tbody>
             {trades.map((trade, i) => (
               <tr key={trade.item.id}>
-                <td className="w-[100px]">
+                <td className="w-[100px]" style={{ paddingLeft: 16, paddingRight: 16 }}>
                   <Checkbox
                     onChange={() => {
                       handleCheck(i);
