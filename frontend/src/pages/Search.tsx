@@ -7,7 +7,7 @@ import { TextField } from '@mui/material';
 import SearchButton from '../components/navigation/desktop/buttons/SearchButton';
 import { yugiohService } from '../services/yugioh/yugiohService';
 import { useEffectAfterInitialLoad } from '../util/useEffectAfterInitialLoad';
-import CardflowTabs from '../components/sellListing/CardflowTabs';
+import CardflowTabs from '../components/cardflowTabs/CardflowTabs';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../components/BreadcrumbNavigation';
 import { useToast } from '../util/useToast';
 import { useTranslation } from 'react-i18next';

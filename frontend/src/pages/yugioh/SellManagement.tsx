@@ -8,7 +8,7 @@ import YugiohCardConditionLabel from '../../components/yugioh/YugiohCardConditio
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import PageHeader from '../../components/PageHeader';
 import AddIcon from '@mui/icons-material/Add';
-import CardflowTabs from '../../components/sellListing/CardflowTabs';
+import CardflowTabs from '../../components/cardflowTabs/CardflowTabs';
 import { toastMessages } from '../../constants/toast';
 import { useToast } from '../../util/useToast';
 import { useTranslation } from 'react-i18next';

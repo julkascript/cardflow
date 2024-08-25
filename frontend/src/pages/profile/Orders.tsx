@@ -4,7 +4,7 @@ import OrdersTable from '../../components/orders/OrdersTable';
 import { useCurrentUser } from '../../context/user';
 import { Order } from '../../services/orders/types';
 import { orderService } from '../../services/orders/orderService';
-import CardflowTabs from '../../components/sellListing/CardflowTabs';
+import CardflowTabs from '../../components/cardflowTabs/CardflowTabs';
 import { useToast } from '../../util/useToast';
 import { useTranslation } from 'react-i18next';
 

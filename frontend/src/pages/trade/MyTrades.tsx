@@ -2,7 +2,7 @@ import { Button, Checkbox, Link } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import MarketTable from '../../components/marketTable/MarketTable';
 import PageHeader from '../../components/PageHeader';
-import CardflowTabs from '../../components/sellListing/CardflowTabs';
+import CardflowTabs from '../../components/cardflowTabs/CardflowTabs';
 import { useSelect } from '../../util/useSelect/useSelect';
 import { useAuthenticationStatus, useCurrentUser } from '../../context/user';
 import { useEffect, useState } from 'react';
