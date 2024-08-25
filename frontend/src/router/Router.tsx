@@ -29,7 +29,7 @@ import EditListing from '../pages/listing/EditListing';
 import SearchUsers from '../pages/profile/SearchUsers';
 import TradeDetails from '../pages/trade/TradeDetails';
 import { TradeContextProvider } from '../context/trade';
-import MyTrades from '../pages/profile/MyTrades';
+import MyTrades from '../pages/trade/MyTrades';
 
 const routes = createBrowserRouter([
   {
