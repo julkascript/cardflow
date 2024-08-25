@@ -11,7 +11,7 @@
     }
   },
   "trades": {
-    "title": "Оферти за размяна",
+    "title": "Моите оферти за размяна",
     "newTradeButtonText": "Нова оферта за размяна",
     "table": {
       "tableHeaders": {

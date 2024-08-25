@@ -11,7 +11,9 @@ import { useTranslation } from 'react-i18next';
 import { tradeService } from '../../services/trade/trade';
 import { Trade, TradeParticipant } from '../../services/trade/types';
 import TableActionsMenu, { TableActions } from '../../components/tableActionsMenu/TableActionsMenu';
+import { toastMessages } from '../../constants/toast';
 
+// TO-DO: add toasts
 function MyTrades(): JSX.Element {
   const {
     data: trades,
@@ -55,6 +57,7 @@ function MyTrades(): JSX.Element {
     Promise.all(rejectMethods)
       .then(() => {
         retrieveTrades(1);
+        toast.success({ toastKey: toastMessages.tradesHaveBeenRejected });
       })
       .catch(toast.error);
   }
@@ -74,6 +77,7 @@ function MyTrades(): JSX.Element {
     Promise.all(rejectMethods)
       .then(() => {
         retrieveTrades(newPage);
+        toast.success({ toastKey: toastMessages.tradesHaveBeenRejected });
       })
       .catch(toast.error);
   }
@@ -86,6 +90,7 @@ function MyTrades(): JSX.Element {
     Promise.all(acceptMethods)
       .then(() => {
         retrieveTrades(1);
+        toast.success({ toastKey: toastMessages.tradesHaveBeenAccepted });
       })
       .catch(toast.error);
   }
@@ -105,6 +110,7 @@ function MyTrades(): JSX.Element {
     Promise.all(acceptMethods)
       .then(() => {
         retrieveTrades(newPage);
+        toast.success({ toastKey: toastMessages.tradesHaveBeenAccepted });
       })
       .catch(toast.error);
   }
@@ -140,9 +146,9 @@ function MyTrades(): JSX.Element {
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <CardflowTabs />
-      <PageHeader heading="My trades">
+      <PageHeader heading={t('trades.title')}>
         <Button startIcon={<AddIcon />} color="success" variant="outlined" href="/accounts/search">
-          New trade
+          {t('trades.newTradeButtonText')}
         </Button>
       </PageHeader>
       <div className="flex flex-col lg:items-center overflow-auto">

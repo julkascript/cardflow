@@ -29,6 +29,8 @@ export const toastMessages = {
   tradeHasBeenAccepted: 'tradeHasBeenAccepted',
   tradeHasBeenRejected: 'tradeHasBeenRejected',
   tradeHasBeenNegotiated: 'tradeHasBeenNegotiated',
+  tradesHaveBeenAccepted: 'tradesHaveBeenAccepted',
+  tradesHaveBeenRejected: 'tradesHaveBeenRejected',
 
   // error
   serverError: 'serverError',
