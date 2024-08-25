@@ -34,6 +34,12 @@ class ListingFilter(filters.FilterSet):
         label='Search by card name'
     )
 
+    username = filters.Filter(
+        field_name='user__username',
+        lookup_expr='exact',
+        label='Search by username'
+    )
+
     class Meta:
         model = Listing
         fields = ['card', 'is_listed', 'is_sold']
