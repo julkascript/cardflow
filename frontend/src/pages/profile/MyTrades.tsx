@@ -1,4 +1,5 @@
-import { Checkbox, Link } from '@mui/material';
+import { Button, Checkbox, Link } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import MarketTable from '../../components/marketTable/MarketTable';
 import PageHeader from '../../components/PageHeader';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
@@ -133,7 +134,11 @@ function MyTrades(): JSX.Element {
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <CardflowTabs />
-      <PageHeader heading="My trades" />
+      <PageHeader heading="My trades">
+        <Button startIcon={<AddIcon />} color="success" variant="outlined" href="/accounts/search">
+          New trade
+        </Button>
+      </PageHeader>
       <div className="flex flex-col lg:items-center overflow-auto">
         <MarketTable
           page={page}
