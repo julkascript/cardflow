@@ -29,6 +29,7 @@ import EditListing from '../pages/listing/EditListing';
 import SearchUsers from '../pages/profile/SearchUsers';
 import TradeDetails from '../pages/trade/TradeDetails';
 import { TradeContextProvider } from '../context/trade';
+import AccountListings from '../pages/profile/AccountListings';
 
 const routes = createBrowserRouter([
   {
@@ -119,6 +120,10 @@ const routes = createBrowserRouter([
             path: 'settings',
             element: <ProfileSettingsPage />,
             loader: authorizedGuard,
+          },
+          {
+            path: 'listings',
+            element: <AccountListings />,
           },
           {
             path: 'blog',

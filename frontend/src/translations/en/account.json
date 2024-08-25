@@ -4,6 +4,7 @@
     "saveButtonText": "Save",
     "navigation": {
       "details": "Account details",
+      "listings": "Listings",
       "blog": "Blog",
       "public": "Public info"
     }

@@ -3,6 +3,7 @@
     "saveButtonText": "Запази",
     "navigation": {
       "details": "Профилни настройки",
+      "listings": "Обяви",
       "blog": "Блог",
       "public": "Публична информация"
     }
