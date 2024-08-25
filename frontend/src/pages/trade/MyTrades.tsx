@@ -195,7 +195,7 @@ function MyTrades(): JSX.Element {
                 <td>{determineOtherUser(trade.item, user.user_id).username}</td>
                 <td>
                   {t(`trades.status.${trade.item.trade_status}`, {
-                    context: determineCurrentUserDecision(trade.item, user.user_id),
+                    context: determineDecisionContext(trade.item, user.user_id),
                   })}
                 </td>
               </tr>
@@ -215,7 +215,7 @@ function MyTrades(): JSX.Element {
   );
 }
 
-function determineCurrentUserDecision(trade: Trade, userId: number): 'current' | 'other' {
+function determineDecisionContext(trade: Trade, userId: number): 'current' | 'other' {
   const currentUserDecision =
     trade.initiator.id === userId ? trade.initiator_decision : trade.recipient_decision;
 
