@@ -5,7 +5,7 @@ import PageHeader from '../../components/PageHeader';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import { useSelect } from '../../util/useSelect/useSelect';
 import { useAuthenticationStatus, useCurrentUser } from '../../context/user';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useToast } from '../../util/useToast';
 import { useTranslation } from 'react-i18next';
 import { tradeService } from '../../services/trade/trade';
@@ -29,7 +29,7 @@ function MyTrades(): JSX.Element {
   const [count, setCount] = useState(0);
   const toast = useToast();
 
-  const everythingIsUnselected = useMemo(() => trades.every((t) => !t.selected), trades);
+  const everythingIsUnselected = trades.every((t) => !t.selected);
   const { t } = useTranslation('trade');
 
   function retrieveTrades(page: number) {

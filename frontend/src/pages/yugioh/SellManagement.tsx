@@ -1,7 +1,7 @@
 import { Button, Checkbox, IconButton, Link } from '@mui/material';
 import MarketTable from '../../components/marketTable/MarketTable';
 import { YugiohCardListing } from '../../services/yugioh/types';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useAuthenticationStatus, useCurrentUser } from '../../context/user';
 import YugiohCardConditionLabel from '../../components/yugioh/YugiohCardConditionLabel';
@@ -25,7 +25,7 @@ function SellManagement(): JSX.Element {
   const [count, setCount] = useState(0);
   const toast = useToast();
 
-  const everythingIsUnselected = useMemo(() => data.every((d) => !d.selected), data);
+  const everythingIsUnselected = data.every((d) => !d.selected);
 
   const { t } = useTranslation('sell');
 

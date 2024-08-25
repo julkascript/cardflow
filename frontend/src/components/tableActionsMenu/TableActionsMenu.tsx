@@ -88,9 +88,11 @@ function TableActionsMenu(props: TableActionsMenuProps): JSX.Element {
           <LensIcon sx={{ fontSize: 6 }} color="secondary" />
         </Button>
         <Menu open={open} anchorEl={anchorEl} onClose={closeMenu}>
-          {menuItems.map((mi) => (
-            <React.Fragment key={mi.text}>{createMenuItem(mi)}</React.Fragment>
-          ))}
+          {menuItems.map((mi) => {
+            const MenuItem = () => createMenuItem(mi);
+
+            return <MenuItem key={mi.text} />;
+          })}
         </Menu>
       </div>
     </div>
