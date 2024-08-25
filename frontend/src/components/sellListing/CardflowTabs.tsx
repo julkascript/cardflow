@@ -7,6 +7,7 @@ const tabValues = Object.entries({
   '/search': 'buy',
   '/sell': 'sell',
   '/about': 'about',
+  '/trade': 'trade',
 });
 
 function CardflowTabs() {
@@ -24,7 +25,7 @@ function CardflowTabs() {
     <Tabs className="bg-white pl-2 border-b-2" value={computeValue()}>
       <Tab value="buy" component={Link} to="/buy" label={t('tabs.buy')} />
       <Tab value="sell" component={Link} to="/sell/manage" label={t('tabs.sell')} />
-      <Tab value="trade" component={Link} to="#" label={t('tabs.trade')} />
+      <Tab value="trade" component={Link} to="/trade" label={t('tabs.trade')} />
       <Tab value="about" component={Link} to="/about" label={t('tabs.about')} />
     </Tabs>
   );
