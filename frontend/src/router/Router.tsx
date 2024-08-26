@@ -123,6 +123,7 @@ const routes = createBrowserRouter([
           },
           {
             path: 'listings',
+            loader: loadPublicUserInfo,
             element: <AccountListings />,
           },
           {

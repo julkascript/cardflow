@@ -1,20 +1,29 @@
-import { useParams, useSearchParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import MarketTable from '../../components/marketTable/MarketTable';
 import SearchButton from '../../components/navigation/desktop/buttons/SearchButton';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { PaginatedItem, YugiohCardListing } from '../../services/yugioh/types';
 import { useToast } from '../../util/useToast';
-import { TextField } from '@mui/material';
+import { Button, TextField } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 import AccountListingsSearchResultRow from '../../components/profile/accountListingsSearch/AccountListingsSearchResultRow';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import CardflowTabs from '../../components/sellListing/CardflowTabs';
 import ProfileNavigation from '../../components/profile/ProfileNavigation';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
+import { useCurrentUser } from '../../context/user';
+import { UserAccountLoader } from '../../services/user/types';
+import { tradeService } from '../../services/trade/trade';
 
 function AccountListings(): JSX.Element {
   const { t } = useTranslation('account');
   const { t: commonT } = useTranslation('common');
+  const { user } = useCurrentUser();
+  const navigate = useNavigate();
+
+  const loader = useLoaderData() as UserAccountLoader;
+  const userInfo = loader.data;
 
   const [searchParams, setSearchParams] = useSearchParams();
   const params = useParams();
@@ -67,10 +76,28 @@ function AccountListings(): JSX.Element {
     }
   }, [page, cardName, username]);
 
+  function initiateTrade() {
+    tradeService
+      .initiate(user.user_id, userInfo.id)
+      .then((trade) => navigate(`/trade/${trade.id}`))
+      .catch(toast.error);
+  }
+
   return (
     <section className="bg-[#F5F5F5] w-full">
       <CardflowTabs />
-      <BreadcrumbNavigation links={breadcrumbLinks} heading={username}></BreadcrumbNavigation>
+      <BreadcrumbNavigation links={breadcrumbLinks} heading={username}>
+        {user.username === username ? null : (
+          <Button
+            onClick={initiateTrade}
+            startIcon={<AddIcon />}
+            color="success"
+            variant="outlined"
+          >
+            {t('listingsSearch.tradeOfferButtonText')}
+          </Button>
+        )}
+      </BreadcrumbNavigation>
       <div className="block w-full text-center p-8 gap-24 lg:text-left lg:flex lg:p-24">
         <ProfileNavigation />
         <div className="min-h-full w-full lg:w-5/6 mt-2 flex flex-col gap-4 overflow-x-auto">
