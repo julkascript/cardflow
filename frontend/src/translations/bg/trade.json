@@ -9,5 +9,30 @@
       "close": "Затвори",
       "request": "Поискай"
     }
+  },
+  "trades": {
+    "title": "Моите оферти за размяна",
+    "newTradeButtonText": "Нова оферта за размяна",
+    "table": {
+      "tableHeaders": {
+        "tradeNumber": "Оферта за размяна #",
+        "user": "Потребител",
+        "status": "Статут"
+      }
+    },
+    "actions": {
+      "selectedItems_one": "<strong>1</strong> избрана оферта",
+      "selectedItems_other": "<strong>{{count}}</strong> избрани оферти",
+      "rejectAllButtonText": "Отхвърли всички",
+      "acceptAllButtonText": "Приеми всички",
+      "rejectSelectedItems": "Отхвърли избраните оферти",
+      "acceptSelectedItems": "Приеми избраните оферти"
+    },
+    "status": {
+      "accepted": "Приета",
+      "rejected": "Отхвърлена",
+      "negotiate_current": "В очакване на твой отговор",
+      "negotiate_other": "В очакване на техен отговор"
+    }
   }
 }

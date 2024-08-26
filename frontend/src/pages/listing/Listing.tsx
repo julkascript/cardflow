@@ -1,5 +1,5 @@
 import ListingSecondBar from '../../components/sellListing/ListingSecondBar';
-import CardflowTabs from '../../components/sellListing/CardflowTabs';
+import CardflowTabs from '../../components/cardflowTabs/CardflowTabs';
 
 function Listing() {
   return (

@@ -1,7 +1,7 @@
 import { Stack, Typography } from '@mui/material';
 import PageHeader from '../../components/PageHeader';
 import PageSection from '../../components/PageSection';
-import CardflowTabs from '../../components/sellListing/CardflowTabs';
+import CardflowTabs from '../../components/cardflowTabs/CardflowTabs';
 import { useEffect, useState } from 'react';
 import { bestSellerService } from '../../services/bestSeller/bestSeller';
 import { BestSeller } from '../../services/bestSeller/types';

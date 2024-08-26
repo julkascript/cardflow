@@ -1,7 +1,7 @@
 import { Accordion, AccordionDetails, AccordionSummary } from '@mui/material';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
 import PageSection from '../../components/PageSection';
-import CardflowTabs from '../../components/sellListing/CardflowTabs';
+import CardflowTabs from '../../components/cardflowTabs/CardflowTabs';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { faq } from '../../constants/faq';
 import { useTranslation, Trans } from 'react-i18next';
