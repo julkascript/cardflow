@@ -9,7 +9,7 @@ import { Button, TextField } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import AccountListingsSearchResultRow from '../../components/profile/accountListingsSearch/AccountListingsSearchResultRow';
 import { yugiohService } from '../../services/yugioh/yugiohService';
-import CardflowTabs from '../../components/sellListing/CardflowTabs';
+import CardflowTabs from '../../components/cardflowTabs/CardflowTabs';
 import ProfileNavigation from '../../components/profile/ProfileNavigation';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
 import { useCurrentUser } from '../../context/user';
