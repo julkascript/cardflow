@@ -41,6 +41,10 @@ export const faq: readonly FAQ[] = Object.freeze([
   },
   {
     translationKey: 'listingExpiration',
+    components: {
+      ol: <ol className="list-decimal p-6" />,
+      li: <li className="mb-2" />,
+    },
   },
   {
     translationKey: 'reportingABug',

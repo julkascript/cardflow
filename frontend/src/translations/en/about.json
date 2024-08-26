@@ -65,8 +65,8 @@
         "answer": "<p>You can <linkToContact>contact us</linkToContact> if you believe that a user is breaking Cardflow's policies and terms of use.</p>"
       },
       "listingExpiration": {
-        "question": "Can a listing expire?",
-        "answer": "Placeholder answer"
+        "question": "Order information",
+        "answer": "<ol><li>Marking order as \"Received\": An order can be marked as \"Received\" only if it was previously marked as \"Sent\" by the seller.</li><li>Marking order as \"Not Received\": An order can be marked as \"Not Received\" by the buyer after at least 10 days from the order placement.</li><li>Marking order as \"Sent\": The seller can mark the order as \"Sent\".</li><li>Marking order as \"Rejected\": The seller has the right to reject an order. This can happen by marking it as \"Rejected\". Orders marked with \"Sent\" cannot be rejected.</li><li>Auto-completing orders: Orders with status \"Sent\" will be auto-marked as \"Received\" by the system. Orders with status \"Ordered\" (which means that the seller has not sent the package yet) will be auto-marked as \"Not Sent\" by the system.</li><li>Leaving a review: Buyers can leave a review to the seller only if the order was received.</li><li>Delivery address policy after checkout: Delivery address cannot be changed after checkout.</li></ol>"
       },
       "reportingABug": {
         "question": "How do I report a bug?",
@@ -79,18 +79,42 @@
     "fixes": "Fixes",
     "deprecated": "Deprecated",
     "1.0.0": {
-      "features": ["Basic listings", "Checkout", "Profile and settings"],
-      "fixes": ["Inconsistent listings", "Authentication tokens"],
-      "deprecated": ["Instant buy"]
+      "features": [
+        "Basic listings",
+        "Checkout",
+        "Profile and settings"
+      ],
+      "fixes": [
+        "Inconsistent listings",
+        "Authentication tokens"
+      ],
+      "deprecated": [
+        "Instant buy"
+      ]
     },
     "1.2.0": {
-      "features": ["Improved user feedbacks", "Improved navigation", "Show image previews"],
-      "fixes": ["Best sellers fixed", "Fixed delisting bugs"],
+      "features": [
+        "Improved user feedbacks",
+        "Improved navigation",
+        "Show image previews"
+      ],
+      "fixes": [
+        "Best sellers fixed",
+        "Fixed delisting bugs"
+      ],
       "deprecated": []
     },
     "1.3.0": {
-      "features": ["Internalization", "Improved statuses", "Auto-completing orders", "Dynamic currencies"],
-      "fixes": ["Order issues", "Visual glitches"],
+      "features": [
+        "Internalization",
+        "Improved statuses",
+        "Auto-completing orders",
+        "Dynamic currencies"
+      ],
+      "fixes": [
+        "Order issues",
+        "Visual glitches"
+      ],
       "deprecated": []
     }
   },
