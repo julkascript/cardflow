@@ -22,6 +22,7 @@ import { toastMessages } from '../../../../constants/toast';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import SyncIcon from '@mui/icons-material/Sync';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { useToast } from '../../../../util/useToast';
 import { useTranslation } from 'react-i18next';
@@ -71,6 +72,11 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
       href: `/user/${user.username}/sales`,
       text: t('navigation.mySales'),
       icon: CurrencyExchangeIcon,
+    },
+    {
+      href: '/trade',
+      text: t('navigation.myTrades'),
+      icon: SyncIcon,
     },
     {
       href: '/accounts/search',

@@ -15,6 +15,7 @@ import React, { useState } from 'react';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import SyncIcon from '@mui/icons-material/Sync';
 import SearchIcon from '@mui/icons-material/Search';
 import { useLogout } from '../../../util/useLogout';
 import { toastMessages } from '../../../constants/toast';
@@ -59,6 +60,11 @@ function ProfilePictureAvatar(props: ProfilePictureAvatarProps): JSX.Element {
       href: `/user/${user.username}/sales`,
       text: t('navigation.mySales'),
       icon: CurrencyExchangeIcon,
+    },
+    {
+      href: '/trade',
+      text: t('navigation.myTrades'),
+      icon: SyncIcon,
     },
     {
       href: '/accounts/search',
