@@ -112,18 +112,4 @@ export const yugiohService = {
 
     return listings!;
   },
-
-  async searchListingsByCardNameAndUsername(
-    username: string,
-    page = 1,
-    cardName = '',
-  ): Promise<PaginatedItem<YugiohCardListing>> {
-    const data = await httpService.get<PaginatedItem<YugiohCardListing>>(api.yugioh.listing.root, {
-      username,
-      page,
-      card_name: cardName,
-    });
-
-    return data!;
-  },
 };
