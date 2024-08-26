@@ -116,6 +116,10 @@
         "rarity": "Rarity",
         "availability": "Available",
         "buy": "Buy"
+      },
+      "tableBody": {
+        "considersTrade_true": "The seller indicated that they would be open to considering trading offers with this listing",
+        "considersTrade_false": "The seller indicated that they would not be open to considering trading offers with this listing"
       }
     }
   }
