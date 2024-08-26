@@ -1,4 +1,4 @@
-import { Tooltip } from '@mui/material';
+import { IconButton, Tooltip } from '@mui/material';
 import { YugiohCardListing } from '../../../services/yugioh/types';
 import CameraAltIcon from '@mui/icons-material/CameraAlt';
 import SyncIcon from '@mui/icons-material/Sync';
@@ -12,6 +12,7 @@ import { useShoppingCart } from '../../../context/shoppingCart';
 import { shoppingCartService } from '../../../services/shoppingCart/shoppingCart';
 import { toastMessages } from '../../../constants/toast';
 import { useToast } from '../../../util/useToast';
+import { useTranslation } from 'react-i18next';
 
 type AccountListingsSearchResultRowProps = {
   listing: YugiohCardListing;
@@ -23,6 +24,8 @@ function AccountListingsSearchResultRow(props: AccountListingsSearchResultRowPro
   const [quantity, setQuantity] = useState(1);
   const { setShoppingCart } = useShoppingCart();
   const toast = useToast();
+
+  const { t } = useTranslation('account');
 
   function handleCartClick() {
     shoppingCartService
@@ -51,7 +54,17 @@ function AccountListingsSearchResultRow(props: AccountListingsSearchResultRowPro
           <CameraAltIcon />
         </Tooltip>
       </td>
-      <td>{props.listing.is_trade_considered ? <SyncIcon /> : <SyncDisabledIcon />}</td>
+      <td>
+        <Tooltip
+          title={t('listingsSearch.table.tableBody.considersTrade', {
+            context: props.listing.is_trade_considered.toString(),
+          })}
+        >
+          <IconButton color="primary">
+            {props.listing.is_trade_considered ? <SyncIcon /> : <SyncDisabledIcon />}
+          </IconButton>
+        </Tooltip>
+      </td>
       <td>{props.listing.card_in_set.set.set_code}</td>
       <td>{props.listing.card_name}</td>
       <td>{props.listing.card_in_set.rarity.rarity_code}</td>
