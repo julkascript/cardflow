@@ -6,7 +6,8 @@
       "listings": "Обяви",
       "blog": "Блог",
       "public": "Публична информация"
-    }
+    },
+    "account": "Профил"
   },
   "public": {
     "achievements": "Постижения",

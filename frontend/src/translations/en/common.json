@@ -68,6 +68,9 @@
       },
       "changelog": {
         "title": "Changelog"
+      },
+      "account": {
+        "title": "Account"
       }
     },
     "account": {

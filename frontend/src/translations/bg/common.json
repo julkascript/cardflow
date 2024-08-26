@@ -68,6 +68,9 @@
       },
       "changelog": {
         "title": "Последни промени"
+      },
+      "account": {
+        "title": "Профил"
       }
     },
     "account": {

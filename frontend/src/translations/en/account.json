@@ -107,5 +107,16 @@
     },
     "noUsersFound": "There are no such users. Did you enter the name correctly?",
     "hasNotSearched": "Search users by typing their usernames (or part of them) in the search above"
+  },
+  "listingsSearch": {
+    "tradeOfferButtonText": "Trade offer",
+    "table": {
+      "tableHeaders": {
+        "name": "Name",
+        "rarity": "Rarity",
+        "availability": "Available",
+        "buy": "Buy"
+      }
+    }
   }
 }
