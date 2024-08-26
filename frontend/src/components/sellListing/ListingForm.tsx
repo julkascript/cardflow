@@ -19,7 +19,7 @@ import {
   YugiohCardInSet,
 } from '../../services/yugioh/types';
 import { yugiohService } from '../../services/yugioh/yugiohService';
-import CardflowTabs from './CardflowTabs';
+import CardflowTabs from '../cardflowTabs/CardflowTabs';
 import NewListingTopBar from './NewListingTopBar';
 import PaymentsIcon from '@mui/icons-material/Payments';
 import DiamondIcon from '@mui/icons-material/Diamond';

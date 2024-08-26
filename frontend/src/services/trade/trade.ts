@@ -1,11 +1,17 @@
 import { api } from '../../constants/api';
 import { httpService } from '../http/http';
+import { PaginatedItem } from '../yugioh/types';
 import { Trade, TradeRequest, TradeStatusUpdateResponse } from './types';
 
 export const tradeService = {
   async findTradeById(id: number): Promise<Trade> {
     const trade = await httpService.get<Trade>(api.trade.id(id));
     return trade!;
+  },
+
+  async getTrades(page = 1): Promise<PaginatedItem<Trade>> {
+    const trades = await httpService.get<PaginatedItem<Trade>>(api.trade.root, { page });
+    return trades!;
   },
 
   async initiate(currentUserId: number, userId: number): Promise<Trade> {

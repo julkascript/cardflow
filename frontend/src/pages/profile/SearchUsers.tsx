@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import BreadcrumbNavigation, { BreadcrumbLink } from '../../components/BreadcrumbNavigation';
 import { useCurrentUser } from '../../context/user';
-import CardflowTabs from '../../components/sellListing/CardflowTabs';
+import CardflowTabs from '../../components/cardflowTabs/CardflowTabs';
 import MarketTable from '../../components/marketTable/MarketTable';
 import { useToast } from '../../util/useToast';
 import { useEffect, useState } from 'react';

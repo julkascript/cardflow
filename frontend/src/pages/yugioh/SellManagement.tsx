@@ -1,131 +1,83 @@
-import { Button, Checkbox, IconButton, Link, Menu, MenuItem } from '@mui/material';
+import { Button, Checkbox, IconButton, Link } from '@mui/material';
 import MarketTable from '../../components/marketTable/MarketTable';
 import { YugiohCardListing } from '../../services/yugioh/types';
-import React, { Reducer, useEffect, useReducer, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { yugiohService } from '../../services/yugioh/yugiohService';
 import { useAuthenticationStatus, useCurrentUser } from '../../context/user';
 import YugiohCardConditionLabel from '../../components/yugioh/YugiohCardConditionLabel';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import PageHeader from '../../components/PageHeader';
-import LensIcon from '@mui/icons-material/Lens';
 import AddIcon from '@mui/icons-material/Add';
-import CardflowTabs from '../../components/sellListing/CardflowTabs';
+import CardflowTabs from '../../components/cardflowTabs/CardflowTabs';
 import { toastMessages } from '../../constants/toast';
 import { useToast } from '../../util/useToast';
-import { Trans, useTranslation } from 'react-i18next';
-
-type ListingData = {
-  listing: YugiohCardListing;
-  selected: boolean;
-};
-
-type selectReducerAction = {
-  type: 'select' | 'deselect' | 'set' | 'selectAll' | 'deselectAll';
-  index?: number;
-  checked?: boolean;
-  newListings?: ListingData[];
-};
-
-function selectReducer(
-  state: ListingData[],
-  action: selectReducerAction,
-): React.ReducerState<Reducer<typeof state, typeof action>> {
-  switch (action.type) {
-    case 'select':
-      const listingsForSelect = [...state];
-      listingsForSelect[action.index || 0].selected = true;
-      return listingsForSelect;
-    case 'deselect':
-      const listingsForDeselect = [...state];
-      listingsForDeselect[action.index || 0].selected = false;
-      return listingsForDeselect;
-    case 'set':
-      return action.newListings || [];
-    case 'selectAll':
-      return state.map((ld) => ({ ...ld, selected: true }));
-    case 'deselectAll':
-      return state.map((ld) => ({ ...ld, selected: false }));
-    default:
-      throw new Error('Unknown action');
-  }
-}
+import { useTranslation } from 'react-i18next';
+import { useSelect } from '../../util/useSelect/useSelect';
+import TableActionsMenu, { TableActions } from '../../components/tableActionsMenu/TableActionsMenu';
 
 function SellManagement(): JSX.Element {
-  const [data, dispatch] = useReducer(selectReducer, [] as ListingData[]);
+  const { data, handleCheck, handleCheckAll, set, checkedAll, restartCheckedAll } =
+    useSelect<YugiohCardListing>();
   const { user } = useCurrentUser();
   const currency = user.currency_preference;
   const { isAuthenticated } = useAuthenticationStatus();
-  const [checkedAll, setCheckedAll] = useState(false);
   const [page, setPage] = useState(1);
   const [count, setCount] = useState(0);
   const toast = useToast();
 
+  const everythingIsUnselected = data.every((d) => !d.selected);
+
   const { t } = useTranslation('sell');
 
-  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const open = Boolean(anchorEl);
-
-  function openMenu(event: React.MouseEvent<HTMLElement>) {
-    event.preventDefault();
-    setAnchorEl(event.currentTarget);
-  }
-
-  function closeMenu(event: React.MouseEvent) {
-    event.preventDefault();
-    setAnchorEl(null);
-  }
+  const actions: TableActions = [
+    {
+      text: t('manage.actions.delistAllButtonText'),
+      onClick: delistAll,
+    },
+    {
+      text: t('manage.actions.deleteAllButtonText'),
+      onClick: deleteAll,
+      color: 'error',
+    },
+    {
+      text: t('manage.actions.deleteSelectedItemsButtonText'),
+      onClick: deleteSelectedItems,
+      disabled: everythingIsUnselected,
+    },
+    {
+      text: t('manage.actions.delistSelectedItemsButtonText'),
+      onClick: delistSelectedItems,
+      disabled: everythingIsUnselected,
+    },
+    {
+      text: t('manage.actions.listSelectedItemsButtonText'),
+      onClick: listSelectedItems,
+      disabled: everythingIsUnselected,
+    },
+    {
+      text: t('manage.actions.listAllButtonText'),
+      onClick: listAll,
+    },
+  ];
 
   function retrieveListings(page: number) {
     yugiohService
       .getCardListingsByUserId(user.user_id, page)
       .then((listings) => {
-        const data: ListingData[] = listings.results.map((l) => ({
-          listing: l,
-          selected: false,
-        }));
-
         setCount(listings.count);
 
-        dispatch({
-          type: 'set',
-          newListings: data,
-        });
+        set(listings.results);
 
-        setCheckedAll(false);
+        restartCheckedAll();
         setPage(page);
       })
       .catch((error) => toast.error({ error }));
   }
 
-  function handleCheck(index: number) {
-    if (data[index].selected) {
-      setCheckedAll(false);
-    }
-
-    dispatch({
-      type: data[index].selected ? 'deselect' : 'select',
-      index,
-    });
-  }
-
-  function handleCheckAll() {
-    if (checkedAll) {
-      if (data.some((d) => !d.selected)) {
-        dispatch({ type: 'selectAll' });
-      } else {
-        dispatch({ type: 'deselectAll' });
-        setCheckedAll(false);
-      }
-    } else {
-      dispatch({ type: 'selectAll' });
-      setCheckedAll(true);
-    }
-  }
-
-  function delistAll(event: React.MouseEvent) {
-    event.preventDefault();
+  function delistAll() {
     const fetchFunctions = data.map((d) => {
-      return yugiohService.editListing({ ...d.listing, is_listed: false });
+      const listing = d.item;
+      return yugiohService.editListing({ ...listing, is_listed: false });
     });
 
     Promise.all(fetchFunctions)
@@ -136,25 +88,22 @@ function SellManagement(): JSX.Element {
       .catch((error) => toast.error({ error }));
   }
 
-  function listAll(event: React.MouseEvent) {
-    event.preventDefault();
+  function listAll() {
     const fetchFunctions = data.map((d) => {
-      return yugiohService.editListing({ ...d.listing, is_listed: true });
+      return yugiohService.editListing({ ...d.item, is_listed: true });
     });
 
     Promise.all(fetchFunctions)
       .then(() => {
         retrieveListings(page);
-        setAnchorEl(null);
         toast.success({ toastKey: toastMessages.sellListingsListed });
       })
       .catch((error) => toast.error({ error }));
   }
 
-  function deleteAll(event: React.MouseEvent) {
-    event.preventDefault();
+  function deleteAll() {
     const fetchFunctions = data.map((d) => {
-      return yugiohService.deleteListingById(d.listing.id);
+      return yugiohService.deleteListingById(d.item.id);
     });
 
     let newPage: number;
@@ -172,12 +121,11 @@ function SellManagement(): JSX.Element {
       .catch((error) => toast.error({ error }));
   }
 
-  function deleteSelectedItems(event: React.MouseEvent) {
-    event.preventDefault();
+  function deleteSelectedItems() {
     const fetchFunctions = data
       .filter((d) => d.selected)
       .map((d) => {
-        return yugiohService.deleteListingById(d.listing.id);
+        return yugiohService.deleteListingById(d.item.id);
       });
 
     let newPage: number;
@@ -191,40 +139,35 @@ function SellManagement(): JSX.Element {
       .then(() => {
         toast.success({ toastKey: toastMessages.sellListingsDeleted });
         retrieveListings(newPage);
-        setAnchorEl(null);
       })
       .catch((error) => toast.error({ error }));
   }
 
-  function delistSelectedItems(event: React.MouseEvent) {
-    event.preventDefault();
+  function delistSelectedItems() {
     const fetchFunctions = data
       .filter((d) => d.selected)
       .map((d) => {
-        return yugiohService.editListing({ ...d.listing, is_listed: false });
+        return yugiohService.editListing({ ...d.item, is_listed: false });
       });
 
     Promise.all(fetchFunctions)
       .then(() => {
         retrieveListings(page);
-        setAnchorEl(null);
         toast.success({ toastKey: toastMessages.sellListingsDelisted });
       })
       .catch((error) => toast.error({ error }));
   }
 
-  function listSelectedItems(event: React.MouseEvent) {
-    event.preventDefault();
+  function listSelectedItems() {
     const fetchFunctions = data
       .filter((d) => d.selected)
       .map((d) => {
-        return yugiohService.editListing({ ...d.listing, is_listed: true });
+        return yugiohService.editListing({ ...d.item, is_listed: true });
       });
 
     Promise.all(fetchFunctions)
       .then(() => {
         retrieveListings(page);
-        setAnchorEl(null);
         toast.success({ toastKey: toastMessages.sellListingsListed });
       })
       .catch((error) => toast.error({ error }));
@@ -289,8 +232,10 @@ function SellManagement(): JSX.Element {
               <th>{t('manage.table.tableHeaders.price')}</th>
               <th>{t('manage.table.tableHeaders.listed')}</th>
             </tr>
+          </thead>
+          <tbody>
             {data.map((ld, i) => (
-              <tr key={ld.listing.id}>
+              <tr key={ld.item.id}>
                 <td className="w-2" style={{ paddingLeft: 16, paddingRight: 16 }}>
                   <Checkbox
                     onChange={() => {
@@ -302,7 +247,7 @@ function SellManagement(): JSX.Element {
                 </td>
                 <td className="text-center w-[110px]">
                   <Link
-                    href={`/sell/listing/${ld.listing.id}/edit`}
+                    href={`/sell/listing/${ld.item.id}/edit`}
                     sx={{
                       color: '#0B70E5',
                       textDecorationColor: '#0B70E5',
@@ -312,70 +257,34 @@ function SellManagement(): JSX.Element {
                       },
                     }}
                   >
-                    {ld.listing.card_name}
+                    {ld.item.card_name}
                   </Link>
                 </td>
                 <td className="w-[110px]">
-                  <YugiohCardConditionLabel
-                    className="w-[110px]"
-                    condition={ld.listing.condition}
-                  />
+                  <YugiohCardConditionLabel className="w-[110px]" condition={ld.item.condition} />
                 </td>
-                <td className="w-48 text-center">{ld.listing.quantity}</td>
+                <td className="w-48 text-center">{ld.item.quantity}</td>
                 <td className="w-48 font-bold text-center">
-                  {ld.listing.price.toFixed(2)} {currency}
+                  {ld.item.price.toFixed(2)} {currency}
                 </td>
                 <td className="text-center w-4">
                   <IconButton
-                    onClick={() => toggleListingVisibility(ld.listing, !ld.listing.is_listed)}
-                    sx={{ color: ld.listing.is_listed ? 'blue' : 'inherit' }}
+                    onClick={() => toggleListingVisibility(ld.item, !ld.item.is_listed)}
+                    sx={{ color: ld.item.is_listed ? 'blue' : 'inherit' }}
                   >
                     <VisibilityIcon />
                   </IconButton>
                 </td>
               </tr>
             ))}
-          </thead>
+          </tbody>
         </MarketTable>
-        <div className="text-center bg-white self-center mb-4 mt-4 w-96 border-[#666666] border rounded-md">
-          <p className="pt-4">
-            <Trans
-              t={t}
-              i18nKey="manage.actions.selectedItems"
-              count={data.filter((d) => d.selected).length}
-              components={{ strong: <strong /> }}
-            ></Trans>
-          </p>
-          <div className="flex justify-between p-4">
-            <Button className="rounded-md" variant="outlined" onClick={delistAll}>
-              {t('manage.actions.delistAllButtonText')}
-            </Button>
-            <Button className="rounded-md" variant="outlined" color="error" onClick={deleteAll}>
-              {t('manage.actions.deleteAllButtonText')}
-            </Button>
-            <Button
-              className="font-bold rounded-md flex gap-1 items-center justify-center"
-              variant="outlined"
-              onClick={openMenu}
-            >
-              <LensIcon sx={{ fontSize: 6 }} color="secondary" />
-              <LensIcon sx={{ fontSize: 6 }} color="secondary" />
-              <LensIcon sx={{ fontSize: 6 }} color="secondary" />
-            </Button>
-            <Menu open={open} anchorEl={anchorEl} onClose={closeMenu}>
-              <MenuItem disabled={data.every((d) => !d.selected)} onClick={deleteSelectedItems}>
-                {t('manage.actions.deleteSelectedItemsButtonText')}
-              </MenuItem>
-              <MenuItem disabled={data.every((d) => !d.selected)} onClick={delistSelectedItems}>
-                {t('manage.actions.delistSelectedItemsButtonText')}
-              </MenuItem>
-              <MenuItem disabled={data.every((d) => !d.selected)} onClick={listSelectedItems}>
-                {t('manage.actions.listSelectedItemsButtonText')}
-              </MenuItem>
-              <MenuItem onClick={listAll}>{t('manage.actions.listAllButtonText')}</MenuItem>
-            </Menu>
-          </div>
-        </div>
+        <TableActionsMenu
+          selectedItemsCount={data.filter((d) => d.selected).length}
+          itemsCountNamespace="sell"
+          itemsCountTranslationKey="manage.actions.selectedItems"
+          actions={actions}
+        />
       </div>
     </section>
   );
