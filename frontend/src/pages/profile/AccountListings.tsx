@@ -1,4 +1,4 @@
-import { useLoaderData, useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { useLoaderData, useNavigate, useSearchParams } from 'react-router-dom';
 import MarketTable from '../../components/marketTable/MarketTable';
 import SearchButton from '../../components/navigation/desktop/buttons/SearchButton';
 import { useTranslation } from 'react-i18next';
@@ -26,12 +26,10 @@ function AccountListings(): JSX.Element {
   const userInfo = loader.data;
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const params = useParams();
-  const username = params.username;
 
   const breadcrumbLinks: BreadcrumbLink[] = [
     {
-      href: `/user/${username}`,
+      href: `/user/${userInfo.username}`,
       text: commonT('breadcrumbs.account.title'),
     },
   ];
@@ -68,13 +66,11 @@ function AccountListings(): JSX.Element {
   }
 
   useEffect(() => {
-    if (username) {
-      yugiohService
-        .searchListingsByCardNameAndUsername(username, page, cardName)
-        .then(setListings)
-        .catch(toast.error);
-    }
-  }, [page, cardName, username]);
+    yugiohService
+      .searchYugiohListingsByCardNameAndUserId(cardName, userInfo.id, page)
+      .then(setListings)
+      .catch(toast.error);
+  }, [page, cardName]);
 
   function initiateTrade() {
     tradeService
@@ -86,8 +82,8 @@ function AccountListings(): JSX.Element {
   return (
     <section className="bg-[#F5F5F5] w-full">
       <CardflowTabs />
-      <BreadcrumbNavigation links={breadcrumbLinks} heading={username}>
-        {user.username === username ? null : (
+      <BreadcrumbNavigation links={breadcrumbLinks} heading={userInfo.username}>
+        {user.username === userInfo.username ? null : (
           <Button
             onClick={initiateTrade}
             startIcon={<AddIcon />}
