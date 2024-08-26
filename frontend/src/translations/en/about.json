@@ -46,7 +46,7 @@
       },
       "trading": {
         "question": "How do I trade?",
-        "answer": "<p>Trading is a planned feature that is currently unavailable. Stay tuned for updates!</p>"
+        "answer": "<p>To trade cards with other users, you can go to the <linkToUserSearch>user search page</linkToUserSearch>, search for desired users, and then click the green button at the end of the row to initiate a trade with that user. You can visit the user's page to review their listings before deciding to initiate a trade.</p>"
       },
       "deleteAccount": {
         "question": "How do I delete my account?",

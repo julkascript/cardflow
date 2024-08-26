@@ -23,6 +23,9 @@ export const faq: readonly FAQ[] = Object.freeze([
   },
   {
     translationKey: 'trading',
+    components: {
+      linkToUserSearch: <Link href="/accounts/search" />,
+    },
   },
   {
     translationKey: 'deleteAccount',
