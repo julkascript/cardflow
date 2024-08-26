@@ -97,7 +97,7 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
       label: t('navigation.newListing'),
     },
     {
-      url: '/trade/create',
+      url: '/accounts/search',
       label: t('navigation.newTrade'),
     },
   ];
