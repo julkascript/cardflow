@@ -8,6 +8,9 @@ import { useToast } from '../../util/useToast';
 import { toastMessages } from '../../constants/toast';
 import { Trade, TradeRequest } from '../../services/trade/types';
 import { HttpError } from '../../util/HttpError';
+import CardflowTabs from '../../components/cardflowTabs/CardflowTabs';
+import BreadcrumbNavigation from '../../components/BreadcrumbNavigation';
+import { useTranslation } from 'react-i18next';
 
 function TradeDetails(): JSX.Element {
   const [open, setOpen] = useState(false);
@@ -16,6 +19,7 @@ function TradeDetails(): JSX.Element {
   const params = useParams();
   const id = Number(params.id);
   const navigate = useNavigate();
+  const { t: commonT } = useTranslation('common');
 
   function accept() {
     tradeService
@@ -107,9 +111,13 @@ function TradeDetails(): JSX.Element {
       });
   }, []);
 
-  /* TO-DO: update with chat PR */
   return (
-    <main>
+    <section className="bg-[#F5F5F5] min-h-[100vh]">
+      <CardflowTabs />
+      <BreadcrumbNavigation
+        links={[{ href: '/trade', text: commonT('breadcrumbs.trade.title') }]}
+        heading={`TR-${id}`}
+      />
       <TradeModal
         id={id}
         onNegotiate={negotiate}
@@ -118,8 +126,7 @@ function TradeDetails(): JSX.Element {
         open={open}
         onClose={() => setOpen(false)}
       />
-      <h1>Details</h1>
-    </main>
+    </section>
   );
 }
 

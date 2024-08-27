@@ -99,6 +99,9 @@
       "editListing": {
         "title": "Edit listing"
       }
+    },
+    "trade": {
+      "title": "Trade"
     }
   },
   "sellerRanks": {
