@@ -128,6 +128,7 @@ class UserUpdateView(viewsets.ModelViewSet):
             }
 
             return Response({
+                'id': user_data['id'],
                 'username': user_data['username'],
                 'avatar': user_data['avatar'],
                 'stats': stats_data

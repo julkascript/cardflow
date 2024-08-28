@@ -57,6 +57,7 @@ export type UserAccountLoader = {
 };
 
 export type PublicUserInfo = {
+  id: number;
   username: string;
   avatar: string;
   stats: {

@@ -39,6 +39,10 @@ function ProfileNavigation(): JSX.Element {
       text: t('common.navigation.public'),
     },
     {
+      href: `/user/${username}/listings`,
+      text: t('common.navigation.listings'),
+    },
+    {
       href: `/user/${username}/blog`,
       text: t('common.navigation.blog'),
     },
