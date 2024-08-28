@@ -121,7 +121,7 @@ export function TradeContextProvider({ children }: { children: React.ReactNode }
         removeRecipientListingOrCash,
         populate,
         modalIsOpen,
-        setModalIsOpen
+        setModalIsOpen,
       }}
     >
       {children}
@@ -129,9 +129,6 @@ export function TradeContextProvider({ children }: { children: React.ReactNode }
   );
 }
 
-/**
- * @returns properties and methods for managing the shopping cart context.
- */
 export const useTrade = () => {
   const trade = useContext(TradeContext);
   return trade;

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useTrade } from '../../context/trade';
 import TradeModal from '../../components/trade/modal/TradeModal';
 import { yugiohService } from '../../services/yugioh/yugiohService';
@@ -11,10 +11,12 @@ import { HttpError } from '../../util/HttpError';
 import CardflowTabs from '../../components/cardflowTabs/CardflowTabs';
 import BreadcrumbNavigation from '../../components/BreadcrumbNavigation';
 import { useTranslation } from 'react-i18next';
+import { TradeChatMessageProps } from '../../components/trade/chat/chatElements/messages/messageProps';
+import TradeChat from '../../components/trade/chat/TradeChat';
+import TradePreview from '../../components/trade/chat/TradePreview';
 
 function TradeDetails(): JSX.Element {
-  const [open, setOpen] = useState(false);
-  const { trade, populate } = useTrade();
+  const { trade, populate, modalIsOpen, setModalIsOpen } = useTrade();
   const toast = useToast();
   const params = useParams();
   const id = Number(params.id);
@@ -34,7 +36,7 @@ function TradeDetails(): JSX.Element {
           });
         }
 
-        setOpen(false);
+        setModalIsOpen(false);
       })
       .catch(toast.error);
   }
@@ -52,7 +54,7 @@ function TradeDetails(): JSX.Element {
           });
         }
 
-        setOpen(false);
+        setModalIsOpen(false);
       })
       .catch(toast.error);
   }
@@ -72,7 +74,7 @@ function TradeDetails(): JSX.Element {
       .then(transformOffer)
       .then((data) => {
         populate(data);
-        setOpen(false);
+        setModalIsOpen(false);
         toast.success({ toastKey: toastMessages.tradeHasBeenNegotiated, values: { id } });
       })
       .catch(toast.error);
@@ -100,7 +102,7 @@ function TradeDetails(): JSX.Element {
       .then(transformOffer)
       .then((data) => {
         populate(data);
-        setOpen(true);
+        setModalIsOpen(true);
       })
       .catch((err) => {
         if (err instanceof HttpError && err.err.status === 404) {
@@ -111,6 +113,17 @@ function TradeDetails(): JSX.Element {
       });
   }, []);
 
+  const sampleChatMessages: TradeChatMessageProps[] = [
+    {
+      message: {
+        id: 1,
+        userId: 1,
+        content: 'Hello',
+        isSystem: false,
+      },
+    },
+  ];
+
   return (
     <section className="bg-[#F5F5F5] min-h-[100vh]">
       <CardflowTabs />
@@ -118,13 +131,17 @@ function TradeDetails(): JSX.Element {
         links={[{ href: '/trade', text: commonT('breadcrumbs.trade.title') }]}
         heading={`TR-${id}`}
       />
+      <div>
+        <TradeChat messages={sampleChatMessages} />
+        <TradePreview />
+      </div>
       <TradeModal
         id={id}
         onNegotiate={negotiate}
         onReject={reject}
         onAccept={accept}
-        open={open}
-        onClose={() => setOpen(false)}
+        open={modalIsOpen}
+        onClose={() => setModalIsOpen(false)}
       />
     </section>
   );

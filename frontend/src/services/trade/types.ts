@@ -34,3 +34,11 @@ export type Trade = {
 export type TradeStatusUpdateResponse = {
   status: tradeStatusStage;
 };
+
+// TO-DO: update when chat is implemented on the backend
+export type TradeMessage = {
+  id: number;
+  content: string;
+  userId: number;
+  isSystem: boolean;
+};
