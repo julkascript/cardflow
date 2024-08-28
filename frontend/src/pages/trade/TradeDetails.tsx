@@ -37,7 +37,10 @@ function TradeDetails(): JSX.Element {
         }
 
         setModalIsOpen(false);
+        return tradeService.findTradeById(id);
       })
+      .then(transformOffer)
+      .then(populate)
       .catch(toast.error);
   }
 
@@ -55,7 +58,10 @@ function TradeDetails(): JSX.Element {
         }
 
         setModalIsOpen(false);
+        return tradeService.findTradeById(id);
       })
+      .then(transformOffer)
+      .then(populate)
       .catch(toast.error);
   }
 
@@ -133,7 +139,7 @@ function TradeDetails(): JSX.Element {
       />
       <div>
         <TradeChat messages={sampleChatMessages} />
-        <TradePreview />
+        <TradePreview onAccept={accept} onReject={reject} />
       </div>
       <TradeModal
         id={id}

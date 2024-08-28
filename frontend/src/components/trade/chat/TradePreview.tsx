@@ -8,7 +8,12 @@ import TradePreviewExpandButton from './previewElements/previewButtons/TradePrev
 import TradePreviewAcceptButton from './previewElements/previewButtons/TradePreviewAcceptButton';
 import { useTranslation } from 'react-i18next';
 
-function TradePreview(): JSX.Element {
+type TradePreviewProps = {
+  onReject: () => void;
+  onAccept: () => void;
+};
+
+function TradePreview(props: TradePreviewProps): JSX.Element {
   const { trade, setModalIsOpen } = useTrade();
   const { t } = useTranslation('trade');
 
@@ -35,9 +40,9 @@ function TradePreview(): JSX.Element {
       />
       <Divider />
       <div className="flex gap-2 justify-center">
-        <TradePreviewRejectButton />
+        <TradePreviewRejectButton onClick={props.onReject} />
         <TradePreviewExpandButton />
-        <TradePreviewAcceptButton />
+        <TradePreviewAcceptButton onClick={props.onAccept} />
       </div>
     </PageSection>
   );
