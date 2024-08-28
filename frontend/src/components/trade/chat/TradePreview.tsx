@@ -18,8 +18,8 @@ function TradePreview(props: TradePreviewProps): JSX.Element {
   const { t } = useTranslation('trade');
 
   return (
-    <PageSection>
-      <div className="flex justify-end">
+    <PageSection className="w-1/5">
+      <div className="flex justify-between">
         <h3>{t('details.preview.currentOffer')}</h3>
         <IconButton onClick={() => setModalIsOpen(true)} color="info">
           <ExpandIcon />

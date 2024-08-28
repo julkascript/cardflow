@@ -128,16 +128,72 @@ function TradeDetails(): JSX.Element {
         isSystem: false,
       },
     },
+    {
+      message: {
+        id: 2,
+        userId: 2,
+        content: 'Hellowehwekhmwehkmwklehmlwkemhlkwemhlkwemhklwmlkwe',
+        isSystem: false,
+      },
+    },
+    {
+      message: {
+        id: 3,
+        userId: 1,
+        content: 'Hello hello hello hello hello hello hello hello hello hello hello hello hello',
+        isSystem: false,
+      },
+    },
+    {
+      message: {
+        id: 4,
+        userId: 1,
+        content: 'h',
+        isSystem: false,
+      },
+    },
+    {
+      message: {
+        id: 5,
+        userId: 2,
+        content: 'Hello hello hello hello hello hello hello hello hello hello hello hello hello',
+        isSystem: false,
+      },
+    },
+    {
+      message: {
+        id: 6,
+        userId: 2,
+        content: 'HelloHellowehwekhmwehkmwklehmlwkemhlkwemhlkwemhklwmlkwe',
+        isSystem: false,
+      },
+    },
+    {
+      message: {
+        id: 7,
+        userId: 2,
+        content: 'Hello',
+        isSystem: true,
+      },
+    },
+    {
+      message: {
+        id: 8,
+        userId: 1,
+        content: 'Hello',
+        isSystem: false,
+      },
+    },
   ];
 
   return (
-    <section className="bg-[#F5F5F5] min-h-[100vh]">
+    <section className="bg-[#F5F5F5]">
       <CardflowTabs />
       <BreadcrumbNavigation
         links={[{ href: '/trade', text: commonT('breadcrumbs.trade.title') }]}
         heading={`TR-${id}`}
       />
-      <div>
+      <div className="flex lg:flex-row justify-center gap-6 items-start">
         <TradeChat messages={sampleChatMessages} />
         <TradePreview onAccept={accept} onReject={reject} />
       </div>
