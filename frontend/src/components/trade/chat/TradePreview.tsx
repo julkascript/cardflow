@@ -19,7 +19,7 @@ function TradePreview(props: TradePreviewProps): JSX.Element {
 
   return (
     <PageSection className="w-1/5">
-      <div className="flex justify-between">
+      <div className="flex justify-between items-center">
         <h3>{t('details.preview.currentOffer')}</h3>
         <IconButton onClick={() => setModalIsOpen(true)} color="info">
           <ExpandIcon />

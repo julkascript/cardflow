@@ -12,7 +12,15 @@ function ExpandOffer(props: ExpandOfferProps): JSX.Element {
   }
 
   return (
-    <Link sx={{ color: '#0072f5' }} underline="hover" role="button" href="#" onClick={handleClick}>
+    <Link
+      sx={{ color: '#0072f5' }}
+      underline="hover"
+      className="self-end"
+      role="button"
+      fontSize="small"
+      href="#"
+      onClick={handleClick}
+    >
       Click to expand offer...
     </Link>
   );

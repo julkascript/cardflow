@@ -1,7 +1,7 @@
 import { useCurrentUser } from '../../../../context/user';
 import { TradeChatMessageProps } from './messages/messageProps';
-import OtherUserMessage from './messages/OtherUserMessage';
 import OwnMessage from './messages/OwnMessage';
+import OtherUserMessage from './messages/OtherUserMessage';
 
 function ChatMessage(props: TradeChatMessageProps): JSX.Element {
   const { user } = useCurrentUser();

@@ -171,14 +171,31 @@ function TradeDetails(): JSX.Element {
     {
       message: {
         id: 7,
-        userId: 2,
-        content: 'Hello',
+        userId: 1,
+        content:
+          'HelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHelloHello',
         isSystem: true,
       },
     },
     {
       message: {
         id: 8,
+        userId: 1,
+        content: 'Hello',
+        isSystem: false,
+      },
+    },
+    {
+      message: {
+        id: 9,
+        userId: 1,
+        content: 'Hello',
+        isSystem: false,
+      },
+    },
+    {
+      message: {
+        id: 10,
         userId: 1,
         content: 'Hello',
         isSystem: false,

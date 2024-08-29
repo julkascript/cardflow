@@ -5,15 +5,14 @@ import { useTrade } from '../../../../../context/trade';
 
 function OtherUserMessage(props: TradeChatMessageProps): JSX.Element {
   const { setModalIsOpen } = useTrade();
-
   return (
     <div>
-      <div className="bg-[#f5efdb]">
-        <div>{props.message.content}</div>
+      <div className="bg-[#e8daf5] px-2 py-4 rounded-xl rounded-bl-none inline-flex flex-col gap-2">
+        <div style={{ wordBreak: 'break-word' }}>{props.message.content}</div>
         {props.message.isSystem ? <ExpandOffer onExpandOffer={() => setModalIsOpen(true)} /> : null}
       </div>
       {props.message.isSystem ? (
-        <Typography color="text.secondary" fontWeight="bold">
+        <Typography className="pl-4" color="text.secondary" fontWeight="bold">
           System
         </Typography>
       ) : null}
