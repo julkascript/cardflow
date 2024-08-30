@@ -38,7 +38,7 @@ function NewActionButton(): JSX.Element {
     },
     {
       label: t('navigation.newTrade'),
-      href: '#',
+      href: '/accounts/search',
     },
   ];
 

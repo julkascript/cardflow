@@ -5,6 +5,7 @@ import { loadPublicUserInfo } from './loadPublicUserInfo';
 describe('loadPublicUserInfo', () => {
   it('Returns data successfully', async () => {
     vi.spyOn(userService, 'getUserByUsername').mockResolvedValueOnce({
+      id: 1,
       username: 'a',
       avatar: 'b',
       stats: {

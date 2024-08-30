@@ -98,6 +98,7 @@ export const yugiohService = {
   async searchYugiohListingsByCardNameAndUserId(
     cardName: string,
     userId: number,
+    page = 1,
   ): Promise<PaginatedItem<YugiohCardListing>> {
     const listings = await httpService.get<PaginatedItem<YugiohCardListing>>(
       api.yugioh.listing.root,
@@ -105,6 +106,7 @@ export const yugiohService = {
         user_id: userId,
         card_name: cardName,
         is_listed: true,
+        page,
       },
     );
 
