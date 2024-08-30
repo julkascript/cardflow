@@ -2,6 +2,7 @@ import { Button, Chip } from '@mui/material';
 import { useTrade } from '../../../../../context/trade';
 import { TradeParticipant } from '../../../../../services/trade/types';
 import { YugiohCardListing } from '../../../../../services/yugioh/types';
+import { useTranslation } from 'react-i18next';
 
 type TradeListingImageProps = {
   listing: YugiohCardListing;
@@ -15,6 +16,8 @@ function TradeListingImage(props: TradeListingImageProps): JSX.Element {
     trade.recipient.id === props.user.id
       ? removeRecipientListingOrCash
       : removeInitiatorListingOrCash;
+
+  const { t } = useTranslation('trade');
 
   return (
     <div className="w-[150px] md:w-[245px] flex flex-col gap-4 lg:flex-shrink-0 lg:flex-grow-0 lg:basis-[245px]">
@@ -45,7 +48,7 @@ function TradeListingImage(props: TradeListingImageProps): JSX.Element {
             variant="outlined"
             onClick={() => remove(props.listing)}
           >
-            Remove
+            {t('modal.buttons.remove')}
           </Button>
         ) : null}
       </div>
