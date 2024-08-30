@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Divider } from '@mui/material';
+import { Button, Dialog, DialogContent, DialogTitle, Divider } from '@mui/material';
 import TradeModalSection from './section/TradeModalSection';
 import { useTrade } from '../../../context/trade';
 import TradeStatusBadge from './section/elements/TradeStatusBadge';
@@ -42,14 +42,14 @@ function TradeModal(props: TradeModalProps): JSX.Element {
           <Divider />
           <TradeModalSection user={trade.recipient} />
         </DialogContent>
-        <DialogActions>
+        <div className="flex gap-2 justify-center flex-col sm:flex-row sm:justify-end">
           <Button variant="outlined" onClick={props.onClose}>
             {t('modal.buttons.close')}
           </Button>
           <RequestButton otherUserDecision={otherUserDecision} onClick={props.onNegotiate} />
           <DeclineButton otherUserDecision={otherUserDecision} onClick={props.onReject} />
           <AcceptButton otherUserDecision={otherUserDecision} onClick={props.onAccept} />
-        </DialogActions>
+        </div>
       </div>
     </Dialog>
   );
