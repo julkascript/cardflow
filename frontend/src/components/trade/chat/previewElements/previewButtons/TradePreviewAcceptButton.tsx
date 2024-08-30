@@ -11,7 +11,12 @@ function TradePreviewAcceptButton(props: TradePreviewAcceptButtonProps): JSX.Ele
 
   return (
     <Tooltip title={t('details.preview.buttons.accept')}>
-      <Button onClick={props.onClick} color="success" variant="outlined">
+      <Button
+        sx={{ width: 64, height: 64 }}
+        onClick={props.onClick}
+        color="success"
+        variant="outlined"
+      >
         <CheckIcon />
       </Button>
     </Tooltip>

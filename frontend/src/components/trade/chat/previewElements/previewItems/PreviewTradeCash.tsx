@@ -10,7 +10,7 @@ function PreviewTradeCash(props: PreviewTradeCashProps): JSX.Element {
   const currency = user.currency_preference;
   return (
     <div className="flex items-center justify-center w-[71px] h-[102px] border-2 border-dashed">
-      <Typography fontSize="14pt" fontWeight="bold" className="font-bold" color="text.secondary">
+      <Typography fontSize="12pt" fontWeight="bold" className="font-bold" color="text.secondary">
         {props.cash} {currency}
       </Typography>
     </div>

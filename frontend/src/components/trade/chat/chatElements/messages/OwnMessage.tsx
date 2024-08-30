@@ -2,9 +2,11 @@ import { Typography } from '@mui/material';
 import { TradeChatMessageProps } from './messageProps';
 import ExpandOffer from './ExpandOffer';
 import { useTrade } from '../../../../../context/trade';
+import { useTranslation } from 'react-i18next';
 
 function OwnMessage(props: TradeChatMessageProps): JSX.Element {
   const { setModalIsOpen } = useTrade();
+  const { t } = useTranslation('trade');
 
   return (
     <div className="flex flex-col">
@@ -16,7 +18,7 @@ function OwnMessage(props: TradeChatMessageProps): JSX.Element {
       </div>
       {props.message.isSystem ? (
         <Typography className="text-right pr-4" color="text.secondary" fontWeight="bold">
-          System
+          {t('details.chat.system')}
         </Typography>
       ) : null}
     </div>

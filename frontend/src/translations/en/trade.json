@@ -37,7 +37,8 @@
   },
   "details": {
     "chat": {
-      "system": "System"
+      "system": "System",
+      "expandOffer": "Expand current offer..."
     },
     "preview": {
       "buttons": {

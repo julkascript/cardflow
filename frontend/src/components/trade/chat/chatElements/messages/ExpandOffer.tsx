@@ -1,5 +1,6 @@
 import { Link } from '@mui/material';
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 
 type ExpandOfferProps = {
   onExpandOffer: () => void;
@@ -11,6 +12,8 @@ function ExpandOffer(props: ExpandOfferProps): JSX.Element {
     props.onExpandOffer();
   }
 
+  const { t } = useTranslation('trade');
+
   return (
     <Link
       sx={{ color: '#0072f5' }}
@@ -21,7 +24,7 @@ function ExpandOffer(props: ExpandOfferProps): JSX.Element {
       href="#"
       onClick={handleClick}
     >
-      Click to expand offer...
+      {t('details.chat.expandOffer')}
     </Link>
   );
 }

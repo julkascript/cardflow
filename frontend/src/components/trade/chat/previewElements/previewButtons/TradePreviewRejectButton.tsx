@@ -11,7 +11,12 @@ function TradePreviewRejectButton(props: TradePreviewRejectButtonProps): JSX.Ele
 
   return (
     <Tooltip title={t('details.preview.buttons.reject')}>
-      <Button onClick={props.onClick} color="error" variant="outlined">
+      <Button
+        sx={{ width: 64, height: 64 }}
+        onClick={props.onClick}
+        color="error"
+        variant="outlined"
+      >
         <RejectIcon />
       </Button>
     </Tooltip>

@@ -6,6 +6,7 @@ import RejectIcon from '@mui/icons-material/Clear';
 import React from 'react';
 import { Avatar, IconButton, Tooltip } from '@mui/material';
 import { useTranslation } from 'react-i18next';
+import { theme } from '../../../../constants/theme';
 
 type TradePreviewSideUserProps = {
   user: TradeParticipant;
@@ -18,11 +19,22 @@ const statusBadges: Record<tradeStatusResult, React.ReactNode> = {
   reject: <RejectIcon color="error" />,
 };
 
+const statusBorderColor: Record<tradeStatusResult, string> = {
+  accept: theme.palette.success.main,
+  pending: theme.palette.grey[300],
+  reject: theme.palette.error.main,
+};
+
 function TradePreviewSideUser(props: TradePreviewSideUserProps): JSX.Element {
   const { t } = useTranslation('trade');
   return (
-    <div>
-      <Avatar src={props.user.avatar || ''} alt={props.user.username} />
+    <div className="flex items-center gap-2">
+      <Avatar
+        sx={{ borderColor: statusBorderColor[props.decision] }}
+        className="border-2"
+        src={props.user.avatar || ''}
+        alt={props.user.username}
+      />
       <Tooltip
         title={t('details.preview.statusBadge.status', {
           username: props.user.username,

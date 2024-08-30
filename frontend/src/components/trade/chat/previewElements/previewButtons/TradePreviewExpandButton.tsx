@@ -13,7 +13,12 @@ function TradePreviewExpandButton(): JSX.Element {
 
   return (
     <Tooltip title={t('details.preview.buttons.expand')}>
-      <Button onClick={openOffer} color="secondary" variant="outlined">
+      <Button
+        sx={{ width: 64, height: 64 }}
+        onClick={openOffer}
+        color="secondary"
+        variant="outlined"
+      >
         <SwapHorizIcon />
       </Button>
     </Tooltip>

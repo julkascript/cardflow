@@ -37,7 +37,8 @@
   },
   "details": {
     "chat": {
-      "system": "Системно съобщение"
+      "system": "Системно съобщение",
+      "expandOffer": "Отвори офертата..."
     },
     "preview": {
       "buttons": {
