@@ -1,8 +1,13 @@
 import { Button, TextField } from '@mui/material';
 import { theme } from '../../../../constants/theme';
 import { useState } from 'react';
+import { TradeParticipant } from '../../../../services/trade/types';
 
-function ChatMessageField(): JSX.Element {
+type ChatMessageFieldProps = {
+  otherUser: TradeParticipant;
+};
+
+function ChatMessageField(props: ChatMessageFieldProps): JSX.Element {
   function onSubmit(event: React.FormEvent) {
     event.preventDefault();
   }
@@ -16,7 +21,13 @@ function ChatMessageField(): JSX.Element {
 
   return (
     <form className="p-4 flex flex-col lg:flex-row gap-2" onSubmit={onSubmit}>
-      <TextField className="w-full" multiline value={message} onChange={handleChange} />
+      <TextField
+        placeholder={`Message to ${props.otherUser.username}`}
+        className="w-full"
+        multiline
+        value={message}
+        onChange={handleChange}
+      />
       <Button
         type="submit"
         disabled={!message}
