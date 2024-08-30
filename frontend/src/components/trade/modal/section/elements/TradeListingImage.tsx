@@ -17,10 +17,13 @@ function TradeListingImage(props: TradeListingImageProps): JSX.Element {
       : removeInitiatorListingOrCash;
 
   return (
-    <div className="w-[245px] flex flex-col gap-4 lg:flex-shrink-0 lg:flex-grow-0 lg:basis-[245px]">
-      <img className="min-w-full h-[356px]" src={props.listing.card_in_set.yugioh_card.image} />
+    <div className="w-[150px] md:w-[245px] flex flex-col gap-4 lg:flex-shrink-0 lg:flex-grow-0 lg:basis-[245px]">
+      <img
+        className="min-w-full h-[218px] md:h-[356px]"
+        src={props.listing.card_in_set.yugioh_card.image}
+      />
       <h4 className="font-bold text-center">{props.listing.card_name}</h4>
-      <div className="flex justify-between items-center">
+      <div className="flex flex-col md:flex-row gap-4 md:gap-0 md:justify-between items-center">
         <div className="flex gap-2">
           <Chip
             color="secondary"
