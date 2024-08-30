@@ -7,6 +7,7 @@ import TradePreviewRejectButton from './previewElements/previewButtons/TradePrev
 import TradePreviewExpandButton from './previewElements/previewButtons/TradePreviewExpandButton';
 import TradePreviewAcceptButton from './previewElements/previewButtons/TradePreviewAcceptButton';
 import { useTranslation } from 'react-i18next';
+import { useCurrentUser } from '../../../context/user';
 
 type TradePreviewProps = {
   onReject: () => void;
@@ -16,6 +17,11 @@ type TradePreviewProps = {
 function TradePreview(props: TradePreviewProps): JSX.Element {
   const { trade, setModalIsOpen } = useTrade();
   const { t } = useTranslation('trade');
+
+  const { user } = useCurrentUser();
+
+  const decision =
+    user.user_id === trade.initiator.id ? trade.initiator_decision : trade.recipient_decision;
 
   return (
     <PageSection className="w-5/6 sm:w-1/2 lg:w-1/4 p-4">
@@ -40,9 +46,9 @@ function TradePreview(props: TradePreviewProps): JSX.Element {
       />
       <Divider />
       <div className="flex gap-2 justify-center items-center flex-col sm:flex-row lg:flex-row my-6">
-        <TradePreviewRejectButton onClick={props.onReject} />
+        <TradePreviewRejectButton decision={decision} onClick={props.onReject} />
         <TradePreviewExpandButton />
-        <TradePreviewAcceptButton onClick={props.onAccept} />
+        <TradePreviewAcceptButton decision={decision} onClick={props.onAccept} />
       </div>
     </PageSection>
   );
