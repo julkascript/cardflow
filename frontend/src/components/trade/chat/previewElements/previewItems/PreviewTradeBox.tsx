@@ -1,5 +1,6 @@
 import { YugiohCardListing } from '../../../../../services/yugioh/types';
 import PreviewTradeCash from './PreviewTradeCash';
+import PreviewTradeEmptyBox from './PreviewTradeEmptyBox';
 import PreviewTradeListingImage from './PreviewTradeListingImage';
 
 type PreviewTradeBoxProps = {
@@ -16,7 +17,7 @@ function PreviewTradeBox(props: PreviewTradeBoxProps): JSX.Element {
     return <PreviewTradeListingImage listing={props.listing} />;
   }
 
-  return <></>;
+  return <PreviewTradeEmptyBox />;
 }
 
 export default PreviewTradeBox;
