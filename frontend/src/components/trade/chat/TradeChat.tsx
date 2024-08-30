@@ -1,5 +1,6 @@
 import PageSection from '../../PageSection';
 import ChatMessage from './chatElements/ChatMessage';
+import ChatMessageField from './chatElements/ChatMessageField';
 import { TradeChatMessageProps } from './chatElements/messages/messageProps';
 
 type TradeChatProps = {
@@ -14,6 +15,7 @@ function TradeChat(props: TradeChatProps): JSX.Element {
           <ChatMessage {...message} key={message.message.id} />
         ))}
       </div>
+      <ChatMessageField />
     </PageSection>
   );
 }
