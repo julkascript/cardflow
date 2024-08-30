@@ -13,7 +13,7 @@ function PreviewTradeListingImage(props: PreviewTradeListingImageProps): JSX.Ele
 
   return (
     <Tooltip title={`${name} - ${set} - ${rarity}`}>
-      <img src={image} className="w-[71px] h-[102px]" alt="" />
+      <img src={image} className="w-[71px] mx-auto h-[102px]" alt="" />
     </Tooltip>
   );
 }

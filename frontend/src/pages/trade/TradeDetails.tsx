@@ -210,7 +210,7 @@ function TradeDetails(): JSX.Element {
         links={[{ href: '/trade', text: commonT('breadcrumbs.trade.title') }]}
         heading={`TR-${id}`}
       />
-      <div className="flex lg:flex-row justify-center gap-6 items-start">
+      <div className="flex flex-col items-center lg:flex-row lg:justify-center gap-6 lg:items-start">
         <TradeChat messages={sampleChatMessages} />
         <TradePreview onAccept={accept} onReject={reject} />
       </div>

@@ -8,7 +8,7 @@ type TradeChatProps = {
 
 function TradeChat(props: TradeChatProps): JSX.Element {
   return (
-    <PageSection className="w-1/2">
+    <PageSection className="w-3/4 lg:w-1/2">
       <div className="p-4 flex flex-col lg:h-[682px] overflow-y-auto gap-8">
         {props.messages.map((message) => (
           <ChatMessage {...message} key={message.message.id} />

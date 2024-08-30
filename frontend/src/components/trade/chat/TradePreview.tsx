@@ -18,7 +18,7 @@ function TradePreview(props: TradePreviewProps): JSX.Element {
   const { t } = useTranslation('trade');
 
   return (
-    <PageSection className="w-1/5 p-4">
+    <PageSection className="w-1/2 lg:w-1/4 p-4">
       <div className="flex justify-between items-center">
         <h3 className="font-bold text-2xl">{t('details.preview.currentOffer')}</h3>
         <IconButton onClick={() => setModalIsOpen(true)} color="info">
@@ -39,7 +39,7 @@ function TradePreview(props: TradePreviewProps): JSX.Element {
         decision={trade.recipient_decision}
       />
       <Divider />
-      <div className="flex gap-2 justify-center flex-col lg:flex-row my-6">
+      <div className="flex gap-2 justify-center items-center flex-col sm:flex-row lg:flex-row my-6">
         <TradePreviewRejectButton onClick={props.onReject} />
         <TradePreviewExpandButton />
         <TradePreviewAcceptButton onClick={props.onAccept} />

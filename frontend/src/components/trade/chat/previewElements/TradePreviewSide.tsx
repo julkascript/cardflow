@@ -15,7 +15,7 @@ function TradePreviewSide(props: TradePreviewSideProps): JSX.Element {
   return (
     <section className="flex flex-col gap-8 my-6">
       <TradePreviewSideUser user={props.user} decision={props.decision} />
-      <div className="grid grid-cols-3">
+      <div className="grid gap-4 sm:gap-0 grid-cols-1 sm:grid-cols-3">
         {props.listings.map((listing) => (
           <PreviewTradeBox key={listing.id} listing={listing} />
         ))}
