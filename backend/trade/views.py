@@ -6,9 +6,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
-from .models import Trade
-from .serializers import TradeSerializer
+from .models import Trade, TradeChat, ChatMessage
+from .serializers import TradeSerializer, TradeChatSerializer, ChatMessageSerializer
 
 
 @extend_schema(tags=['Trade'])
@@ -103,4 +104,46 @@ class TradeListingViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@extend_schema(tags=['Trade chat'])
+class TradeChatView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, trade_id):
+        """Retrieve all messages for a given trade chat if the user has permission."""
+        
+        trade_chat = get_object_or_404(TradeChat, trade_id=trade_id)
+        user = request.user
+
+        if user.id not in trade_chat.messages.values_list('sender_id', flat=True):
+            return Response(status=status.HTTP_403_FORBIDDEN, data={'detail': 'You do not have permission to view this chat.'})
+
+        serializer = TradeChatSerializer(trade_chat)
+        return Response(serializer.data)
+
+    def post(self, request, trade_id):
+        """Send a message (user or system) in the trade chat."""
+
+        trade_chat, created = TradeChat.objects.get_or_create(trade_id=trade_id)
+
+        # Fetch the related trade object to determine the current trade status
+        trade = get_object_or_404(Trade, id=trade_id)
+
+        data = request.data.copy()
+
+        data['event_type'] = trade.trade_status
+
+        # If the user is authenticated, set the sender to the current user
+        if request.user.is_authenticated:
+            data['sender'] = request.user.id
+        else:
+            data['sender'] = None
+
+        serializer = ChatMessageSerializer(data=data, context={'trade_chat': trade_chat})
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

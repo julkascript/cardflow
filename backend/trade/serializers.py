@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Trade
+from .models import Trade, ChatMessage, TradeChat
 from listing.models import Listing
 
 from accounts.serializers import UserTradeParticipant
@@ -126,3 +126,35 @@ class TradeSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("Initiator cannot change recipient's decision.")
 
         return data
+
+
+class ChatMessageSerializer(serializers.ModelSerializer):
+    sender_username = serializers.CharField(source='sender.username', read_only=True)
+
+    class Meta:
+        model = ChatMessage
+        fields = ['id', 'sender_type', 'sender', 'sender_username', 'message', 'event_type', 'created_at']
+        extra_kwargs = {
+            'sender': {'required': False},  # sender can be optional for system messages
+            'sender_type': {'required': False},
+        }
+
+    def create(self, validated_data):
+        # Retrieve the trade_chat from the context passed in the view
+        trade_chat = self.context['trade_chat']
+
+        # Dynamically assign the sender_type based on whether a sender (user) is provided
+        if 'sender' in validated_data and validated_data['sender'] is not None:
+            validated_data['sender_type'] = ChatMessage.USER
+        else:
+            validated_data['sender_type'] = ChatMessage.SYSTEM
+
+        # Create the message with the trade_chat assigned
+        return ChatMessage.objects.create(trade_chat=trade_chat, **validated_data)
+
+class TradeChatSerializer(serializers.ModelSerializer):
+    messages = ChatMessageSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = TradeChat
+        fields = ['id', 'trade_id', 'created_at', 'messages']

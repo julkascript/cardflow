@@ -63,3 +63,32 @@ class Trade(models.Model):
         for listing in self.recipient_listing.all():
             listing.quantity -= 1
             listing.save()
+
+
+class TradeChat(models.Model):
+    trade_id = models.CharField(max_length=100, unique=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Trade Chat ID: {self.trade_id}"
+
+
+class ChatMessage(models.Model):
+    SYSTEM = 'system'
+    USER = 'user'
+
+    SENDER_CHOICES = [
+        (SYSTEM, 'System'),
+        (USER, 'User'),
+    ]
+
+    trade_chat = models.ForeignKey(TradeChat, related_name='messages', on_delete=models.CASCADE)
+    sender_type = models.CharField(max_length=10, choices=SENDER_CHOICES)
+    sender = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
+    message = models.TextField()
+    event_type = models.CharField(max_length=50, null=True,
+                                  blank=True)  # for system messages (negotiation, offer, etc.)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Message from {self.get_sender_type_display()} at {self.created_at}"
