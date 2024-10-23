@@ -86,7 +86,8 @@ class ChatMessage(models.Model):
     sender_type = models.CharField(max_length=10, choices=SENDER_CHOICES)
     sender = models.ForeignKey(User, null=True, blank=True, on_delete=models.SET_NULL)
     message = models.TextField()
-    event_type = models.CharField(max_length=50, null=True, blank=True)
+    event_type = models.CharField(max_length=50, null=True,
+                                  blank=True)  # for system messages (negotiation, offer, etc.)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
