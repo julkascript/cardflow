@@ -109,6 +109,10 @@ class TradeListingViewSet(viewsets.ModelViewSet):
 
 @extend_schema(tags=['Trade chat'])
 class TradeChatView(APIView):
+    """
+        This view allows the user to retrieve all messages for a given trade chat if the user has permission. Also
+        allows the user to send a message in the trade chat.
+    """
     permission_classes = [IsAuthenticated]
 
     def get(self, request, trade_id):
@@ -128,7 +132,7 @@ class TradeChatView(APIView):
 
         trade_chat, created = TradeChat.objects.get_or_create(trade_id=trade_id)
 
-        # Fetch the related trade object to determine the current trade status
+        # Get the related trade object to determine the current trade status
         trade = get_object_or_404(Trade, id=trade_id)
 
         data = request.data.copy()
