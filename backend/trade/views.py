@@ -113,7 +113,7 @@ class TradeChatView(APIView):
 
     def get(self, request, trade_id):
         """Retrieve all messages for a given trade chat if the user has permission."""
-        
+
         trade_chat = get_object_or_404(TradeChat, trade_id=trade_id)
         user = request.user
 
@@ -133,6 +133,7 @@ class TradeChatView(APIView):
 
         data = request.data.copy()
 
+        # Set the event_type based on the current trade status
         data['event_type'] = trade.trade_status
 
         # If the user is authenticated, set the sender to the current user
