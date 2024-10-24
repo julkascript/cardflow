@@ -3,7 +3,7 @@ from rest_framework import serializers
 from .models import Trade, ChatMessage, TradeChat
 from listing.models import Listing
 
-from accounts.serializers import UserTradeParticipant
+from accounts.serializers import UserTradeParticipant, UserSerializer
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
@@ -154,7 +154,8 @@ class ChatMessageSerializer(serializers.ModelSerializer):
 
 class TradeChatSerializer(serializers.ModelSerializer):
     messages = ChatMessageSerializer(many=True, read_only=True)
+    participants = UserSerializer(many=True, read_only=True)
 
     class Meta:
         model = TradeChat
-        fields = ['id', 'trade_id', 'created_at', 'messages']
+        fields = ['id', 'trade_id', 'participants', 'created_at', 'messages']
