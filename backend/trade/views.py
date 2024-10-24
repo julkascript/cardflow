@@ -122,7 +122,8 @@ class TradeChatView(APIView):
         user = request.user
 
         if user not in trade_chat.participants.all():
-            return Response(status=status.HTTP_403_FORBIDDEN, data={'detail': 'You do not have permission to view this chat.'})
+            return Response(status=status.HTTP_403_FORBIDDEN,
+                            data={'detail': 'You do not have permission to view this chat.'})
 
         serializer = TradeChatSerializer(trade_chat)
         return Response(serializer.data)
@@ -134,6 +135,10 @@ class TradeChatView(APIView):
 
         # Get the related trade object to determine the current trade status and get the participants
         trade = get_object_or_404(Trade, id=trade_id)
+
+        if request.user != trade.initiator and request.user != trade.recipient:
+            return Response(status=status.HTTP_403_FORBIDDEN,
+                            data={'detail': 'You do not have permission to create messages in this chat.'})
 
         if created:
             trade_chat.participants.add(trade.initiator, trade.recipient)

@@ -67,7 +67,7 @@ class Trade(models.Model):
 
 class TradeChat(models.Model):
     trade_id = models.CharField(max_length=100, unique=True)
-    participants = models.ManyToManyField(User)
+    participants = models.ManyToManyField(User, related_name='trade_chats')
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
