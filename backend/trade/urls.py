@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import TradeListingViewSet
+from .views import TradeListingViewSet, TradeChatView
 
 urlpatterns = [
     path('', TradeListingViewSet.as_view({'get': 'list', 'post': 'create'}), name='trades'),
@@ -10,4 +10,5 @@ urlpatterns = [
     path('<int:pk>/accept/', TradeListingViewSet.as_view({'post': 'accept'})),
     path('<int:pk>/reject/', TradeListingViewSet.as_view({'post': 'reject'})),
     path('<int:pk>/counter-offer/', TradeListingViewSet.as_view({'post': 'counter_offer'})),
+    path('chat/<int:trade_id>/', TradeChatView.as_view(), name='trade-chat'),
 ]
