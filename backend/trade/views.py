@@ -6,9 +6,10 @@ from rest_framework.response import Response
 from rest_framework.decorators import action
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.views import APIView
 
-from .models import Trade
-from .serializers import TradeSerializer
+from .models import Trade, TradeChat, ChatMessage
+from .serializers import TradeSerializer, TradeChatSerializer, ChatMessageSerializer
 
 
 @extend_schema(tags=['Trade'])
@@ -103,4 +104,59 @@ class TradeListingViewSet(viewsets.ModelViewSet):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
 
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@extend_schema(tags=['Trade chat'])
+class TradeChatView(APIView):
+    """
+        This view allows the user to retrieve all messages for a given trade chat if the user has permission. Also
+        allows the user to send a message in the trade chat.
+    """
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request, trade_id):
+        """Retrieve all messages for a given trade chat if the user has permission."""
+
+        trade_chat = get_object_or_404(TradeChat, trade_id=trade_id)
+        user = request.user
+
+        if user not in trade_chat.participants.all():
+            return Response(status=status.HTTP_403_FORBIDDEN,
+                            data={'detail': 'You do not have permission to view this chat.'})
+
+        serializer = TradeChatSerializer(trade_chat)
+        return Response(serializer.data)
+
+    def post(self, request, trade_id):
+        """Send a message (user or system) in the trade chat."""
+
+        trade_chat, created = TradeChat.objects.get_or_create(trade_id=trade_id)
+
+        # Get the related trade object to determine the current trade status and get the participants
+        trade = get_object_or_404(Trade, id=trade_id)
+
+        if request.user != trade.initiator and request.user != trade.recipient:
+            return Response(status=status.HTTP_403_FORBIDDEN,
+                            data={'detail': 'You do not have permission to create messages in this chat.'})
+
+        if created:
+            trade_chat.participants.add(trade.initiator, trade.recipient)
+
+        data = request.data.copy()
+
+        # Set the event_type based on the current trade status
+        data['event_type'] = trade.trade_status
+
+        # If the user is authenticated, set the sender to the current user
+        if request.user.is_authenticated:
+            data['sender'] = request.user.id
+        else:
+            data['sender'] = None
+
+        serializer = ChatMessageSerializer(data=data, context={'trade_chat': trade_chat})
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
