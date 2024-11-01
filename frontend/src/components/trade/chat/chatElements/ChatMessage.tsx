@@ -6,7 +6,7 @@ import OtherUserMessage from './messages/OtherUserMessage';
 function ChatMessage(props: TradeChatMessageProps): JSX.Element {
   const { user } = useCurrentUser();
 
-  if (user.user_id === props.message.userId) {
+  if (user.user_id === props.message.sender) {
     return <OwnMessage message={props.message} />;
   }
 

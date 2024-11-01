@@ -1,12 +1,13 @@
 import { useTrade } from '../../../context/trade';
 import { useCurrentUser } from '../../../context/user';
+import { TradeChatMessage } from '../../../services/trade/types';
 import PageSection from '../../PageSection';
 import ChatMessage from './chatElements/ChatMessage';
 import ChatMessageField from './chatElements/ChatMessageField';
-import { TradeChatMessageProps } from './chatElements/messages/messageProps';
 
 type TradeChatProps = {
-  messages: TradeChatMessageProps[];
+  messages: TradeChatMessage[];
+  onMessageSent: () => void;
 };
 
 function TradeChat(props: TradeChatProps): JSX.Element {
@@ -18,10 +19,14 @@ function TradeChat(props: TradeChatProps): JSX.Element {
     <PageSection className="w-3/4 lg:w-1/2">
       <div className="p-4 flex flex-col h-[450px] lg:h-[682px] overflow-y-auto gap-8">
         {props.messages.map((message) => (
-          <ChatMessage {...message} key={message.message.id} />
+          <ChatMessage message={message} key={message.id} />
         ))}
       </div>
-      <ChatMessageField otherUser={otherUser} />
+      <ChatMessageField
+        onMessageSent={props.onMessageSent}
+        otherUser={otherUser}
+        tradeId={trade.id}
+      />
     </PageSection>
   );
 }

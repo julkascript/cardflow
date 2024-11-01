@@ -1,7 +1,14 @@
 import { api } from '../../constants/api';
 import { httpService } from '../http/http';
 import { PaginatedItem } from '../yugioh/types';
-import { Trade, TradeRequest, TradeStatusUpdateResponse } from './types';
+import {
+  SendTradeChatMessage,
+  Trade,
+  TradeChatData,
+  TradeChatMessage,
+  TradeRequest,
+  TradeStatusUpdateResponse,
+} from './types';
 
 export const tradeService = {
   async findTradeById(id: number): Promise<Trade> {
@@ -46,6 +53,19 @@ export const tradeService = {
 
   async reject(tradeId: number): Promise<TradeStatusUpdateResponse> {
     const data = await httpService.post<TradeStatusUpdateResponse>(api.trade.reject(tradeId));
+    return data!;
+  },
+
+  async sendMessage(tradeId: number, message: SendTradeChatMessage): Promise<TradeChatMessage> {
+    const data = await httpService.post<TradeChatMessage>(
+      api.trade.chat.byTradeId(tradeId),
+      message,
+    );
+    return data!;
+  },
+
+  async retrieveTradeChatMessages(tradeId: number): Promise<TradeChatData> {
+    const data = await httpService.get<TradeChatData>(api.trade.chat.byTradeId(tradeId));
     return data!;
   },
 };

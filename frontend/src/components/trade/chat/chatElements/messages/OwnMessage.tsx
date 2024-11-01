@@ -8,15 +8,15 @@ function OwnMessage(props: TradeChatMessageProps): JSX.Element {
   const { setModalIsOpen } = useTrade();
   const { t } = useTranslation('trade');
 
+  const isSystem = props.message.sender_type === 'system';
+
   return (
     <div className="flex flex-col">
       <div className="bg-[#f5efdb] px-2 py-4 rounded-xl rounded-br-none inline-flex flex-col ml-auto gap-2">
-        <div className="" style={{ wordBreak: 'break-word' }}>
-          {props.message.content}
-        </div>
-        {props.message.isSystem ? <ExpandOffer onExpandOffer={() => setModalIsOpen(true)} /> : null}
+        <div style={{ wordBreak: 'break-word' }}>{props.message.message}</div>
+        {isSystem ? <ExpandOffer onExpandOffer={() => setModalIsOpen(true)} /> : null}
       </div>
-      {props.message.isSystem ? (
+      {isSystem ? (
         <Typography className="text-right pr-4" color="text.secondary" fontWeight="bold">
           {t('details.chat.system')}
         </Typography>

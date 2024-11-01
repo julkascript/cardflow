@@ -35,10 +35,25 @@ export type TradeStatusUpdateResponse = {
   status: tradeStatusStage;
 };
 
-// TO-DO: update when chat is implemented on the backend
-export type TradeMessage = {
+type tradeChatMessageType = 'user' | 'system';
+
+export type TradeChatData = {
+  created_at: string;
   id: number;
-  content: string;
-  userId: number;
-  isSystem: boolean;
+  messages: TradeChatMessage[];
+  trade_id: number;
+};
+
+export type TradeChatMessage = {
+  id: number;
+  message: string;
+  sender?: number;
+  sender_type?: tradeChatMessageType;
+  sender_username: string;
+  created_at: string;
+  event_type: tradeStatusStage;
+};
+
+export type SendTradeChatMessage = {
+  message: string;
 };
