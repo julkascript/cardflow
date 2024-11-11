@@ -34,5 +34,24 @@
       "negotiate_current": "Awaiting your response",
       "negotiate_other": "Awaiting their response"
     }
+  },
+  "details": {
+    "chat": {
+      "system": "System",
+      "expandOffer": "Expand current offer..."
+    },
+    "preview": {
+      "buttons": {
+        "reject": "Reject offer",
+        "expand": "Expand offer",
+        "accept": "Accept offer"
+      },
+      "statusBadge": {
+        "status_accept": "User {{username}} accepts the offer",
+        "status_pending": "Thinking",
+        "status_reject": "User {{username}} rejects the offer"
+      },
+      "currentOffer": "Current offer"
+    }
   }
 }

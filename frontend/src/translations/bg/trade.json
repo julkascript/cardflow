@@ -34,5 +34,24 @@
       "negotiate_current": "В очакване на твой отговор",
       "negotiate_other": "В очакване на техен отговор"
     }
+  },
+  "details": {
+    "chat": {
+      "system": "Системно съобщение",
+      "expandOffer": "Отвори офертата..."
+    },
+    "preview": {
+      "buttons": {
+        "reject": "Откажи офертата",
+        "expand": "Отвори офертата",
+        "accept": "Приеми офертата"
+      },
+      "statusBadge": {
+        "status_accept": "Потребител {{username}} приема офертата",
+        "status_pending": "Все още обмисля",
+        "status_reject": "Потребител {{username}} отхвърля офертата"
+      },
+      "currentOffer": "Текуща оферта"
+    }
   }
 }

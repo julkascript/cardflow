@@ -103,6 +103,9 @@
       "editListing": {
         "title": "Редактиране на обява"
       }
+    },
+    "trade": {
+      "title": "Размени"
     }
   },
   "currencies": {

@@ -17,6 +17,8 @@ type TradeContextType = {
   removeRecipientListingOrCash: (listing: TradeItemOption) => void;
   removeInitiatorListingOrCash: (listing: TradeItemOption) => void;
   populate: (data: TradeOffer) => void;
+  modalIsOpen: boolean;
+  setModalIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 const initialState: TradeOffer = {
@@ -50,11 +52,14 @@ export const TradeContext = createContext<TradeContextType>({
   removeRecipientListingOrCash: () => {},
   removeInitiatorListingOrCash: () => {},
   populate: () => {},
+  modalIsOpen: false,
+  setModalIsOpen: () => {},
 });
 
 export function TradeContextProvider({ children }: { children: React.ReactNode }): JSX.Element {
   const [trade, setTrade] = useState<TradeOffer>(initialState);
   const [initialTradeOffer, setInitialTradeOffer] = useState<TradeOffer>(initialState);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   function addRecipientListingOrCash(item: TradeItemOption) {
     if (typeof item === 'number') {
@@ -115,6 +120,8 @@ export function TradeContextProvider({ children }: { children: React.ReactNode }
         removeInitiatorListingOrCash,
         removeRecipientListingOrCash,
         populate,
+        modalIsOpen,
+        setModalIsOpen,
       }}
     >
       {children}
@@ -122,9 +129,6 @@ export function TradeContextProvider({ children }: { children: React.ReactNode }
   );
 }
 
-/**
- * @returns properties and methods for managing the shopping cart context.
- */
 export const useTrade = () => {
   const trade = useContext(TradeContext);
   return trade;

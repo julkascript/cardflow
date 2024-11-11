@@ -15,10 +15,10 @@ function TradeModalSection(props: TradeModalSectionProps): JSX.Element {
   const cash = trade.initiator.id === props.user.id ? trade.initiator_cash : trade.recipient_cash;
   return (
     <section className="flex gap-24 items-center my-16 flex-col lg:flex-row">
-      <div className="w-[400px]">
+      <div className="w-full sm:w-[400px]">
         <TradeModalSearch user={props.user} />
       </div>
-      <div className="flex gap-16 flex-col lg:flex-row lg:flex-1 lg:overflow-x-auto">
+      <div className="flex gap-16 items-center lg:items-start flex-col lg:flex-row lg:flex-1 lg:overflow-x-auto">
         {listings.map((l) => (
           <TradeModalBox user={props.user} key={l.id} listing={l} />
         ))}

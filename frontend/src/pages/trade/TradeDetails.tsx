@@ -6,16 +6,28 @@ import { tradeService } from '../../services/trade/trade';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useToast } from '../../util/useToast';
 import { toastMessages } from '../../constants/toast';
-import { Trade, TradeRequest } from '../../services/trade/types';
+import { Trade, TradeChatData, TradeRequest } from '../../services/trade/types';
 import { HttpError } from '../../util/HttpError';
+import CardflowTabs from '../../components/cardflowTabs/CardflowTabs';
+import BreadcrumbNavigation from '../../components/BreadcrumbNavigation';
+import { useTranslation } from 'react-i18next';
+import TradeChat from '../../components/trade/chat/TradeChat';
+import TradePreview from '../../components/trade/chat/TradePreview';
 
 function TradeDetails(): JSX.Element {
-  const [open, setOpen] = useState(false);
-  const { trade, populate } = useTrade();
+  const { trade, populate, modalIsOpen, setModalIsOpen } = useTrade();
   const toast = useToast();
   const params = useParams();
   const id = Number(params.id);
   const navigate = useNavigate();
+  const { t: commonT } = useTranslation('common');
+
+  const [tradeChatData, setTradeChatData] = useState<TradeChatData>({
+    created_at: '',
+    trade_id: 0,
+    id: 0,
+    messages: [],
+  });
 
   function accept() {
     tradeService
@@ -30,8 +42,11 @@ function TradeDetails(): JSX.Element {
           });
         }
 
-        setOpen(false);
+        setModalIsOpen(false);
+        return tradeService.findTradeById(id);
       })
+      .then(transformOffer)
+      .then(populate)
       .catch(toast.error);
   }
 
@@ -48,8 +63,11 @@ function TradeDetails(): JSX.Element {
           });
         }
 
-        setOpen(false);
+        setModalIsOpen(false);
+        return tradeService.findTradeById(id);
       })
+      .then(transformOffer)
+      .then(populate)
       .catch(toast.error);
   }
 
@@ -68,7 +86,7 @@ function TradeDetails(): JSX.Element {
       .then(transformOffer)
       .then((data) => {
         populate(data);
-        setOpen(false);
+        setModalIsOpen(false);
         toast.success({ toastKey: toastMessages.tradeHasBeenNegotiated, values: { id } });
       })
       .catch(toast.error);
@@ -96,7 +114,8 @@ function TradeDetails(): JSX.Element {
       .then(transformOffer)
       .then((data) => {
         populate(data);
-        setOpen(true);
+        setModalIsOpen(true);
+        return updateChatMessages();
       })
       .catch((err) => {
         if (err instanceof HttpError && err.err.status === 404) {
@@ -107,19 +126,30 @@ function TradeDetails(): JSX.Element {
       });
   }, []);
 
-  /* TO-DO: update with chat PR */
+  function updateChatMessages() {
+    tradeService.retrieveTradeChatMessages(id).then(setTradeChatData);
+  }
+
   return (
-    <main>
+    <section className="bg-[#F5F5F5]">
+      <CardflowTabs />
+      <BreadcrumbNavigation
+        links={[{ href: '/trade', text: commonT('breadcrumbs.trade.title') }]}
+        heading={`TR-${id}`}
+      />
+      <div className="flex flex-col items-center lg:flex-row lg:justify-center gap-6 lg:items-start">
+        <TradeChat onMessageSent={updateChatMessages} messages={tradeChatData.messages} />
+        <TradePreview onAccept={accept} onReject={reject} />
+      </div>
       <TradeModal
         id={id}
         onNegotiate={negotiate}
         onReject={reject}
         onAccept={accept}
-        open={open}
-        onClose={() => setOpen(false)}
+        open={modalIsOpen}
+        onClose={() => setModalIsOpen(false)}
       />
-      <h1>Details</h1>
-    </main>
+    </section>
   );
 }
 

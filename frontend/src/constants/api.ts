@@ -10,6 +10,7 @@ const bestSeller = `${base}/bestseller`;
 const feedback = `${base}/feedback`;
 const orders = `${base}/order`;
 const trade = `${base}/trade`;
+const tradeChat = `${trade}/chat`;
 
 export const api = Object.freeze({
   accounts: {
@@ -62,5 +63,8 @@ export const api = Object.freeze({
     accept: (id: number | string) => `${trade}/${id}/accept/`,
     reject: (id: number | string) => `${trade}/${id}/reject/`,
     counterOffer: (id: number | string) => `${trade}/${id}/counter-offer/`,
+    chat: {
+      byTradeId: (id: number | string) => `${tradeChat}/${id}/`,
+    },
   },
 });
