@@ -21,39 +21,64 @@ class TradeListingViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        return Trade.objects.filter(models.Q(initiator=user) | models.Q(recipient=user)
-                                    ).select_related('initiator', 'recipient')
+        return Trade.objects.filter(
+            models.Q(initiator=user) | models.Q(recipient=user)
+        ).select_related('initiator', 'recipient')
 
     def perform_create(self, serializer):
         serializer.save(initiator=self.request.user, trade_status=Trade.NEGOTIATE)
 
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['put'])
     def negotiate(self, request, pk=None):
+        """
+        Handles negotiation:
+        - Automatically updates the negotiator's decision if listings or cash have changed.
+        - Resets the other participant's decision to "pending."
+        """
         trade = get_object_or_404(Trade, pk=pk)
 
         if trade.trade_status in [Trade.ACCEPTED, Trade.REJECTED]:
-            return Response({'detail': 'Cannot negotiate after trade is accepted or rejected.'},
+            return Response({'detail': 'Cannot negotiate after trade is finalized.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
-        if request.user != trade.initiator and request.user != trade.recipient:
+        if request.user not in [trade.initiator, trade.recipient]:
             return Response({'detail': 'You do not have permission to negotiate this trade.'},
                             status=status.HTTP_403_FORBIDDEN)
 
-        serializer = self.get_serializer(trade, data=request.data, partial=True)
+        # Check if user modifies cash or listings
+        data = request.data
+        changed = False
 
+        if 'initiator_listing' in data or 'recipient_listing' in data or 'initiator_cash' in data or 'recipient_cash' in data:
+            changed = True
+
+        if changed:
+            if request.user == trade.initiator:
+                trade.initiator_decision = 'accept'
+                trade.recipient_decision = 'pending'
+            else:
+                trade.recipient_decision = 'accept'
+                trade.initiator_decision = 'pending'
+
+            trade.trade_status = Trade.NEGOTIATE
+
+        serializer = self.get_serializer(trade, data=data, partial=True)
         if serializer.is_valid():
             serializer.save()
-
-            return Response(serializer.data)
+            trade.update_trade_status()
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['put'])
     def accept(self, request, pk=None):
+        """
+        Manually accepts a trade.
+        """
         trade = get_object_or_404(Trade, pk=pk)
 
         if trade.trade_status in [Trade.ACCEPTED, Trade.REJECTED]:
-            return Response({'detail': 'Cannot accept after trade is accepted or rejected.'},
+            return Response({'detail': 'Cannot accept after trade is finalized.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
         if request.user == trade.initiator:
@@ -63,14 +88,17 @@ class TradeListingViewSet(viewsets.ModelViewSet):
 
         trade.update_trade_status()
         trade.save()
-        return Response({'status': trade.trade_status})
+        return Response({'status': trade.trade_status}, status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['post'])
+    @action(detail=True, methods=['put'])
     def reject(self, request, pk=None):
+        """
+        Manually rejects a trade.
+        """
         trade = get_object_or_404(Trade, pk=pk)
 
         if trade.trade_status in [Trade.ACCEPTED, Trade.REJECTED]:
-            return Response({'detail': 'Cannot reject after trade is accepted or rejected.'},
+            return Response({'detail': 'Cannot reject after trade is finalized.'},
                             status=status.HTTP_400_BAD_REQUEST)
 
         if request.user == trade.initiator:
@@ -80,31 +108,7 @@ class TradeListingViewSet(viewsets.ModelViewSet):
 
         trade.update_trade_status()
         trade.save()
-        return Response({'status': trade.trade_status})
-
-    @action(detail=True, methods=['post'])
-    def counter_offer(self, request, pk=None):
-        trade = get_object_or_404(Trade, pk=pk)
-
-        if trade.trade_status in [Trade.ACCEPTED, Trade.REJECTED]:
-            return Response({'detail': 'Cannot make a counter offer after trade is accepted or rejected.'},
-                            status=status.HTTP_400_BAD_REQUEST)
-
-        if request.user != trade.initiator and request.user != trade.recipient:
-            return Response({'detail': 'You do not have permission to make a counter offer for this trade.'},
-                            status=status.HTTP_403_FORBIDDEN)
-
-        data = request.data.copy()
-        data['initiator'] = trade.recipient.id
-        data['recipient'] = trade.initiator.id
-
-        serializer = TradeSerializer(data=data, context={'request': request})
-
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response({'status': trade.trade_status}, status=status.HTTP_200_OK)
 
 
 @extend_schema(tags=['Trade chat'])
