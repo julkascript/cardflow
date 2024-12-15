@@ -28,7 +28,7 @@ class TradeListingViewSet(viewsets.ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(initiator=self.request.user, trade_status=Trade.NEGOTIATE)
 
-    @action(detail=True, methods=['put'])
+    @action(detail=True, methods=['patch'])
     def negotiate(self, request, pk=None):
         """
         Handles negotiation:
@@ -47,12 +47,8 @@ class TradeListingViewSet(viewsets.ModelViewSet):
 
         # Check if user modifies cash or listings
         data = request.data
-        changed = False
 
         if 'initiator_listing' in data or 'recipient_listing' in data or 'initiator_cash' in data or 'recipient_cash' in data:
-            changed = True
-
-        if changed:
             if request.user == trade.initiator:
                 trade.initiator_decision = 'accept'
                 trade.recipient_decision = 'pending'
@@ -70,7 +66,7 @@ class TradeListingViewSet(viewsets.ModelViewSet):
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    @action(detail=True, methods=['put'])
+    @action(detail=True, methods=['patch'])
     def accept(self, request, pk=None):
         """
         Manually accepts a trade.
@@ -90,7 +86,7 @@ class TradeListingViewSet(viewsets.ModelViewSet):
         trade.save()
         return Response({'status': trade.trade_status}, status=status.HTTP_200_OK)
 
-    @action(detail=True, methods=['put'])
+    @action(detail=True, methods=['patch'])
     def reject(self, request, pk=None):
         """
         Manually rejects a trade.
