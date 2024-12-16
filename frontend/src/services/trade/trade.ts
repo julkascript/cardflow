@@ -37,7 +37,7 @@ export const tradeService = {
   },
 
   async negotiate(tradeId: number, trade: Partial<TradeRequest>): Promise<Trade> {
-    const data = await httpService.post<Trade>(api.trade.negotiate(tradeId), trade);
+    const data = await httpService.patch<Trade>(api.trade.negotiate(tradeId), trade);
     return data!;
   },
 
@@ -47,12 +47,12 @@ export const tradeService = {
   },
 
   async accept(tradeId: number): Promise<TradeStatusUpdateResponse> {
-    const data = await httpService.post<TradeStatusUpdateResponse>(api.trade.accept(tradeId));
+    const data = await httpService.patch<TradeStatusUpdateResponse>(api.trade.accept(tradeId));
     return data!;
   },
 
   async reject(tradeId: number): Promise<TradeStatusUpdateResponse> {
-    const data = await httpService.post<TradeStatusUpdateResponse>(api.trade.reject(tradeId));
+    const data = await httpService.patch<TradeStatusUpdateResponse>(api.trade.reject(tradeId));
     return data!;
   },
 
