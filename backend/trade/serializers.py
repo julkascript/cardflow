@@ -39,7 +39,6 @@ class TradeSerializer(serializers.ModelSerializer):
         initiator_listing = validated_data.pop('initiator_listing')
         recipient_listing = validated_data.pop('recipient_listing')
         initiator = validated_data.pop('initiator')
-
         recipient = validated_data.pop('recipient')
 
         if initiator == recipient:
@@ -54,37 +53,38 @@ class TradeSerializer(serializers.ModelSerializer):
         trade.initiator_listing.set(initiator_listing)
         trade.recipient_listing.set(recipient_listing)
         trade.initiator_decision = 'accept'
-
+        trade.recipient_decision = 'pending'
         trade.save()
 
         return trade
 
     def update(self, instance, validated_data):
-        instance = super().update(instance, validated_data)
         user = self.context['request'].user
 
+        # Check for participant-specific permissions and decision updates
         if user == instance.initiator:
-            if 'recipient_decision' in validated_data:
-                raise serializers.ValidationError("Initiator cannot change recipient's decision.")
-
-        if user == instance.recipient:
-            if 'initiator_decision' in validated_data:
-                raise serializers.ValidationError("Recipient cannot change initiator's decision.")
-
-        if instance.trade_status in [Trade.ACCEPTED]:
-            raise serializers.ValidationError("Cannot change decisions after trade is accepted.")
-
-        if instance.trade_status in [Trade.REJECTED]:
-            raise serializers.ValidationError("Cannot change decisions after trade is rejected.")
-
-        if user == instance.initiator:
-            instance.initiator_decision = validated_data.get('initiator_decision', instance.initiator_decision)
+            if 'recipient_decision' in validated_data or 'recipient_cash' in validated_data:
+                raise serializers.ValidationError("Initiator cannot change recipient's decision or cash offer.")
+            if 'initiator_listing' in validated_data or 'initiator_cash' in validated_data:
+                instance.initiator_decision = 'accept'
+                instance.recipient_decision = 'pending'
         elif user == instance.recipient:
-            instance.recipient_decision = validated_data.get('recipient_decision', instance.recipient_decision)
+            if 'initiator_decision' in validated_data or 'initiator_cash' in validated_data:
+                raise serializers.ValidationError("Recipient cannot change initiator's decision or cash offer.")
+            if 'recipient_listing' in validated_data or 'recipient_cash' in validated_data:
+                instance.recipient_decision = 'accept'
+                instance.initiator_decision = 'pending'
 
-        instance.initiator_cash = validated_data.get('initiator_cash', instance.initiator_cash)
-        instance.recipient_cash = validated_data.get('recipient_cash', instance.recipient_cash)
+        # Update fields
+        for field, value in validated_data.items():
+            if field == 'initiator_listing' and isinstance(value, list):
+                instance.initiator_listing.set(value)
+            elif field == 'recipient_listing' and isinstance(value, list):
+                instance.recipient_listing.set(value)
+            else:
+                setattr(instance, field, value)
 
+        # Update status and save
         instance.update_trade_status()
         instance.save()
         return instance
@@ -98,7 +98,8 @@ class TradeSerializer(serializers.ModelSerializer):
         for listing in value:
             if listing.user_id != initiator_id or not listing.is_listed:
                 raise serializers.ValidationError(
-                    f"You can not trade with initiator's listing ids: {[listing.id for listing in value]}.")
+                    f"You cannot trade with listings which you don't own - ids: {[listing.id for listing in value]}."
+                )
         return value
 
     def validate_recipient_listing(self, value):
@@ -112,7 +113,8 @@ class TradeSerializer(serializers.ModelSerializer):
         for listing in value:
             if listing.user != recipient or not listing.is_listed:
                 raise serializers.ValidationError(
-                    f"You can not trade with recipient's listing ids: {[listing.id for listing in value]}.")
+                    f"You cannot trade with listings which you don't own - ids: {[listing.id for listing in value]}."
+                )
         return value
 
     def validate(self, data):
