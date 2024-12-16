@@ -1,3 +1,5 @@
+from datetime import timezone, datetime
+
 from rest_framework import serializers
 
 from .models import Trade, ChatMessage, TradeChat
@@ -55,6 +57,21 @@ class TradeSerializer(serializers.ModelSerializer):
         trade.initiator_decision = 'accept'
         trade.recipient_decision = 'pending'
         trade.save()
+
+        new_chat = TradeChat.objects.create(trade_id=trade.id)
+        new_chat.participants.add(initiator, recipient)
+
+        proposed_cash = f'{trade.initiator_cash} cash' if trade.initiator_cash > 0 else '.'
+
+        ChatMessage.objects.create(
+            trade_chat=new_chat,
+            sender_type=ChatMessage.SYSTEM,
+            event_type=trade.trade_status,
+            message=f"On {new_chat.created_at.strftime('%Y-%m-%d %H:%M:%S')}, user {trade.initiator} "
+                    f"has initiated a trade with {trade.recipient}. "
+                    f"He offers to trade '{', '.join([str(l) for l in initiator_listing])}' "
+                    f"in exchange for '{', '.join([str(l) for l in recipient_listing])}'."
+        )
 
         return trade
 
@@ -153,6 +170,7 @@ class ChatMessageSerializer(serializers.ModelSerializer):
 
         # Create the message with the trade_chat assigned
         return ChatMessage.objects.create(trade_chat=trade_chat, **validated_data)
+
 
 class TradeChatSerializer(serializers.ModelSerializer):
     messages = ChatMessageSerializer(many=True, read_only=True)
