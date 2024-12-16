@@ -41,11 +41,6 @@ export const tradeService = {
     return data!;
   },
 
-  async counterOffer(tradeId: number, trade: Partial<TradeRequest>): Promise<Trade> {
-    const data = await httpService.post<Trade>(api.trade.counterOffer(tradeId), trade);
-    return data!;
-  },
-
   async accept(tradeId: number): Promise<TradeStatusUpdateResponse> {
     const data = await httpService.patch<TradeStatusUpdateResponse>(api.trade.accept(tradeId));
     return data!;
