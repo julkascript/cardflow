@@ -131,7 +131,6 @@ class TradeListingViewSet(viewsets.ModelViewSet):
                         f"{initiator_listing} in exchange for {recipient_listing}. \n\n"
                         f"Please align on the physical trade between yourselves. Feel free to use this chat.",
             )
-
         return Response({'status': trade.trade_status}, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['patch'])
