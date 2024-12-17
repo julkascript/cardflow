@@ -69,10 +69,10 @@ class TradeListingViewSet(viewsets.ModelViewSet):
             changed_data = ""
             if 'initiator_listing' in data:
                 proposed_listing = get_object_or_404(Listing, pk=data['initiator_listing'][0])
-                changed_data += f"Initiator's listing: {proposed_listing}"
+                changed_data += f" {proposed_listing}"
             if 'recipient_listing' in data:
                 proposed_listing = get_object_or_404(Listing, pk=data['recipient_listing'][0])
-                changed_data += f"Recipient's listing: {proposed_listing}"
+                changed_data += f" {proposed_listing}"
             if 'initiator_cash' in data:
                 changed_data += f"Initiator's cash: {data['initiator_cash']}"
             if 'recipient_cash' in data:
@@ -84,7 +84,7 @@ class TradeListingViewSet(viewsets.ModelViewSet):
                 sender_type=ChatMessage.SYSTEM,
                 event_type=trade.trade_status,
                 message=f"{trade.initiator if request.user == trade.initiator else trade.recipient} "
-                        f"negotiates with: {changed_data}.",
+                        f"negotiates with: {changed_data}",
             )
 
             return Response(serializer.data, status=status.HTTP_200_OK)
