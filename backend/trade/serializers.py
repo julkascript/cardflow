@@ -63,15 +63,15 @@ class TradeSerializer(serializers.ModelSerializer):
 
         # Check for participant-specific permissions and decision updates
         if user == instance.initiator:
-            if 'recipient_decision' in validated_data or 'recipient_cash' in validated_data:
+            if 'recipient_decision' in validated_data:
                 raise serializers.ValidationError("Initiator cannot change recipient's decision or cash offer.")
-            if 'initiator_listing' in validated_data or 'initiator_cash' in validated_data:
+            if 'initiator_listing' in validated_data:
                 instance.initiator_decision = 'accept'
                 instance.recipient_decision = 'pending'
         elif user == instance.recipient:
-            if 'initiator_decision' in validated_data or 'initiator_cash' in validated_data:
+            if 'initiator_decision' in validated_data:
                 raise serializers.ValidationError("Recipient cannot change initiator's decision or cash offer.")
-            if 'recipient_listing' in validated_data or 'recipient_cash' in validated_data:
+            if 'recipient_listing' in validated_data:
                 instance.recipient_decision = 'accept'
                 instance.initiator_decision = 'pending'
 
