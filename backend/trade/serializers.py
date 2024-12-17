@@ -61,16 +61,14 @@ class TradeSerializer(serializers.ModelSerializer):
         new_chat = TradeChat.objects.create(trade_id=trade.id)
         new_chat.participants.add(initiator, recipient)
 
-        proposed_cash = f'{trade.initiator_cash} cash' if trade.initiator_cash > 0 else '.'
+        proposed_cash = f' and {trade.initiator_cash} cash.' if trade.initiator_cash > 0 else '.'
 
         ChatMessage.objects.create(
             trade_chat=new_chat,
             sender_type=ChatMessage.SYSTEM,
             event_type=trade.trade_status,
-            message=f"On {new_chat.created_at.strftime('%Y-%m-%d %H:%M:%S')}, user {trade.initiator} "
-                    f"has initiated a trade with {trade.recipient}. "
-                    f"He offers to trade '{', '.join([str(l) for l in initiator_listing])}' "
-                    f"in exchange for '{', '.join([str(l) for l in recipient_listing])}'."
+            message=f"{trade.initiator} offers: {', '.join([str(l) for l in initiator_listing])} "
+                    f"in exchange for {', '.join([str(l) for l in recipient_listing])}{proposed_cash}",
         )
 
         return trade

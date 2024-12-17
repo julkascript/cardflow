@@ -83,9 +83,8 @@ class TradeListingViewSet(viewsets.ModelViewSet):
                 trade_chat=system_chat,
                 sender_type=ChatMessage.SYSTEM,
                 event_type=trade.trade_status,
-                message=f"On {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, "
-                        f"{trade.initiator if request.user == trade.initiator else trade.recipient} "
-                        f"negotiates as follows: {changed_data}.",
+                message=f"{trade.initiator if request.user == trade.initiator else trade.recipient} "
+                        f"negotiates with: {changed_data}.",
             )
 
             return Response(serializer.data, status=status.HTTP_200_OK)
@@ -118,10 +117,9 @@ class TradeListingViewSet(viewsets.ModelViewSet):
             trade_chat=system_chat,
             sender_type=ChatMessage.SYSTEM,
             event_type=trade.trade_status,
-            message=f"On {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, "
-                    f"{trade.initiator if request.user == trade.initiator else trade.recipient} "
-                    f"has accepted the trade offer {initiator_listing} "
-                    f"for {recipient_listing}.",
+            message=f"{trade.initiator if request.user == trade.initiator else trade.recipient} "
+                    f"accepted the trade offer {initiator_listing} "
+                    f"in exchange for {recipient_listing}.",
         )
 
         if trade.trade_status == Trade.ACCEPTED:
@@ -160,9 +158,8 @@ class TradeListingViewSet(viewsets.ModelViewSet):
             trade_chat=system_chat,
             sender_type=ChatMessage.SYSTEM,
             event_type=trade.trade_status,
-            message=f"On {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}, "
-                    f"{trade.initiator if request.user == trade.initiator else trade.recipient} "
-                    f"has rejected the trade. Trade is now finished with status {trade.trade_status}.",
+            message=f"{trade.initiator if request.user == trade.initiator else trade.recipient} "
+                    f"rejected the trade. Trade is now finished with status {trade.trade_status}.",
         )
 
         return Response({'status': trade.trade_status}, status=status.HTTP_200_OK)
