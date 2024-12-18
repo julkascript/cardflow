@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
@@ -10,6 +12,7 @@ from rest_framework.views import APIView
 
 from .models import Trade, TradeChat, ChatMessage
 from .serializers import TradeSerializer, TradeChatSerializer, ChatMessageSerializer
+from listing.models import Listing
 
 
 @extend_schema(tags=['Trade'])
@@ -62,6 +65,28 @@ class TradeListingViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             serializer.save()
             trade.update_trade_status()
+
+            changed_data = ""
+            if 'initiator_listing' in data:
+                proposed_listing = get_object_or_404(Listing, pk=data['initiator_listing'][0])
+                changed_data += f" {proposed_listing}"
+            if 'recipient_listing' in data:
+                proposed_listing = get_object_or_404(Listing, pk=data['recipient_listing'][0])
+                changed_data += f" {proposed_listing}"
+            if 'initiator_cash' in data:
+                changed_data += f"Initiator's cash: {data['initiator_cash']}"
+            if 'recipient_cash' in data:
+                changed_data += f"Recipient's cash: {data['recipient_cash']}"
+
+            system_chat = get_object_or_404(TradeChat, trade_id=trade.id)
+            ChatMessage.objects.create(
+                trade_chat=system_chat,
+                sender_type=ChatMessage.SYSTEM,
+                event_type=trade.trade_status,
+                message=f"{trade.initiator if request.user == trade.initiator else trade.recipient} "
+                        f"negotiates with: {changed_data}",
+            )
+
             return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
@@ -84,6 +109,28 @@ class TradeListingViewSet(viewsets.ModelViewSet):
 
         trade.update_trade_status()
         trade.save()
+
+        system_chat = get_object_or_404(TradeChat, trade_id=trade.id)
+        initiator_listing = ', '.join([str(l) for l in trade.initiator_listing.all()]) if request.user == trade.initiator else ', '.join([str(l) for l in trade.recipient_listing.all()])
+        recipient_listing = ', '.join([str(l) for l in trade.initiator_listing.all()]) if request.user == trade.recipient else ', '.join([str(l) for l in trade.recipient_listing.all()])
+        ChatMessage.objects.create(
+            trade_chat=system_chat,
+            sender_type=ChatMessage.SYSTEM,
+            event_type=trade.trade_status,
+            message=f"{trade.initiator if request.user == trade.initiator else trade.recipient} "
+                    f"accepted the trade offer {initiator_listing} "
+                    f"in exchange for {recipient_listing}.",
+        )
+
+        if trade.trade_status == Trade.ACCEPTED:
+            ChatMessage.objects.create(
+                trade_chat=system_chat,
+                sender_type=ChatMessage.SYSTEM,
+                event_type=trade.trade_status,
+                message=f"Trade agreement reached: \n"
+                        f"{initiator_listing} in exchange for {recipient_listing}. \n\n"
+                        f"Please align on the physical trade between yourselves. Feel free to use this chat.",
+            )
         return Response({'status': trade.trade_status}, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['patch'])
@@ -104,6 +151,16 @@ class TradeListingViewSet(viewsets.ModelViewSet):
 
         trade.update_trade_status()
         trade.save()
+
+        system_chat = get_object_or_404(TradeChat, trade_id=trade.id)
+        ChatMessage.objects.create(
+            trade_chat=system_chat,
+            sender_type=ChatMessage.SYSTEM,
+            event_type=trade.trade_status,
+            message=f"{trade.initiator if request.user == trade.initiator else trade.recipient} "
+                    f"rejected the trade. Trade is now finished with status {trade.trade_status}.",
+        )
+
         return Response({'status': trade.trade_status}, status=status.HTTP_200_OK)
 
 
