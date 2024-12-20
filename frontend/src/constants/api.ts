@@ -62,7 +62,6 @@ export const api = Object.freeze({
     negotiate: (id: number | string) => `${trade}/${id}/negotiate/`,
     accept: (id: number | string) => `${trade}/${id}/accept/`,
     reject: (id: number | string) => `${trade}/${id}/reject/`,
-    counterOffer: (id: number | string) => `${trade}/${id}/counter-offer/`,
     chat: {
       byTradeId: (id: number | string) => `${tradeChat}/${id}/`,
     },
