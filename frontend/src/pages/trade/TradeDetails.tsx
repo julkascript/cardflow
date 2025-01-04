@@ -43,6 +43,7 @@ function TradeDetails(): JSX.Element {
         }
 
         setModalIsOpen(false);
+        updateChatMessages();
         return tradeService.findTradeById(id);
       })
       .then(transformOffer)
@@ -64,6 +65,7 @@ function TradeDetails(): JSX.Element {
         }
 
         setModalIsOpen(false);
+        updateChatMessages();
         return tradeService.findTradeById(id);
       })
       .then(transformOffer)
@@ -87,6 +89,7 @@ function TradeDetails(): JSX.Element {
       .then((data) => {
         populate(data);
         setModalIsOpen(false);
+        updateChatMessages();
         toast.success({ toastKey: toastMessages.tradeHasBeenNegotiated, values: { id } });
       })
       .catch(toast.error);
