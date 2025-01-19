@@ -38,6 +38,8 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
   const [hasSearched, setHasSearched] = useState(false);
   const { t } = useTranslation('trade');
 
+  const [searchValue, setSearchValue] = useState('');
+
   let updateCash: typeof addInitiatorListingOrCash | typeof addRecipientListingOrCash;
   let defaultCashValue: number;
   let user: TradeParticipant;
@@ -83,9 +85,9 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
     }
   }
 
-  const handleChange = useDebounce((event: React.ChangeEvent<HTMLInputElement>) => {
+  const search = useDebounce(() => {
     yugiohService
-      .searchYugiohListingsByCardNameAndUserId(event.target.value, props.user.id)
+      .searchYugiohListingsByCardNameAndUserId(searchValue, props.user.id)
       .then((data) => {
         setResults(
           data.results.filter((listing) => !userListings.find((l) => l.id === listing.id)),
@@ -94,6 +96,12 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
       })
       .catch((err) => error({ error: err }));
   }, 500);
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    event.preventDefault();
+    setSearchValue(event.target.value);
+    search(event);
+  }
 
   function handleSelect(_event: any, option: string | SearchResults | null) {
     if (option && typeof option !== 'string') {
@@ -105,6 +113,8 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
           } else {
             addInitiatorListingOrCash(listing);
           }
+
+          setSearchValue('');
         })
         .catch(error)
         .finally(() => {
@@ -131,6 +141,7 @@ function TradeModalSearch(props: TradeModalSearchProps): JSX.Element {
         options={searchResults}
         disabled={trade.trade_status !== 'negotiate'}
         onChange={handleSelect}
+        value={searchValue}
         renderInput={(params) => (
           <TextField
             onChange={handleChange}
