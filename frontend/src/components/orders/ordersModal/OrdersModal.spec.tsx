@@ -24,6 +24,8 @@ function generateMockOrder(status: orderState, date?: Date): Order {
     order_items: [],
     status,
     delivery_address: 'Mountain View',
+    phone_number: '123456789',
+    names: 'John Doe',
     status_history: [
       {
         status: 'ordered',

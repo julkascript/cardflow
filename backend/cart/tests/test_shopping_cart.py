@@ -111,7 +111,7 @@ class ShoppingCartItemViewSetTestCase(TestCase):
         cart_items_before = ShoppingCartItem.objects.filter(cart=self.user2_cart)
         self.assertEqual(cart_items_before.count(), 1)
 
-        response = self.client.post('/api/cart/items/checkout/', {'delivery_address': '123 Test St'})
+        response = self.client.post('/api/cart/items/checkout/', {'delivery_address': '123 Test St', 'phone_number': '123456789', 'names': 'John Doe'})
 
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data['message'], 'Checkout successful')
@@ -132,7 +132,7 @@ class ShoppingCartItemViewSetTestCase(TestCase):
         self.cart_item.quantity = self.listing.quantity
         self.cart_item.save()
 
-        response = self.client.post('/api/cart/items/checkout/', {'delivery_address': '123 Test St'})
+        response = self.client.post('/api/cart/items/checkout/', {'delivery_address': '123 Test St', 'phone_number': '123456789', 'names': 'John Doe'})
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data['message'], 'Checkout successful')
         self.assertTrue('orders' in response.data)
