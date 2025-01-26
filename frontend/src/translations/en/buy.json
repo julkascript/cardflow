@@ -29,7 +29,9 @@
       "shipment": {
         "shipmentAddressPrefilled_true": "Your details were pre-filled from your profile.",
         "shipmentAddressPrefilled_false": "You can set a default shipment address from your profile, which will be pre-filled for future purchases.",
-        "invalidShipmentAddress": "Please enter a valid address!"
+        "invalidShipmentAddress": "Please enter a valid address!",
+        "invalidPhoneNumber": "Please enter a valid phone number!",
+        "invalidNames": "Please enter a valid first and last name!"
       }
     },
     "checkout": {

@@ -36,7 +36,7 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['order_id', 'sender_user', 'receiver_user', 'status', 'delivery_address', 'order_items',
-                  'status_history']
+                  'status_history', 'phone_number', 'names']
 
     def get_order_id(self, obj):
         return obj.id

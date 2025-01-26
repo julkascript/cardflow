@@ -21,4 +21,6 @@ export type CreatedShoppingCartItem = {
 
 export type Checkout = {
   delivery_address: string;
+  phone_number: string;
+  names: string;
 };

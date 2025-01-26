@@ -29,7 +29,9 @@
       "shipment": {
         "shipmentAddressPrefilled_true": "Детайлите относно пратката бяха попълнени автоматично от твоя профил.",
         "shipmentAddressPrefilled_false": "Можеш да настроиш адрес на пратката по подразбиране, който да се попълва автоматично, от профилните настройки.",
-        "invalidShipmentAddress": "Моля да въведеш валиден адрес!"
+        "invalidShipmentAddress": "Моля да въведеш валиден адрес!",
+        "invalidPhoneNumber": "Моля да въведеш валиден телефонен номер!",
+        "invalidNames": "Моля да въведеш валидно име и фамилия!"
       }
     },
     "checkout": {
