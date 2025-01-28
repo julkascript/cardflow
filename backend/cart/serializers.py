@@ -78,3 +78,5 @@ class AddShoppingCartItemSerializer(serializers.ModelSerializer):
 
 class CheckoutSerializer(serializers.Serializer):
     delivery_address = serializers.CharField(required=True)
+    phone_number = serializers.CharField(required=True)
+    names = serializers.CharField(required=True)

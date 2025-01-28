@@ -24,12 +24,14 @@ function ShoppingCart(): JSX.Element {
   const { t } = useTranslation('common');
 
   const [shipmentAddress, setShipmentAddress] = useState('');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [names, setNames] = useState('');
   const shipmentCost = shipmentAddress && shoppingCart.length ? 9.55 : 0;
   const [totalPrice, setTotalPrice] = useState(0);
 
   function checkout() {
     shoppingCartService
-      .checkout({ delivery_address: shipmentAddress })
+      .checkout({ delivery_address: shipmentAddress, phone_number: phoneNumber, names })
       .then(() => {
         navigate('/');
         setShoppingCart(0);
@@ -129,7 +131,11 @@ function ShoppingCart(): JSX.Element {
           shoppingCart={shoppingCart}
           shipmentCost={shipmentCost}
           shipmentAddress={shipmentAddress}
+          names={names}
+          phoneNumber={phoneNumber}
           onShipmentAddressChange={setShipmentAddress}
+          onPhoneNumberChange={setPhoneNumber}
+          onNamesChange={setNames}
           onRemoveAll={removeAll}
           onRemove={removeListing}
           onChangeQuantity={changeListingQuantity}

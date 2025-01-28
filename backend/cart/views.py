@@ -78,6 +78,8 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
         serializer.is_valid(raise_exception=True)
 
         delivery_address = serializer.validated_data['delivery_address']
+        phone_number = serializer.validated_data['phone_number']
+        names = serializer.validated_data['names']
 
         cart_items = ShoppingCartItem.objects.filter(cart=get_cart_for_user(request.user))
 
@@ -108,6 +110,8 @@ class ShoppingCartItemViewSet(viewsets.ModelViewSet):
                     'receiver_user': self.request.user,
                     'status': 'ordered',
                     'delivery_address': delivery_address,
+                    'phone_number': phone_number,
+                    'names': names
                 }
 
                 order = Order.objects.create(**order_data)

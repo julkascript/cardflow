@@ -33,6 +33,10 @@ class Order(models.Model):
         max_length=DELIVERY_ADDRESS_MAX_LENGTH,
     )
 
+    phone_number = models.CharField(max_length=30, blank=True, null=True)
+
+    names = models.TextField(blank=True, null=True)
+
     def __str__(self):
         return f'OrderID {self.id} from {self.receiver_user}'
 

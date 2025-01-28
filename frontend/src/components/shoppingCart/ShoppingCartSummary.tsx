@@ -6,6 +6,8 @@ import PageSection from '../PageSection';
 import { CurrentUser } from '../../services/user/types';
 import YugiohCardQuantityField from '../yugioh/table/market/YugiohCardQuantityField';
 import { ShoppingCartItem } from '../../services/shoppingCart/types';
+import Person from '@mui/icons-material/Person';
+import Phone from '@mui/icons-material/Phone';
 import { useTranslation } from 'react-i18next';
 import { useCurrentUser } from '../../context/user';
 
@@ -14,7 +16,11 @@ type ShoppingCartSummaryProps = {
   shoppingCart: ShoppingCartItem[];
   shipmentCost: number;
   shipmentAddress: string;
+  names: string;
+  phoneNumber: string;
   onShipmentAddressChange: (shipmentAddress: string) => void;
+  onPhoneNumberChange: (phoneNumber: string) => void;
+  onNamesChange: (names: string) => void;
   onRemoveAll: () => void;
   onRemove: (id: number) => void;
   onChangeQuantity: (id: number, quantity: number) => void;
@@ -26,6 +32,8 @@ type ShoppingCartSummaryProps = {
 
 function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
   const shipmentAddressIsValid = props.shipmentAddress !== '';
+  const phoneNumberIsValid = props.phoneNumber !== '';
+  const namesIsValid = props.names !== '';
   const { t } = useTranslation('buy');
   const { t: commonT } = useTranslation('common');
 
@@ -71,7 +79,7 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
         </section>
         <Divider className="hidden lg:block" orientation="vertical" flexItem />
         <Divider className="block lg:hidden" flexItem />
-        <section>
+        <section className="flex gap-2 flex-col">
           <h3 className="font-bold mb-2">
             <div className="flex items-center justify-center lg:justify-start gap-2">
               <span>{commonT('purchaseDetails.shippingDetails.title')}</span>
@@ -97,6 +105,44 @@ function ShoppingCartSummary(props: ShoppingCartSummaryProps): JSX.Element {
               startAdornment: (
                 <InputAdornment position="start">
                   <Home />
+                </InputAdornment>
+              ),
+            }}
+            disabled={props.shoppingCart.length === 0}
+            className="w-full"
+          />
+          <TextField
+            error={!namesIsValid}
+            helperText={namesIsValid ? '' : t('cart.summary.shipment.invalidNames')}
+            value={props.names}
+            onChange={(e) => {
+              e.preventDefault();
+              props.onNamesChange(e.target.value);
+            }}
+            size="small"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Person />
+                </InputAdornment>
+              ),
+            }}
+            disabled={props.shoppingCart.length === 0}
+            className="w-full"
+          />
+          <TextField
+            error={!phoneNumberIsValid}
+            helperText={phoneNumberIsValid ? '' : t('cart.summary.shipment.invalidPhoneNumber')}
+            value={props.phoneNumber}
+            onChange={(e) => {
+              e.preventDefault();
+              props.onPhoneNumberChange(e.target.value);
+            }}
+            size="small"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Phone />
                 </InputAdornment>
               ),
             }}

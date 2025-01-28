@@ -19,6 +19,8 @@ export type Order = {
   status: orderState;
   delivery_address: string;
   status_history: StatusHistory[];
+  phone_number: string;
+  names: string;
 };
 
 export type OrderItem = {

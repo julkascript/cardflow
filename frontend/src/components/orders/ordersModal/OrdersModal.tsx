@@ -15,6 +15,8 @@ import { Order, orderState } from '../../../services/orders/types';
 import { useEffect, useState } from 'react';
 import SummaryData from '../../shoppingCart/SummaryData';
 import Home from '@mui/icons-material/Home';
+import Phone from '@mui/icons-material/Phone';
+import Person from '@mui/icons-material/Person';
 import { createPortal } from 'react-dom';
 import { orderService } from '../../../services/orders/orderService';
 import { toastMessages } from '../../../constants/toast';
@@ -240,6 +242,34 @@ function OrdersModal(props: OrdersModalProps): JSX.Element {
                 ),
               }}
               value={order.delivery_address}
+              disabled={true}
+              className="lg:w-full"
+            />
+            <TextField
+              size="small"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Person />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ marginTop: '1rem' }}
+              value={order.names}
+              disabled={true}
+              className="lg:w-full"
+            />
+            <TextField
+              size="small"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Phone />
+                  </InputAdornment>
+                ),
+              }}
+              sx={{ marginTop: '1rem' }}
+              value={order.phone_number}
               disabled={true}
               className="lg:w-full"
             />
