@@ -38,7 +38,7 @@ function SearchResultsDisplay(props: SearchResultsDisplayProps): JSX.Element {
 
   return (
     <List
-      className="border rounded-lg w-full"
+      className="border rounded-lg w-full z-50"
       sx={{
         position: 'absolute',
         backgroundColor: 'white',
