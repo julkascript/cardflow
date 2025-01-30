@@ -13,6 +13,7 @@ class ListingAdmin(admin.ModelAdmin):
         'quantity',
         'is_listed',
         'is_sold',
+        'is_trade_considered',
         'id',
     )
 
@@ -24,6 +25,7 @@ class ListingAdmin(admin.ModelAdmin):
         'quantity',
         'is_listed',
         'is_sold',
+        'is_trade_considered',
     )
 
     search_fields = (
@@ -33,6 +35,7 @@ class ListingAdmin(admin.ModelAdmin):
         'quantity',
         'is_listed',
         'is_sold',
+        'is_trade_considered',
     )
 
     ordering = ('id',)

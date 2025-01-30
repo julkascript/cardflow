@@ -4,6 +4,7 @@
     "saveButtonText": "Save",
     "navigation": {
       "details": "Account details",
+      "listings": "Listings",
       "blog": "Blog",
       "public": "Public info"
     }
@@ -92,7 +93,34 @@
       },
       "reportButtonText": "Report",
       "cancelButtonText": "Cancel",
-      "saveButtonText": "Save"
+      "saveButtonText": "Save",
+      "supportButtonText": "Support"
+    }
+  },
+  "search": {
+    "table": {
+      "tableHeaders": {
+        "user": "User",
+        "visibleListings": "Visible listings",
+        "trade": "Trade"
+      }
+    },
+    "noUsersFound": "There are no such users. Did you enter the name correctly?",
+    "hasNotSearched": "Search users by typing their usernames (or part of them) in the search above"
+  },
+  "listingsSearch": {
+    "tradeOfferButtonText": "Trade offer",
+    "table": {
+      "tableHeaders": {
+        "name": "Name",
+        "rarity": "Rarity",
+        "availability": "Available",
+        "buy": "Buy"
+      },
+      "tableBody": {
+        "considersTrade_true": "The seller indicated that they would be open to considering trading offers with this listing",
+        "considersTrade_false": "The seller indicated that they would not be open to considering trading offers with this listing"
+      }
     }
   }
 }

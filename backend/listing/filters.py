@@ -16,11 +16,22 @@ class ListingFilter(filters.FilterSet):
         label='Search by is_sold (true or false)'
     )
 
-    card_in_set_id = filters.NumberFilter(
+    is_trade_considered = filters.BooleanFilter(
+        field_name='is_trade_considered',
+        lookup_expr='exact',
+        label='Search by is_trade_considered (true or false)'
+    )
 
+    card_in_set_id = filters.NumberFilter(
         field_name='card',
         lookup_expr='exact',
         label='Search by card_set_id'
+    )
+
+    card_name = filters.Filter(
+        field_name='card__yugioh_card__card_name',
+        lookup_expr='icontains',
+        label='Search by card name'
     )
 
     class Meta:

@@ -68,6 +68,14 @@ class UserSerializer(serializers.ModelSerializer):
         return missed_sent_sales_count
 
 
+class UserSearchSerializer(serializers.ModelSerializer):
+    listed_listings_count = serializers.IntegerField(read_only=True)
+
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'listed_listings_count')
+
+
 class RegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
@@ -145,3 +153,9 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 class ContactFormSerializer(serializers.Serializer):
     email = serializers.EmailField()
     message = serializers.CharField()
+
+
+class UserTradeParticipant(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'email', 'avatar')

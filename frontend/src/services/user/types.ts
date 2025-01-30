@@ -57,6 +57,7 @@ export type UserAccountLoader = {
 };
 
 export type PublicUserInfo = {
+  id: number;
   username: string;
   avatar: string;
   stats: {
@@ -67,4 +68,10 @@ export type PublicUserInfo = {
     rejection_rate: number;
     miss_rate: number;
   };
+};
+
+export type UserSearchResult = {
+  id: number;
+  username: string;
+  listed_listings_count: number;
 };

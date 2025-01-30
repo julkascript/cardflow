@@ -57,6 +57,7 @@ export type YugiohCardListing = {
   quantity: number;
   is_listed: boolean;
   is_sold: boolean;
+  is_trade_considered: boolean;
 };
 
 export type BuyYugiohCardListing = {
@@ -69,6 +70,7 @@ export type BuyYugiohCardListing = {
 
 export type YugiohCardSellListing = BuyYugiohCardListing & {
   quantity: number;
+  is_trade_considered: boolean;
 };
 
 export type YugiohCardInSet = {

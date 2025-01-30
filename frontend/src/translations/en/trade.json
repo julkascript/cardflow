@@ -1,0 +1,57 @@
+{
+  "modal": {
+    "title": "Offer #TR-{{id}}",
+    "noResults": "The user does not have listings with that name.",
+    "buttons": {
+      "remove": "Remove",
+      "accept": "Accept",
+      "decline": "Decline",
+      "close": "Close",
+      "request": "Request"
+    }
+  },
+  "trades": {
+    "title": "Trade",
+    "newTradeButtonText": "New trade",
+    "table": {
+      "tableHeaders": {
+        "tradeNumber": "Trade #",
+        "user": "User",
+        "status": "Status"
+      }
+    },
+    "actions": {
+      "selectedItems_one": "<strong>1</strong> item selected",
+      "selectedItems_other": "<strong>{{count}}</strong> items selected",
+      "rejectAllButtonText": "Reject all",
+      "acceptAllButtonText": "Accept all",
+      "rejectSelectedItems": "Reject selected items",
+      "acceptSelectedItems": "Accept selected items"
+    },
+    "status": {
+      "accepted": "Accepted",
+      "rejected": "Rejected",
+      "negotiate_current": "Awaiting your response",
+      "negotiate_other": "Awaiting their response"
+    }
+  },
+  "details": {
+    "chat": {
+      "system": "System",
+      "expandOffer": "Expand current offer..."
+    },
+    "preview": {
+      "buttons": {
+        "reject": "Reject offer",
+        "expand": "Expand offer",
+        "accept": "Accept offer"
+      },
+      "statusBadge": {
+        "status_accept": "User {{username}} accepts the offer",
+        "status_pending": "Thinking",
+        "status_reject": "User {{username}} rejects the offer"
+      },
+      "currentOffer": "Current offer"
+    }
+  }
+}

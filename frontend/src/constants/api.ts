@@ -9,6 +9,8 @@ const shoppingCart = `${base}/cart`;
 const bestSeller = `${base}/bestseller`;
 const feedback = `${base}/feedback`;
 const orders = `${base}/order`;
+const trade = `${base}/trade`;
+const tradeChat = `${trade}/chat`;
 
 export const api = Object.freeze({
   accounts: {
@@ -17,6 +19,7 @@ export const api = Object.freeze({
     login: `${accounts}/login/`,
     user: `${accounts}/user/`,
     userById: (id: string | number) => `${accounts}/user/${id}/`,
+    searchByUsername: `${accounts}/users/search`,
   },
   contacts: {
     root: `${contacts}/`,
@@ -52,5 +55,15 @@ export const api = Object.freeze({
   orders: {
     root: orders + '/',
     id: (id: number | string) => `${orders}/${id}/`,
+  },
+  trade: {
+    root: trade + '/',
+    id: (id: number | string) => `${trade}/${id}/`,
+    negotiate: (id: number | string) => `${trade}/${id}/negotiate/`,
+    accept: (id: number | string) => `${trade}/${id}/accept/`,
+    reject: (id: number | string) => `${trade}/${id}/reject/`,
+    chat: {
+      byTradeId: (id: number | string) => `${tradeChat}/${id}/`,
+    },
   },
 });

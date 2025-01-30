@@ -26,6 +26,11 @@ import Orders from '../pages/profile/Orders';
 import Sales from '../pages/profile/Sales';
 import { loadListingForEdit } from './loadListingForEdit/loadListingForEdit';
 import EditListing from '../pages/listing/EditListing';
+import SearchUsers from '../pages/profile/SearchUsers';
+import TradeDetails from '../pages/trade/TradeDetails';
+import { TradeContextProvider } from '../context/trade';
+import AccountListings from '../pages/profile/AccountListings';
+import MyTrades from '../pages/trade/MyTrades';
 
 const routes = createBrowserRouter([
   {
@@ -95,6 +100,16 @@ const routes = createBrowserRouter([
         ],
       },
       {
+        path: 'accounts',
+        loader: authorizedGuard,
+        children: [
+          {
+            path: 'search',
+            element: <SearchUsers />,
+          },
+        ],
+      },
+      {
         path: '/user/:username',
         children: [
           {
@@ -106,6 +121,11 @@ const routes = createBrowserRouter([
             path: 'settings',
             element: <ProfileSettingsPage />,
             loader: authorizedGuard,
+          },
+          {
+            path: 'listings',
+            loader: loadPublicUserInfo,
+            element: <AccountListings />,
           },
           {
             path: 'blog',
@@ -168,6 +188,24 @@ const routes = createBrowserRouter([
             path: 'listing/:id/edit',
             loader: loadListingForEdit,
             element: <EditListing />,
+          },
+        ],
+      },
+      {
+        path: 'trade',
+        loader: authorizedGuard,
+        children: [
+          {
+            path: '',
+            element: <MyTrades />,
+          },
+          {
+            path: ':id',
+            element: (
+              <TradeContextProvider>
+                <TradeDetails />
+              </TradeContextProvider>
+            ),
           },
         ],
       },

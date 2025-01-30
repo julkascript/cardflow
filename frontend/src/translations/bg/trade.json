@@ -1,0 +1,57 @@
+{
+  "modal": {
+    "title": "Оферта за размяна #{{id}}",
+    "noResults": "Потребителят няма оферти с такова име.",
+    "buttons": {
+      "remove": "Премахни",
+      "accept": "Приеми",
+      "decline": "Откажи",
+      "close": "Затвори",
+      "request": "Поискай"
+    }
+  },
+  "trades": {
+    "title": "Моите оферти за размяна",
+    "newTradeButtonText": "Нова оферта за размяна",
+    "table": {
+      "tableHeaders": {
+        "tradeNumber": "Оферта за размяна #",
+        "user": "Потребител",
+        "status": "Статут"
+      }
+    },
+    "actions": {
+      "selectedItems_one": "<strong>1</strong> избрана оферта",
+      "selectedItems_other": "<strong>{{count}}</strong> избрани оферти",
+      "rejectAllButtonText": "Отхвърли всички",
+      "acceptAllButtonText": "Приеми всички",
+      "rejectSelectedItems": "Отхвърли избраните оферти",
+      "acceptSelectedItems": "Приеми избраните оферти"
+    },
+    "status": {
+      "accepted": "Приета",
+      "rejected": "Отхвърлена",
+      "negotiate_current": "В очакване на твой отговор",
+      "negotiate_other": "В очакване на техен отговор"
+    }
+  },
+  "details": {
+    "chat": {
+      "system": "Системно съобщение",
+      "expandOffer": "Отвори офертата..."
+    },
+    "preview": {
+      "buttons": {
+        "reject": "Откажи офертата",
+        "expand": "Отвори офертата",
+        "accept": "Приеми офертата"
+      },
+      "statusBadge": {
+        "status_accept": "Потребител {{username}} приема офертата",
+        "status_pending": "Все още обмисля",
+        "status_reject": "Потребител {{username}} отхвърля офертата"
+      },
+      "currentOffer": "Текуща оферта"
+    }
+  }
+}

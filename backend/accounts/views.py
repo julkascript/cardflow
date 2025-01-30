@@ -1,11 +1,14 @@
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
+from django.db.models import Count, Q
 from django.utils.timezone import now
 from django_filters.rest_framework import DjangoFilterBackend
 from drf_spectacular.utils import extend_schema
-from rest_framework import viewsets, status, views
+from rest_framework import viewsets, status, views, generics
+from rest_framework.exceptions import NotFound
+from rest_framework.filters import SearchFilter
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework_simplejwt.views import TokenObtainPairView
 
@@ -13,6 +16,8 @@ from accounts.filters import UserFilter
 from accounts.permissions import IsOwnerOfObject
 from accounts.serializers import RegistrationSerializer, MyTokenObtainPairSerializer, UpdateUserSerializer, \
     ContactFormSerializer, UserSerializer
+
+from accounts.serializers import UserSearchSerializer
 from cardflow import settings
 from order.models import OrderStatusHistory
 
@@ -123,6 +128,7 @@ class UserUpdateView(viewsets.ModelViewSet):
             }
 
             return Response({
+                'id': user_data['id'],
                 'username': user_data['username'],
                 'avatar': user_data['avatar'],
                 'stats': stats_data
@@ -135,6 +141,27 @@ def retrieve(self, request, *args, **kwargs):
     instance = self.get_object()
     serializer = self.get_serializer(instance)
     return Response(serializer.data)
+
+
+@extend_schema(tags=['Accounts'])
+class UserSearchView(generics.ListAPIView):
+    queryset = User.objects.annotate(listed_listings_count=Count('listing', filter=Q(listing__is_listed=True)))
+    serializer_class = UserSearchSerializer
+    permission_classes = [IsAuthenticated, IsOwnerOfObject]
+    filter_backends = [DjangoFilterBackend]
+    filterset_class = UserFilter
+    search_fields = ['username']
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        filter_backends = self.filter_backends
+        for backend in filter_backends:
+            queryset = backend().filter_queryset(self.request, queryset, self)
+
+        if not queryset.exists():
+            raise NotFound(detail="User not found.")
+
+        return queryset
 
 
 @extend_schema(tags=["Contact Form"])

@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import CardflowTabs from '../../components/sellListing/CardflowTabs';
+import CardflowTabs from '../../components/cardflowTabs/CardflowTabs';
 import NewListingTopBar from '../../components/sellListing/NewListingTopBar';
 import NewListingBody from '../../components/sellListing/NewSellListingBody';
 

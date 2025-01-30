@@ -27,12 +27,14 @@
     "accountSettings": "Профилни настройки",
     "myOrders": "Моите поръчки",
     "mySales": "Моите продажби",
+    "myTrades": "Моите оферти за размяна",
     "shoppingCart": "Количка",
     "logout": "Излез от профил",
     "closeMenu": "Затвори",
     "openMenuAriaLabel": "Отвори навигационното меню",
     "signIn": "Влез в профил",
-    "signUp": "Регистрация"
+    "signUp": "Регистрация",
+    "search": "Търси потребители"
   },
   "search": {
     "placeholder": "Натисни \"/\" за търсене",
@@ -67,6 +69,9 @@
       },
       "changelog": {
         "title": "Последни промени"
+      },
+      "account": {
+        "title": "Профил"
       }
     },
     "account": {
@@ -76,6 +81,9 @@
       },
       "mySales": {
         "title": "Моите продажби"
+      },
+      "userSearch": {
+        "title": "Търсене на потребители"
       }
     },
     "buy": {
@@ -95,6 +103,9 @@
       "editListing": {
         "title": "Редактиране на обява"
       }
+    },
+    "trade": {
+      "title": "Размени"
     }
   },
   "currencies": {

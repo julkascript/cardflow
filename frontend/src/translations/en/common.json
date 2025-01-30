@@ -27,15 +27,17 @@
     "accountSettings": "Account settings",
     "myOrders": "My orders",
     "mySales": "My sales",
+    "myTrades": "My trades",
     "shoppingCart": "Shopping cart",
     "logout": "Log out",
     "closeMenu": "Close menu",
     "openMenuAriaLabel": "Open navigation menu",
     "signIn": "Sign in",
-    "signUp": "Sign up"
+    "signUp": "Sign up",
+    "search": "Search users"
   },
   "search": {
-    "placeholder": "Type \"/\" to search",
+    "placeholder": "Search",
     "search": "Search",
     "showAll": "Show all {{results}} results.",
     "openSearchToolTip": "Search cards by name"
@@ -67,6 +69,9 @@
       },
       "changelog": {
         "title": "Changelog"
+      },
+      "account": {
+        "title": "Account"
       }
     },
     "account": {
@@ -76,6 +81,9 @@
       },
       "mySales": {
         "title": "My sales"
+      },
+      "userSearch": {
+        "title": "User search"
       }
     },
     "buy": {
@@ -95,6 +103,9 @@
       "editListing": {
         "title": "Edit listing"
       }
+    },
+    "trade": {
+      "title": "Trade"
     }
   },
   "sellerRanks": {

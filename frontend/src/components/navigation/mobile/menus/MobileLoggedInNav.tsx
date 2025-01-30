@@ -14,6 +14,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 import ExpandMore from '@mui/icons-material/ExpandMore';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from '@mui/icons-material/Logout';
+import SearchIcon from '@mui/icons-material/Search';
 import { useState } from 'react';
 import { useCurrentUser } from '../../../../context/user';
 import { useLogout } from '../../../../util/useLogout';
@@ -21,6 +22,7 @@ import { toastMessages } from '../../../../constants/toast';
 import SettingsIcon from '@mui/icons-material/Settings';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
 import CurrencyExchangeIcon from '@mui/icons-material/CurrencyExchange';
+import SyncIcon from '@mui/icons-material/Sync';
 import { OverridableComponent } from '@mui/material/OverridableComponent';
 import { useToast } from '../../../../util/useToast';
 import { useTranslation } from 'react-i18next';
@@ -71,6 +73,16 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
       text: t('navigation.mySales'),
       icon: CurrencyExchangeIcon,
     },
+    {
+      href: '/trade',
+      text: t('navigation.myTrades'),
+      icon: SyncIcon,
+    },
+    {
+      href: '/accounts/search',
+      text: t('navigation.search'),
+      icon: SearchIcon,
+    },
   ];
 
   function handleLogout() {
@@ -85,7 +97,7 @@ function MobileLoggedInNav(props: MobileLoggedInNavProps): JSX.Element {
       label: t('navigation.newListing'),
     },
     {
-      url: '/trade/create',
+      url: '/accounts/search',
       label: t('navigation.newTrade'),
     },
   ];
